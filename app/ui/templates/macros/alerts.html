@@ -1,0 +1,88 @@
+{# macros/alerts.html — Alert/notification macros for InsureIntel Zimbabwe #}
+
+{% macro alert_info(message, dismissible=False, id=None) %}
+<div class="alert alert-info" {% if id %}id="{{ id }}"{% endif %} role="alert">
+  <div style="display:flex;align-items:flex-start;gap:0.625rem">
+    <span class="material-symbols-outlined" style="font-size:18px;flex-shrink:0;margin-top:0.1rem">info</span>
+    <span style="flex:1">{{ message }}</span>
+    {% if dismissible %}
+    <button type="button" onclick="this.closest('[role=alert]').remove()" style="background:none;border:none;cursor:pointer;color:inherit;padding:0;line-height:1;flex-shrink:0" aria-label="Dismiss">
+      <span class="material-symbols-outlined" style="font-size:18px">close</span>
+    </button>
+    {% endif %}
+  </div>
+</div>
+{% endmacro %}
+
+{% macro alert_success(message, dismissible=False, id=None) %}
+<div class="alert alert-success" {% if id %}id="{{ id }}"{% endif %} role="alert">
+  <div style="display:flex;align-items:flex-start;gap:0.625rem">
+    <span class="material-symbols-outlined" style="font-size:18px;flex-shrink:0;margin-top:0.1rem">check_circle</span>
+    <span style="flex:1">{{ message }}</span>
+    {% if dismissible %}
+    <button type="button" onclick="this.closest('[role=alert]').remove()" style="background:none;border:none;cursor:pointer;color:inherit;padding:0;line-height:1;flex-shrink:0" aria-label="Dismiss">
+      <span class="material-symbols-outlined" style="font-size:18px">close</span>
+    </button>
+    {% endif %}
+  </div>
+</div>
+{% endmacro %}
+
+{% macro alert_warning(message, dismissible=False, id=None) %}
+<div class="alert alert-warn" {% if id %}id="{{ id }}"{% endif %} role="alert">
+  <div style="display:flex;align-items:flex-start;gap:0.625rem">
+    <span class="material-symbols-outlined" style="font-size:18px;flex-shrink:0;margin-top:0.1rem">warning</span>
+    <span style="flex:1">{{ message }}</span>
+    {% if dismissible %}
+    <button type="button" onclick="this.closest('[role=alert]').remove()" style="background:none;border:none;cursor:pointer;color:inherit;padding:0;line-height:1;flex-shrink:0" aria-label="Dismiss">
+      <span class="material-symbols-outlined" style="font-size:18px">close</span>
+    </button>
+    {% endif %}
+  </div>
+</div>
+{% endmacro %}
+
+{% macro alert_error(message, dismissible=False, id=None) %}
+<div class="alert alert-error" {% if id %}id="{{ id }}"{% endif %} role="alert">
+  <div style="display:flex;align-items:flex-start;gap:0.625rem">
+    <span class="material-symbols-outlined" style="font-size:18px;flex-shrink:0;margin-top:0.1rem">error</span>
+    <span style="flex:1">{{ message }}</span>
+    {% if dismissible %}
+    <button type="button" onclick="this.closest('[role=alert]').remove()" style="background:none;border:none;cursor:pointer;color:inherit;padding:0;line-height:1;flex-shrink:0" aria-label="Dismiss">
+      <span class="material-symbols-outlined" style="font-size:18px">close</span>
+    </button>
+    {% endif %}
+  </div>
+</div>
+{% endmacro %}
+
+{% macro alert_bar(type, message) %}
+{% set config = {
+  'info':    {'class': 'alert-info',    'icon': 'info'},
+  'success': {'class': 'alert-success', 'icon': 'check_circle'},
+  'warning': {'class': 'alert-warn',    'icon': 'warning'},
+  'error':   {'class': 'alert-error',   'icon': 'error'}
+} %}
+{% set c = config.get(type, config.info) %}
+<div class="alert {{ c.class }}" role="alert">
+  <div style="display:flex;align-items:center;gap:0.625rem">
+    <span class="material-symbols-outlined" style="font-size:18px;flex-shrink:0">{{ c.icon }}</span>
+    {{ message }}
+  </div>
+</div>
+{% endmacro %}
+
+{% macro empty_state(title='No data', subtitle=None, icon='inbox', action_text=None, action_href=None) %}
+<div style="text-align:center;padding:4rem 2rem;color:var(--cosv)">
+  <span class="material-symbols-outlined" style="font-size:52px;display:block;margin-bottom:1rem;color:var(--col)">{{ icon }}</span>
+  <h3 class="font-headline text-lg font-semibold mb-2" style="color:var(--cos)">{{ title }}</h3>
+  {% if subtitle %}
+  <p style="font-size:0.875rem;color:var(--cosv);max-width:24rem;margin:0 auto 1.5rem">{{ subtitle }}</p>
+  {% endif %}
+  {% if action_text and action_href %}
+  <a href="{{ action_href }}" class="btn-glass btn-glass-gold">
+    {{ action_text }}
+  </a>
+  {% endif %}
+</div>
+{% endmacro %}

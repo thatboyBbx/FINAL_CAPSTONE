@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Reports Center - InsureIntel Zimbabwe</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#D4AF37", // Royal Gold
+              "on-primary": "#1A1A1A",
+              "primary-container": "#3D3314",
+              "on-primary-container": "#F5E6B3",
+              "surface": "#0F0F0F",
+              "on-surface": "#E6E6E6",
+              "surface-variant": "#1F1F1F",
+              "on-surface-variant": "#A8A8A8",
+              "outline": "#4D4D4D",
+              "outline-variant": "#2D2D2D",
+              "background": "#080808",
+              "secondary": "#A8A8A8",
+              "on-secondary": "#1A1A1A",
+              "secondary-container": "#2D2D2D",
+              "on-secondary-container": "#E6E6E6",
+              "error": "#CF6679"
+            },
+            fontFamily: {
+              "headline": ["Manrope", "sans-serif"],
+              "body": ["Manrope", "sans-serif"],
+              "label": ["Manrope", "sans-serif"]
+            },
+            borderRadius: {
+              "DEFAULT": "0.25rem",
+              "lg": "0.5rem",
+              "xl": "0.75rem",
+              "full": "1rem"
+            },
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      body { font-family: 'Manrope', sans-serif; }
+      h1, h2, h3 { font-family: 'Manrope', sans-serif; }
+      .spin { animation: spin 2s linear infinite; }
+      @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body class="bg-background text-on-surface flex min-h-screen">
+<!-- SideNavBar Shell -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-black flex flex-col py-6 border-r border-outline-variant z-50">
+<div class="px-6 mb-8">
+<h1 class="text-lg font-extrabold text-primary font-headline tracking-tight uppercase">InsureIntel</h1>
+<p class="text-[10px] text-secondary font-label tracking-widest uppercase opacity-60">Zimbabwe Division</p>
+</div>
+<nav class="flex-1 space-y-1">
+<div class="text-secondary py-3 px-6 flex items-center gap-3 hover:bg-surface-variant hover:text-primary transition-all cursor-pointer font-label text-sm">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</div>
+<!-- Active State for Reports -->
+<div class="bg-primary/10 text-primary border-r-2 border-primary py-3 px-6 flex items-center gap-3 font-label text-sm">
+<span class="material-symbols-outlined" data-icon="assessment">assessment</span>
+<span>Reports</span>
+</div>
+<div class="text-secondary py-3 px-6 flex items-center gap-3 hover:bg-surface-variant hover:text-primary transition-all cursor-pointer font-label text-sm">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+<span>Policy Analysis</span>
+</div>
+<div class="text-secondary py-3 px-6 flex items-center gap-3 hover:bg-surface-variant hover:text-primary transition-all cursor-pointer font-label text-sm">
+<span class="material-symbols-outlined" data-icon="fact_check">fact_check</span>
+<span>Claims Review</span>
+</div>
+<div class="text-secondary py-3 px-6 flex items-center gap-3 hover:bg-surface-variant hover:text-primary transition-all cursor-pointer font-label text-sm">
+<span class="material-symbols-outlined" data-icon="security">security</span>
+<span>Risk Assessment</span>
+</div>
+</nav>
+<div class="px-6 mt-auto space-y-4">
+<button class="w-full bg-primary hover:bg-primary/90 text-on-primary py-2.5 rounded font-bold transition-colors text-sm flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
+                New Analysis
+            </button>
+<div class="pt-4 border-t border-outline-variant">
+<div class="text-secondary py-3 flex items-center gap-3 hover:text-primary cursor-pointer text-sm font-label">
+<span class="material-symbols-outlined" data-icon="contact_support">contact_support</span>
+<span>Support</span>
+</div>
+<div class="text-secondary py-3 flex items-center gap-3 hover:text-primary cursor-pointer text-sm font-label">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span>Logout</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 ml-64 min-h-screen bg-surface">
+<!-- TopNavBar Shell -->
+<header class="sticky top-0 z-40 flex justify-between items-center px-8 h-16 bg-surface border-b border-outline-variant">
+<div class="flex items-center gap-2 text-xs font-medium text-secondary uppercase tracking-widest">
+<span class="hover:text-primary cursor-pointer">Dashboard</span>
+<span class="material-symbols-outlined text-xs" data-icon="chevron_right">chevron_right</span>
+<span class="text-on-surface font-bold">Reports</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-4 text-secondary">
+<span class="material-symbols-outlined cursor-pointer hover:text-primary transition-colors" data-icon="notifications">notifications</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary transition-colors" data-icon="help">help</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary transition-colors" data-icon="settings">settings</span>
+</div>
+<div class="h-8 w-8 rounded bg-primary-container border border-primary/20 overflow-hidden">
+<img alt="User profile" class="w-full h-full object-cover grayscale" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbRNNE-VKBQZvkwC100brj5qbZUPPdICmuioKKsC0UQ9sIfE3sJxm3F1NRJFDCb_qC2smp0shk_WxNPwXj9W7i8VuXE2Na848-aIDU_H9W6q0CzTgc6QpjnA7lqlDwf136WOa0L9-u9LleaoALWJLZJAPWqX9U8kVyhUnSPjoBJnV2YwP6EiIL7rOVuwt08wRi9lzwNqrPFzaj_oRWi-wtr7QvwRrYL8EqSYWXg8jx3n_rGlWdda4hnpnH5884fftFMQ39FNrjhU2e"/>
+</div>
+</div>
+</header>
+<div class="p-8 space-y-12 max-w-7xl mx-auto">
+<!-- Generate New Report Section -->
+<section>
+<div class="mb-6">
+<h2 class="text-2xl font-extrabold text-on-surface tracking-tight font-headline uppercase">Generate New Report</h2>
+<p class="text-on-surface-variant text-sm font-label">Select a report architecture to begin automated ledger analysis.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 mb-8">
+<!-- Report Type Cards -->
+<button class="group p-5 bg-surface-variant border border-primary/40 rounded text-left transition-all hover:border-primary">
+<div class="w-10 h-10 rounded bg-primary/20 flex items-center justify-center text-primary mb-4 group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined" data-icon="summarize">summarize</span>
+</div>
+<h3 class="font-bold text-on-surface text-sm mb-1 uppercase tracking-tight">Executive Summary</h3>
+<p class="text-[10px] text-on-surface-variant leading-relaxed">High-level insights for management review.</p>
+</button>
+<button class="group p-5 bg-surface-variant/40 border border-outline-variant rounded text-left transition-all hover:border-primary/40">
+<div class="w-10 h-10 rounded bg-primary/10 flex items-center justify-center text-primary mb-4 group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+</div>
+<h3 class="font-bold text-on-surface text-sm mb-1 uppercase tracking-tight">Document Analysis</h3>
+<p class="text-[10px] text-on-surface-variant leading-relaxed">Deep dive into specific policy language.</p>
+</button>
+<button class="group p-5 bg-surface-variant/40 border border-outline-variant rounded text-left transition-all hover:border-primary/40">
+<div class="w-10 h-10 rounded bg-primary/10 flex items-center justify-center text-primary mb-4 group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined" data-icon="gavel">gavel</span>
+</div>
+<h3 class="font-bold text-on-surface text-sm mb-1 uppercase tracking-tight">Compliance Audit</h3>
+<p class="text-[10px] text-on-surface-variant leading-relaxed">Verify alignment with IPEC regulations.</p>
+</button>
+<button class="group p-5 bg-surface-variant/40 border border-outline-variant rounded text-left transition-all hover:border-primary/40">
+<div class="w-10 h-10 rounded bg-primary/10 flex items-center justify-center text-primary mb-4 group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined" data-icon="shield_with_heart">shield_with_heart</span>
+</div>
+<h3 class="font-bold text-on-surface text-sm mb-1 uppercase tracking-tight">Portfolio Risk</h3>
+<p class="text-[10px] text-on-surface-variant leading-relaxed">Exposure assessment across all documents.</p>
+</button>
+<!-- Row 2 -->
+<button class="group p-5 bg-surface-variant/40 border border-outline-variant rounded text-left transition-all hover:border-primary/40">
+<div class="w-10 h-10 rounded bg-primary/10 flex items-center justify-center text-primary mb-4 group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined" data-icon="language">language</span>
+</div>
+<h3 class="font-bold text-on-surface text-sm mb-1 uppercase tracking-tight">Market Intelligence</h3>
+<p class="text-[10px] text-on-surface-variant leading-relaxed">Regional trends and competitive shifts.</p>
+</button>
+<button class="group p-5 bg-surface-variant/40 border border-outline-variant rounded text-left transition-all hover:border-primary/40">
+<div class="w-10 h-10 rounded bg-primary/10 flex items-center justify-center text-primary mb-4 group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined" data-icon="compare_arrows">compare_arrows</span>
+</div>
+<h3 class="font-bold text-on-surface text-sm mb-1 uppercase tracking-tight">Insurer Comparison</h3>
+<p class="text-[10px] text-on-surface-variant leading-relaxed">Side-by-side performance benchmarks.</p>
+</button>
+<button class="group p-5 bg-surface-variant/40 border border-outline-variant rounded text-left transition-all hover:border-primary/40">
+<div class="w-10 h-10 rounded bg-primary/10 flex items-center justify-center text-primary mb-4 group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined" data-icon="layers">layers</span>
+</div>
+<h3 class="font-bold text-on-surface text-sm mb-1 uppercase tracking-tight">Batch Processing</h3>
+<p class="text-[10px] text-on-surface-variant leading-relaxed">Summarized data for large file sets.</p>
+</button>
+<button class="group p-5 bg-surface-variant/40 border border-outline-variant rounded text-left transition-all hover:border-primary/40">
+<div class="w-10 h-10 rounded bg-primary/10 flex items-center justify-center text-primary mb-4 group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined" data-icon="history_edu">history_edu</span>
+</div>
+<h3 class="font-bold text-on-surface text-sm mb-1 uppercase tracking-tight">Audit Export</h3>
+<p class="text-[10px] text-on-surface-variant leading-relaxed">Full system activity logs for compliance.</p>
+</button>
+</div>
+<!-- Configuration Form -->
+<div class="bg-surface-variant border border-outline-variant p-8 rounded">
+<h3 class="font-headline font-bold text-lg mb-6 uppercase tracking-tight border-b border-outline-variant pb-4 text-primary">Report Configuration: Executive Summary</h3>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+<div class="space-y-2">
+<label class="block text-[10px] font-bold text-on-surface-variant font-label uppercase tracking-widest">Date Range</label>
+<div class="relative">
+<input class="w-full bg-background border-outline rounded text-sm px-4 py-2.5 focus:ring-primary focus:border-primary text-on-surface" type="text" value="Jan 01, 2026 - Mar 31, 2026"/>
+<span class="material-symbols-outlined absolute right-3 top-2.5 text-primary text-sm" data-icon="calendar_today">calendar_today</span>
+</div>
+</div>
+<div class="space-y-2">
+<label class="block text-[10px] font-bold text-on-surface-variant font-label uppercase tracking-widest">Format</label>
+<select class="w-full bg-background border-outline rounded text-sm px-4 py-2.5 focus:ring-primary focus:border-primary text-on-surface">
+<option>PDF Document (.pdf)</option>
+<option>Microsoft Word (.docx)</option>
+<option>Excel Spreadsheet (.xlsx)</option>
+</select>
+</div>
+<div class="space-y-2">
+<label class="block text-[10px] font-bold text-on-surface-variant font-label uppercase tracking-widest">Regulation Scope</label>
+<select class="w-full bg-background border-outline rounded text-sm px-4 py-2.5 focus:ring-primary focus:border-primary text-on-surface">
+<option>IPEC (Commission)</option>
+<option>Insurance Act (Zimbabwe)</option>
+<option>All Applicable Regulations</option>
+</select>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+<div class="space-y-2">
+<label class="block text-[10px] font-bold text-on-surface-variant font-label uppercase tracking-widest">Insurers / Documents</label>
+<div class="flex flex-wrap gap-2 p-3 bg-background border border-outline rounded min-h-[46px]">
+<span class="bg-primary-container text-on-primary-container px-2 py-1 rounded text-[10px] font-bold flex items-center gap-1 border border-primary/20">Old Mutual <span class="material-symbols-outlined text-[10px] cursor-pointer" data-icon="close">close</span></span>
+<span class="bg-primary-container text-on-primary-container px-2 py-1 rounded text-[10px] font-bold flex items-center gap-1 border border-primary/20">Zimnat <span class="material-symbols-outlined text-[10px] cursor-pointer" data-icon="close">close</span></span>
+<button class="text-primary text-[10px] font-bold px-2 uppercase tracking-widest">+ Add Insurer</button>
+</div>
+</div>
+<div class="flex items-center gap-6 pt-8">
+<label class="flex items-center gap-3 cursor-pointer">
+<div class="relative inline-flex h-5 w-9 items-center rounded bg-primary">
+<span class="inline-block h-3 w-3 transform rounded bg-black translate-x-5 transition-transform"></span>
+</div>
+<span class="text-[10px] font-bold text-on-surface font-label uppercase tracking-widest">Include charts</span>
+</label>
+</div>
+</div>
+<div class="flex items-center justify-between pt-6 border-t border-outline-variant">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm" data-icon="schedule">schedule</span>
+<span class="text-[10px] uppercase tracking-wider">Estimated generation time: <span class="font-bold text-primary">45 seconds</span></span>
+</div>
+<button class="bg-primary hover:bg-primary/90 text-on-primary px-10 py-3 rounded font-bold transition-all uppercase tracking-widest text-xs active:scale-95 shadow-lg shadow-primary/10">
+                            Generate Report
+                        </button>
+</div>
+</div>
+</section>
+<!-- Middle Section: Queue and Scheduled -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- Report Queue -->
+<section class="lg:col-span-1 space-y-6">
+<h3 class="font-headline font-bold text-sm flex items-center gap-2 uppercase tracking-widest text-on-surface">
+<span class="material-symbols-outlined text-primary text-base" data-icon="pending">pending</span>
+                        Report Queue
+                    </h3>
+<div class="bg-surface-variant p-6 rounded border border-outline-variant space-y-6">
+<div class="space-y-3">
+<div class="flex justify-between text-[10px] uppercase tracking-widest font-bold">
+<span class="text-on-surface">Q1_Market_Review.pdf</span>
+<span class="text-primary">85%</span>
+</div>
+<div class="w-full bg-background rounded-full h-1 overflow-hidden border border-outline-variant">
+<div class="bg-primary h-full transition-all" style="width: 85%"></div>
+</div>
+<p class="text-[9px] text-on-surface-variant italic tracking-tight">Rendering detailed data visualizations...</p>
+</div>
+<div class="space-y-3">
+<div class="flex justify-between text-[10px] uppercase tracking-widest font-bold">
+<span class="text-on-surface/50">OldMutual_Compliance.docx</span>
+<span class="text-on-surface-variant">In Queue</span>
+</div>
+<div class="w-full bg-background rounded-full h-1 overflow-hidden border border-outline-variant">
+<div class="bg-outline-variant h-full" style="width: 5%"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Scheduled Reports -->
+<section class="lg:col-span-2 space-y-6">
+<h3 class="font-headline font-bold text-sm flex items-center gap-2 uppercase tracking-widest text-on-surface">
+<span class="material-symbols-outlined text-primary text-base" data-icon="event_repeat">event_repeat</span>
+                        Scheduled Reports
+                    </h3>
+<div class="bg-surface-variant rounded border border-outline-variant overflow-hidden">
+<table class="w-full text-left text-xs">
+<thead class="bg-background text-on-surface-variant font-label uppercase text-[9px] tracking-widest border-b border-outline-variant">
+<tr>
+<th class="px-6 py-4">Report Name</th>
+<th class="px-6 py-4">Frequency</th>
+<th class="px-6 py-4">Next Run</th>
+<th class="px-6 py-4">Recipients</th>
+<th class="px-6 py-4">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<tr class="hover:bg-background/50 transition-colors">
+<td class="px-6 py-4 font-bold text-primary tracking-tight uppercase">Monthly Portfolio Audit</td>
+<td class="px-6 py-4 text-[10px] uppercase">Monthly</td>
+<td class="px-6 py-4 text-[10px]">May 01, 2026</td>
+<td class="px-6 py-4">
+<div class="flex -space-x-1.5">
+<div class="h-5 w-5 rounded border border-black bg-primary-container text-primary flex items-center justify-center text-[8px] font-bold">JD</div>
+<div class="h-5 w-5 rounded border border-black bg-primary-container text-primary flex items-center justify-center text-[8px] font-bold">AS</div>
+<div class="h-5 w-5 rounded border border-black bg-surface text-on-surface-variant flex items-center justify-center text-[8px] font-bold">+2</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="w-8 h-4 bg-primary/20 rounded relative cursor-pointer border border-primary/30">
+<div class="absolute right-0.5 top-0.5 w-2.5 h-2.5 bg-primary rounded shadow-sm"></div>
+</div>
+</td>
+</tr>
+<tr class="hover:bg-background/50 transition-colors">
+<td class="px-6 py-4 font-bold text-primary tracking-tight uppercase">Weekly Risk Pulse</td>
+<td class="px-6 py-4 text-[10px] uppercase">Weekly</td>
+<td class="px-6 py-4 text-[10px]">Apr 21, 2026</td>
+<td class="px-6 py-4">
+<div class="h-5 w-5 rounded border border-black bg-primary-container text-primary flex items-center justify-center text-[8px] font-bold">KM</div>
+</td>
+<td class="px-6 py-4">
+<div class="w-8 h-4 bg-outline-variant rounded relative cursor-pointer border border-outline">
+<div class="absolute left-0.5 top-0.5 w-2.5 h-2.5 bg-on-surface-variant rounded shadow-sm"></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</div>
+<!-- Report History Section -->
+<section class="space-y-6">
+<div class="flex items-center justify-between">
+<h3 class="font-headline font-bold text-sm flex items-center gap-2 uppercase tracking-widest text-on-surface">
+<span class="material-symbols-outlined text-primary text-base" data-icon="history">history</span>
+                        Report History Archive
+                    </h3>
+<div class="flex items-center gap-3">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-2 text-primary text-sm" data-icon="search">search</span>
+<input class="pl-9 pr-4 py-1.5 bg-background border border-outline-variant rounded text-[10px] w-64 focus:ring-1 focus:ring-primary text-on-surface uppercase tracking-widest" placeholder="Search archive..." type="text"/>
+</div>
+<button class="flex items-center gap-1 text-[10px] font-bold text-secondary hover:text-primary uppercase tracking-widest transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="filter_list">filter_list</span>
+                            Filter
+                        </button>
+</div>
+</div>
+<div class="bg-surface-variant rounded border border-outline-variant overflow-hidden shadow-2xl">
+<table class="w-full text-left">
+<thead class="bg-black text-on-surface-variant font-label uppercase text-[9px] tracking-widest border-b border-outline-variant">
+<tr>
+<th class="px-6 py-5">Report Details</th>
+<th class="px-6 py-5">Classification</th>
+<th class="px-6 py-5">Period &amp; Volume</th>
+<th class="px-6 py-5">Metadata</th>
+<th class="px-6 py-5">Status</th>
+<th class="px-6 py-5">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<!-- Entry 1 -->
+<tr class="hover:bg-background/40 transition-all">
+<td class="px-6 py-5">
+<div class="flex flex-col">
+<span class="text-xs font-bold text-on-surface tracking-tight uppercase">FY2025_Compliance_Full_Audit</span>
+<span class="text-[9px] text-on-surface-variant font-medium tracking-tight mt-0.5">John Doe • 14:15 CAT</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="px-2 py-0.5 rounded border border-primary/20 text-[9px] font-bold bg-primary-container/20 text-primary uppercase tracking-widest">Compliance Audit</span>
+</td>
+<td class="px-6 py-5">
+<div class="flex flex-col">
+<span class="text-[10px] text-on-surface tracking-tight font-medium">24 Documents Analyzed</span>
+<span class="text-[9px] text-on-surface-variant uppercase tracking-widest mt-0.5">Jan - Dec 2025</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-base" data-icon="picture_as_pdf">picture_as_pdf</span>
+<span class="text-[10px] font-bold">4.2 MB</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-1.5 text-primary">
+<span class="w-1.5 h-1.5 rounded-full bg-primary shadow-sm shadow-primary/50"></span>
+<span class="text-[10px] font-bold uppercase tracking-widest">Validated</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-4 text-primary">
+<button class="material-symbols-outlined text-lg hover:scale-110 transition-transform" data-icon="download">download</button>
+<button class="material-symbols-outlined text-lg hover:scale-110 transition-transform" data-icon="visibility">visibility</button>
+<button class="material-symbols-outlined text-lg hover:scale-110 transition-transform" data-icon="share">share</button>
+</div>
+</td>
+</tr>
+<!-- Entry 2 -->
+<tr class="hover:bg-background/40 transition-all">
+<td class="px-6 py-5">
+<div class="flex flex-col">
+<span class="text-xs font-bold text-on-surface tracking-tight uppercase">Zimnat_Risk_Exposure_Q1</span>
+<span class="text-[9px] text-on-surface-variant font-medium tracking-tight mt-0.5">Automated System • 10:00 CAT</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="px-2 py-0.5 rounded border border-primary/20 text-[9px] font-bold bg-primary-container/20 text-primary uppercase tracking-widest">Risk Assessment</span>
+</td>
+<td class="px-6 py-5">
+<div class="flex flex-col">
+<span class="text-[10px] text-on-surface tracking-tight font-medium">8 Documents Analyzed</span>
+<span class="text-[9px] text-on-surface-variant uppercase tracking-widest mt-0.5">Q1 2026</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-base" data-icon="description">description</span>
+<span class="text-[10px] font-bold">1.8 MB</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-1.5 text-primary">
+<span class="material-symbols-outlined text-sm spin" data-icon="sync">sync</span>
+<span class="text-[10px] font-bold uppercase tracking-widest">In Progress</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-4 text-on-surface-variant/40">
+<button class="material-symbols-outlined text-lg" data-icon="download">download</button>
+<button class="material-symbols-outlined text-lg" data-icon="visibility">visibility</button>
+<button class="material-symbols-outlined text-lg" data-icon="share">share</button>
+</div>
+</td>
+</tr>
+<!-- Entry 3 -->
+<tr class="hover:bg-background/40 transition-all">
+<td class="px-6 py-5">
+<div class="flex flex-col">
+<span class="text-xs font-bold text-on-surface tracking-tight uppercase opacity-50">Old_Mutual_Legacy_Comparison</span>
+<span class="text-[9px] text-on-surface-variant font-medium tracking-tight mt-0.5">John Doe • Yesterday</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="px-2 py-0.5 rounded border border-outline text-[9px] font-bold bg-secondary-container text-secondary uppercase tracking-widest opacity-60">Benchmarking</span>
+</td>
+<td class="px-6 py-5">
+<div class="flex flex-col opacity-50">
+<span class="text-[10px] text-on-surface tracking-tight font-medium">15 Documents Analyzed</span>
+<span class="text-[9px] text-on-surface-variant uppercase tracking-widest mt-0.5">H2 2024</span>
+</div>
+</td>
+<td class="px-6 py-5 opacity-50">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-base" data-icon="table_chart">table_chart</span>
+<span class="text-[10px] font-bold">560 KB</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-1.5 text-error">
+<span class="material-symbols-outlined text-sm" data-icon="error">error</span>
+<span class="text-[10px] font-bold uppercase tracking-widest">Failed</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-4 text-primary">
+<button class="text-[9px] font-extrabold uppercase tracking-widest border-b border-primary hover:text-on-surface hover:border-on-surface transition-all">Retry</button>
+<button class="material-symbols-outlined text-lg opacity-40 hover:opacity-100 hover:text-error transition-all" data-icon="delete">delete</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<!-- Pagination -->
+<div class="px-6 py-4 flex items-center justify-between bg-black border-t border-outline-variant">
+<span class="text-[9px] text-on-surface-variant font-label uppercase tracking-widest">Ledger <span class="text-primary font-bold">1-10</span> of 124 entries</span>
+<div class="flex items-center gap-2">
+<button class="w-7 h-7 rounded border border-outline-variant flex items-center justify-center text-on-surface-variant hover:border-primary hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="chevron_left">chevron_left</span>
+</button>
+<button class="w-7 h-7 rounded bg-primary text-on-primary text-[10px] font-bold border border-primary shadow-sm shadow-primary/20">1</button>
+<button class="w-7 h-7 rounded border border-outline-variant flex items-center justify-center text-[10px] text-on-surface-variant hover:bg-surface-variant transition-colors">2</button>
+<button class="w-7 h-7 rounded border border-outline-variant flex items-center justify-center text-[10px] text-on-surface-variant hover:bg-surface-variant transition-colors">3</button>
+<span class="text-on-surface-variant text-[10px] px-1">...</span>
+<button class="w-7 h-7 rounded border border-outline-variant flex items-center justify-center text-on-surface-variant hover:border-primary hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer Visual Identity -->
+<footer class="p-10 border-t border-outline-variant text-center bg-black">
+<div class="inline-flex items-center gap-3 bg-primary-container/20 border border-primary/20 px-6 py-2.5 rounded">
+<span class="material-symbols-outlined text-base text-primary" data-icon="verified_user">verified_user</span>
+<span class="text-[10px] font-bold text-primary font-label tracking-[0.2em] uppercase">The Sovereign Ledger Infrastructure • Zimbabwe Division</span>
+</div>
+</footer>
+</main>
+</body></html>

@@ -1,0 +1,70 @@
+# Web framework
+fastapi
+uvicorn
+python-multipart
+
+# Database
+sqlalchemy
+alembic
+
+# Validation & config
+pydantic[email]
+email-validator>=2.0.0
+pydantic-settings
+python-dotenv
+
+# Templates & HTTP
+jinja2
+httpx
+
+# Auth
+python-jose[cryptography]
+passlib[bcrypt]
+bcrypt
+
+# ML — tabular (existing)
+scikit-learn
+joblib
+numpy
+
+# ML — text extraction from circulars
+pdfplumber
+python-docx
+
+# ML — model explainability (optional, gracefully degrades without)
+shap
+
+# Utilities
+python-dateutil
+
+# Intel module — GDELT news ingestion + ZSE data scraping
+requests
+beautifulsoup4
+pandas
+
+# Insurer Intelligence Module (Part 2–4)
+xgboost>=2.0.0
+apscheduler>=3.10.0
+nltk>=3.8.0
+rapidfuzz>=3.0.0
+pytz>=2023.3
+
+# Advancement 1 — Conversational RAG Q&A
+chromadb>=0.4.0
+sentence-transformers>=2.2.0
+
+# Report generation — HTML→PDF
+weasyprint>=60.0
+
+# Advancement 2 — Document Comparison (Hungarian algorithm)
+scipy>=1.11.0
+
+# Advancement 3 — Active Learning Feedback Loop
+datasets>=2.14.0
+spacy>=3.7.0
+
+# Advancement 8 — Shona-English Hybrid Support (heavy; install separately if needed)
+transformers>=4.35.0
+sentencepiece>=0.1.99
+sacremoses>=0.0.53
+# torch>=2.0.0  # Uncomment and install manually: pip install torch --index-url https://download.pytorch.org/whl/cpu

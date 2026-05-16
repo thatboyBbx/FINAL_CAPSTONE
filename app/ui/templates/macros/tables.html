@@ -1,0 +1,70 @@
+{# macros/tables.html — Data table macros for InsureIntel Zimbabwe #}
+
+{% macro data_table(headers, rows, empty_msg='No data available.', id=None) %}
+<div style="overflow-x:auto">
+  <table class="data-table" {% if id %}id="{{ id }}"{% endif %}>
+    <thead>
+      <tr>
+        {% for header in headers %}
+        <th class="{% if header.get('sortable', False) %}sortable{% endif %}">
+          {{ header.label if header is mapping else header }}
+        </th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+      {% if rows %}
+      {% for row in rows %}
+      <tr>
+        {% for cell in row %}
+        <td>{{ cell | safe }}</td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+      {% else %}
+      <tr>
+        <td colspan="{{ headers | length }}" style="text-align:center;padding:2rem;color:var(--cosv)">
+          <span class="material-symbols-outlined" style="display:block;font-size:36px;margin-bottom:0.5rem;color:var(--col)">table_rows</span>
+          {{ empty_msg }}
+        </td>
+      </tr>
+      {% endif %}
+    </tbody>
+  </table>
+</div>
+{% endmacro %}
+
+{% macro table_badge(text, color_class='badge-gold') %}
+<span class="badge {{ color_class }}">{{ text }}</span>
+{% endmacro %}
+
+{% macro table_actions(actions) %}
+<div style="display:flex;gap:0.5rem;align-items:center">
+  {% for action in actions %}
+  <a href="{{ action.href }}" class="btn-glass btn-sm" style="font-size:0.75rem;padding:0.3rem 0.625rem">
+    {% if action.get('icon') %}<span class="material-symbols-outlined" style="font-size:15px">{{ action.icon }}</span>{% endif %}
+    {{ action.label }}
+  </a>
+  {% endfor %}
+</div>
+{% endmacro %}
+
+{% macro pagination(page, total_pages, base_url) %}
+{% if total_pages > 1 %}
+<div style="display:flex;align-items:center;justify-content:center;gap:0.5rem;margin-top:1.5rem">
+  {% if page > 1 %}
+  <a href="{{ base_url }}?page={{ page - 1 }}" class="btn-glass btn-sm">
+    <span class="material-symbols-outlined" style="font-size:16px">chevron_left</span>
+  </a>
+  {% endif %}
+  {% for p in range(1, total_pages + 1) %}
+  <a href="{{ base_url }}?page={{ p }}" class="btn-glass btn-sm{% if p == page %} btn-glass-gold{% endif %}">{{ p }}</a>
+  {% endfor %}
+  {% if page < total_pages %}
+  <a href="{{ base_url }}?page={{ page + 1 }}" class="btn-glass btn-sm">
+    <span class="material-symbols-outlined" style="font-size:16px">chevron_right</span>
+  </a>
+  {% endif %}
+</div>
+{% endif %}
+{% endmacro %}

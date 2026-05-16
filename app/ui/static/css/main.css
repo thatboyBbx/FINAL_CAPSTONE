@@ -1,0 +1,809 @@
+/**
+ * main.css — Global CSS supplement for InsureIntel Zimbabwe
+ *
+ * Adds new design tokens, glassmorphism components, toast/progress
+ * animations, and helper classes that extend (not replace) the
+ * design system already defined in base.html.
+ *
+ * All existing --cp / --cbg / --csf etc. CSS vars are PRESERVED.
+ * This file adds semantic aliases and new component classes.
+ *
+ * A4 Polish: typography, responsive, transitions, backdrop fallbacks.
+ */
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SEMANTIC TOKEN ALIASES
+   Maps to existing base.html CSS vars so templates can use the aliases.
+   ═══════════════════════════════════════════════════════════════════════════ */
+:root {
+  /* Text colours */
+  --text-primary:    #f5f5f5;       /* ≡ --cos  in dark mode */
+  --text-secondary:  #a1a1a1;       /* ≡ --cosv */
+  --text-on-dark:    #f5f5f5;
+  --text-muted:      #6b7280;
+
+  /* Background */
+  --bg-light:        #1a1a1a;       /* ≡ --csf  in dark mode */
+  --bg-dark:         #0f0f0f;       /* ≡ --cbg  in dark mode */
+
+  /* Accent */
+  --accent:          #d4af37;       /* ≡ --cp   in dark mode */
+  --accent-muted:    rgba(212,175,55,0.18);
+
+  /* Component sizing */
+  --sidebar-expanded:  250px;
+  --sidebar-collapsed: 64px;
+}
+
+/* Light-mode overrides for the semantic aliases */
+html:not(.dark) {
+  --text-primary:   #191c1e;
+  --text-secondary: #434655;
+  --text-on-dark:   #f5f5f5;
+  --text-muted:     #737686;
+  --bg-light:       #ffffff;
+  --bg-dark:        #f8f9fb;
+  --accent:         #004ac6;
+  --accent-muted:   rgba(0,74,198,0.14);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   GLASSMORPHISM BUTTON VARIANTS
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/** Standard glass button */
+.btn-glass {
+  background:        rgba(255,255,255,0.12);
+  backdrop-filter:   blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border:            1px solid rgba(255,255,255,0.20);
+  border-radius:     8px;
+  color:             var(--text-primary);
+  padding:           0.625rem 1.25rem;
+  min-height:        40px;
+  cursor:            pointer;
+  transition:        background .2s, box-shadow .2s, border-color .2s;
+  display:           inline-flex;
+  align-items:       center;
+  gap:               0.5rem;
+  font-size:         0.875rem;
+  font-weight:       600;
+  text-decoration:   none;
+  white-space:       nowrap;
+}
+.btn-glass:hover {
+  background:   rgba(255,255,255,0.22);
+  box-shadow:   0 4px 24px rgba(0,0,0,.12);
+}
+html.dark .btn-glass {
+  color: var(--text-on-dark);
+}
+html:not(.dark) .btn-glass {
+  background:   rgba(0,0,0,0.06);
+  border-color: rgba(0,0,0,0.12);
+  color:        var(--text-primary);
+}
+html:not(.dark) .btn-glass:hover {
+  background: rgba(0,0,0,0.10);
+}
+
+/** Gold-accented glass button (primary CTAs) */
+.btn-glass-gold {
+  background:    rgba(212,175,55,.18);
+  border-color:  rgba(212,175,55,.4);
+  color:         #d4af37;
+}
+.btn-glass-gold:hover {
+  background:  rgba(212,175,55,.28);
+  box-shadow:  0 4px 20px rgba(212,175,55,.15);
+}
+html:not(.dark) .btn-glass-gold {
+  background:   rgba(0,74,198,.12);
+  border-color: rgba(0,74,198,.35);
+  color:        #004ac6;
+}
+
+/** Danger glass button (destructive actions) */
+.btn-glass-danger {
+  background:   rgba(220,38,38,.12);
+  border-color: rgba(220,38,38,.3);
+  color:        #DC2626;
+}
+.btn-glass-danger:hover {
+  background:  rgba(220,38,38,.22);
+  box-shadow:  0 4px 20px rgba(220,38,38,.10);
+}
+
+/** Disabled state for all glass buttons */
+.btn-glass:disabled,
+.btn-glass-gold:disabled,
+.btn-glass-danger:disabled {
+  opacity:  0.45;
+  cursor:   not-allowed;
+  pointer-events: none;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   GLASS CARD
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.glass-card {
+  background:              rgba(26,26,26,0.60);
+  backdrop-filter:         blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border:                  1px solid rgba(212,175,55,0.10);
+  border-radius:           16px;
+  box-shadow:              0 4px 32px rgba(0,0,0,0.18);
+}
+
+html.dark .glass-card {
+  background: rgba(15,23,42,0.60);
+}
+
+html:not(.dark) .glass-card {
+  background:   rgba(255,255,255,0.85);
+  border-color: rgba(0,74,198,0.12);
+  box-shadow:   0 4px 24px rgba(0,0,0,0.06);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   TOAST CONTAINER
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+#toast-container {
+  position:        fixed;
+  bottom:          1.5rem;
+  right:           1.5rem;
+  z-index:         9999;
+  display:         flex;
+  flex-direction:  column;
+  gap:             0.5rem;
+  pointer-events:  none;
+  max-width:       420px;
+}
+
+/* Individual toast (also styled inline by api.js for portability) */
+#toast-container [data-toast] {
+  pointer-events: all;
+  animation:      toastIn 0.25s ease forwards;
+}
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes toastOut {
+  from { opacity: 1; transform: none; }
+  to   { opacity: 0; transform: translateY(8px); }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PROGRESS BAR  (#progress-bar — fixed top, 3 px gold fill)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+#progress-bar {
+  position:          fixed;
+  top:               0;
+  left:              0;
+  height:            3px;
+  background:        var(--accent);
+  z-index:           10000;
+  display:           none;  /* shown only when pct > 0 via showProgress() */
+  transition:        width 0.35s ease;
+  box-shadow:        0 0 8px var(--accent-muted);
+  border-radius:     0 9999px 9999px 0;
+  pointer-events:    none;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SIDEBAR LAYOUT HELPERS
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Main content area — margin driven by sidebar width */
+#main-content {
+  min-height: 100vh;
+}
+
+/* When body has class "sidebar-collapsed", main-wrapper adjusts */
+body.sidebar-collapsed #main-wrapper {
+  margin-left: var(--sidebar-collapsed) !important;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ACCORDION SIDEBAR ANIMATION
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@keyframes accordionOpen {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes accordionClose {
+  from { opacity: 1; transform: none; }
+  to   { opacity: 0; transform: translateY(-4px); }
+}
+
+.chevron {
+  transition:    transform 0.18s ease;
+  display:       inline-block;
+  font-size:     0.875rem;
+  color:         var(--text-secondary);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   TILE GRID CARD HOVER EFFECT
+   Used by category landing pages (documents, analysis, etc.)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.tile-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  cursor: pointer;
+}
+.tile-card:hover {
+  transform:    translateY(-3px);
+  border-color: rgba(212,175,55,0.25);
+  box-shadow:   0 8px 40px rgba(0,0,0,0.25), 0 0 0 1px rgba(212,175,55,0.10);
+}
+html:not(.dark) .tile-card:hover {
+  border-color: rgba(0,74,198,0.20);
+  box-shadow:   0 8px 24px rgba(0,0,0,0.08);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   DRAG-DROP ZONE
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.drop-zone {
+  border:          2px dashed rgba(212,175,55,0.30);
+  border-radius:   12px;
+  padding:         2.5rem 1.5rem;
+  text-align:      center;
+  cursor:          pointer;
+  transition:      border-color 0.2s, background 0.2s;
+  background:      rgba(212,175,55,0.03);
+}
+.drop-zone.drag-over,
+.drop-zone:hover {
+  border-color:  rgba(212,175,55,0.60);
+  background:    rgba(212,175,55,0.07);
+}
+html:not(.dark) .drop-zone {
+  border-color: rgba(0,74,198,0.25);
+  background:   rgba(0,74,198,0.03);
+}
+html:not(.dark) .drop-zone:hover {
+  border-color: rgba(0,74,198,0.50);
+  background:   rgba(0,74,198,0.06);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   CHATBOT FAB & PANEL
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+#chatbot-fab {
+  position:     fixed;
+  bottom:       1.75rem;
+  right:        1.75rem;
+  z-index:      8000;
+  width:        56px;
+  height:       56px;
+  border-radius: 50%;
+  background:   linear-gradient(135deg, rgba(212,175,55,0.90), rgba(180,140,20,0.85));
+  box-shadow:   0 4px 24px rgba(212,175,55,0.35);
+  border:       1px solid rgba(212,175,55,0.50);
+  cursor:       pointer;
+  display:      flex;
+  align-items:  center;
+  justify-content: center;
+  transition:   transform 0.2s, box-shadow 0.2s;
+  backdrop-filter: blur(8px);
+}
+#chatbot-fab:hover {
+  transform:   scale(1.08);
+  box-shadow:  0 6px 32px rgba(212,175,55,0.45);
+}
+
+#chatbot-panel {
+  position:     fixed;
+  bottom:       5.5rem;
+  right:        1.75rem;
+  z-index:      7999;
+  width:        380px;
+  height:       560px;
+  border-radius: 16px;
+  display:      flex;
+  flex-direction: column;
+  overflow:     hidden;
+  transform-origin: bottom right;
+  animation:    chatPanelIn 0.22s ease forwards;
+}
+#chatbot-panel.hidden {
+  display: none;
+}
+
+@keyframes chatPanelIn {
+  from { opacity: 0; transform: scale(0.92) translateY(10px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* Typing indicator dots */
+.typing-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--text-secondary);
+  animation: typingBounce 1.2s infinite ease-in-out;
+  display: inline-block;
+}
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes typingBounce {
+  0%, 80%, 100% { transform: scale(1); opacity: 0.5; }
+  40%           { transform: scale(1.25); opacity: 1; }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ANOMALY BADGE — pulsing distress signal
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.anomaly-badge {
+  display:       inline-flex;
+  align-items:   center;
+  gap:           0.375rem;
+  padding:       0.3rem 0.75rem;
+  border-radius: 9999px;
+  background:    rgba(248,113,113,0.15);
+  border:        1px solid rgba(248,113,113,0.40);
+  color:         #f87171;
+  font-size:     0.75rem;
+  font-weight:   700;
+  animation:     distressGlow 1.8s ease-in-out infinite;
+}
+@keyframes distressGlow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(248,113,113,0); }
+  50%      { box-shadow: 0 0 12px 4px rgba(248,113,113,0.25); }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   KANBAN BOARD (client renewals)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.kanban-column {
+  background:   rgba(255,255,255,0.04);
+  border:       1px solid rgba(255,255,255,0.07);
+  border-radius: 12px;
+  padding:      1rem;
+  min-height:   200px;
+}
+html:not(.dark) .kanban-column {
+  background:   rgba(0,0,0,0.03);
+  border-color: rgba(0,0,0,0.08);
+}
+.kanban-card {
+  border-radius: 8px;
+  padding:       0.75rem;
+  margin-bottom: 0.5rem;
+  cursor:        grab;
+  transition:    transform 0.15s, box-shadow 0.15s;
+}
+.kanban-card:active {
+  cursor:    grabbing;
+  transform: scale(1.02);
+  box-shadow: 0 6px 24px rgba(0,0,0,0.2);
+}
+.kanban-card.dragging {
+  opacity:  0.5;
+  transform: scale(1.03);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   DIFF VIEW (document compare)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.diff-added {
+  background:   rgba(74,222,128,0.10);
+  border-left:  3px solid #4ade80;
+  padding:      0.125rem 0.5rem;
+  border-radius: 2px;
+  color:         #4ade80;
+}
+.diff-removed {
+  background:   rgba(248,113,113,0.10);
+  border-left:  3px solid #f87171;
+  padding:      0.125rem 0.5rem;
+  border-radius: 2px;
+  color:         #f87171;
+  text-decoration: line-through;
+}
+.diff-changed {
+  background:   rgba(251,191,36,0.10);
+  border-left:  3px solid #fbbf24;
+  padding:      0.125rem 0.5rem;
+  border-radius: 2px;
+  color:         #fbbf24;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ENTITY HIGHLIGHT (NER viewer)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.ner-entity {
+  border-radius:  3px;
+  padding:        1px 4px;
+  font-weight:    600;
+  font-size:      0.8125em;
+  cursor:         help;
+}
+.ner-ORG       { background: rgba(96,165,250,0.18); color: #60a5fa; }
+.ner-PERSON    { background: rgba(74,222,128,0.15); color: #4ade80; }
+.ner-MONEY     { background: rgba(212,175,55,0.18); color: #d4af37; }
+.ner-DATE      { background: rgba(167,139,250,0.18); color: #a78bfa; }
+.ner-LOCATION  { background: rgba(251,191,36,0.18); color: #fbbf24; }
+.ner-PERCENT   { background: rgba(251,146,60,0.18); color: #fb923c; }
+.ner-OTHER     { background: rgba(255,255,255,0.08); color: #a1a1a1; }
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   COMPLIANCE SCORE GAUGE
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.score-ring-wrap {
+  position: relative;
+  display:  inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.score-ring-label {
+  position:   absolute;
+  text-align: center;
+  pointer-events: none;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   TYPOGRAPHY SYSTEM  (A4-T1)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Smooth colour-scheme transitions */
+body {
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-size: 0.9375rem;   /* 15px default */
+  line-height: 1.6;
+  color: var(--cos);
+  background: var(--cbg);
+}
+
+h1, .h1 {
+  font-family: 'Manrope', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  color: var(--cos);
+}
+h2, .h2 {
+  font-family: 'Manrope', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.015em;
+  color: var(--cos);
+}
+h3, .h3 {
+  font-family: 'Manrope', sans-serif;
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--cos);
+}
+
+/* Muted / label text */
+.text-muted, .label-text {
+  color: var(--cosv);
+  font-size: 0.875rem;
+}
+
+/* Contrast fix: any text-white on a light background */
+html:not(.dark) .text-white {
+  color: var(--cos) !important;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   TILE GRID RESPONSIVE  (A4-T3)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.tile-grid {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(1, 1fr);
+}
+@media (min-width: 640px) {
+  .tile-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 1024px) {
+  .tile-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+.tile-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 10px 48px rgba(0,0,0,0.30), 0 0 0 1px rgba(212,175,55,0.14);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SIDEBAR POLISH  (A4-T2)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Enhanced active state */
+.nav-link.active {
+  background: var(--active-grad);
+  border-left: 3px solid var(--cp);
+  color: var(--cp);
+}
+
+/* Enhanced hover state */
+.nav-link:hover {
+  background: rgba(212,175,55,0.08);
+  transition: all 0.15s ease;
+}
+html:not(.dark) .nav-link:hover {
+  background: rgba(0,74,198,0.06);
+}
+
+/* Chevron rotation */
+.chevron-icon {
+  display: inline-block;
+  font-size: 0.75rem;
+  transition: transform 0.2s ease;
+  color: var(--cosv);
+}
+.chevron-icon.open {
+  transform: rotate(90deg);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   TABLE ENHANCEMENTS  (A4-T4)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Alternating table rows */
+.data-table tbody tr:nth-child(odd)  { background: var(--csf); }
+.data-table tbody tr:nth-child(even) { background: var(--csfc); }
+.data-table tbody tr:hover           { background: rgba(212,175,55,0.05) !important; }
+html:not(.dark) .data-table tbody tr:nth-child(odd)  { background: var(--csf); }
+html:not(.dark) .data-table tbody tr:nth-child(even) { background: var(--csfc); }
+
+/* Sortable column header */
+.data-table thead th.sortable {
+  cursor: pointer;
+  user-select: none;
+}
+.data-table thead th.sortable:hover {
+  color: var(--cp);
+}
+
+/* File type badge colours */
+.badge-type-pdf  { background: rgba(212,175,55,0.15); color: #d4af37; border: 1px solid rgba(212,175,55,0.35); }
+.badge-type-docx { background: rgba(96,165,250,0.12);  color: #60a5fa; border: 1px solid rgba(96,165,250,0.30); }
+.badge-type-img  { background: rgba(74,222,128,0.12);  color: #4ade80; border: 1px solid rgba(74,222,128,0.30); }
+.badge-type-other{ background: rgba(161,161,170,0.12); color: #a1a1aa; border: 1px solid rgba(161,161,170,0.25); }
+
+/* Processing status badge */
+.badge-status-pending    { background: rgba(251,191,36,0.12);  color: #fbbf24; border:1px solid rgba(251,191,36,0.30); }
+.badge-status-processing { background: rgba(96,165,250,0.12);  color: #60a5fa; border:1px solid rgba(96,165,250,0.30);
+                           animation: statusPulse 1.8s ease-in-out infinite; }
+.badge-status-complete   { background: rgba(74,222,128,0.12);  color: #4ade80; border:1px solid rgba(74,222,128,0.30); }
+.badge-status-error      { background: rgba(248,113,113,0.12); color: #f87171; border:1px solid rgba(248,113,113,0.30); }
+
+@keyframes statusPulse {
+  0%,100% { opacity: 1; }
+  50%     { opacity: 0.6; }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SETTLEMENT POWER — DISTRESSED BADGE  (A4-T5)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@keyframes pulse-red {
+  0%,100% { box-shadow: 0 0 0 0 rgba(255,77,77,0.4); }
+  50%     { box-shadow: 0 0 0 8px rgba(255,77,77,0); }
+}
+.badge-distressed {
+  animation: pulse-red 1.8s ease-in-out infinite;
+  background: rgba(248,113,113,0.15);
+  border: 1px solid rgba(248,113,113,0.40);
+  color: #f87171;
+  border-radius: 9999px;
+  padding: 0.3rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PILL TAB TOGGLE  (A4-T6)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.pill-tabs {
+  display: flex;
+  gap: 0.25rem;
+  background: rgba(255,255,255,0.05);
+  border-radius: 10px;
+  padding: 0.25rem;
+}
+html:not(.dark) .pill-tabs {
+  background: rgba(0,0,0,0.05);
+}
+.pill-tab {
+  padding: 0.375rem 1rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  background: transparent;
+  color: var(--cosv);
+  font-weight: 600;
+  font-size: 0.8125rem;
+  transition: background 0.15s, color 0.15s;
+}
+.pill-tab.active {
+  background: rgba(212,175,55,0.18);
+  color: var(--cp);
+}
+html:not(.dark) .pill-tab.active {
+  background: rgba(0,74,198,0.12);
+  color: var(--cp);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   CHATBOT POLISH  (A4-T7)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* FAB idle pulse */
+@keyframes fabPulse {
+  0%, 100% { box-shadow: 0 4px 24px rgba(212,175,55,0.35); }
+  50%       { box-shadow: 0 4px 36px rgba(212,175,55,0.60); }
+}
+#chatbot-fab.idle {
+  animation: fabPulse 2.5s ease-in-out infinite;
+}
+
+/* Panel slide-up transition */
+#chatbot-panel {
+  transform: translateY(100%);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  opacity: 0;
+}
+#chatbot-panel.open {
+  transform: translateY(0);
+  opacity: 1;
+}
+#chatbot-panel.hidden {
+  display: none !important;
+}
+
+/* Document context badge */
+.doc-context-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  background: rgba(212,175,55,0.10);
+  border: 1px solid rgba(212,175,55,0.30);
+  border-radius: 9999px;
+  padding: 0.15rem 0.625rem;
+  font-size: 0.7rem;
+  color: var(--cp);
+  font-weight: 600;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   BACKDROP-FILTER FALLBACK  (A4-T8)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@supports not (backdrop-filter: blur(1px)) {
+  .glass-card {
+    background: var(--csf) !important;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  .btn-glass {
+    background: var(--csf) !important;
+    backdrop-filter: none;
+  }
+  #chatbot-panel, #chatbot-fab {
+    backdrop-filter: none;
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MOBILE SIDEBAR OVERLAY  (A4-T9)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 767px) {
+  /* Sidebar hidden by default on mobile */
+  #sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+  }
+  #sidebar.mobile-open {
+    transform: translateX(0);
+  }
+  /* Overlay behind sidebar on mobile */
+  #sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 49;
+  }
+  #sidebar-overlay.active {
+    display: block;
+  }
+  /* Main content full width on mobile */
+  #main-wrapper,
+  .ml-64 {
+    margin-left: 0 !important;
+  }
+  /* Page content mobile padding */
+  .px-8 { padding-left: 1rem !important; padding-right: 1rem !important; }
+}
+
+/* Hamburger button (shown on mobile) */
+#sidebar-hamburger {
+  display: none;
+}
+@media (max-width: 767px) {
+  #sidebar-hamburger {
+    display: flex;
+  }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   RESPONSIVE MEDIA QUERIES
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  #chatbot-panel {
+    width:  calc(100vw - 2rem);
+    max-width: calc(100vw - 2rem);
+    right:  1rem;
+    bottom: 5rem;
+    border-radius: 16px 16px 0 0;
+    height: 70vh;
+  }
+  #chatbot-fab {
+    bottom: env(safe-area-inset-bottom, 1rem);
+    right:  1rem;
+  }
+  #toast-container {
+    left:   1rem;
+    right:  1rem;
+    bottom: 1rem;
+  }
+}
+
+@media (min-width: 640px) {
+  #chatbot-fab {
+    bottom: 1.5rem;
+    right:  1.5rem;
+  }
+}

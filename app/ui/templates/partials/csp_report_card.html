@@ -1,0 +1,52 @@
+{#
+  CSP Report Card Partial.
+  Inject into document analysis reports where an INSURER entity is detected by NER.
+
+  Context variables expected:
+    csp_data   — dict from CSPService.get_csp_for_insurer(), or None
+    insurer_name — str: name as detected by NER
+#}
+
+{% if csp_data %}
+<div class="border rounded-lg p-4 bg-gray-50 mt-4">
+  <div class="flex items-center justify-between mb-2">
+    <h4 class="font-semibold text-sm text-gray-800">Settlement Power</h4>
+    {% set band_classes = {
+      'Strong':   'bg-green-100 text-green-800',
+      'Adequate': 'bg-teal-100 text-teal-800',
+      'Marginal': 'bg-yellow-100 text-yellow-800',
+      'Weak':     'bg-orange-100 text-orange-800',
+      'Critical': 'bg-red-100 text-red-800',
+    } %}
+    <span class="px-2 py-1 rounded text-xs font-semibold {{ band_classes.get(csp_data.wcs_band, 'bg-gray-100 text-gray-800') }}">
+      {{ csp_data.wcs_score|round(0)|int }}/100 — {{ csp_data.wcs_band }}
+    </span>
+  </div>
+
+  <p class="text-xs text-gray-700 mb-3">{{ csp_data.natural_language_summary }}</p>
+
+  <div class="flex gap-4 text-xs text-gray-500 mb-3">
+    {% if csp_data.solvency_ratio_pct %}
+    <span>Solvency <strong class="text-gray-800">{{ csp_data.solvency_ratio_pct|round(1) }}%</strong></span>
+    {% endif %}
+    {% if csp_data.settlement_months is defined %}
+    <span>Settlement <strong class="text-gray-800">{{ csp_data.settlement_months|round(1) }} mo</strong></span>
+    {% endif %}
+    {% if csp_data.reserves_ratio is defined %}
+    <span>Reserves <strong class="text-gray-800">{{ csp_data.reserves_ratio|round(2) }}x</strong></span>
+    {% endif %}
+  </div>
+
+  <a href="/intelligence/settlement-power?insurer={{ csp_data.insurer_name|urlencode }}"
+     style="font-size:0.75rem;color:var(--cp);text-decoration:none">
+    View full Settlement Power profile →
+  </a>
+</div>
+
+{% else %}
+<div class="border rounded-lg p-4 bg-gray-50 mt-4 text-xs text-gray-500 italic">
+  Settlement Power data not yet available for
+  <strong class="text-gray-700 not-italic">{{ insurer_name }}</strong>.
+  Verify directly via IPEC FSR-1 quarterly returns.
+</div>
+{% endif %}

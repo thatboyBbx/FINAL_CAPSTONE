@@ -1,0 +1,119 @@
+﻿{% extends "base.html" %}
+{% block title %}Document Comparison — InsureIntel{% endblock %}
+
+{% block content %}
+<div class="p-6 space-y-6">
+  <div class="flex items-center justify-between">
+    <div>
+      <a href="/documents/vault" class="text-xs hover:underline mb-1 block" style="color:var(--cp)">← Back to Documents</a>
+      <h2 class="text-2xl font-bold font-headline" style="color:var(--cos)">Document Comparison</h2>
+      <p class="text-sm mt-0.5" style="color:var(--cosv)">Side-by-side policy version comparison with clause-level diff tracking.</p>
+    </div>
+  </div>
+
+  <!-- Document selectors -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+    <div class="rounded-xl p-5" style="background:var(--csf);border:1px solid color-mix(in srgb,var(--col) 50%,transparent)">
+      <h3 class="text-xs font-bold uppercase tracking-wider mb-3" style="color:var(--cosv)">Base Document</h3>
+      <select class="form-input mb-3">
+        <option>Zimplats-Fire-Policy-2023.pdf (v1.0)</option>
+        <option>Delta-Corp-Motor-Fleet-2023.pdf</option>
+        <option>Innscor-Liability-2023.pdf</option>
+      </select>
+      <div class="p-3 rounded-lg" style="background:var(--csfc)">
+        <p class="text-xs font-semibold" style="color:var(--cos)">Zimplats-Fire-Policy-2023.pdf</p>
+        <p class="text-xs" style="color:var(--cosv)">Uploaded: 15 Jan 2023 • 2.1 MB • 48 clauses</p>
+      </div>
+    </div>
+    <div class="rounded-xl p-5" style="background:var(--csf);border:1px solid color-mix(in srgb,var(--col) 50%,transparent)">
+      <h3 class="text-xs font-bold uppercase tracking-wider mb-3" style="color:var(--cosv)">Comparison Document</h3>
+      <select class="form-input mb-3">
+        <option>Zimplats-Fire-Policy-2024.pdf (v2.0)</option>
+        <option>Delta-Corp-Motor-Fleet-2024.pdf</option>
+        <option>Innscor-Liability-2024.pdf</option>
+      </select>
+      <div class="p-3 rounded-lg" style="background:var(--csfc)">
+        <p class="text-xs font-semibold" style="color:var(--cos)">Zimplats-Fire-Policy-2024.pdf</p>
+        <p class="text-xs" style="color:var(--cosv)">Uploaded: 14 Mar 2024 • 2.4 MB • 51 clauses</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Comparison Summary -->
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    {% for label, value, color, icon in [
+      ('Total Changes','42','#fbbf24','change_history'),
+      ('Added Clauses','6','#4ade80','add_circle'),
+      ('Removed Clauses','3','#f87171','remove_circle'),
+      ('Similarity','82%','var(--cp)','percent'),
+    ] %}
+    <div class="stat-card text-center">
+      <span class="material-symbols-outlined text-2xl mb-2 block" style="color:{{ color }}">{{ icon }}</span>
+      <p class="text-2xl font-bold font-headline" style="color:var(--cos)">{{ value }}</p>
+      <p class="text-xs mt-0.5" style="color:var(--cosv)">{{ label }}</p>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Side-by-side comparison -->
+  <div class="rounded-xl overflow-hidden" style="background:var(--csf);border:1px solid color-mix(in srgb,var(--col) 50%,transparent)">
+    <div class="px-5 py-4 flex items-center gap-4" style="border-bottom:1px solid color-mix(in srgb,var(--col) 40%,transparent)">
+      <h3 class="font-semibold font-headline" style="color:var(--cos)">Clause-Level Diff</h3>
+      <div class="flex items-center gap-3 text-xs ml-auto">
+        <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded" style="background:rgba(74,222,128,0.25);border:1px solid #4ade80"></span>Added</span>
+        <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded" style="background:rgba(248,113,113,0.25);border:1px solid #f87171"></span>Removed</span>
+        <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded" style="background:rgba(251,191,36,0.25);border:1px solid #fbbf24"></span>Modified</span>
+      </div>
+    </div>
+    <div class="grid grid-cols-2 divide-x" style="border-color:color-mix(in srgb,var(--col) 40%,transparent)">
+      <div>
+        <div class="px-4 py-2 text-xs font-bold uppercase tracking-wider" style="background:var(--csfc);color:var(--cosv)">2023 Version (Base)</div>
+        <div class="p-5 space-y-4 text-sm" style="color:var(--cos);max-height:500px;overflow-y:auto">
+          <div class="p-3 rounded" style="background:rgba(248,113,113,0.08);border-left:3px solid #f87171">
+            <p class="text-[10px] font-bold uppercase tracking-widest mb-1" style="color:#f87171">Clause 4.2 — Grace Period (Removed)</p>
+            <p style="color:var(--cosv)">A grace period of thirty (30) days is granted from the premium due date, during which coverage remains active without interruption.</p>
+          </div>
+          <div class="p-3 rounded" style="background:rgba(251,191,36,0.08);border-left:3px solid #fbbf24">
+            <p class="text-[10px] font-bold uppercase tracking-widest mb-1" style="color:#fbbf24">Clause 7.1 — Arbitration (Modified)</p>
+            <p style="color:var(--cosv)">Any dispute shall be referred to arbitration under the Zimbabwe Arbitration Act [Chapter 7:15], with a single arbitrator appointed by mutual agreement.</p>
+          </div>
+          <div class="p-3 rounded" style="background:var(--csfc)">
+            <p class="text-[10px] font-bold uppercase tracking-widest mb-1" style="color:var(--cosv)">Clause 2.1 — Definitions (Unchanged)</p>
+            <p style="color:var(--cosv)">In this policy, the following definitions shall apply as prescribed by the Insurance and Pensions Commission of Zimbabwe.</p>
+          </div>
+          <div class="p-3 rounded" style="background:rgba(248,113,113,0.08);border-left:3px solid #f87171">
+            <p class="text-[10px] font-bold uppercase tracking-widest mb-1" style="color:#f87171">Clause 5.3 — Claims Notification (Removed)</p>
+            <p style="color:var(--cosv)">The insured must notify the insurer within 48 hours of any occurrence likely to give rise to a claim.</p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="px-4 py-2 text-xs font-bold uppercase tracking-wider" style="background:var(--csfc);color:var(--cosv)">2024 Version (Comparison)</div>
+        <div class="p-5 space-y-4 text-sm" style="color:var(--cos);max-height:500px;overflow-y:auto">
+          <div class="p-3 rounded" style="background:rgba(74,222,128,0.08);border-left:3px solid #4ade80">
+            <p class="text-[10px] font-bold uppercase tracking-widest mb-1" style="color:#4ade80">Clause 4.2 — Premium Non-Payment (Added)</p>
+            <p style="color:var(--cos)">Coverage shall be immediately suspended upon failure to remit the full premium amount by the specified due date. No grace period applies.</p>
+          </div>
+          <div class="p-3 rounded" style="background:rgba(251,191,36,0.08);border-left:3px solid #fbbf24">
+            <p class="text-[10px] font-bold uppercase tracking-widest mb-1" style="color:#fbbf24">Clause 7.1 — Arbitration (Modified)</p>
+            <p style="color:var(--cos)">Disputes shall be referred to international arbitration in London under LCIA Rules. Zimbabwe law governs substantive matters only.</p>
+          </div>
+          <div class="p-3 rounded" style="background:var(--csfc)">
+            <p class="text-[10px] font-bold uppercase tracking-widest mb-1" style="color:var(--cosv)">Clause 2.1 — Definitions (Unchanged)</p>
+            <p style="color:var(--cosv)">In this policy, the following definitions shall apply as prescribed by the Insurance and Pensions Commission of Zimbabwe.</p>
+          </div>
+          <div class="p-3 rounded" style="background:rgba(74,222,128,0.08);border-left:3px solid #4ade80">
+            <p class="text-[10px] font-bold uppercase tracking-widest mb-1" style="color:#4ade80">Clause 5.3 — Claims Notification (Modified)</p>
+            <p style="color:var(--cos)">Claims must be notified within 24 hours via the InsureIntel digital portal or by direct written notification to the insurer's registered office.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex gap-3">
+    <button class="btn btn-primary" onclick="showErrorModal('Export coming soon.')"><span class="material-symbols-outlined text-[18px]">download</span>Export Comparison Report</button>
+    <button class="btn btn-secondary" onclick="showErrorModal('Share coming soon.')"><span class="material-symbols-outlined text-[18px]">share</span>Share Results</button>
+  </div>
+</div>
+{% endblock %}

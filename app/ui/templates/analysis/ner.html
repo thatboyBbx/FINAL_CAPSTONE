@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+{# analysis/ner.html — NER Extraction analysis page #}
+{% block title %}NER Extraction — InsureIntel Zimbabwe{% endblock %}
+
+{% block content %}
+<div class="px-8 py-7" style="max-width:900px">
+
+  <nav style="display:flex;align-items:center;gap:0.5rem;font-size:0.75rem;color:var(--cosv);margin-bottom:1.5rem">
+    <a href="/home" style="color:var(--cosv);text-decoration:none">Home</a>
+    <span>/</span>
+    <a href="/analysis" style="color:var(--cosv);text-decoration:none">Analysis</a>
+    <span>/</span>
+    <span style="color:var(--cp);font-weight:600">NER Extraction</span>
+  </nav>
+
+  <h1 class="font-headline" style="font-size:1.5rem;font-weight:800;color:var(--cos);margin:0 0 1.75rem">
+    🏷️ Named Entity Recognition
+  </h1>
+
+  <!-- Config -->
+  <div class="glass-card" style="padding:1.75rem;margin-bottom:1.5rem">
+    <label class="form-label" for="ner-doc-select">Select Document</label>
+    <select id="ner-doc-select" class="form-input" style="margin-bottom:1.5rem" onchange="onDocSelect()">
+      <option value="">— Select a document —</option>
+    </select>
+    <div style="display:flex;justify-content:flex-end">
+      <button id="ner-btn" onclick="runNER()" class="btn-glass-gold"
+              style="font-size:0.9375rem;padding:0.625rem 2rem" disabled>
+        <span class="material-symbols-outlined" style="font-size:18px">label</span>
+        Extract Entities
+      </button>
+    </div>
+  </div>
+
+  <!-- Entity legend -->
+  <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1.5rem;display:none" id="entity-legend">
+    <span class="ner-entity ner-ORG">ORG</span>
+    <span class="ner-entity ner-PERSON">PERSON</span>
+    <span class="ner-entity ner-MONEY">MONEY</span>
+    <span class="ner-entity ner-DATE">DATE</span>
+    <span class="ner-entity ner-LOCATION">LOCATION</span>
+    <span class="ner-entity ner-PERCENT">PERCENT</span>
+    <span class="ner-entity ner-OTHER">OTHER</span>
+  </div>
+
+  <!-- Results -->
+  <div id="results-area"></div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+"use strict";
+
+document.addEventListener("DOMContentLoaded", async () => {
+  try {
+    const docs = await apiGet("/api/documents");
+    const sel  = document.getElementById("ner-doc-select");
+    docs.forEach(d => {
+      const o = document.createElement("option");
+      o.value = d.id;
+      o.textContent = d.title || d.original_filename || `Doc #${d.id}`;
+      sel.appendChild(o);
+    });
+  } catch (err) { showToast("Could not load documents.", "warning"); }
+});
+
+function onDocSelect() {
+  document.getElementById("ner-btn").disabled = !document.getElementById("ner-doc-select").value;
+}
+
+async function runNER() {
+  const docId = parseInt(document.getElementById("ner-doc-select").value);
+  if (!docId) return;
+  const btn = document.getElementById("ner-btn");
+  btn.disabled = true;
+  showProgress(40, "Extracting entities…");
+  document.getElementById("results-area").innerHTML = "";
+
+  try {
+    const result = await apiPost("/api/analysis/ner", { document_id: docId });
+    showProgress(0);
+    renderNER(result, docId);
+    showToast("NER extraction complete.", "success");
+    document.getElementById("entity-legend").style.display = "flex";
+  } catch (err) {
+    showProgress(0);
+    showToast("NER failed: " + err.message, "error");
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+function renderNER(data, docId) {
+  const area = document.getElementById("results-area");
+  const entities = data.entities || data || [];
+
+  if (!Array.isArray(entities) || entities.length === 0) {
+    area.innerHTML = `<div class="alert alert-warn">No entities extracted from this document.</div>`;
+    return;
+  }
+
+  // Group by type
+  const byType = {};
+  entities.forEach(e => {
+    const t = e.entity_type || e.label || "OTHER";
+    byType[t] = byType[t] || [];
+    byType[t].push(e);
+  });
+
+  let html = `<h2 style="color:var(--cos);font-size:1.125rem;font-weight:700;margin:0 0 1.25rem">
+    Entity Results — ${entities.length} entities found</h2>`;
+
+  Object.entries(byType).sort().forEach(([type, ents]) => {
+    html += `<div class="glass-card" style="margin-bottom:1rem;overflow:hidden">
+      <button onclick="toggleAccordion(this)"
+              style="width:100%;background:none;border:none;cursor:pointer;
+                     padding:1rem 1.25rem;display:flex;align-items:center;gap:0.75rem;text-align:left">
+        <span class="ner-entity ner-${type}">${_esc(type)}</span>
+        <span style="flex:1;color:var(--cos);font-weight:600">${_esc(type)}</span>
+        <span style="color:var(--cosv);font-size:0.8rem">${ents.length} found</span>
+        <span class="chevron material-symbols-outlined" style="font-size:18px;color:var(--cosv)">
+          chevron_right</span>
+      </button>
+      <div class="accordion-body" style="display:none;padding:0 1.25rem 1.25rem">
+        <table class="data-table">
+          <thead><tr><th>Value</th><th>Confidence</th><th>Position</th></tr></thead>
+          <tbody>${ents.map(e => `
+            <tr>
+              <td><span class="ner-entity ner-${_esc(type)}">${_esc(e.entity_value || e.text || '')}</span></td>
+              <td>${e.confidence_score !== undefined ? (e.confidence_score * 100).toFixed(1) + '%' : '—'}</td>
+              <td style="color:var(--cosv);font-size:0.75rem">${e.start_char || 0}–${e.end_char || 0}</td>
+            </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+  });
+
+  area.innerHTML = html;
+}
+
+function toggleAccordion(btn) {
+  const body = btn.parentElement.querySelector(".accordion-body");
+  const ch   = btn.querySelector(".chevron");
+  const open = body.style.display !== "none";
+  body.style.display = open ? "none" : "block";
+  ch.style.transform  = open ? "rotate(0deg)" : "rotate(90deg)";
+}
+
+function _esc(s) { return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+</script>
+{% endblock %}

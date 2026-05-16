@@ -1,0 +1,241 @@
+claim_id,insurer,policy_type,claim_amount,premium,risk_score,claim_status,settlement_days,vehicle_value
+CLM-0001,ZimSecure,motor,10212,727.6,0.74,pending,20,38741
+CLM-0002,ZimSecure,business,15325,676.93,0.346,paid,9,0
+CLM-0003,ZimSecure,business,8015,1107.56,0.499,paid,48,0
+CLM-0004,TrustCover,motor,6431,563.58,0.298,rejected,32,25059
+CLM-0005,ZimSecure,motor,13649,1231.92,0.441,paid,11,5847
+CLM-0006,PrimeLife,business,5590,285.27,0.403,paid,31,0
+CLM-0007,TrustCover,business,7800,362.04,0.353,paid,11,0
+CLM-0008,ZimSecure,health,1954,154.2,0.663,paid,14,0
+CLM-0009,TrustCover,property,15730,1217.14,0.892,pending,52,0
+CLM-0010,Anchor Insurance,health,4310,451.33,0.385,rejected,7,0
+CLM-0011,Anchor Insurance,health,5613,404.51,0.204,paid,3,0
+CLM-0012,TrustCover,motor,8113,1319.92,0.419,paid,41,28928
+CLM-0013,PrimeLife,health,4639,345.73,0.607,paid,6,0
+CLM-0014,Anchor Insurance,travel,4980,451.58,0.938,paid,15,0
+CLM-0015,PrimeLife,motor,2743,168.41,0.302,pending,12,42086
+CLM-0016,ZimSecure,travel,3326,379.42,0.918,rejected,17,0
+CLM-0017,ZimSecure,motor,18795,2774.21,0.439,paid,22,13365
+CLM-0018,PrimeLife,motor,9830,1441.81,0.566,paid,37,43979
+CLM-0019,TrustCover,business,21454,1317.22,0.76,pending,19,0
+CLM-0020,Anchor Insurance,motor,20826,2257.64,0.265,paid,25,23153
+CLM-0021,Heritage Shield,motor,9092,1569.03,0.245,paid,41,7535
+CLM-0022,Anchor Insurance,health,2403,256.01,0.598,paid,23,0
+CLM-0023,Anchor Insurance,travel,1935,282.0,0.704,pending,20,0
+CLM-0024,PrimeLife,property,30711,3169.62,0.368,paid,43,0
+CLM-0025,ZimSecure,business,19650,2404.8,0.185,pending,21,0
+CLM-0026,ZimSecure,health,1404,225.13,0.234,paid,3,0
+CLM-0027,PrimeLife,health,2467,421.79,0.614,paid,25,0
+CLM-0028,PrimeLife,travel,1759,94.23,0.508,paid,6,0
+CLM-0029,PrimeLife,motor,4424,426.33,0.438,pending,8,19295
+CLM-0030,Heritage Shield,health,7650,757.84,0.392,paid,6,0
+CLM-0031,ZimSecure,travel,4708,221.66,0.939,rejected,6,0
+CLM-0032,ZimSecure,health,3024,326.56,0.342,paid,15,0
+CLM-0033,ZimSecure,health,6509,1158.23,0.382,pending,2,0
+CLM-0034,PrimeLife,property,29722,5172.36,0.937,pending,54,0
+CLM-0035,PrimeLife,health,3411,240.4,0.224,pending,11,0
+CLM-0036,ZimSecure,property,5746,699.78,0.562,pending,13,0
+CLM-0037,Heritage Shield,motor,17840,2839.91,0.232,paid,10,18414
+CLM-0038,PrimeLife,motor,19867,2404.87,0.21,paid,20,41251
+CLM-0039,Anchor Insurance,business,11866,813.96,0.724,paid,23,0
+CLM-0040,PrimeLife,health,5215,439.44,0.751,paid,16,0
+CLM-0041,PrimeLife,business,19948,1002.52,0.342,paid,13,0
+CLM-0042,TrustCover,motor,9204,735.38,0.513,paid,28,22825
+CLM-0043,Anchor Insurance,business,1756,271.12,0.408,paid,49,0
+CLM-0044,Heritage Shield,property,9564,1376.63,0.298,paid,16,0
+CLM-0045,Heritage Shield,property,15342,1975.95,0.381,paid,53,0
+CLM-0046,ZimSecure,motor,21984,3431.89,0.214,paid,32,11573
+CLM-0047,TrustCover,health,7539,1046.36,0.606,paid,19,0
+CLM-0048,Heritage Shield,business,2680,325.76,0.293,paid,30,0
+CLM-0049,TrustCover,property,4614,320.26,0.37,paid,32,0
+CLM-0050,Anchor Insurance,travel,5284,896.2,0.36,paid,7,0
+CLM-0051,Heritage Shield,travel,403,57.68,0.432,rejected,8,0
+CLM-0052,Heritage Shield,property,12433,1717.98,0.471,paid,60,0
+CLM-0053,PrimeLife,health,3569,317.47,0.804,rejected,16,0
+CLM-0054,Heritage Shield,motor,7528,647.08,0.837,rejected,30,21292
+CLM-0055,TrustCover,business,14596,2588.76,0.588,rejected,50,0
+CLM-0056,ZimSecure,property,13702,2394.49,0.382,paid,47,0
+CLM-0057,PrimeLife,property,49745,4174.34,0.641,paid,60,0
+CLM-0058,PrimeLife,business,7728,357.14,0.511,paid,23,0
+CLM-0059,Anchor Insurance,health,6267,312.07,0.685,paid,15,0
+CLM-0060,TrustCover,motor,11040,919.63,0.49,paid,37,22376
+CLM-0061,Anchor Insurance,health,3443,458.23,0.468,pending,15,0
+CLM-0062,Heritage Shield,business,20148,1951.34,0.814,paid,26,0
+CLM-0063,Heritage Shield,travel,4951,520.34,0.516,paid,13,0
+CLM-0064,PrimeLife,health,1689,189.44,0.661,paid,11,0
+CLM-0065,Heritage Shield,property,16722,1013.85,0.215,rejected,22,0
+CLM-0066,Anchor Insurance,motor,16123,2645.13,0.618,pending,31,28164
+CLM-0067,PrimeLife,travel,2198,289.8,0.184,pending,7,0
+CLM-0068,ZimSecure,travel,1992,303.93,0.709,paid,8,0
+CLM-0069,Anchor Insurance,health,2288,134.23,0.533,paid,16,0
+CLM-0070,Anchor Insurance,business,11897,1496.3,0.727,pending,35,0
+CLM-0071,Anchor Insurance,travel,1503,154.82,0.751,rejected,18,0
+CLM-0072,TrustCover,business,17379,1277.26,0.514,pending,47,0
+CLM-0073,Heritage Shield,property,24010,3962.22,0.241,paid,30,0
+CLM-0074,PrimeLife,health,3805,373.2,0.431,paid,4,0
+CLM-0075,ZimSecure,health,7183,1197.24,0.624,pending,14,0
+CLM-0076,Anchor Insurance,travel,4107,706.34,0.407,paid,3,0
+CLM-0077,PrimeLife,business,25994,3950.61,0.862,pending,41,0
+CLM-0078,TrustCover,travel,4178,394.57,0.688,pending,3,0
+CLM-0079,Heritage Shield,travel,1245,54.5,0.479,paid,20,0
+CLM-0080,ZimSecure,motor,15244,2459.76,0.318,paid,13,24453
+CLM-0081,Heritage Shield,travel,2877,421.69,0.468,pending,13,0
+CLM-0082,PrimeLife,property,7367,314.67,0.59,rejected,40,0
+CLM-0083,TrustCover,health,1424,64.99,0.204,paid,22,0
+CLM-0084,ZimSecure,business,6493,374.46,0.689,paid,22,0
+CLM-0085,Heritage Shield,travel,5930,873.88,0.308,paid,11,0
+CLM-0086,ZimSecure,health,5396,653.0,0.886,pending,5,0
+CLM-0087,PrimeLife,travel,1824,224.16,0.811,paid,5,0
+CLM-0088,TrustCover,business,27895,4225.31,0.61,paid,14,0
+CLM-0089,Anchor Insurance,travel,5619,279.01,0.672,paid,14,0
+CLM-0090,PrimeLife,travel,1064,185.68,0.663,pending,16,0
+CLM-0091,Heritage Shield,travel,1642,287.62,0.385,pending,19,0
+CLM-0092,Anchor Insurance,travel,4008,623.66,0.63,paid,16,0
+CLM-0093,Heritage Shield,motor,10339,766.54,0.533,paid,33,27837
+CLM-0094,TrustCover,motor,17397,1138.77,0.341,pending,25,25304
+CLM-0095,TrustCover,business,24476,2883.54,0.573,paid,24,0
+CLM-0096,Heritage Shield,travel,4202,614.09,0.705,paid,20,0
+CLM-0097,PrimeLife,travel,341,27.69,0.487,paid,5,0
+CLM-0098,Anchor Insurance,property,33015,3774.57,0.503,pending,45,0
+CLM-0099,TrustCover,property,48062,3745.39,0.371,paid,39,0
+CLM-0100,Heritage Shield,property,9835,1131.23,0.759,paid,57,0
+CLM-0101,Heritage Shield,travel,2465,304.55,0.925,rejected,19,0
+CLM-0102,TrustCover,health,6212,511.36,0.718,paid,7,0
+CLM-0103,ZimSecure,motor,19332,2660.83,0.276,pending,23,35170
+CLM-0104,ZimSecure,motor,20010,2115.37,0.515,paid,23,6367
+CLM-0105,TrustCover,travel,1134,108.98,0.236,paid,5,0
+CLM-0106,ZimSecure,health,2744,474.38,0.245,paid,20,0
+CLM-0107,Anchor Insurance,travel,5166,767.65,0.469,rejected,10,0
+CLM-0108,TrustCover,business,15551,1860.03,0.226,rejected,26,0
+CLM-0109,ZimSecure,health,3757,497.65,0.299,paid,10,0
+CLM-0110,ZimSecure,health,343,35.35,0.631,paid,15,0
+CLM-0111,Heritage Shield,property,48331,6689.89,0.525,pending,28,0
+CLM-0112,TrustCover,business,23165,2305.37,0.594,paid,19,0
+CLM-0113,TrustCover,health,1469,92.88,0.414,pending,3,0
+CLM-0114,Anchor Insurance,property,30780,3250.91,0.411,paid,17,0
+CLM-0115,TrustCover,business,19194,1944.09,0.635,pending,38,0
+CLM-0116,TrustCover,business,9704,512.23,0.911,rejected,8,0
+CLM-0117,Anchor Insurance,business,2179,337.74,0.618,pending,50,0
+CLM-0118,Heritage Shield,travel,4451,748.88,0.318,paid,17,0
+CLM-0119,PrimeLife,motor,16601,1613.1,0.424,paid,27,13539
+CLM-0120,TrustCover,travel,5882,472.62,0.898,rejected,18,0
+CLM-0121,Anchor Insurance,motor,16103,1353.17,0.426,rejected,10,29488
+CLM-0122,Anchor Insurance,motor,18979,1857.18,0.323,paid,34,35669
+CLM-0123,PrimeLife,motor,7870,919.93,0.885,pending,22,34766
+CLM-0124,ZimSecure,motor,21844,3318.19,0.719,paid,43,3896
+CLM-0125,Anchor Insurance,travel,963,172.3,0.874,pending,10,0
+CLM-0126,ZimSecure,health,8465,684.49,0.716,paid,24,0
+CLM-0127,PrimeLife,travel,2196,257.32,0.472,rejected,17,0
+CLM-0128,Anchor Insurance,health,1443,213.82,0.829,paid,10,0
+CLM-0129,Anchor Insurance,property,2168,307.09,0.816,pending,28,0
+CLM-0130,PrimeLife,health,7616,821.06,0.433,pending,19,0
+CLM-0131,PrimeLife,travel,2836,502.85,0.361,paid,9,0
+CLM-0132,PrimeLife,motor,11626,1612.9,0.797,paid,35,12968
+CLM-0133,PrimeLife,motor,5336,934.6,0.432,paid,37,31855
+CLM-0134,ZimSecure,business,16472,2324.89,0.492,paid,7,0
+CLM-0135,Heritage Shield,motor,16584,1449.42,0.706,paid,21,24532
+CLM-0136,Anchor Insurance,travel,2794,453.0,0.207,paid,18,0
+CLM-0137,TrustCover,health,1780,315.0,0.758,pending,15,0
+CLM-0138,ZimSecure,travel,1562,260.04,0.215,pending,12,0
+CLM-0139,TrustCover,property,26565,1603.99,0.584,paid,37,0
+CLM-0140,Heritage Shield,health,3168,397.04,0.471,pending,4,0
+CLM-0141,PrimeLife,business,6189,647.13,0.373,paid,21,0
+CLM-0142,ZimSecure,travel,2556,158.77,0.516,paid,20,0
+CLM-0143,Anchor Insurance,property,43873,5994.98,0.527,paid,37,0
+CLM-0144,PrimeLife,travel,1073,100.21,0.453,paid,10,0
+CLM-0145,TrustCover,motor,14169,582.82,0.837,rejected,22,6214
+CLM-0146,Anchor Insurance,travel,2544,317.97,0.448,paid,10,0
+CLM-0147,Anchor Insurance,property,46417,6541.55,0.681,pending,58,0
+CLM-0148,ZimSecure,motor,11323,505.81,0.457,paid,33,22340
+CLM-0149,TrustCover,travel,1638,95.83,0.59,rejected,9,0
+CLM-0150,Anchor Insurance,business,10430,792.43,0.807,pending,17,0
+CLM-0151,TrustCover,property,9547,1668.86,0.287,rejected,39,0
+CLM-0152,PrimeLife,business,13485,2032.13,0.191,paid,12,0
+CLM-0153,PrimeLife,property,46094,6182.48,0.624,pending,57,0
+CLM-0154,TrustCover,motor,8861,385.48,0.852,pending,35,42982
+CLM-0155,Heritage Shield,motor,16413,2148.36,0.269,paid,24,5438
+CLM-0156,TrustCover,travel,1151,83.88,0.589,paid,6,0
+CLM-0157,TrustCover,business,15233,2192.3,0.297,paid,44,0
+CLM-0158,ZimSecure,travel,5243,899.0,0.393,pending,16,0
+CLM-0159,Heritage Shield,travel,3842,613.81,0.256,pending,10,0
+CLM-0160,Anchor Insurance,property,5968,469.22,0.916,rejected,35,0
+CLM-0161,PrimeLife,motor,8150,1007.34,0.196,pending,45,18962
+CLM-0162,Heritage Shield,business,8224,1284.38,0.601,paid,11,0
+CLM-0163,Heritage Shield,property,11670,1938.09,0.182,pending,60,0
+CLM-0164,Heritage Shield,health,4406,244.05,0.839,paid,7,0
+CLM-0165,TrustCover,health,5604,360.87,0.22,pending,2,0
+CLM-0166,Anchor Insurance,motor,3282,337.25,0.455,paid,35,32622
+CLM-0167,Anchor Insurance,health,1010,151.15,0.839,pending,25,0
+CLM-0168,PrimeLife,motor,3193,506.48,0.504,paid,35,32069
+CLM-0169,ZimSecure,motor,11754,714.25,0.276,paid,43,41362
+CLM-0170,Anchor Insurance,property,26962,3081.16,0.525,paid,48,0
+CLM-0171,ZimSecure,motor,19266,1930.64,0.855,pending,18,32720
+CLM-0172,PrimeLife,travel,978,97.55,0.685,paid,13,0
+CLM-0173,Heritage Shield,travel,749,117.18,0.251,paid,5,0
+CLM-0174,TrustCover,health,1282,222.97,0.607,paid,20,0
+CLM-0175,PrimeLife,property,45603,4524.33,0.876,paid,58,0
+CLM-0176,TrustCover,business,11738,639.77,0.566,paid,29,0
+CLM-0177,PrimeLife,health,2073,328.26,0.459,pending,13,0
+CLM-0178,Anchor Insurance,health,7330,1293.28,0.802,pending,19,0
+CLM-0179,Anchor Insurance,motor,21155,931.95,0.388,pending,22,25270
+CLM-0180,TrustCover,motor,7144,852.17,0.485,paid,14,44495
+CLM-0181,ZimSecure,motor,18582,1721.94,0.525,paid,18,23423
+CLM-0182,TrustCover,business,21037,3443.08,0.298,pending,12,0
+CLM-0183,ZimSecure,motor,10116,1342.1,0.549,paid,33,20902
+CLM-0184,Heritage Shield,business,5229,523.88,0.395,paid,29,0
+CLM-0185,PrimeLife,business,23360,1082.93,0.48,paid,26,0
+CLM-0186,ZimSecure,health,5238,772.23,0.761,paid,8,0
+CLM-0187,ZimSecure,motor,17498,1130.32,0.469,pending,32,35785
+CLM-0188,Anchor Insurance,property,6723,1080.03,0.212,paid,35,0
+CLM-0189,ZimSecure,property,39732,4778.8,0.719,paid,37,0
+CLM-0190,ZimSecure,travel,370,23.7,0.9,pending,13,0
+CLM-0191,TrustCover,motor,15510,1148.74,0.628,paid,11,28936
+CLM-0192,TrustCover,property,16520,2462.74,0.238,paid,31,0
+CLM-0193,Anchor Insurance,business,7853,700.13,0.908,pending,29,0
+CLM-0194,Heritage Shield,health,1984,150.46,0.312,paid,6,0
+CLM-0195,ZimSecure,health,8395,1222.5,0.758,pending,16,0
+CLM-0196,Anchor Insurance,business,12090,1018.7,0.514,paid,47,0
+CLM-0197,TrustCover,property,40759,3638.63,0.236,paid,13,0
+CLM-0198,ZimSecure,motor,13282,673.96,0.837,rejected,23,43305
+CLM-0199,Anchor Insurance,business,14098,1709.33,0.905,pending,36,0
+CLM-0200,ZimSecure,travel,4883,415.12,0.541,paid,9,0
+CLM-0201,ZimSecure,travel,1047,185.88,0.244,paid,13,0
+CLM-0202,ZimSecure,health,7472,847.1,0.643,paid,16,0
+CLM-0203,TrustCover,travel,3548,479.14,0.22,paid,13,0
+CLM-0204,TrustCover,motor,12003,1417.73,0.474,paid,11,42498
+CLM-0205,Heritage Shield,property,7341,975.66,0.877,paid,47,0
+CLM-0206,PrimeLife,health,1688,199.6,0.669,paid,11,0
+CLM-0207,Heritage Shield,business,4562,610.69,0.566,paid,48,0
+CLM-0208,TrustCover,health,3809,657.71,0.55,paid,12,0
+CLM-0209,Heritage Shield,health,1564,247.46,0.257,pending,11,0
+CLM-0210,Anchor Insurance,motor,12235,713.87,0.466,paid,44,43942
+CLM-0211,Heritage Shield,travel,557,50.69,0.727,rejected,16,0
+CLM-0212,Anchor Insurance,property,31420,3605.81,0.415,pending,24,0
+CLM-0213,PrimeLife,health,6326,1091.86,0.928,pending,23,0
+CLM-0214,TrustCover,travel,4319,425.91,0.303,paid,19,0
+CLM-0215,Anchor Insurance,health,4396,570.45,0.844,pending,3,0
+CLM-0216,ZimSecure,business,29391,2348.6,0.76,paid,14,0
+CLM-0217,Anchor Insurance,health,7467,1288.04,0.349,paid,4,0
+CLM-0218,TrustCover,motor,14795,1412.98,0.464,paid,8,8348
+CLM-0219,TrustCover,health,761,129.61,0.818,pending,12,0
+CLM-0220,Heritage Shield,health,927,156.14,0.539,pending,11,0
+CLM-0221,PrimeLife,travel,5240,874.14,0.194,paid,3,0
+CLM-0222,Heritage Shield,business,25330,2884.78,0.265,paid,45,0
+CLM-0223,TrustCover,motor,2764,273.02,0.783,pending,20,10265
+CLM-0224,PrimeLife,business,19065,2449.35,0.617,pending,8,0
+CLM-0225,TrustCover,travel,212,15.62,0.497,paid,14,0
+CLM-0226,ZimSecure,business,13316,2310.01,0.594,pending,11,0
+CLM-0227,Anchor Insurance,business,2166,351.47,0.213,paid,31,0
+CLM-0228,TrustCover,property,3064,460.8,0.442,pending,32,0
+CLM-0229,ZimSecure,business,25590,1501.55,0.448,paid,28,0
+CLM-0230,Heritage Shield,travel,5896,757.3,0.797,paid,18,0
+CLM-0231,PrimeLife,motor,10815,498.93,0.332,paid,17,23321
+CLM-0232,Anchor Insurance,travel,4648,350.76,0.753,paid,18,0
+CLM-0233,TrustCover,motor,12076,693.48,0.46,pending,22,31818
+CLM-0234,PrimeLife,property,14243,1949.72,0.459,pending,41,0
+CLM-0235,TrustCover,motor,15110,1515.31,0.936,paid,10,22252
+CLM-0236,TrustCover,motor,3823,506.66,0.413,paid,25,30925
+CLM-0237,Heritage Shield,travel,3079,141.42,0.841,paid,17,0
+CLM-0238,PrimeLife,property,43908,7583.2,0.237,paid,60,0
+CLM-0239,TrustCover,business,27750,1731.55,0.204,pending,50,0
+CLM-0240,PrimeLife,motor,5336,389.74,0.67,paid,9,40174

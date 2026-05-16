@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{# clients/expiry.html — Policy Expiry tracker with 30/60/90-day toggle #}
+{% block title %}Policy Expiry — InsureIntel Zimbabwe{% endblock %}
+
+{% block content %}
+<div class="px-8 py-7">
+
+  <nav style="display:flex;align-items:center;gap:0.5rem;font-size:0.75rem;color:var(--cosv);margin-bottom:1.5rem">
+    <a href="/home" style="color:var(--cosv);text-decoration:none">Home</a>
+    <span>/</span>
+    <a href="/clients" style="color:var(--cosv);text-decoration:none">Clients</a>
+    <span>/</span>
+    <span style="color:var(--cp);font-weight:600">Policy Expiry</span>
+  </nav>
+
+  <div class="flex items-center justify-between flex-wrap gap-4 mb-7">
+    <h1 class="font-headline text-3xl font-bold" style="color:var(--cos)">
+      Policy Expiry Tracker
+    </h1>
+    <!-- Pill tab toggle -->
+    <div class="pill-tabs">
+      <button class="pill-tab active" onclick="setDays(30, this)">30 days</button>
+      <button class="pill-tab" onclick="setDays(60, this)">60 days</button>
+      <button class="pill-tab" onclick="setDays(90, this)">90 days</button>
+    </div>
+  </div>
+
+  <div class="glass-card" style="overflow:hidden">
+    <div class="overflow-x-auto">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Client</th>
+            <th>Policy #</th>
+            <th>Type</th>
+            <th>Insurer</th>
+            <th>Expiry Date</th>
+            <th>Days Left</th>
+            <th>Premium</th>
+            <th>Auto-Renew</th>
+          </tr>
+        </thead>
+        <tbody id="expiry-tbody">
+          <tr><td colspan="8" style="text-align:center;padding:2rem;color:var(--cosv)">
+            Loading…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+"use strict";
+let currentDays = 30;
+
+document.addEventListener("DOMContentLoaded", () => loadExpiry(30));
+
+function setDays(d, btn) {
+  document.querySelectorAll(".pill-tab").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+  currentDays = d;
+  loadExpiry(d);
+}
+
+async function loadExpiry(days) {
+  const tbody = document.getElementById("expiry-tbody");
+  tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:2rem;color:var(--cosv)">Loading…</td></tr>`;
+  try {
+    const data = await apiGet(`/api/clients/expiry?days=${days}`);
+    if (!data.length) {
+      tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:2rem;color:var(--cosv)">
+        No policies expiring in the next ${days} days.</td></tr>`;
+      return;
+    }
+    tbody.innerHTML = data.map(p => {
+      const dl = p.days_left !== null ? p.days_left : null;
+      // Row color coding
+      let rowBg = "";
+      let dlBadge = "—";
+      if (dl !== null) {
+        if (dl <= 30) {
+          rowBg = "background:rgba(248,113,113,0.05)";
+          dlBadge = `<span style="background:rgba(248,113,113,0.15);color:#f87171;border:1px solid rgba(248,113,113,0.35);border-radius:9999px;padding:0.1rem 0.5rem;font-size:0.75rem;font-weight:700">${dl}d</span>`;
+        } else if (dl <= 60) {
+          rowBg = "background:rgba(251,191,36,0.04)";
+          dlBadge = `<span style="background:rgba(251,191,36,0.12);color:#fbbf24;border:1px solid rgba(251,191,36,0.30);border-radius:9999px;padding:0.1rem 0.5rem;font-size:0.75rem;font-weight:700">${dl}d</span>`;
+        } else {
+          rowBg = "";
+          dlBadge = `<span style="background:rgba(74,222,128,0.10);color:#4ade80;border:1px solid rgba(74,222,128,0.25);border-radius:9999px;padding:0.1rem 0.5rem;font-size:0.75rem;font-weight:700">${dl}d</span>`;
+        }
+      }
+      return `<tr style="${rowBg}">
+        <td>
+          <a href="/clients/${p.client_id}" style="color:var(--cp);font-weight:600;text-decoration:none">
+            ${_esc(p.client_name||'—')}
+          </a>
+          ${p.client_company ? `<p style="color:var(--cosv);font-size:0.7rem;margin:0">${_esc(p.client_company)}</p>` : ""}
+        </td>
+        <td style="color:var(--cos)">${_esc(p.policy_number||'—')}</td>
+        <td style="color:var(--cosv)">${_esc(p.policy_type||'—')}</td>
+        <td style="color:var(--cosv)">${_esc(p.insurer_name||'—')}</td>
+        <td style="color:var(--cosv);white-space:nowrap">${_esc(p.end_date||'—')}</td>
+        <td>${dlBadge}</td>
+        <td style="color:var(--cp);font-weight:600">${p.premium_usd ? '$'+Number(p.premium_usd).toLocaleString() : '—'}</td>
+        <td style="text-align:center">
+          ${p.auto_renew
+            ? '<span class="badge badge-green">Auto</span>'
+            : '<span style="color:var(--cosv)">—</span>'}
+        </td>
+      </tr>`;
+    }).join("");
+  } catch (err) {
+    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:2rem;color:#f87171">
+      Error: ${_esc(err.message)}</td></tr>`;
+  }
+}
+
+function _esc(s) { return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+</script>
+{% endblock %}

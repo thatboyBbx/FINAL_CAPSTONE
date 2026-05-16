@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+{% block title %}Reports Center — InsureIntel{% endblock %}
+
+{% block content %}
+<div class="p-8 space-y-6">
+
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-2xl font-extrabold font-headline" style="color:var(--cos)">Reports Center</h1>
+      <p class="text-sm mt-0.5" style="color:var(--cosv)">Generate, schedule, and export intelligence reports for Zimbabwe's insurance market.</p>
+    </div>
+    <button class="btn btn-primary">
+      <span class="material-symbols-outlined text-[17px]">add</span>New Report
+    </button>
+  </div>
+
+  <!-- Report type cards -->
+  <div>
+    <h2 class="font-headline font-bold text-sm mb-4" style="color:var(--cosv)">GENERATE NEW REPORT</h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      {% for rtype, icon, desc in [
+        ('Executive Summary','summarize','C-suite overview of portfolio health'),
+        ('Document Analysis','description','Deep-dive on processed documents'),
+        ('Compliance Audit','verified_user','IPEC regulatory compliance status'),
+        ('Portfolio Risk','security','Cross-portfolio risk distribution'),
+        ('Market Intelligence','insights','ZSE & insurer market analysis'),
+        ('Insurer Comparison','compare_arrows','Side-by-side insurer benchmarking'),
+        ('Batch Processing','folder_zip','Results from batch analysis jobs'),
+        ('Audit Export','history','Full audit trail export'),
+      ] %}
+      <button class="glass-card gold-accent-glow rounded-xl p-4 text-left transition-all group hover:border-[var(--cp)]"
+              style="border-color:var(--glass-bdr)">
+        <span class="material-symbols-outlined text-[24px] mb-2 block" style="color:var(--cp)">{{ icon }}</span>
+        <p class="text-sm font-bold" style="color:var(--cos)">{{ rtype }}</p>
+        <p class="text-[10px] mt-0.5" style="color:var(--cosv)">{{ desc }}</p>
+      </button>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Configuration + Queue -->
+  <div class="grid grid-cols-12 gap-6">
+
+    <!-- Config form -->
+    <div class="col-span-12 lg:col-span-5 glass-card rounded-xl p-6">
+      <h2 class="font-headline font-bold text-sm mb-4" style="color:var(--cos)">Report Configuration</h2>
+      <form class="space-y-4">
+        <div class="grid grid-cols-2 gap-3">
+          <div><label class="form-label">Date From</label>
+            <input type="date" class="form-input"></div>
+          <div><label class="form-label">Date To</label>
+            <input type="date" class="form-input"></div>
+        </div>
+        <div><label class="form-label">Format</label>
+          <select class="form-input">
+            <option>PDF Report</option>
+            <option>Excel Workbook</option>
+            <option>CSV Export</option>
+          </select>
+        </div>
+        <div><label class="form-label">Insurer Scope</label>
+          <select class="form-input">
+            <option value="">All Insurers</option>
+            {% for ins in insurers or [] %}
+            <option value="{{ ins.id }}">{{ ins.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div><label class="form-label">Regulation Scope</label>
+          <select class="form-input">
+            <option>Full IPEC Compliance</option>
+            <option>Solvency Only</option>
+            <option>Claims Only</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary w-full justify-center">
+          <span class="material-symbols-outlined text-[17px]">play_circle</span>Generate Report
+        </button>
+      </form>
+    </div>
+
+    <!-- Queue & History -->
+    <div class="col-span-12 lg:col-span-7 space-y-5">
+
+      <!-- In-progress -->
+      <div class="glass-card rounded-xl p-5">
+        <h2 class="font-headline font-bold text-sm mb-4" style="color:var(--cos)">Report Queue</h2>
+        <div class="space-y-4">
+          <div>
+            <div class="flex justify-between text-xs mb-1.5">
+              <span class="font-medium" style="color:var(--cos)">Q1_Market_Review.pdf</span>
+              <span style="color:var(--cp)">85%</span>
+            </div>
+            <div class="progress-track"><div class="progress-fill" style="width:85%"></div></div>
+          </div>
+          <div>
+            <div class="flex justify-between text-xs mb-1.5">
+              <span class="font-medium" style="color:var(--cos)">OldMutual_Compliance.docx</span>
+              <span style="color:var(--cosv)">Queued</span>
+            </div>
+            <div class="progress-track"><div class="progress-fill" style="width:0%"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- History table -->
+      <div class="glass-card rounded-xl overflow-hidden">
+        <div class="px-5 py-4" style="border-bottom:1px solid rgba(255,255,255,0.05)">
+          <h2 class="font-headline font-bold text-sm" style="color:var(--cos)">Report History</h2>
+        </div>
+        <table class="data-table">
+          <thead><tr>
+            <th>Report</th><th>Type</th><th>Date</th><th>Status</th><th></th>
+          </tr></thead>
+          <tbody>
+            {% for name, rtype, date, status in [
+              ('Annual_Portfolio_2023.pdf','Portfolio Risk','2023-12-01','Validated'),
+              ('Q3_Compliance_IPEC.pdf','Compliance Audit','2023-10-15','Validated'),
+              ('Market_Intel_Oct.xlsx','Market Intelligence','2023-10-01','Failed'),
+            ] %}
+            <tr>
+              <td class="font-medium">{{ name }}</td>
+              <td><span class="badge badge-gold text-[9px]">{{ rtype }}</span></td>
+              <td><span class="text-xs" style="color:var(--cosv)">{{ date }}</span></td>
+              <td>
+                <span class="badge {% if status=='Validated' %}badge-green{% elif status=='Failed' %}badge-red{% else %}badge-amber{% endif %} text-[9px]">
+                  {{ status }}
+                </span>
+              </td>
+              <td>
+                <button class="btn btn-ghost btn-sm" style="color:var(--cp)">
+                  <span class="material-symbols-outlined text-[15px]">download</span>
+                </button>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+{% endblock %}

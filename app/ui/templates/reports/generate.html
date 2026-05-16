@@ -1,0 +1,179 @@
+{% extends "base.html" %}
+{# reports/generate.html — PDF Report Generation page #}
+{% block title %}Generate Report — InsureIntel Zimbabwe{% endblock %}
+
+{% block content %}
+<div class="px-8 py-7" style="max-width:720px">
+
+  <nav style="display:flex;align-items:center;gap:0.5rem;font-size:0.75rem;color:var(--cosv);margin-bottom:1.5rem">
+    <a href="/home" style="color:var(--cosv);text-decoration:none">Home</a>
+    <span>/</span>
+    <a href="/reports" style="color:var(--cosv);text-decoration:none">Reports</a>
+    <span>/</span>
+    <span style="color:var(--cp);font-weight:600">Generate Report</span>
+  </nav>
+
+  <h1 class="font-headline" style="font-size:1.5rem;font-weight:800;color:var(--cos);margin:0 0 1.75rem">
+    📄 Generate PDF Report
+  </h1>
+
+  <div class="glass-card" style="padding:1.75rem">
+
+    <div id="no-docs-notice" style="display:none;margin-bottom:1.25rem" class="alert alert-warn">
+      No documents uploaded yet.
+      <a href="/documents/upload" style="color:var(--cp);font-weight:700;text-decoration:none;margin-left:0.5rem">Upload a document →</a>
+    </div>
+
+    <div style="margin-bottom:1.25rem">
+      <label class="form-label" for="report-doc-select">Select Document *</label>
+      <select id="report-doc-select" class="form-input" onchange="checkReady()">
+        <option value="">— Select a document —</option>
+      </select>
+    </div>
+
+    <div style="margin-bottom:1.5rem">
+      <label class="form-label">Report Type *</label>
+      <div style="display:flex;flex-wrap:wrap;gap:0.75rem;margin-top:0.375rem">
+        <label class="report-type-option" style="flex:1;min-width:140px" data-type="executive">
+          <input type="radio" name="report_type" value="executive" style="display:none" checked>
+          <div class="glass-card tile-card" style="padding:1rem;text-align:center;border-color:rgba(212,175,55,0.3);cursor:pointer">
+            <div style="font-size:1.75rem;margin-bottom:0.375rem">📋</div>
+            <p style="color:var(--cos);font-weight:700;font-size:0.875rem;margin:0">Executive</p>
+            <p style="color:var(--cosv);font-size:0.7rem;margin:0.25rem 0 0">Summary for management</p>
+          </div>
+        </label>
+        <label class="report-type-option" style="flex:1;min-width:140px" data-type="detailed">
+          <input type="radio" name="report_type" value="detailed" style="display:none">
+          <div class="glass-card tile-card" style="padding:1rem;text-align:center;cursor:pointer">
+            <div style="font-size:1.75rem;margin-bottom:0.375rem">📑</div>
+            <p style="color:var(--cos);font-weight:700;font-size:0.875rem;margin:0">Detailed</p>
+            <p style="color:var(--cosv);font-size:0.7rem;margin:0.25rem 0 0">Full clause analysis</p>
+          </div>
+        </label>
+        <label class="report-type-option" style="flex:1;min-width:140px" data-type="compliance">
+          <input type="radio" name="report_type" value="compliance" style="display:none">
+          <div class="glass-card tile-card" style="padding:1rem;text-align:center;cursor:pointer">
+            <div style="font-size:1.75rem;margin-bottom:0.375rem">✅</div>
+            <p style="color:var(--cos);font-weight:700;font-size:0.875rem;margin:0">Compliance</p>
+            <p style="color:var(--cosv);font-size:0.7rem;margin:0.25rem 0 0">IPEC regulatory</p>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <div id="gen-error" style="display:none" class="alert alert-error"></div>
+
+    <div style="display:flex;justify-content:flex-end;gap:0.75rem">
+      <a href="/reports" class="btn-glass">Cancel</a>
+      <button id="gen-btn" onclick="generateReport()" class="btn-glass-gold"
+              style="font-size:0.9375rem;padding:0.625rem 2rem" disabled>
+        <span class="material-symbols-outlined" style="font-size:18px">download</span>
+        Generate & Download
+      </button>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+"use strict";
+
+document.addEventListener("DOMContentLoaded", async () => {
+  try {
+    const docs = await apiFetch("/api/documents");
+    const sel  = document.getElementById("report-doc-select");
+    if (docs.length === 0) {
+      const empty = document.getElementById("no-docs-notice");
+      if (empty) empty.style.display = "block";
+    }
+    const preselect = new URLSearchParams(location.search).get("doc");
+    docs.forEach(d => {
+      const o = document.createElement("option");
+      o.value = d.id;
+      o.textContent = d.title || d.original_filename || `Doc #${d.id}`;
+      if (preselect && String(d.id) === preselect) o.selected = true;
+      sel.appendChild(o);
+    });
+    checkReady();
+  } catch (_) {}
+
+  // Style active report type
+  document.querySelectorAll(".report-type-option").forEach(lbl => {
+    lbl.querySelector("input").addEventListener("change", () => styleTypes());
+    lbl.querySelector(".glass-card").addEventListener("click", () => {
+      lbl.querySelector("input").checked = true;
+      styleTypes();
+    });
+  });
+  styleTypes();
+});
+
+function styleTypes() {
+  document.querySelectorAll(".report-type-option").forEach(lbl => {
+    const card = lbl.querySelector(".glass-card");
+    if (lbl.querySelector("input").checked) {
+      card.style.borderColor = "rgba(212,175,55,0.5)";
+      card.style.background  = "rgba(212,175,55,0.08)";
+    } else {
+      card.style.borderColor = "";
+      card.style.background  = "";
+    }
+  });
+}
+
+function checkReady() {
+  document.getElementById("gen-btn").disabled = !document.getElementById("report-doc-select").value;
+}
+
+async function generateReport() {
+  const docId      = parseInt(document.getElementById("report-doc-select").value);
+  const reportType = document.querySelector('input[name="report_type"]:checked')?.value || "executive";
+  if (!docId) return;
+
+  const btn = document.getElementById("gen-btn");
+  btn.disabled = true;
+  document.getElementById("gen-error").style.display = "none";
+  showProgress(30, "Generating PDF report…");
+
+  try {
+    // Report endpoint returns a PDF — use fetch with blob handling
+    const match   = document.cookie.match(/(?:^|;\s*)access_token=([^;]+)/);
+    const headers = { "Content-Type": "application/json" };
+    if (match) headers["Authorization"] = `Bearer ${decodeURIComponent(match[1])}`;
+
+    const resp = await fetch("/api/reports/generate", {
+      method:  "POST",
+      headers: headers,
+      body:    JSON.stringify({ document_id: docId, report_type: reportType }),
+    });
+
+    if (!resp.ok) {
+      const err = await resp.json().catch(() => ({}));
+      throw new Error(err.detail || `Server error ${resp.status}`);
+    }
+
+    const blob = await resp.blob();
+    showProgress(100);
+    setTimeout(() => showProgress(0), 600);
+
+    // Trigger download
+    const url  = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href  = url;
+    link.download = `insure_intel_${reportType}_${docId}.pdf`;
+    link.click();
+    URL.revokeObjectURL(url);
+    showSuccessModal("Report downloaded successfully.");
+  } catch (err) {
+    showProgress(0);
+    document.getElementById("gen-error").textContent = err.message;
+    document.getElementById("gen-error").style.display = "block";
+    showErrorModal("Report generation failed: " + err.message);
+  } finally {
+    btn.disabled = false;
+  }
+}
+</script>
+{% endblock %}

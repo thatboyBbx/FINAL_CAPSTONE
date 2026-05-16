@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Document Comparison | InsureIntel Zimbabwe</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Manrope:wght@500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "inverse-on-surface": "#f0f1f3",
+                        "tertiary": "#943700",
+                        "surface-container-low": "#f3f4f6",
+                        "surface": "#f8f9fb",
+                        "secondary-fixed-dim": "#c1c5e3",
+                        "on-tertiary-fixed": "#360f00",
+                        "on-error": "#ffffff",
+                        "on-primary-container": "#eeefff",
+                        "secondary": "#585d77",
+                        "inverse-primary": "#b4c5ff",
+                        "primary-fixed": "#dbe1ff",
+                        "outline": "#737686",
+                        "surface-container-high": "#e7e8ea",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container": "#edeef0",
+                        "background": "#f8f9fb",
+                        "primary": "#004ac6",
+                        "surface-dim": "#d9dadc",
+                        "on-surface-variant": "#434655",
+                        "secondary-fixed": "#dde1ff",
+                        "on-secondary-fixed-variant": "#41455f",
+                        "inverse-surface": "#2e3132",
+                        "error-container": "#ffdad6",
+                        "on-primary-fixed-variant": "#003ea8",
+                        "primary-container": "#2563eb",
+                        "on-surface": "#191c1e",
+                        "outline-variant": "#c3c6d7",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-highest": "#e1e2e4",
+                        "on-background": "#191c1e",
+                        "secondary-container": "#dadefd",
+                        "on-secondary-fixed": "#151a31",
+                        "surface-variant": "#e1e2e4",
+                        "on-secondary-container": "#5c617c",
+                        "tertiary-fixed": "#ffdbcd",
+                        "tertiary-container": "#bc4800",
+                        "on-secondary": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-fixed-variant": "#7d2d00",
+                        "error": "#ba1a1a",
+                        "tertiary-fixed-dim": "#ffb596",
+                        "surface-bright": "#f8f9fb",
+                        "surface-tint": "#0053db",
+                        "on-error-container": "#93000a",
+                        "on-primary-fixed": "#00174b",
+                        "primary-fixed-dim": "#b4c5ff",
+                        "on-tertiary-container": "#ffede6"
+                    },
+                    fontFamily: {
+                        "headline": ["Manrope"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #e2e8f0;
+            border-radius: 10px;
+        }
+        .diff-connector {
+            background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+            background-size: 8px 8px;
+        }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface antialiased">
+<!-- SideNavBar Shell -->
+<aside class="w-72 h-screen fixed left-0 top-0 bg-[#1a1f36] dark:bg-slate-950 flex flex-col py-6 shadow-xl z-50">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-primary-container rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-white" style="font-variation-settings: 'FILL' 1;">shield</span>
+</div>
+<div>
+<h1 class="text-xl font-bold text-white tracking-tight font-headline">InsureIntel</h1>
+<p class="text-xs text-slate-400 font-medium tracking-widest uppercase">Zimbabwe</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 space-y-1 px-4 overflow-y-auto custom-scrollbar">
+<!-- Navigation Items Mapping -->
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white transition-colors font-manrope text-sm font-medium tracking-wide" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white transition-colors font-manrope text-sm font-medium tracking-wide" href="#">
+<span class="material-symbols-outlined">description</span>
+<span>Documents</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white transition-colors font-manrope text-sm font-medium tracking-wide" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span>Analysis Results</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white transition-colors font-manrope text-sm font-medium tracking-wide" href="#">
+<span class="material-symbols-outlined">contract</span>
+<span>Circulars Analysis</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white transition-colors font-manrope text-sm font-medium tracking-wide" href="#">
+<span class="material-symbols-outlined">gavel</span>
+<span>Compliance Center</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white transition-colors font-manrope text-sm font-medium tracking-wide" href="#">
+<span class="material-symbols-outlined">policy</span>
+<span>Insurer Intelligence</span>
+</a>
+<!-- Active State Applied Here -->
+<a class="flex items-center gap-3 px-4 py-3 bg-white/10 text-white rounded-lg font-manrope text-sm font-medium tracking-wide" href="#">
+<span class="material-symbols-outlined">compare</span>
+<span>Document Comparison</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white transition-colors font-manrope text-sm font-medium tracking-wide" href="#">
+<span class="material-symbols-outlined">psychology</span>
+<span>ML Predictions</span>
+</a>
+<div class="pt-6 mt-6 border-t border-white/5">
+<button class="w-full flex items-center justify-center gap-2 bg-primary py-2.5 rounded-xl text-white font-semibold text-sm hover:opacity-90 transition-all active:scale-95">
+<span class="material-symbols-outlined text-[20px]">add</span>
+<span>New Analysis</span>
+</button>
+</div>
+</nav>
+<footer class="px-4 mt-auto space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white transition-colors font-manrope text-sm font-medium tracking-wide" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Settings</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white transition-colors font-manrope text-sm font-medium tracking-wide" href="#">
+<span class="material-symbols-outlined">help</span>
+<span>Help</span>
+</a>
+</footer>
+</aside>
+<!-- TopNavBar Shell -->
+<header class="fixed top-0 right-0 w-[calc(100%-18rem)] h-16 bg-[#f8f9fb] flex items-center justify-between px-8 z-40">
+<div class="flex items-center gap-4 flex-1">
+<div class="relative w-full max-w-md">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">search</span>
+<input class="w-full bg-white border-none rounded-full py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary/20 placeholder:text-slate-400" placeholder="Search comparisons or clauses..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<button class="p-2 text-slate-500 hover:text-primary transition-colors opacity-80 hover:opacity-100">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 text-slate-500 hover:text-primary transition-colors opacity-80 hover:opacity-100">
+<span class="material-symbols-outlined">apps</span>
+</button>
+</div>
+<div class="flex items-center gap-3 pl-6 border-l border-slate-200">
+<div class="text-right">
+<p class="text-sm font-semibold text-on-surface">Farai M. Dube</p>
+<p class="text-[11px] text-slate-500 font-medium">Head of Compliance</p>
+</div>
+<img class="w-10 h-10 rounded-full object-cover border-2 border-white shadow-sm" data-alt="Professional headshot of a business executive in a sharp navy suit with warm lighting against a blurred office background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPIySB6a6Qrmd0fPQd_TZjCDWnw-3N0WbzXPMcLhH4a1miAFucRE_j_CX5D6Lf1cPa6bH99YoZ40Vu8gk5QzzEVecOFnlJCjfcEZbXWOQOpkfeZpHedjU0JzuGRFc6Y4fojx3ySPAWr3pf_OY_fGbOdH089to51CKRys2QEP00GFcuw83iw1dUKxDdQrYnu7tbD4zqqkyTEP6lCSyhh8Iu3WACBtZ3EDdjIcnSFG1CKhCqAcB6dhUV00efXaOVWD6l2_zCL1F09TQ-"/>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-72 pt-16 min-h-screen bg-surface p-8">
+<!-- Breadcrumb & Title -->
+<div class="mb-8">
+<nav class="flex items-center gap-2 text-xs font-medium text-slate-500 mb-2">
+<span>Dashboard</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-primary">Document Comparison</span>
+</nav>
+<h2 class="text-3xl font-extrabold font-headline tracking-tight text-on-surface">Document Comparison</h2>
+</div>
+<!-- Start New Comparison Card -->
+<section class="mb-8">
+<div class="bg-surface-container-lowest rounded-xl p-8 shadow-sm">
+<div class="flex flex-col md:flex-row items-end gap-6">
+<div class="flex-1 space-y-2">
+<label class="text-xs font-bold uppercase tracking-wider text-slate-500 pl-1">Base Document (Current)</label>
+<div class="relative">
+<select class="w-full appearance-none bg-surface-container-low border-none rounded-xl py-4 pl-4 pr-10 text-sm font-medium focus:ring-2 focus:ring-primary/20">
+<option>Old Mutual Property Policy v2023.4</option>
+<option>First Mutual Life Comprehensive v1.2</option>
+<option>NICOZ Diamond Motor Policy</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-400">expand_more</span>
+</div>
+</div>
+<div class="flex items-center justify-center mb-3">
+<span class="material-symbols-outlined text-slate-300">swap_horiz</span>
+</div>
+<div class="flex-1 space-y-2">
+<label class="text-xs font-bold uppercase tracking-wider text-slate-500 pl-1">Target Document (Proposal)</label>
+<div class="relative">
+<select class="w-full appearance-none bg-surface-container-low border-none rounded-xl py-4 pl-4 pr-10 text-sm font-medium focus:ring-2 focus:ring-primary/20">
+<option>Old Mutual Property Policy v2024.1 (Draft)</option>
+<option>First Mutual Life New Terms 2024</option>
+<option>Proposed Regulatory Circular Ref: 44/Z</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-400">expand_more</span>
+</div>
+</div>
+<button class="bg-primary hover:bg-primary-container text-white px-10 py-4 rounded-xl font-bold text-sm shadow-lg shadow-primary/20 transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px]">compare_arrows</span>
+                        Compare
+                    </button>
+</div>
+</div>
+</section>
+<!-- Summary Bar -->
+<section class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-8">
+<div class="bg-surface-container-lowest rounded-xl p-6 flex flex-col gap-1 border-l-4 border-slate-300">
+<span class="text-xs font-bold text-slate-500 uppercase tracking-tight">Total Clause Changes</span>
+<span class="text-2xl font-extrabold font-headline">42</span>
+</div>
+<div class="bg-surface-container-lowest rounded-xl p-6 flex flex-col gap-1 border-l-4 border-primary">
+<span class="text-xs font-bold text-primary uppercase tracking-tight">Coverage Changes</span>
+<span class="text-2xl font-extrabold font-headline text-primary">+12</span>
+</div>
+<div class="bg-surface-container-lowest rounded-xl p-6 flex flex-col gap-1 border-l-4 border-amber-500">
+<span class="text-xs font-bold text-amber-600 uppercase tracking-tight">Exclusion Changes</span>
+<span class="text-2xl font-extrabold font-headline text-amber-600">08</span>
+</div>
+<div class="bg-surface-container-lowest rounded-xl p-6 flex flex-col gap-1 border-l-4 border-error">
+<span class="text-xs font-bold text-error uppercase tracking-tight">High Risk Changes</span>
+<span class="text-2xl font-extrabold font-headline text-error">03</span>
+</div>
+<div class="bg-surface-container-lowest rounded-xl p-4 flex items-center gap-4">
+<div class="relative w-16 h-16 flex items-center justify-center">
+<svg class="w-full h-full transform -rotate-90">
+<circle class="text-surface-container-high" cx="32" cy="32" fill="transparent" r="28" stroke="currentColor" stroke-width="6"></circle>
+<circle class="text-primary" cx="32" cy="32" fill="transparent" r="28" stroke="currentColor" stroke-dasharray="176" stroke-dashoffset="35" stroke-width="6"></circle>
+</svg>
+<span class="absolute text-[13px] font-extrabold">82%</span>
+</div>
+<div>
+<span class="text-[10px] font-bold text-slate-500 uppercase block leading-tight">Similarity Index</span>
+<span class="text-xs text-slate-400">High match found</span>
+</div>
+</div>
+</section>
+<!-- Side-by-Side Viewer -->
+<section class="grid grid-cols-2 gap-0 mb-8 bg-surface-container-lowest rounded-xl overflow-hidden shadow-md border border-outline-variant/10">
+<!-- Header for Viewer -->
+<div class="col-span-2 grid grid-cols-2 border-b border-outline-variant/10">
+<div class="p-4 bg-surface-container-low border-r border-outline-variant/20 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-slate-400">file_present</span>
+<span class="text-sm font-bold">Policy v2023.4</span>
+</div>
+<span class="text-[10px] font-black bg-slate-200 px-2 py-0.5 rounded text-slate-600 uppercase">Current</span>
+</div>
+<div class="p-4 bg-surface-container-low flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">edit_document</span>
+<span class="text-sm font-bold">Policy v2024.1 (Draft)</span>
+</div>
+<span class="text-[10px] font-black bg-primary-container px-2 py-0.5 rounded text-white uppercase">New Version</span>
+</div>
+</div>
+<!-- Content Viewer -->
+<div class="h-[600px] overflow-y-auto custom-scrollbar border-r border-outline-variant/10 p-6 space-y-6">
+<div class="p-4 rounded-lg bg-green-50 border-l-4 border-green-400">
+<h4 class="text-xs font-bold text-green-700 mb-2">Clause 1.1: General Definition</h4>
+<p class="text-sm text-on-surface-variant leading-relaxed">The term "Accident" means a sudden, unforeseen, and unintended event caused by external and visible means at a fixed time and place.</p>
+</div>
+<div class="p-4 rounded-lg bg-yellow-50 border-l-4 border-yellow-400">
+<h4 class="text-xs font-bold text-yellow-700 mb-2">Clause 1.2: Scope of Coverage</h4>
+<p class="text-sm text-on-surface-variant leading-relaxed">This policy covers physical loss or damage to the insured property located within the borders of Zimbabwe.</p>
+</div>
+<div class="p-4 rounded-lg bg-red-50 border-l-4 border-red-400 opacity-60">
+<h4 class="text-xs font-bold text-red-700 mb-2">Clause 1.3: Obsolescence Clause</h4>
+<p class="text-sm text-on-surface-variant leading-relaxed line-through italic">The insurer will not pay for costs associated with replacing items with modern equivalents if the original is obsolete.</p>
+</div>
+<div class="h-24 flex items-center justify-center text-slate-300">
+<span class="material-symbols-outlined text-[48px]">remove</span>
+</div>
+<div class="p-4 rounded-lg bg-green-50 border-l-4 border-green-400">
+<h4 class="text-xs font-bold text-green-700 mb-2">Clause 1.4: Premium Payments</h4>
+<p class="text-sm text-on-surface-variant leading-relaxed">Premiums are payable in USD or Zig equivalent at the ruling interbank rate at time of settlement.</p>
+</div>
+</div>
+<div class="h-[600px] overflow-y-auto custom-scrollbar p-6 space-y-6 bg-slate-50/50">
+<div class="p-4 rounded-lg bg-green-50 border-l-4 border-green-400">
+<h4 class="text-xs font-bold text-green-700 mb-2">Clause 1.1: General Definition</h4>
+<p class="text-sm text-on-surface-variant leading-relaxed">The term "Accident" means a sudden, unforeseen, and unintended event caused by external and visible means at a fixed time and place.</p>
+</div>
+<div class="p-4 rounded-lg bg-yellow-100 border-l-4 border-yellow-500 shadow-sm relative">
+<div class="absolute -left-3 top-1/2 -translate-y-1/2 w-3 h-0.5 bg-yellow-500"></div>
+<h4 class="text-xs font-bold text-yellow-800 mb-2">Clause 1.2: Scope of Coverage</h4>
+<p class="text-sm text-on-surface-variant leading-relaxed">This policy covers physical loss or damage to the insured property located within the borders of Zimbabwe <span class="bg-yellow-200 font-bold px-1">and SADC region.</span></p>
+</div>
+<div class="h-24 flex items-center justify-center text-slate-300">
+<span class="material-symbols-outlined text-[48px]">remove</span>
+</div>
+<div class="p-4 rounded-lg bg-blue-50 border-l-4 border-blue-400">
+<h4 class="text-xs font-bold text-blue-700 mb-2">Clause 1.3 (New): Cyber Risk Extension</h4>
+<p class="text-sm text-on-surface-variant leading-relaxed">Damage resulting from unauthorized access to digital systems is included up to the specified sub-limit.</p>
+</div>
+<div class="p-4 rounded-lg bg-green-50 border-l-4 border-green-400">
+<h4 class="text-xs font-bold text-green-700 mb-2">Clause 1.4: Premium Payments</h4>
+<p class="text-sm text-on-surface-variant leading-relaxed">Premiums are payable in USD or Zig equivalent at the ruling interbank rate at time of settlement.</p>
+</div>
+</div>
+</section>
+<!-- Changes Detail Table -->
+<section class="mb-12">
+<h3 class="text-xl font-bold font-headline mb-6">Changes Detail</h3>
+<div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low border-b border-outline-variant/10">
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-widest text-slate-500">Change Type</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-widest text-slate-500">Clause Ref</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-widest text-slate-500">Description</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-widest text-slate-500 text-center">Risk Impact</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-widest text-slate-500">Recommendation</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/10">
+<tr class="hover:bg-surface transition-colors group">
+<td class="px-6 py-5">
+<span class="inline-flex items-center px-2 py-1 rounded bg-yellow-100 text-yellow-700 text-[10px] font-black uppercase">Modified</span>
+</td>
+<td class="px-6 py-5 font-mono text-xs">1.2</td>
+<td class="px-6 py-5">
+<p class="text-sm font-semibold">Territorial Extension</p>
+<p class="text-xs text-slate-400">Expanded coverage from Zimbabwe to SADC region.</p>
+</td>
+<td class="px-6 py-5 text-center">
+<span class="inline-flex items-center gap-1 text-green-600 font-bold text-sm">
+<span class="material-symbols-outlined text-[18px]">trending_down</span>
+                                    Decreased
+                                </span>
+</td>
+<td class="px-6 py-5">
+<p class="text-xs text-on-surface-variant leading-tight">Proceed; enhances policy attractiveness for cross-border clients.</p>
+</td>
+</tr>
+<tr class="hover:bg-surface transition-colors group">
+<td class="px-6 py-5">
+<span class="inline-flex items-center px-2 py-1 rounded bg-red-100 text-red-700 text-[10px] font-black uppercase">Removed</span>
+</td>
+<td class="px-6 py-5 font-mono text-xs">1.3</td>
+<td class="px-6 py-5">
+<p class="text-sm font-semibold">Obsolescence Clause</p>
+<p class="text-xs text-slate-400">Complete removal of replacement value restrictions.</p>
+</td>
+<td class="px-6 py-5 text-center">
+<span class="inline-flex items-center gap-1 text-error font-bold text-sm">
+<span class="material-symbols-outlined text-[18px]">trending_up</span>
+                                    Increased
+                                </span>
+</td>
+<td class="px-6 py-5">
+<p class="text-xs text-on-surface-variant leading-tight">Caution: May increase claims payout by 12% annually. Review reserves.</p>
+</td>
+</tr>
+<tr class="hover:bg-surface transition-colors group">
+<td class="px-6 py-5">
+<span class="inline-flex items-center px-2 py-1 rounded bg-blue-100 text-blue-700 text-[10px] font-black uppercase">Added</span>
+</td>
+<td class="px-6 py-5 font-mono text-xs">1.3-N</td>
+<td class="px-6 py-5">
+<p class="text-sm font-semibold">Cyber Risk Extension</p>
+<p class="text-xs text-slate-400">New sub-limit for digital system breach.</p>
+</td>
+<td class="px-6 py-5 text-center">
+<span class="inline-flex items-center gap-1 text-slate-500 font-bold text-sm">
+<span class="material-symbols-outlined text-[18px]">horizontal_rule</span>
+                                    Neutral
+                                </span>
+</td>
+<td class="px-6 py-5">
+<p class="text-xs text-on-surface-variant leading-tight">Complies with IPEC 2024 guidance on digital asset protection.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- Past Comparisons History -->
+<section>
+<div class="flex items-center justify-between mb-6">
+<h3 class="text-xl font-bold font-headline">Past Comparisons</h3>
+<button class="text-primary text-sm font-bold flex items-center gap-1 hover:underline">
+                    View all history <span class="material-symbols-outlined text-[18px]">arrow_right_alt</span>
+</button>
+</div>
+<div class="bg-surface-container-lowest rounded-xl shadow-sm border border-outline-variant/10">
+<div class="grid grid-cols-4 bg-surface-container-low px-6 py-3 text-[10px] font-black uppercase text-slate-500 tracking-widest">
+<span>Document Pair</span>
+<span>Date Compared</span>
+<span>Significant Findings</span>
+<span class="text-right">Action</span>
+</div>
+<div class="divide-y divide-outline-variant/10">
+<div class="grid grid-cols-4 px-6 py-4 items-center">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-[18px]">difference</span>
+</div>
+<div>
+<p class="text-xs font-bold">Motor 2023 vs 2024</p>
+<p class="text-[10px] text-slate-400">Policy Doc ID: 8829-X</p>
+</div>
+</div>
+<div class="text-xs font-medium text-slate-500">12 Feb 2024, 09:14 AM</div>
+<div class="text-xs font-medium"><span class="text-error font-bold">High Risk:</span> Exclusion Change</div>
+<div class="text-right">
+<button class="p-2 hover:bg-surface-container-low rounded-lg transition-all text-slate-400 hover:text-primary">
+<span class="material-symbols-outlined text-[20px]">download</span>
+</button>
+<button class="p-2 hover:bg-surface-container-low rounded-lg transition-all text-slate-400 hover:text-primary">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-4 px-6 py-4 items-center">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-[18px]">difference</span>
+</div>
+<div>
+<p class="text-xs font-bold">Life Comprehensive v1 vs v2</p>
+<p class="text-[10px] text-slate-400">Policy Doc ID: 7721-L</p>
+</div>
+</div>
+<div class="text-xs font-medium text-slate-500">08 Feb 2024, 04:30 PM</div>
+<div class="text-xs font-medium"><span class="text-primary font-bold">Safe:</span> Minor grammatical edits</div>
+<div class="text-right">
+<button class="p-2 hover:bg-surface-container-low rounded-lg transition-all text-slate-400 hover:text-primary">
+<span class="material-symbols-outlined text-[20px]">download</span>
+</button>
+<button class="p-2 hover:bg-surface-container-low rounded-lg transition-all text-slate-400 hover:text-primary">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- FAB Button suppressed per rules -->
+</body></html>

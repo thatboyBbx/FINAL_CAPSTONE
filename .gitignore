@@ -1,0 +1,80 @@
+# ── Environment & secrets ────────────────────────────────────────────────────
+.env
+*.env
+.env.*
+!.env.example
+
+# ── Python ───────────────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+.Python
+build/
+dist/
+*.egg-info/
+*.egg
+.eggs/
+
+# ── Virtual environments ─────────────────────────────────────────────────────
+venv/
+.venv/
+env/
+.env/
+ENV/
+
+# ── Database ─────────────────────────────────────────────────────────────────
+*.db
+*.sqlite
+*.sqlite3
+
+# ── Uploads / storage ────────────────────────────────────────────────────────
+app/storage/uploads/
+storage/datasets/app/
+storage/models/app/
+
+# ── IDE / OS ─────────────────────────────────────────────────────────────────
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── Logs ─────────────────────────────────────────────────────────────────────
+*.log
+logs/
+
+# ── Alembic ──────────────────────────────────────────────────────────────────
+# Keep migrations tracked, but ignore generated cache
+alembic/__pycache__/
+
+# ── Test artifacts ───────────────────────────────────────────────────────────
+.pytest_cache/
+.coverage
+htmlcov/
+
+# ── WeasyPrint / report output ───────────────────────────────────────────────
+reports_output/
+
+# ── Scratch / temp files ────────────────────────────────────────────────────
+zip_*.txt
+*.txt.bak
+
+# ── Stitch design exports (keep only stitch/, not extracted copies) ──────────
+stitch_extracted/
+
+# ── App database (SQLite dev only) ──────────────────────────────────────────
+app.db
+
+# ── Seed / generated data files ─────────────────────────────────────────────
+seed_financials.csv
+generate_seed_financials.py
+
+# ── UV/pip lock files (optional — add if using uv) ──────────────────────────
+uv.lock
+
+# ── Claude Code session files ────────────────────────────────────────────────
+.claude/

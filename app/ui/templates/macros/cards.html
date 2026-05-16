@@ -1,0 +1,76 @@
+{# macros/cards.html — Card macros for InsureIntel Zimbabwe #}
+
+{% macro glass_card(title, value=None, subtitle=None, icon=None, badge=None, badge_class='badge-gold', extra_class='') %}
+<div class="glass-card stat-card {{ extra_class }}">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start">
+    <div style="flex:1;min-width:0">
+      {% if title %}
+      <p class="text-label" style="margin:0 0 0.5rem">{{ title }}</p>
+      {% endif %}
+      {% if value is not none %}
+      <p class="font-headline" style="font-size:2rem;font-weight:800;color:var(--cos);margin:0;line-height:1">{{ value }}</p>
+      {% endif %}
+      {% if subtitle %}
+      <p style="color:var(--cosv);font-size:0.75rem;margin:0.25rem 0 0">{{ subtitle }}</p>
+      {% endif %}
+      {% if badge %}
+      <span class="badge {{ badge_class }}" style="margin-top:0.5rem">{{ badge }}</span>
+      {% endif %}
+    </div>
+    {% if icon %}
+    <div style="width:42px;height:42px;border-radius:10px;flex-shrink:0;
+                background:rgba(212,175,55,0.12);display:flex;align-items:center;justify-content:center">
+      <span class="material-symbols-outlined" style="color:var(--cp);font-size:22px">{{ icon }}</span>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endmacro %}
+
+{% macro tile_card(title, description, href, icon=None, emoji=None) %}
+<div class="glass-card tile-card p-6 flex flex-col">
+  {% if emoji %}
+  <div class="text-5xl mb-4" aria-hidden="true">{{ emoji }}</div>
+  {% elif icon %}
+  <div class="mb-4" style="width:52px;height:52px;border-radius:12px;background:rgba(212,175,55,0.12);
+              display:flex;align-items:center;justify-content:center">
+    <span class="material-symbols-outlined" style="color:var(--cp);font-size:26px">{{ icon }}</span>
+  </div>
+  {% endif %}
+  <h2 class="font-headline text-lg font-semibold mb-2" style="color:var(--cos)">{{ title }}</h2>
+  <p class="text-sm mb-6 flex-1" style="color:var(--cosv);line-height:1.6">{{ description }}</p>
+  <a href="{{ href }}" class="btn-glass btn-glass-gold flex items-center justify-center gap-1 w-full">
+    Open
+    <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+  </a>
+</div>
+{% endmacro %}
+
+{% macro info_card(title, content, extra_class='') %}
+<div class="glass-card p-5 {{ extra_class }}">
+  {% if title %}
+  <h3 class="font-headline text-base font-semibold mb-3" style="color:var(--cos)">{{ title }}</h3>
+  {% endif %}
+  <div style="color:var(--cosv);font-size:0.875rem;line-height:1.6">{{ content }}</div>
+</div>
+{% endmacro %}
+
+{% macro status_card(title, status, value=None, icon=None) %}
+{% set color = '#4ade80' if status == 'ok' or status == 'active' else ('#fbbf24' if status == 'warning' else '#f87171') %}
+<div class="glass-card p-4" style="border-left:3px solid {{ color }}">
+  <div style="display:flex;align-items:center;gap:0.75rem">
+    {% if icon %}
+    <span class="material-symbols-outlined" style="color:{{ color }};font-size:20px">{{ icon }}</span>
+    {% endif %}
+    <div>
+      <p style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--cosv);margin:0">{{ title }}</p>
+      {% if value %}
+      <p style="font-size:0.875rem;font-weight:600;color:var(--cos);margin:0.125rem 0 0">{{ value }}</p>
+      {% endif %}
+    </div>
+    <div style="margin-left:auto">
+      <span style="width:8px;height:8px;border-radius:50%;background:{{ color }};display:inline-block"></span>
+    </div>
+  </div>
+</div>
+{% endmacro %}

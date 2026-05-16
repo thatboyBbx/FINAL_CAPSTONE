@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{# clients/index.html — Client Management category landing page #}
+{% block title %}Client Management — InsureIntel Zimbabwe{% endblock %}
+
+{% block content %}
+<div class="p-4 md:p-6 lg:p-8">
+
+  <!-- Breadcrumb -->
+  <nav class="flex items-center gap-2 text-xs mb-6" style="color:var(--cosv)">
+    <a href="/home" class="hover:underline" style="color:var(--cosv);text-decoration:none">Home</a>
+    <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+    <span class="font-semibold" style="color:var(--cp)">Client Management</span>
+  </nav>
+
+  <!-- Header -->
+  <div class="mb-8">
+    <h1 class="font-headline text-3xl font-bold mb-1" style="color:var(--cos)">
+      Client Management
+    </h1>
+    <p class="text-sm md:text-base" style="color:var(--cosv)">
+      Manage clients, track policy expiries, and monitor renewal pipelines.
+    </p>
+  </div>
+
+  <!-- Tile Grid -->
+  <div class="tile-grid">
+
+    <!-- Client List -->
+    <div class="glass-card tile-card p-6 flex flex-col">
+      <div class="text-5xl mb-4" aria-hidden="true">👤</div>
+      <h2 class="font-headline text-lg font-semibold mb-2" style="color:var(--cos)">Client List</h2>
+      <p class="text-sm mb-6 flex-1" style="color:var(--cosv);line-height:1.6">
+        View, search, and manage all clients. Filter by segment, add notes,
+        interactions, and link policy documents.
+      </p>
+      <a href="/clients/list" class="btn-glass btn-glass-gold flex items-center justify-center gap-1 w-full">
+        Open
+        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+      </a>
+    </div>
+
+    <!-- Policy Expiry -->
+    <div class="glass-card tile-card p-6 flex flex-col">
+      <div class="text-5xl mb-4" aria-hidden="true">📅</div>
+      <h2 class="font-headline text-lg font-semibold mb-2" style="color:var(--cos)">Policy Expiry</h2>
+      <p class="text-sm mb-6 flex-1" style="color:var(--cosv);line-height:1.6">
+        Track policies expiring within 30, 60, or 90 days. Prioritise
+        renewals and avoid coverage gaps for your clients.
+      </p>
+      <a href="/clients/expiry" class="btn-glass btn-glass-gold flex items-center justify-center gap-1 w-full">
+        Open
+        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+      </a>
+    </div>
+
+    <!-- Renewal Tracker -->
+    <div class="glass-card tile-card p-6 flex flex-col">
+      <div class="text-5xl mb-4" aria-hidden="true">🔄</div>
+      <h2 class="font-headline text-lg font-semibold mb-2" style="color:var(--cos)">Renewal Tracker</h2>
+      <p class="text-sm mb-6 flex-1" style="color:var(--cosv);line-height:1.6">
+        Kanban board view of client renewals — Pending, In Progress, and
+        Renewed stages with drag-and-drop card management.
+      </p>
+      <a href="/clients/renewals" class="btn-glass btn-glass-gold flex items-center justify-center gap-1 w-full">
+        Open
+        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+      </a>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

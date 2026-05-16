@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en" id="html-root">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In — InsureIntel Zimbabwe</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary":            "rgb(var(--p)  / <alpha-value>)",
+            "on-primary":         "rgb(var(--op) / <alpha-value>)",
+            "background":         "rgb(var(--bg) / <alpha-value>)",
+            "surface":            "rgb(var(--sf) / <alpha-value>)",
+            "surface-container":  "rgb(var(--sfc) / <alpha-value>)",
+            "outline-variant":    "rgb(var(--olv) / <alpha-value>)",
+            "on-surface":         "rgb(var(--os)  / <alpha-value>)",
+            "on-surface-variant": "rgb(var(--osv) / <alpha-value>)",
+          },
+          fontFamily: { "headline":["Manrope","sans-serif"], "body":["Inter","sans-serif"] },
+          borderRadius: { "DEFAULT":"0.25rem","lg":"0.75rem","xl":"1.25rem","full":"9999px" },
+        },
+      },
+    }
+  </script>
+  <style>
+    :root {
+      --p:0 74 198;--op:255 255 255;--bg:248 249 251;--sf:255 255 255;
+      --sfc:237 238 240;--olv:195 198 215;--os:25 28 30;--osv:67 70 85;
+    }
+    .dark {
+      --p:212 175 55;--op:0 0 0;--bg:10 10 10;--sf:18 18 18;
+      --sfc:30 30 30;--olv:50 50 50;--os:245 245 245;--osv:160 160 160;
+    }
+    *,*::before,*::after{box-sizing:border-box}
+    body{font-family:'Inter',sans-serif;background:rgb(var(--bg));color:rgb(var(--os));min-height:100vh;}
+    .dark body{background:#0a0a0a;background-image:radial-gradient(circle at 65% -10%,rgba(212,175,55,0.07) 0%,#0a0a0a 65%);}
+    h1,h2,h3{font-family:'Manrope',sans-serif;}
+    .material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;vertical-align:middle;}
+    .field-wrap{position:relative;}
+    .field-icon{position:absolute;left:0.875rem;top:50%;transform:translateY(-50%);color:rgb(var(--p)/0.5);pointer-events:none;}
+    .field-input{
+      width:100%;padding:0.8rem 0.875rem 0.8rem 2.75rem;
+      background:rgb(var(--sfc));border:1px solid rgb(var(--olv));
+      border-radius:0.75rem;font-size:0.875rem;color:rgb(var(--os));
+      outline:none;transition:border-color .2s,box-shadow .2s;
+    }
+    .dark .field-input{background:rgba(255,255,255,0.05);border-color:rgba(255,255,255,0.1);color:#f5f5f5;}
+    .field-input:focus{border-color:rgb(var(--p));box-shadow:0 0 0 3px rgb(var(--p)/0.14);}
+    .field-input::placeholder{color:rgb(var(--osv)/0.5);}
+    .dark .field-input::placeholder{color:rgba(255,255,255,0.22);}
+    .btn-primary{
+      width:100%;padding:0.9rem 1.5rem;border:none;border-radius:0.75rem;
+      font-weight:700;font-size:0.95rem;cursor:pointer;
+      display:flex;align-items:center;justify-content:center;gap:0.5rem;
+      transition:all .2s;
+    }
+    html:not(.dark) .btn-primary{background:linear-gradient(135deg,rgb(var(--p)),rgb(0 55 160));color:#fff;box-shadow:0 8px 24px rgb(var(--p)/0.28);}
+    .dark .btn-primary{background:linear-gradient(135deg,#d4af37,#aa8c2c);color:#000;box-shadow:0 8px 24px rgba(212,175,55,0.22);}
+    .btn-primary:hover{filter:brightness(1.08);transform:translateY(-1px);}
+    .btn-primary:active{transform:scale(0.97);}
+    .alert-error{
+      display:flex;align-items:flex-start;gap:0.5rem;
+      padding:8px 12px;border-radius:4px;font-size:0.875rem;
+      background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.28);
+      color:#f87171;
+    }
+    html:not(.dark) .alert-error{color:#ff4d4f;background:#fff1f0;border:1px solid #ffccc7;}
+    html:not(.dark) .icon-dark-mode{display:none;}
+    html.dark .icon-light-mode{display:none;}
+  </style>
+  <script>(function(){var t=localStorage.getItem('insureIntelTheme')||'dark';if(t==='dark')document.documentElement.classList.add('dark');})();</script>
+</head>
+<body>
+
+  <!-- Theme toggle -->
+  <button onclick="toggleTheme()" title="Toggle theme"
+    class="fixed top-4 right-4 z-50 w-9 h-9 flex items-center justify-center rounded-full"
+    style="background:rgba(128,128,128,0.15);border:1px solid rgba(128,128,128,0.25);">
+    <span class="material-symbols-outlined icon-light-mode text-lg" style="color:#d4af37">light_mode</span>
+    <span class="material-symbols-outlined icon-dark-mode text-lg" style="color:rgb(var(--osv))">dark_mode</span>
+  </button>
+
+  <main class="flex min-h-screen">
+
+    <!-- Left Form -->
+    <section class="w-full lg:w-1/2 flex flex-col justify-center px-8 sm:px-14 lg:px-20 py-12">
+      <div class="max-w-md w-full mx-auto">
+
+        <!-- Logo -->
+        <div class="mb-10 flex items-center gap-3">
+          <div class="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
+               style="background:rgb(var(--p));box-shadow:0 0 18px rgb(var(--p)/0.4)">
+            <span class="material-symbols-outlined text-2xl"
+                  style="color:rgb(var(--op));font-variation-settings:'FILL' 1">security</span>
+          </div>
+          <div>
+            <p class="text-base font-bold font-headline leading-none" style="color:rgb(var(--p))">InsureIntel</p>
+            <p class="text-[9px] font-bold uppercase tracking-widest mt-0.5" style="color:rgb(var(--p)/0.55)">Zimbabwe Sovereign</p>
+          </div>
+        </div>
+
+        <!-- Heading -->
+        <h2 class="text-3xl font-bold font-headline mb-1" style="color:rgb(var(--os))">Welcome back</h2>
+        <p class="text-sm mb-8" style="color:rgb(var(--osv))">Enter your credentials to access the ledger.</p>
+
+        <!-- Error -->
+        {% if error %}
+        <div class="alert-error mb-6">
+          <span class="material-symbols-outlined text-lg flex-shrink-0">error</span>
+          <span>{{ error }}</span>
+        </div>
+        {% endif %}
+
+        <!-- Form -->
+        <form method="POST" action="/login" class="space-y-5">
+          <input type="hidden" name="next_url" value="{{ next_url | default('/home') }}">
+
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider mb-1.5" style="color:rgb(var(--osv))">Staff ID</label>
+            <div class="field-wrap">
+              <span class="material-symbols-outlined field-icon text-xl">badge</span>
+              <input type="text" name="staff_id" required class="field-input" placeholder="e.g. EMP-0042">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider mb-1.5" style="color:rgb(var(--osv))">Password</label>
+            <div class="field-wrap">
+              <span class="material-symbols-outlined field-icon text-xl">lock</span>
+              <input type="password" name="password" id="pwd" required class="field-input" placeholder="••••••••"
+                     style="padding-right:2.75rem">
+              <button type="button" onclick="togglePwd()" id="eye-btn"
+                      class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-xl cursor-pointer"
+                      style="background:none;border:none;color:rgb(var(--osv))">visibility</button>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <input type="checkbox" id="remember" name="remember" class="w-4 h-4 rounded cursor-pointer" style="accent-color:rgb(var(--p))">
+            <label for="remember" class="text-sm cursor-pointer select-none" style="color:rgb(var(--osv))">Remember this device for 30 days</label>
+          </div>
+
+          <button type="submit" class="btn-primary mt-1">
+            <span>Sign into Dashboard</span>
+            <span class="material-symbols-outlined text-xl">arrow_forward</span>
+          </button>
+
+        </form>
+
+        <!-- Register link -->
+        <div class="mt-10 pt-8 border-t text-center" style="border-color:rgb(var(--olv))">
+          <p class="text-sm" style="color:rgb(var(--osv))">
+            New to the platform?
+            <a href="/register" class="font-bold ml-1 hover:underline underline-offset-2" style="color:rgb(var(--p))">Request Access</a>
+          </p>
+        </div>
+
+        <div class="mt-8 flex items-center justify-center gap-4" style="opacity:0.4">
+          <span class="text-[10px] font-bold tracking-widest uppercase" style="color:rgb(var(--osv))">IPEC Compliant</span>
+          <div class="w-1 h-1 rounded-full" style="background:rgb(var(--osv))"></div>
+          <span class="text-[10px] font-bold tracking-widest uppercase" style="color:rgb(var(--osv))">Secure Ledger</span>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Right Hero -->
+    <section class="hidden lg:flex w-1/2 relative overflow-hidden flex-col items-center justify-center"
+             style="background:rgb(var(--p))">
+      <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute -top-32 -right-32 w-[600px] h-[600px] rounded-full opacity-20"
+             style="background:radial-gradient(circle,rgba(255,255,255,0.5),transparent 70%);filter:blur(60px)"></div>
+        <div class="absolute -bottom-32 -left-32 w-[500px] h-[500px] rounded-full opacity-15"
+             style="background:radial-gradient(circle,rgba(0,0,0,0.4),transparent 70%);filter:blur(60px)"></div>
+      </div>
+
+      <div class="relative z-10 flex flex-col items-center px-14 text-center" style="color:rgb(var(--op))">
+        <!-- Mock cards -->
+        <div class="w-full max-w-sm mb-10 space-y-3">
+          <div style="background:rgba(255,255,255,0.1);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.2);border-radius:1rem;padding:1rem;display:flex;align-items:center;gap:0.75rem;transform:rotate(-2deg)">
+            <span class="material-symbols-outlined text-2xl">description</span>
+            <div class="flex-1">
+              <div style="height:6px;background:rgba(255,255,255,0.45);border-radius:99px;margin-bottom:5px;width:65%"></div>
+              <div style="height:6px;background:rgba(255,255,255,0.2);border-radius:99px;width:40%"></div>
+            </div>
+            <span class="material-symbols-outlined" style="color:#4ade80;font-variation-settings:'FILL' 1">check_circle</span>
+          </div>
+          <div style="background:rgba(255,255,255,0.1);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.2);border-radius:1rem;padding:1rem;display:flex;align-items:center;gap:0.75rem;transform:rotate(1.5deg) translateX(20px)">
+            <span class="material-symbols-outlined text-2xl" style="font-variation-settings:'FILL' 1">analytics</span>
+            <div class="flex-1">
+              <div style="height:6px;background:rgba(255,255,255,0.45);border-radius:99px;margin-bottom:5px;width:55%"></div>
+              <div style="height:6px;background:rgba(255,255,255,0.2);border-radius:99px;width:35%"></div>
+            </div>
+            <span class="material-symbols-outlined text-sm">trending_up</span>
+          </div>
+          <div style="background:rgba(255,255,255,0.1);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.2);border-radius:1rem;padding:1rem;display:flex;align-items:center;gap:0.75rem;transform:rotate(-0.5deg)">
+            <span class="material-symbols-outlined text-2xl" style="font-variation-settings:'FILL' 1">verified_user</span>
+            <div class="flex-1">
+              <div style="height:6px;background:rgba(255,255,255,0.45);border-radius:99px;margin-bottom:5px;width:78%"></div>
+              <div style="height:6px;background:rgba(255,255,255,0.2);border-radius:99px;width:50%"></div>
+            </div>
+            <span class="text-xs font-bold opacity-70">98.2%</span>
+          </div>
+        </div>
+
+        <h3 class="text-3xl font-extrabold font-headline leading-tight mb-4 tracking-tight">
+          Intelligent Insurance Analysis<br>for Zimbabwe
+        </h3>
+        <p class="text-base font-medium leading-relaxed" style="opacity:0.82;max-width:340px">
+          ML-driven clause detection, policy comparison, and compliance monitoring tailored for Southern Africa.
+        </p>
+
+        <!-- Dots -->
+        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2">
+          <div class="w-10 h-1 rounded-full" style="background:rgba(255,255,255,0.9)"></div>
+          <div class="w-2 h-1 rounded-full" style="background:rgba(255,255,255,0.3)"></div>
+          <div class="w-2 h-1 rounded-full" style="background:rgba(255,255,255,0.3)"></div>
+        </div>
+        <!-- Location -->
+        <div class="absolute bottom-8 right-8 flex items-center gap-1.5" style="opacity:0.5">
+          <span class="material-symbols-outlined text-sm">location_on</span>
+          <span class="text-[10px] font-bold uppercase tracking-widest">Harare, Zimbabwe</span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    function toggleTheme(){const h=document.getElementById('html-root');h.classList.toggle('dark');localStorage.setItem('insureIntelTheme',h.classList.contains('dark')?'dark':'light');}
+    function togglePwd(){const f=document.getElementById('pwd'),b=document.getElementById('eye-btn');if(f.type==='password'){f.type='text';b.textContent='visibility_off';}else{f.type='password';b.textContent='visibility';}}
+  </script>
+</body>
+</html>

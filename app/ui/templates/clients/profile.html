@@ -1,0 +1,236 @@
+{% extends "base.html" %}
+{# clients/profile.html — Single client profile with tabs #}
+{% block title %}Client Profile — InsureIntel Zimbabwe{% endblock %}
+
+{% block content %}
+<div class="px-8 py-7">
+
+  <nav style="display:flex;align-items:center;gap:0.5rem;font-size:0.75rem;color:var(--cosv);margin-bottom:1.5rem">
+    <a href="/home" style="color:var(--cosv);text-decoration:none">Home</a>
+    <span>/</span>
+    <a href="/clients/list" style="color:var(--cosv);text-decoration:none">Clients</a>
+    <span>/</span>
+    <span id="bc-name" style="color:var(--cp);font-weight:600">Loading…</span>
+  </nav>
+
+  <!-- Action Buttons -->
+  <div style="display:flex;gap:0.75rem;margin-bottom:1.25rem;flex-wrap:wrap">
+    <a href="/clients/list" class="btn-glass" style="display:inline-flex;align-items:center;gap:0.4rem;font-size:0.8rem">
+      <span class="material-symbols-outlined" style="font-size:17px">arrow_back</span>
+      Back
+    </a>
+    <button onclick="showErrorModal('Client editing coming soon.');" class="btn-glass">
+      <span class="material-symbols-outlined" style="font-size:17px">edit</span>
+      Edit
+    </button>
+    <button onclick="addNote(); return false;" class="btn-glass-gold">
+      <span class="material-symbols-outlined" style="font-size:17px">note_add</span>
+      Add Note
+    </button>
+  </div>
+
+  <!-- Header -->
+  <div class="glass-card" style="padding:1.5rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:1rem">
+    <div style="width:52px;height:52px;border-radius:50%;background:rgba(212,175,55,0.12);
+                border:1px solid rgba(212,175,55,0.25);display:flex;align-items:center;
+                justify-content:center;flex-shrink:0">
+      <span class="material-symbols-outlined" style="font-size:26px;color:var(--cp);
+            font-variation-settings:'FILL' 1">person</span>
+    </div>
+    <div style="flex:1">
+      <h1 id="client-name" class="font-headline"
+          style="font-size:1.375rem;font-weight:800;color:var(--cos);margin:0 0 0.25rem">
+        Loading…</h1>
+      <p id="client-meta" style="color:var(--cosv);font-size:0.8125rem;margin:0"></p>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div style="display:flex;gap:0.125rem;margin-bottom:1.5rem;border-bottom:1px solid rgba(255,255,255,0.07)">
+    {% for tab in ["Policies","Notes","Interactions","Alerts","Documents"] %}
+    <button class="tab-btn {% if loop.first %}active{% endif %}"
+            onclick="showTab('{{ tab.lower() }}', this)"
+            style="padding:0.625rem 1.25rem;background:none;border:none;cursor:pointer;
+                   color:{% if loop.first %}var(--cp){% else %}var(--cosv){% endif %};
+                   font-size:0.875rem;
+                   border-bottom:{% if loop.first %}2px solid var(--cp){% else %}2px solid transparent{% endif %};
+                   margin-bottom:-1px">
+      {{ tab }}
+    </button>
+    {% endfor %}
+  </div>
+
+  <div id="tab-policies" class="tab-panel"><div id="policies-content"><p style="color:var(--cosv)">Loading…</p></div></div>
+  <div id="tab-notes"       class="tab-panel" style="display:none"><div id="notes-content"><p style="color:var(--cosv)">Loading…</p></div></div>
+  <div id="tab-interactions" class="tab-panel" style="display:none"><div id="interactions-content"><p style="color:var(--cosv)">Loading…</p></div></div>
+  <div id="tab-alerts"      class="tab-panel" style="display:none"><p style="color:var(--cosv)">No alerts.</p></div>
+  <div id="tab-documents"   class="tab-panel" style="display:none"><div id="documents-content"><p style="color:var(--cosv)">Loading…</p></div></div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+"use strict";
+const clientId = {{ client_id | tojson }};
+
+document.addEventListener("DOMContentLoaded", async () => {
+  try {
+    const c = await apiFetch(`/api/clients/${clientId}`);
+    document.getElementById("bc-name").textContent    = c.name;
+    document.getElementById("client-name").textContent = c.name;
+    document.getElementById("client-meta").textContent =
+      [c.company, c.email, c.phone, c.segment?.toUpperCase()].filter(Boolean).join("  ·  ");
+    loadPolicies();
+  } catch (err) {
+    showErrorModal("Could not load client: " + err.message);
+  }
+});
+
+async function loadPolicies() {
+  const el = document.getElementById("policies-content");
+  try {
+    const ps = await apiFetch(`/api/clients/${clientId}/policies`);
+    if (!ps.length) { el.innerHTML = `<div class="alert alert-warn">No policies found.</div>`; return; }
+    el.innerHTML = `<div class="glass-card" style="overflow:hidden">
+      <table class="data-table"><thead><tr>
+        <th>Policy #</th><th>Type</th><th>Insurer</th><th>Start</th><th>End</th><th>Premium</th><th>Status</th>
+      </tr></thead><tbody>${ps.map(p => `
+        <tr>
+          <td style="color:var(--cos);font-weight:600">${_esc(p.policy_number||'—')}</td>
+          <td style="color:var(--cosv)">${_esc(p.policy_type||'—')}</td>
+          <td style="color:var(--cosv)">${_esc(p.insurer_name||'—')}</td>
+          <td style="color:var(--cosv)">${p.start_date||'—'}</td>
+          <td style="color:var(--cosv)">${p.end_date||'—'}</td>
+          <td style="color:var(--cp)">${p.premium_usd ? '$'+p.premium_usd.toLocaleString() : '—'}</td>
+          <td><span class="badge ${p.status==='active'?'badge-green':'badge-amber'}">${_esc(p.status)}</span></td>
+        </tr>`).join("")}
+      </tbody></table></div>`;
+  } catch (err) { el.innerHTML = `<div class="alert alert-error">${_esc(err.message)}</div>`; }
+}
+
+async function loadDocuments() {
+  const el = document.getElementById("documents-content");
+  try {
+    const [docs, suggestions] = await Promise.all([
+      apiFetch(`/api/clients/${clientId}/documents`),
+      apiFetch(`/api/clients/${clientId}/document-suggestions?limit=8`)
+    ]);
+
+    const linked = Array.isArray(docs) ? docs : [];
+    const recent = Array.isArray(suggestions) ? suggestions : [];
+
+    el.innerHTML = `
+      <div style="display:flex;justify-content:flex-end;margin-bottom:1rem">
+        <a href="/documents/upload?client_id=${clientId}" class="btn-glass-gold" style="font-size:0.8rem">
+          <span class="material-symbols-outlined" style="font-size:16px">upload_file</span>
+          Upload for Client
+        </a>
+      </div>
+
+      <div class="glass-card" style="padding:1.25rem;margin-bottom:1rem">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:0.75rem">
+          <div>
+            <p style="margin:0;color:var(--cos);font-size:0.95rem;font-weight:700">Linked Policy Documents</p>
+            <p style="margin:0.25rem 0 0;color:var(--cosv);font-size:0.75rem">Documents currently assigned to this client.</p>
+          </div>
+          <a href="/documents-ui?client_id=${clientId}" class="btn btn-sm btn-ghost">Open vault view</a>
+        </div>
+        ${linked.length ? `
+          <div style="display:grid;gap:0.65rem">
+            ${linked.map(d => `
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:0.75rem;padding:0.8rem 0.9rem;border-radius:8px;background:rgba(255,255,255,0.03)">
+                <div style="min-width:0">
+                  <a href="/documents-ui/${d.id}" style="display:block;color:var(--cos);font-size:0.82rem;font-weight:600;text-decoration:none">${_esc(d.title || d.original_filename || ('Document #' + d.id))}</a>
+                  <p style="margin:0.2rem 0 0;color:var(--cosv);font-size:0.72rem">${_esc(d.document_category || 'uncategorised')} • ${_esc(d.status || 'uploaded')}</p>
+                </div>
+                <button class="btn btn-sm btn-ghost" onclick="unlinkDocument(${d.id})">Unlink</button>
+              </div>
+            `).join("")}
+          </div>
+        ` : `<div class="alert alert-warn">No documents linked to this client yet.</div>`}
+      </div>
+
+      <div class="glass-card" style="padding:1.25rem">
+        <p style="margin:0 0 0.35rem;color:var(--cos);font-size:0.95rem;font-weight:700">Recent Uploaded Policies</p>
+        <p style="margin:0 0 0.9rem;color:var(--cosv);font-size:0.75rem">Quick link recent unassigned uploads to this client.</p>
+        ${recent.length ? `
+          <div style="display:grid;gap:0.65rem">
+            ${recent.map(d => `
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:0.75rem;padding:0.8rem 0.9rem;border-radius:8px;background:rgba(255,255,255,0.03)">
+                <div style="min-width:0">
+                  <a href="/documents-ui/${d.id}" style="display:block;color:var(--cos);font-size:0.82rem;font-weight:600;text-decoration:none">${_esc(d.title || d.original_filename || ('Document #' + d.id))}</a>
+                  <p style="margin:0.2rem 0 0;color:var(--cosv);font-size:0.72rem">${d.created_at ? new Date(d.created_at).toLocaleDateString('en-GB') : '—'} • ${_esc(d.document_category || 'uncategorised')}</p>
+                </div>
+                <button class="btn-glass-gold" style="font-size:0.75rem" onclick="linkDocument(${d.id})">Link</button>
+              </div>
+            `).join("")}
+          </div>
+        ` : `<div class="alert alert-info">No recent unlinked uploads available right now.</div>`}
+      </div>
+    `;
+  } catch (err) {
+    el.innerHTML = `<div class="alert alert-error">${_esc(err.message)}</div>`;
+  }
+}
+
+async function loadNotes() {
+  /* Placeholder — notes listed from client detail endpoint if available */
+  document.getElementById("notes-content").innerHTML =
+    `<div class="alert alert-info">Notes section — add via API POST /api/clients/${clientId}/notes</div>`;
+}
+
+async function loadInteractions() {
+  document.getElementById("interactions-content").innerHTML =
+    `<div class="alert alert-info">Interactions — add via POST /api/clients/${clientId}/interactions</div>`;
+}
+
+function showTab(tab, btn) {
+  document.querySelectorAll(".tab-panel").forEach(p => p.style.display = "none");
+  document.querySelectorAll(".tab-btn").forEach(b => {
+    b.style.color = "var(--cosv)"; b.style.borderBottomColor = "transparent";
+  });
+  document.getElementById(`tab-${tab}`).style.display = "block";
+  btn.style.color = "var(--cp)"; btn.style.borderBottomColor = "var(--cp)";
+  if (tab === "notes")        loadNotes();
+  if (tab === "interactions") loadInteractions();
+  if (tab === "documents")    loadDocuments();
+}
+
+async function addNote() {
+  const text = prompt('Enter note:');
+  if (!text || !text.trim()) return;
+  try {
+    await apiFetch(`/api/clients/${clientId}/notes`, {
+      method: 'POST',
+      body: JSON.stringify({ text: text.trim() })
+    });
+    showSuccessModal('Note added successfully.');
+  } catch (e) {
+    showErrorModal('Failed to add note: ' + e.message);
+  }
+}
+
+async function linkDocument(documentId) {
+  try {
+    await apiPatch(`/api/documents/${documentId}/assign-client`, { client_id: clientId });
+    showSuccessModal("Document linked to client.");
+    loadDocuments();
+  } catch (e) {
+    showErrorModal("Failed to link document: " + e.message);
+  }
+}
+
+async function unlinkDocument(documentId) {
+  try {
+    await apiPatch(`/api/documents/${documentId}/assign-client`, { client_id: null });
+    showSuccessModal("Document unlinked from client.");
+    loadDocuments();
+  } catch (e) {
+    showErrorModal("Failed to unlink document: " + e.message);
+  }
+}
+
+function _esc(s) { return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+</script>
+{% endblock %}

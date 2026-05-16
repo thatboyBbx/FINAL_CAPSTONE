@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Documents List | InsureIntel Zimbabwe</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#d4af37", // Gold accent
+              "surface": "#0a0a0a", // Dark background
+              "surface-container": "#161616",
+              "surface-container-low": "#111111",
+              "surface-container-lowest": "#0f0f0f",
+              "on-surface": "#e5e7eb",
+              "on-surface-variant": "#a1a1aa",
+              "outline": "#3f3f46",
+              "outline-variant": "#27272a",
+              "gold-muted": "rgba(212, 175, 55, 0.1)",
+              "gold-border": "rgba(212, 175, 55, 0.3)"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Manrope"],
+              "label": ["Manrope"]
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        body { font-family: 'Manrope', sans-serif; background-color: #0a0a0a; color: #e5e7eb; }
+        .gold-glow { text-shadow: 0 0 10px rgba(212, 175, 55, 0.4); }
+        .sidebar-item-active {
+            background: linear-gradient(90deg, rgba(212, 175, 55, 0.15) 0%, rgba(212, 175, 55, 0) 100%);
+            border-right: 2px solid #d4af37;
+            color: #d4af37;
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: #27272a; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #3f3f46; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface antialiased">
+<!-- SideNavBar Component -->
+<aside class="fixed left-0 top-0 h-screen w-64 z-40 bg-[#0f0f0f] border-r border-outline-variant/30 flex flex-col py-6 font-headline antialiased tracking-tight">
+<div class="px-6 mb-10">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-primary/20 border border-primary/40 rounded flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="security">security</span>
+</div>
+<div>
+<h2 class="text-xl font-extrabold text-white tracking-tight uppercase">InsureIntel</h2>
+<p class="text-[10px] text-primary font-bold tracking-[0.2em] uppercase">Zimbabwe</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 space-y-1 px-3">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform" data-icon="dashboard">dashboard</span>
+<span class="text-xs font-bold uppercase tracking-wider">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform" data-icon="description">description</span>
+<span class="text-xs font-bold uppercase tracking-wider">Policies</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform" data-icon="assignment_late">assignment_late</span>
+<span class="text-xs font-bold uppercase tracking-wider">Claims</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform" data-icon="bar_chart">bar_chart</span>
+<span class="text-xs font-bold uppercase tracking-wider">Analytics</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform" data-icon="groups">groups</span>
+<span class="text-xs font-bold uppercase tracking-wider">Customers</span>
+</a>
+<a class="sidebar-item-active flex items-center gap-3 px-4 py-3 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="folder_shared">folder_shared</span>
+<span class="text-xs font-bold uppercase tracking-wider">Documents</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary transition-colors group" href="#">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform" data-icon="settings">settings</span>
+<span class="text-xs font-bold uppercase tracking-wider">Settings</span>
+</a>
+</nav>
+<div class="mt-auto px-4 space-y-4">
+<button class="w-full bg-primary text-black py-3 rounded text-[10px] font-black uppercase tracking-widest hover:brightness-110 transition-all">
+            New Claim
+        </button>
+<div class="pt-4 border-t border-outline-variant/30 space-y-1">
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-white transition-colors text-xs font-bold uppercase tracking-widest" href="#">
+                Support
+            </a>
+<a class="flex items-center gap-3 px-4 py-2 text-red-500 hover:text-red-400 transition-colors text-xs font-bold uppercase tracking-widest" href="#">
+                Sign Out
+            </a>
+</div>
+</div>
+</aside>
+<!-- TopNavBar Component -->
+<header class="sticky top-0 w-full z-30 bg-surface/80 backdrop-blur-md flex items-center justify-between px-8 py-4 ml-64 w-[calc(100%-16rem)] border-b border-outline-variant/30">
+<div class="flex items-center gap-4 flex-1">
+<div class="relative w-full max-w-md">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant text-lg" data-icon="search">search</span>
+<input class="w-full pl-12 pr-4 py-2.5 bg-surface-container-low border border-outline-variant/30 rounded focus:ring-1 focus:ring-primary/50 text-xs placeholder:text-zinc-600 text-on-surface" placeholder="Search the ledger..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<button class="hover:bg-surface-container rounded p-2 transition-all">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="notifications">notifications</span>
+</button>
+</div>
+<div class="flex items-center gap-3 pl-6 border-l border-outline-variant/30">
+<div class="text-right">
+<p class="text-[11px] font-black text-white uppercase tracking-wider">Tinashe M.</p>
+<p class="text-[9px] text-primary uppercase font-bold tracking-widest">Underwriter</p>
+</div>
+<img alt="User Profile Avatar" class="w-9 h-9 rounded border border-primary/30 grayscale hover:grayscale-0 transition-all duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCaRjhiHrereprRM54apqt__CgozsptHpUIj6TAIBsPpkuhb_mzGn8GuKiCHTVYdQYJYecKDvZNxFyRNp8HXaRuWjqYpymjuw-9NzYCgxd4fWbV_Rg61qtA719Op8eri3-xfjvaHi6KA2ftRNjxjiDU42znkkYDkVFyQlHKSlb7-NtvZQk-1X1agQF6UF4lXvB060Iq-w6nmns8RlabQAwg_MnwMyXkE7wdkqfsWJm6B3WdeNj0ZdkTsk3g1rpfIqCdX5DXyNtjNso5"/>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="ml-64 p-8 min-h-screen">
+<!-- Breadcrumb -->
+<nav aria-label="Breadcrumb" class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-10">
+<a class="hover:text-primary transition-colors" href="#">Vault</a>
+<span class="material-symbols-outlined text-[10px]" data-icon="chevron_right">chevron_right</span>
+<span class="text-primary">Documents</span>
+</nav>
+<div class="flex justify-between items-end mb-10">
+<div>
+<h1 class="text-4xl font-black tracking-tighter text-white uppercase italic">Document Repository</h1>
+<p class="text-on-surface-variant mt-2 max-w-xl text-xs font-medium uppercase tracking-widest opacity-60">Sovereign intelligence &amp; policy compliance ledger.</p>
+</div>
+<button class="bg-primary hover:bg-white text-black px-8 py-3 rounded font-black text-[11px] uppercase tracking-widest flex items-center gap-2 transition-all">
+<span class="material-symbols-outlined text-base" data-icon="upload_file">upload_file</span>
+            Secure Upload
+        </button>
+</div>
+<!-- Filter Bar -->
+<section class="bg-surface-container-lowest border border-outline-variant/30 rounded p-8 mb-10">
+<div class="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-6 gap-8">
+<div class="lg:col-span-2">
+<label class="block text-[10px] font-black text-primary mb-3 uppercase tracking-[0.2em]">Keywords</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" data-icon="search">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface border border-outline-variant/30 rounded focus:ring-1 focus:ring-primary/50 text-xs text-on-surface" placeholder="Filename, policy ID..." type="text"/>
+</div>
+</div>
+<div>
+<label class="block text-[10px] font-black text-primary mb-3 uppercase tracking-[0.2em]">Doc Type</label>
+<select class="w-full bg-surface border border-outline-variant/30 rounded py-2 px-3 text-xs focus:ring-1 focus:ring-primary/50 text-on-surface">
+<option>All Types</option>
+<option>Claims Report</option>
+<option>Policy Wording</option>
+</select>
+</div>
+<div>
+<label class="block text-[10px] font-black text-primary mb-3 uppercase tracking-[0.2em]">Compliance</label>
+<select class="w-full bg-surface border border-outline-variant/30 rounded py-2 px-3 text-xs focus:ring-1 focus:ring-primary/50 text-on-surface">
+<option>All Statuses</option>
+<option>Compliant</option>
+<option>Non-Compliant</option>
+</select>
+</div>
+<div>
+<label class="block text-[10px] font-black text-primary mb-3 uppercase tracking-[0.2em]">Language</label>
+<select class="w-full bg-surface border border-outline-variant/30 rounded py-2 px-3 text-xs focus:ring-1 focus:ring-primary/50 text-on-surface">
+<option>All (EN/SN)</option>
+<option>English</option>
+<option>Shona</option>
+</select>
+</div>
+<div class="flex items-end">
+<button class="w-full px-6 py-2.5 bg-zinc-800 text-white rounded text-[10px] font-black uppercase tracking-widest hover:bg-zinc-700 transition-all">Apply Filters</button>
+</div>
+<div class="lg:col-span-3 flex items-center gap-6 pt-2">
+<div class="flex items-center gap-3">
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-10 h-5 bg-zinc-800 border border-zinc-700 rounded peer peer-checked:after:translate-x-5 peer-checked:after:border-primary after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-zinc-400 after:rounded-none after:h-4 after:w-4 after:transition-all peer-checked:bg-primary/20 peer-checked:border-primary/40 peer-checked:after:bg-primary"></div>
+<span class="ml-3 text-[10px] font-black text-on-surface-variant uppercase tracking-widest">RAG Indexed</span>
+</label>
+</div>
+</div>
+<div class="lg:col-span-3 flex items-end justify-end">
+<button class="text-[10px] font-black text-zinc-600 hover:text-primary transition-colors uppercase tracking-[0.2em]">Clear All</button>
+</div>
+</div>
+</section>
+<!-- Bulk Actions Bar -->
+<div class="bg-primary text-black px-6 py-4 rounded mb-8 flex items-center justify-between shadow-2xl shadow-primary/10">
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-3">
+<span class="flex items-center justify-center w-5 h-5 bg-black text-primary rounded-none text-[10px] font-black">3</span>
+<span class="text-[10px] font-black uppercase tracking-widest">Entries Selected</span>
+</div>
+<div class="h-6 w-px bg-black/20"></div>
+<div class="flex items-center gap-6">
+<button class="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest hover:underline">
+<span class="material-symbols-outlined text-sm" data-icon="bolt">bolt</span>
+                    Batch Analyze
+                </button>
+<button class="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest hover:underline">
+<span class="material-symbols-outlined text-sm" data-icon="work">work</span>
+                    Portfolio
+                </button>
+<button class="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest hover:underline">
+<span class="material-symbols-outlined text-sm" data-icon="ios_share">ios_share</span>
+                    Export
+                </button>
+</div>
+</div>
+<button class="text-[10px] font-black flex items-center gap-2 bg-black/10 hover:bg-black/20 px-4 py-2 rounded transition-all uppercase tracking-widest">
+<span class="material-symbols-outlined text-sm" data-icon="delete">delete</span>
+            Purge
+        </button>
+</div>
+<!-- Documents Table Section -->
+<div class="bg-surface-container-lowest border border-outline-variant/30 rounded overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-zinc-900/50">
+<tr class="border-b border-outline-variant/30">
+<th class="p-6 w-10">
+<input class="rounded-none bg-transparent border-zinc-700 text-primary focus:ring-primary" type="checkbox"/>
+</th>
+<th class="p-6 text-[10px] font-black text-primary uppercase tracking-[0.2em] cursor-pointer">
+                            Filename <span class="material-symbols-outlined text-[10px] align-middle" data-icon="arrow_downward">arrow_downward</span>
+</th>
+<th class="p-6 text-[10px] font-black text-primary uppercase tracking-[0.2em]">Class</th>
+<th class="p-6 text-[10px] font-black text-primary uppercase tracking-[0.2em]">Ledger Date</th>
+<th class="p-6 text-[10px] font-black text-primary uppercase tracking-[0.2em]">Risk Score</th>
+<th class="p-6 text-[10px] font-black text-primary uppercase tracking-[0.2em]">Compliance</th>
+<th class="p-6 text-[10px] font-black text-primary uppercase tracking-[0.2em] text-center">RAG</th>
+<th class="p-6 text-[10px] font-black text-primary uppercase tracking-[0.2em]">Portfolio</th>
+<th class="p-6 text-[10px] font-black text-primary uppercase tracking-[0.2em] text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/30">
+<!-- Row 1: Green/Compliant -->
+<tr class="hover:bg-zinc-900/30 transition-colors group">
+<td class="p-6">
+<input checked="" class="rounded-none bg-transparent border-zinc-700 text-primary focus:ring-primary" type="checkbox"/>
+</td>
+<td class="p-6">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary/60" data-icon="picture_as_pdf">picture_as_pdf</span>
+<div>
+<a class="text-xs font-black text-white hover:text-primary transition-all uppercase tracking-wide block" href="#">Policy_ZIM_2024_041.pdf</a>
+<span class="text-[9px] text-zinc-500 font-bold uppercase tracking-widest mt-1 block">English</span>
+</div>
+</div>
+</td>
+<td class="p-6">
+<span class="text-[9px] font-black px-3 py-1 rounded bg-zinc-800 border border-zinc-700 text-zinc-400 uppercase tracking-widest">Policy Wording</span>
+</td>
+<td class="p-6 text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">Oct 12, 2023</td>
+<td class="p-6">
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 bg-green-500"></span>
+<span class="text-xs font-black text-green-500">12</span>
+</div>
+</td>
+<td class="p-6">
+<div class="flex items-center gap-3">
+<div class="flex-1 h-1 bg-zinc-800 rounded-none overflow-hidden max-w-[80px]">
+<div class="h-full bg-green-500 w-[94%]"></div>
+</div>
+<span class="text-[10px] font-black text-green-500">94%</span>
+</div>
+</td>
+<td class="p-6 text-center">
+<span class="material-symbols-outlined text-primary text-xl" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</td>
+<td class="p-6 text-[10px] text-on-surface-variant font-bold uppercase tracking-wider">Standard Life Ltd.</td>
+<td class="p-6 text-right">
+<div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-2 hover:text-primary transition-all" title="Q&amp;A Chat"><span class="material-symbols-outlined text-lg" data-icon="chat_bubble">chat_bubble</span></button>
+<button class="p-2 hover:text-primary transition-all" title="Download"><span class="material-symbols-outlined text-lg" data-icon="download">download</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 2: Red/Non-Compliant -->
+<tr class="hover:bg-zinc-900/30 transition-colors group">
+<td class="p-6">
+<input checked="" class="rounded-none bg-transparent border-zinc-700 text-primary focus:ring-primary" type="checkbox"/>
+</td>
+<td class="p-6">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary/60" data-icon="description">description</span>
+<div>
+<a class="text-xs font-black text-white hover:text-primary transition-all uppercase tracking-wide block" href="#">Claim_Report_Harare.docx</a>
+<span class="text-[9px] text-zinc-500 font-bold uppercase tracking-widest mt-1 block">Mixed (EN/SN)</span>
+</div>
+</div>
+</td>
+<td class="p-6">
+<span class="text-[9px] font-black px-3 py-1 rounded bg-zinc-800 border border-zinc-700 text-zinc-400 uppercase tracking-widest">Claims Report</span>
+</td>
+<td class="p-6 text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">Oct 10, 2023</td>
+<td class="p-6">
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 bg-red-600"></span>
+<span class="text-xs font-black text-red-600">84</span>
+</div>
+</td>
+<td class="p-6">
+<div class="flex items-center gap-3">
+<div class="flex-1 h-1 bg-zinc-800 rounded-none overflow-hidden max-w-[80px]">
+<div class="h-full bg-red-600 w-[42%]"></div>
+</div>
+<span class="text-[10px] font-black text-red-600">42%</span>
+</div>
+</td>
+<td class="p-6 text-center">
+<span class="material-symbols-outlined text-primary text-xl" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</td>
+<td class="p-6 text-[10px] text-on-surface-variant font-bold uppercase tracking-wider">Urban Risk 2024</td>
+<td class="p-6 text-right">
+<div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-2 hover:text-primary transition-all"><span class="material-symbols-outlined text-lg" data-icon="chat_bubble">chat_bubble</span></button>
+<button class="p-2 hover:text-primary transition-all"><span class="material-symbols-outlined text-lg" data-icon="download">download</span></button>
+</div>
+</td>
+</tr>
+<!-- Row 3: Amber/Pending -->
+<tr class="hover:bg-zinc-900/30 transition-colors group">
+<td class="p-6">
+<input checked="" class="rounded-none bg-transparent border-zinc-700 text-primary focus:ring-primary" type="checkbox"/>
+</td>
+<td class="p-6">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary/60" data-icon="picture_as_pdf">picture_as_pdf</span>
+<div>
+<a class="text-xs font-black text-white hover:text-primary transition-all uppercase tracking-wide block" href="#">ID_Verification_Kudzai.pdf</a>
+<span class="text-[9px] text-zinc-500 font-bold uppercase tracking-widest mt-1 block">English</span>
+</div>
+</div>
+</td>
+<td class="p-6">
+<span class="text-[9px] font-black px-3 py-1 rounded bg-zinc-800 border border-zinc-700 text-zinc-400 uppercase tracking-widest">ID Document</span>
+</td>
+<td class="p-6 text-[11px] font-bold text-on-surface-variant uppercase tracking-wider">Oct 09, 2023</td>
+<td class="p-6">
+<div class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 bg-amber-500"></span>
+<span class="text-xs font-black text-amber-500">45</span>
+</div>
+</td>
+<td class="p-6">
+<div class="flex items-center gap-3">
+<div class="flex-1 h-1 bg-zinc-800 rounded-none overflow-hidden max-w-[80px]">
+<div class="h-full bg-amber-500 w-[78%]"></div>
+</div>
+<span class="text-[10px] font-black text-amber-500">78%</span>
+</div>
+</td>
+<td class="p-6 text-center">
+<span class="material-symbols-outlined text-zinc-800 text-xl" data-icon="cancel">cancel</span>
+</td>
+<td class="p-6 text-[10px] text-on-surface-variant font-bold uppercase tracking-wider">Retail KYC</td>
+<td class="p-6 text-right">
+<div class="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="p-2 hover:text-primary transition-all"><span class="material-symbols-outlined text-lg" data-icon="chat_bubble">chat_bubble</span></button>
+<button class="p-2 hover:text-primary transition-all"><span class="material-symbols-outlined text-lg" data-icon="download">download</span></button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination Footer -->
+<div class="bg-zinc-900 border-t border-outline-variant/30 px-8 py-6 flex items-center justify-between">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3">
+<span class="text-[10px] font-black text-zinc-500 uppercase tracking-widest">Limit:</span>
+<select class="bg-transparent border-none focus:ring-0 text-[10px] font-black text-primary uppercase">
+<option>10 Entries</option>
+<option>25 Entries</option>
+<option>50 Entries</option>
+</select>
+</div>
+<span class="text-[10px] font-black text-zinc-600 uppercase tracking-[0.2em]">Viewing 1-10 of 42 Records</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="w-10 h-10 flex items-center justify-center border border-zinc-800 hover:border-primary transition-all disabled:opacity-20" disabled="">
+<span class="material-symbols-outlined text-lg" data-icon="chevron_left">chevron_left</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center bg-primary text-black font-black text-[10px]">1</button>
+<button class="w-10 h-10 flex items-center justify-center border border-zinc-800 hover:border-primary text-zinc-500 hover:text-primary transition-all text-[10px] font-black">2</button>
+<button class="w-10 h-10 flex items-center justify-center border border-zinc-800 hover:border-primary text-zinc-500 hover:text-primary transition-all text-[10px] font-black">3</button>
+<button class="w-10 h-10 flex items-center justify-center border border-zinc-800 hover:border-primary transition-all">
+<span class="material-symbols-outlined text-lg" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Insights Cards -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+<div class="bg-surface-container-lowest p-8 border border-outline-variant/30 flex items-center gap-6 group hover:border-primary/50 transition-all">
+<div class="w-14 h-14 bg-zinc-900 text-primary flex items-center justify-center border border-zinc-800 group-hover:border-primary/50 transition-all">
+<span class="material-symbols-outlined text-2xl" data-icon="storage">storage</span>
+</div>
+<div>
+<p class="text-[9px] font-black text-zinc-500 uppercase tracking-[0.3em] mb-1">Total Payload</p>
+<p class="text-2xl font-black text-white italic tracking-tighter uppercase">14.2 GB <span class="text-[10px] font-bold text-zinc-600">/ 50.0</span></p>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-8 border border-outline-variant/30 flex items-center gap-6 group hover:border-primary/50 transition-all">
+<div class="w-14 h-14 bg-zinc-900 text-green-500 flex items-center justify-center border border-zinc-800 group-hover:border-green-500/50 transition-all">
+<span class="material-symbols-outlined text-2xl" data-icon="verified">verified</span>
+</div>
+<div>
+<p class="text-[9px] font-black text-zinc-500 uppercase tracking-[0.3em] mb-1">Authenticated</p>
+<p class="text-2xl font-black text-white italic tracking-tighter uppercase">1,248 <span class="text-[10px] font-bold text-zinc-600">Assets</span></p>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-8 border border-outline-variant/30 flex items-center gap-6 group hover:border-primary/50 transition-all">
+<div class="w-14 h-14 bg-zinc-900 text-red-600 flex items-center justify-center border border-zinc-800 group-hover:border-red-600/50 transition-all">
+<span class="material-symbols-outlined text-2xl" data-icon="gavel">gavel</span>
+</div>
+<div>
+<p class="text-[9px] font-black text-zinc-500 uppercase tracking-[0.3em] mb-1">Compromised</p>
+<p class="text-2xl font-black text-white italic tracking-tighter uppercase">12 <span class="text-[10px] font-bold text-zinc-600">Flagged</span></p>
+</div>
+</div>
+</div>
+</main>
+</body></html>

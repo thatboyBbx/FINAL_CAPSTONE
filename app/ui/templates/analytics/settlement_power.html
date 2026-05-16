@@ -1,0 +1,331 @@
+{% extends "base.html" %}
+
+{% block title %}Settlement Power — InsureIntel{% endblock %}
+
+{% block content %}
+
+<div class="max-w-7xl mx-auto px-4 py-6">
+
+  <!-- Page header -->
+  <div class="mb-6">
+    <div style="margin-bottom:0.75rem">
+      <a href="/home" class="btn-glass" style="display:inline-flex;align-items:center;gap:0.4rem;font-size:0.8rem">
+        <span class="material-symbols-outlined" style="font-size:17px">arrow_back</span>
+        Back
+      </a>
+    </div>
+    <h1 class="text-2xl font-bold" style="color: var(--cp, #004ac6);">
+      Claims Settlement Power
+    </h1>
+    <p style="color:var(--cosv);font-size:0.875rem;margin-top:0.25rem">
+      Insurer financial strength assessment based on IPEC FSR-1 quarterly returns.
+    </p>
+    <p style="color:var(--cosv);font-size:0.75rem;margin-top:0.25rem;font-style:italic">
+      Settlement Power assessments are internal broker work product for advisory purposes only.
+      This is not a credit rating or regulatory opinion.
+    </p>
+  </div>
+
+  <!-- ─── Section 1: Broker Lookup ─────────────────────────────────────── -->
+  <div class="bg-white rounded-xl shadow p-6 mb-8">
+    <h2 class="text-lg font-semibold mb-4">Insurer Lookup</h2>
+
+    <div class="flex items-center gap-3 mb-4">
+      <input type="text"
+             id="insurerSearchInput"
+             placeholder="Search insurer by name…"
+             class="flex-1 border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+             oninput="debouncedLookup(this.value)" />
+      <div id="lookupSpinner" class="hidden w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+    </div>
+
+    <!-- Result card -->
+    <div id="lookupResult" class="hidden"></div>
+
+    <!-- Not found notice -->
+    <div id="lookupNotFound" class="hidden text-sm italic">
+      No Settlement Power data found for this insurer. Verify name or check IPEC FSR-1 filings manually.
+    </div>
+  </div>
+
+  <!-- ─── Section 2: Market Overview ───────────────────────────────────── -->
+  <div class="bg-white rounded-xl shadow p-6">
+    <h2 class="text-lg font-semibold mb-4">Market Overview</h2>
+
+    <!-- Tab buttons -->
+    <div class="flex gap-2 mb-6 border-b">
+      <button onclick="showTab('radar')"   id="tab-radar"  class="tab-btn px-4 py-2 text-sm font-medium border-b-2 border-blue-600 text-blue-600">Radar</button>
+      <button onclick="showTab('bubble')"  id="tab-bubble" class="tab-btn px-4 py-2 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700">Bubble</button>
+      <button onclick="showTab('ranking')" id="tab-ranking" class="tab-btn px-4 py-2 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700">Rankings</button>
+    </div>
+
+    <!-- Tab: Radar -->
+    <div id="panel-radar">
+      <canvas id="radarChart" height="300"></canvas>
+    </div>
+
+    <!-- Tab: Bubble -->
+    <div id="panel-bubble" class="hidden">
+      <canvas id="bubbleChart" height="300"></canvas>
+    </div>
+
+    <!-- Tab: Rankings -->
+    <div id="panel-ranking" class="hidden">
+      <canvas id="rankingChart" height="400"></canvas>
+    </div>
+  </div>
+
+</div>
+
+<!-- Chart.js CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+
+<script>
+// ─── Error helper — delegates to global showErrorModal ────────────────────────
+function showError(type, msg, action) {
+  const detail = [type, msg, action].filter(Boolean).join(' — ');
+  showErrorModal(detail || 'An unexpected error occurred.');
+}
+
+// ─── Tab switching ────────────────────────────────────────────────────────────
+const panels = ['radar', 'bubble', 'ranking'];
+function showTab(name) {
+  panels.forEach(p => {
+    document.getElementById('panel-' + p).classList.toggle('hidden', p !== name);
+    const btn = document.getElementById('tab-' + p);
+    btn.classList.toggle('border-blue-600', p === name);
+    btn.classList.toggle('text-blue-600', p === name);
+    btn.classList.toggle('border-transparent', p !== name);
+    btn.classList.toggle('text-gray-500', p !== name);
+  });
+}
+
+// ─── Band colours ─────────────────────────────────────────────────────────────
+const BAND_COLORS = {
+  Strong:   'rgba( 22, 163,  74, 0.8)',   // green-600
+  Adequate: 'rgba( 20, 184, 166, 0.8)',   // teal-500
+  Marginal: 'rgba(234, 179,   8, 0.8)',   // yellow-500
+  Weak:     'rgba(249, 115,  22, 0.8)',   // orange-500
+  Critical: 'rgba(220,  38,  38, 0.8)',   // red-600
+};
+
+// ─── Lookup ───────────────────────────────────────────────────────────────────
+let _lookupTimer = null;
+function debouncedLookup(value) {
+  clearTimeout(_lookupTimer);
+  if (!value || value.trim().length < 2) {
+    document.getElementById('lookupResult').classList.add('hidden');
+    document.getElementById('lookupNotFound').classList.add('hidden');
+    return;
+  }
+  _lookupTimer = setTimeout(() => fetchLookup(value.trim()), 300);
+}
+
+async function fetchLookup(name) {
+  document.getElementById('lookupSpinner').classList.remove('hidden');
+  document.getElementById('lookupResult').classList.add('hidden');
+  document.getElementById('lookupNotFound').classList.add('hidden');
+  try {
+    const data = await apiFetch('/analytics/settlement-power/lookup?insurer=' + encodeURIComponent(name));
+    document.getElementById('lookupSpinner').classList.add('hidden');
+    renderLookupCard(data);
+  } catch (e) {
+    document.getElementById('lookupSpinner').classList.add('hidden');
+    if (e.message && e.message.includes('404')) {
+      document.getElementById('lookupNotFound').classList.remove('hidden');
+    } else {
+      showError('Lookup Failed', e.message, 'Check your connection and try again.');
+    }
+  }
+}
+
+function bandColorClass(band) {
+  const map = {
+    Strong:   'bg-green-100 text-green-800',
+    Adequate: 'bg-teal-100 text-teal-800',
+    Marginal: 'bg-yellow-100 text-yellow-800',
+    Weak:     'bg-orange-100 text-orange-800',
+    Critical: 'bg-red-100 text-red-800',
+  };
+  return map[band] || 'bg-gray-100 text-gray-800';
+}
+
+function renderLookupCard(d) {
+  const atRiskBlock = d.xgb_at_risk_flag ? `
+    <div class="mt-4 p-3 bg-amber-50 border border-amber-300 rounded text-sm text-amber-800">
+      <strong>Enhanced Due Diligence Recommended</strong>
+      ${d.shap_values ? `<p class="text-xs mt-1">${escapeHtml(
+        Object.entries(d.shap_values).length
+          ? 'Anomaly signal detected by XGBoost classifier.'
+          : '')}</p>` : ''}
+    </div>` : '';
+
+  const components = [
+    { label: 'Solvency',    score: d.solvency_score },
+    { label: 'Settlement',  score: d.settlement_capacity_score },
+    { label: 'Reserves',    score: d.reserves_adequacy_score },
+    { label: 'Liquidity',   score: d.liquidity_score },
+  ];
+
+  const barsHtml = components.map(c => `
+    <div class="flex items-center gap-2 text-xs">
+      <span class="w-20 text-gray-600">${c.label}</span>
+      <div class="flex-1 bg-gray-200 rounded-full h-2">
+        <div class="h-2 rounded-full bg-blue-500" style="width:${Math.min(c.score,100)}%"></div>
+      </div>
+      <span class="w-8 text-right font-medium">${c.score.toFixed(0)}</span>
+    </div>`).join('');
+
+  const html = `
+    <div class="border rounded-lg p-5 mt-2">
+      <div class="flex items-start justify-between">
+        <div>
+          <h3 class="font-bold text-base">${escapeHtml(d.insurer_name)}</h3>
+          ${d.ipec_licence_number ? `<p class="text-xs">IPEC Licence: ${escapeHtml(d.ipec_licence_number)}</p>` : ''}
+        </div>
+        <div class="text-right">
+          <span class="text-4xl font-bold" style="color:var(--cp,#004ac6)">${d.wcs_score.toFixed(0)}</span>
+          <span class="text-sm">/100</span>
+          <div class="mt-1">
+            <span class="px-2 py-1 rounded text-xs font-semibold ${bandColorClass(d.wcs_band)}">${escapeHtml(d.wcs_band)}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-4 space-y-2">
+        ${barsHtml}
+      </div>
+
+      <p class="mt-4 text-sm">${escapeHtml(d.natural_language_summary)}</p>
+
+      <div class="mt-3 p-3 bg-blue-50 border border-blue-200 rounded text-sm text-blue-800">
+        ${escapeHtml(d.broker_recommendation)}
+      </div>
+
+      ${atRiskBlock}
+
+      <p class="mt-3 text-xs text-gray-400">
+        Based on: ${escapeHtml(d.data_source || 'IPEC FSR-1')}
+      </p>
+
+      <a href="/intelligence/settlement-power?insurer=${encodeURIComponent(d.insurer_name)}"
+         style="margin-top:0.75rem;display:inline-block;font-size:0.75rem;color:var(--cp);text-decoration:none">
+        View Settlement Power profile →
+      </a>
+
+      <p class="mt-4 text-xs text-gray-400 italic border-t pt-3">
+        Settlement Power assessments are internal broker work product for advisory purposes only.
+        This is not a credit rating or regulatory opinion.
+      </p>
+    </div>`;
+
+  const el = document.getElementById('lookupResult');
+  el.innerHTML = html;
+  el.classList.remove('hidden');
+}
+
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+// ─── Charts ───────────────────────────────────────────────────────────────────
+let chartData = null;
+let _radarChart = null, _bubbleChart = null, _rankingChart = null;
+
+async function loadChartData() {
+  try {
+    chartData = await apiFetch('/analytics/settlement-power/chart-data');
+    buildRadarChart();
+    buildBubbleChart();
+    buildRankingChart();
+  } catch (e) {
+    showError('Chart Error', e.message || 'Could not load chart data.', 'Refresh the page.');
+  }
+}
+
+function buildRadarChart() {
+  if (!chartData || !chartData.labels.length) return;
+
+  // Show top WCS, bottom WCS, and 2 mid-range insurers
+  const n = chartData.labels.length;
+  const indices = [0, Math.floor(n * 0.33), Math.floor(n * 0.66), n - 1]
+    .filter((v, i, a) => a.indexOf(v) === i && v < n);
+
+  const datasets = indices.map((idx, i) => ({
+    label: chartData.short_names[idx],
+    data: [chartData.solvency[idx], chartData.settlement[idx], chartData.reserves[idx], chartData.liquidity[idx]],
+    backgroundColor: `rgba(${[59,93,147,220][i]},${[130,195,209,38][i]},${[246,210,14,38][i]},0.2)`,
+    borderColor:     `rgba(${[59,93,147,220][i]},${[130,195,209,38][i]},${[246,210,14,38][i]},0.8)`,
+    borderWidth: 2,
+  }));
+
+  _radarChart = new Chart(document.getElementById('radarChart'), {
+    type: 'radar',
+    data: {
+      labels: ['Solvency', 'Settlement Capacity', 'Reserves Adequacy', 'Liquidity'],
+      datasets,
+    },
+    options: {
+      responsive: true,
+      scales: { r: { min: 0, max: 100 } },
+      plugins: { tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: ${ctx.raw.toFixed(0)}` } } },
+    },
+  });
+}
+
+function buildBubbleChart() {
+  if (!chartData || !chartData.labels.length) return;
+
+  const datasets = chartData.labels.map((label, i) => ({
+    label: chartData.short_names[i],
+    data: [{ x: chartData.solvency[i], y: chartData.settlement[i], r: Math.max(5, chartData.wcs[i] / 8) }],
+    backgroundColor: BAND_COLORS[chartData.bands[i]] || 'rgba(100,100,100,0.5)',
+  }));
+
+  _bubbleChart = new Chart(document.getElementById('bubbleChart'), {
+    type: 'bubble',
+    data: { datasets },
+    options: {
+      responsive: true,
+      scales: {
+        x: { min: 0, max: 100, title: { display: true, text: 'Solvency Score' } },
+        y: { min: 0, max: 100, title: { display: true, text: 'Settlement Capacity Score' } },
+      },
+    },
+  });
+}
+
+function buildRankingChart() {
+  if (!chartData || !chartData.labels.length) return;
+
+  _rankingChart = new Chart(document.getElementById('rankingChart'), {
+    type: 'bar',
+    data: {
+      labels: chartData.short_names,
+      datasets: [{
+        label: 'WCS Score',
+        data: chartData.wcs,
+        backgroundColor: chartData.bands.map(b => BAND_COLORS[b] || 'rgba(100,100,100,0.5)'),
+      }],
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      scales: { x: { min: 0, max: 100 } },
+      plugins: { legend: { display: false } },
+      onClick: (evt, elements) => {
+        if (elements.length) {
+          const idx = elements[0].index;
+          document.getElementById('insurerSearchInput').value = chartData.labels[idx];
+          fetchLookup(chartData.labels[idx]);
+        }
+      },
+    },
+  });
+}
+
+// Boot
+document.addEventListener('DOMContentLoaded', loadChartData);
+</script>
+{% endblock %}

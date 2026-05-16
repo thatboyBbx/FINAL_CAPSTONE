@@ -1,0 +1,404 @@
+{% extends "base.html" %}
+{#
+  intelligence/settlement_power.html — Settlement Power WCS Dashboard
+  Charts: radar (4 WCS factors), bubble (all insurers), bar (top-10 CSP)
+  SHAP panel, anomaly badge, broker lookup with autocomplete.
+  Uses Chart.js CDN.
+#}
+{% block title %}Settlement Power — InsureIntel Zimbabwe{% endblock %}
+
+{% block head %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="px-8 py-7">
+
+  <nav style="display:flex;align-items:center;gap:0.5rem;font-size:0.75rem;color:var(--cosv);margin-bottom:1.5rem">
+    <a href="/home" style="color:var(--cosv);text-decoration:none">Home</a>
+    <span>/</span>
+    <a href="/intelligence" style="color:var(--cosv);text-decoration:none">Intelligence</a>
+    <span>/</span>
+    <span style="color:var(--cp);font-weight:600">Settlement Power</span>
+  </nav>
+
+  <h1 class="font-headline" style="font-size:1.5rem;font-weight:800;color:var(--cos);margin:0 0 1.75rem">
+    ⚖️ Claims Settlement Power
+  </h1>
+
+  <!-- Lookup -->
+  <div class="glass-card" style="padding:1.5rem;margin-bottom:1.5rem">
+    <div style="display:flex;align-items:flex-end;gap:0.75rem;flex-wrap:wrap">
+      <div style="flex:1;min-width:240px;position:relative">
+        <label class="form-label">Search Insurer</label>
+        <input id="insurer-search" type="text" placeholder="Start typing insurer name…"
+               class="form-input" autocomplete="off" oninput="onSearchInput()">
+        <div id="autocomplete-dropdown"
+             style="display:none;position:absolute;top:100%;left:0;right:0;z-index:100;
+                    background:var(--csf);border:1px solid var(--col);border-radius:6px;
+                    box-shadow:0 8px 24px rgba(0,0,0,0.3);max-height:200px;overflow-y:auto">
+        </div>
+      </div>
+      <button id="lookup-btn" onclick="loadSingleInsurer()" class="btn-glass-gold"
+              style="flex-shrink:0" disabled>
+        <span class="material-symbols-outlined" style="font-size:18px">search</span>
+        Look Up
+      </button>
+      <button onclick="loadAllInsurers()" class="btn-glass">
+        <span class="material-symbols-outlined" style="font-size:18px">groups</span>
+        Load All Insurers
+      </button>
+    </div>
+  </div>
+
+  <!-- Single insurer panel -->
+  <div id="single-panel" style="display:none;margin-bottom:1.5rem">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+      <!-- Radar chart — 4 WCS factors -->
+      <div class="glass-card" style="padding:1.5rem">
+        <h3 style="color:var(--cos);font-weight:700;font-size:0.9375rem;margin:0 0 1rem">
+          WCS Factor Radar
+        </h3>
+        <div id="anomaly-badge-wrap"></div>
+        <div style="position:relative;height:300px">
+          <canvas id="radar-chart"></canvas>
+        </div>
+      </div>
+
+      <!-- SHAP explanation -->
+      <div class="glass-card" style="padding:1.5rem">
+        <h3 style="color:var(--cos);font-weight:700;font-size:0.9375rem;margin:0 0 1rem">
+          SHAP Feature Contributions
+        </h3>
+        <div style="position:relative;height:300px">
+          <canvas id="shap-chart"></canvas>
+        </div>
+        <div id="shap-empty" style="display:none;text-align:center;padding:2rem;
+             color:var(--cosv);font-size:0.875rem">No SHAP data available.</div>
+      </div>
+
+    </div>
+
+    <!-- WCS stats row -->
+    <div id="wcs-stats-row" class="grid grid-cols-2 md:grid-cols-5 gap-4 mt-5"></div>
+  </div>
+
+  <!-- All insurers charts -->
+  <div id="all-panel" style="display:none">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+
+      <!-- Bubble chart -->
+      <div class="glass-card" style="padding:1.5rem">
+        <h3 style="color:var(--cos);font-weight:700;font-size:0.9375rem;margin:0 0 1rem">
+          Solvency vs. Claims (all insurers)
+        </h3>
+        <div style="position:relative;height:300px">
+          <canvas id="bubble-chart"></canvas>
+        </div>
+      </div>
+
+      <!-- Bar chart: top 10 CSP -->
+      <div class="glass-card" style="padding:1.5rem">
+        <h3 style="color:var(--cos);font-weight:700;font-size:0.9375rem;margin:0 0 1rem">
+          Top 10 CSP Scores
+        </h3>
+        <div style="position:relative;height:300px">
+          <canvas id="bar-chart"></canvas>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+"use strict";
+
+let radarChart = null;
+let shapChart  = null;
+let bubbleChart = null;
+let barChart    = null;
+let selectedInsurerId = null;
+let allInsurerNames   = [];
+
+const GOLD   = "rgba(212,175,55,0.80)";
+const GOLD_A = "rgba(212,175,55,0.20)";
+const RED    = "rgba(248,113,113,0.80)";
+const RED_A  = "rgba(248,113,113,0.20)";
+
+/* ── Load insurer names for autocomplete ─────────────────────────────────── */
+document.addEventListener("DOMContentLoaded", async () => {
+  try {
+    const data = await apiGet("/insurers");
+    allInsurerNames = (Array.isArray(data) ? data : []).map(i => ({ id: i.id, name: i.name }));
+  } catch (_) {}
+});
+
+function onSearchInput() {
+  const q   = document.getElementById("insurer-search").value.trim().toLowerCase();
+  const dd  = document.getElementById("autocomplete-dropdown");
+  const btn = document.getElementById("lookup-btn");
+  btn.disabled = !q;
+  if (!q) { dd.style.display = "none"; return; }
+  const matches = allInsurerNames.filter(i => i.name.toLowerCase().includes(q)).slice(0, 8);
+  if (matches.length === 0) { dd.style.display = "none"; return; }
+  dd.innerHTML = matches.map(i => `
+    <div onclick="selectInsurer(${i.id},'${_esc(i.name)}')"
+         style="padding:0.5rem 0.75rem;cursor:pointer;font-size:0.8125rem;color:var(--cos);
+                border-bottom:1px solid rgba(255,255,255,0.04)"
+         onmouseover="this.style.background='rgba(212,175,55,0.08)'"
+         onmouseout="this.style.background=''">
+      ${_esc(i.name)}
+    </div>`).join("");
+  dd.style.display = "block";
+}
+
+function selectInsurer(id, name) {
+  selectedInsurerId = id;
+  document.getElementById("insurer-search").value = name;
+  document.getElementById("autocomplete-dropdown").style.display = "none";
+  document.getElementById("lookup-btn").disabled = false;
+}
+
+document.addEventListener("click", e => {
+  if (!document.getElementById("autocomplete-dropdown").contains(e.target)
+   && e.target.id !== "insurer-search") {
+    document.getElementById("autocomplete-dropdown").style.display = "none";
+  }
+});
+
+/* ── Load single insurer WCS ─────────────────────────────────────────────── */
+async function loadSingleInsurer() {
+  const id = selectedInsurerId
+    || (allInsurerNames.find(i => i.name.toLowerCase() ===
+        document.getElementById("insurer-search").value.trim().toLowerCase()) || {}).id;
+  if (!id) { showToast("Select an insurer from the dropdown.", "warning"); return; }
+
+  showProgress(40, "Loading WCS…");
+  try {
+    const data = await apiGet(`/api/settlement-power/${id}`);
+    showProgress(0);
+    renderSingle(data);
+    document.getElementById("single-panel").style.display = "block";
+  } catch (err) {
+    showProgress(0);
+    showToast("Failed: " + err.message, "error");
+  }
+}
+
+function renderSingle(d) {
+  // Anomaly badge (with pulse-red animation)
+  const abWrap = document.getElementById("anomaly-badge-wrap");
+  abWrap.innerHTML = d.xgb_at_risk_flag
+    ? `<span class="badge-distressed" style="margin-bottom:0.75rem">
+         <span class="material-symbols-outlined" style="font-size:14px">warning</span>
+         Distressed Signal
+       </span>` : "";
+
+  // WCS stats
+  const stats = document.getElementById("wcs-stats-row");
+  const items = [
+    { label: "WCS Score",   val: (d.wcs_score||0).toFixed(1),   color: "var(--cp)" },
+    { label: "Band",        val: d.wcs_band || "—",              color: "var(--cos)" },
+    { label: "Solvency",    val: (d.solvency_score||0).toFixed(1),   color: "#60a5fa" },
+    { label: "Settlement",  val: (d.settlement_capacity_score||0).toFixed(1), color: "#4ade80" },
+    { label: "Liquidity",   val: (d.liquidity_score||0).toFixed(1),   color: "#fbbf24" },
+  ];
+  stats.innerHTML = items.map(i => `
+    <div class="glass-card" style="padding:1rem;text-align:center">
+      <p style="font-size:1.5rem;font-weight:800;color:${i.color};margin:0;line-height:1">${_esc(i.val)}</p>
+      <p style="color:var(--cosv);font-size:0.7rem;margin:0.25rem 0 0">${i.label}</p>
+    </div>`).join("");
+
+  // Radar chart — fill:true, gold fill, white gridlines, responsive
+  const labels = ["Solvency (35%)", "Settlement (30%)", "Reserves (20%)", "Liquidity (15%)"];
+  const values = [
+    d.solvency_score || 0,
+    d.settlement_capacity_score || 0,
+    d.reserves_adequacy_score || 0,
+    d.liquidity_score || 0,
+  ];
+  if (radarChart) radarChart.destroy();
+  const rCtx = document.getElementById("radar-chart").getContext("2d");
+  radarChart = new Chart(rCtx, {
+    type: "radar",
+    data: {
+      labels,
+      datasets: [{
+        label: d.insurer_name || "Insurer",
+        data:  values,
+        fill:  true,
+        backgroundColor: "rgba(212,175,55,0.30)",
+        borderColor:     GOLD,
+        borderWidth:     2,
+        pointBackgroundColor: GOLD,
+        pointBorderColor: "#fff",
+        pointHoverBackgroundColor: "#fff",
+        pointHoverBorderColor: GOLD,
+      }],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: { r: {
+        min: 0, max: 100,
+        ticks: { color:"#a1a1a1", stepSize: 20, backdropColor:"transparent" },
+        grid:  { color:"rgba(255,255,255,0.12)" },
+        angleLines: { color:"rgba(255,255,255,0.10)" },
+        pointLabels: { color:"#f5f5f5", font: { size:11, family:"'Inter',sans-serif" } },
+      }},
+      plugins: {
+        legend: { labels: { color:"#f5f5f5", font:{ family:"'Inter',sans-serif" } } },
+      },
+    },
+  });
+
+  // SHAP chart
+  const shapData = d.shap_values_json ? (() => {
+    try { return JSON.parse(d.shap_values_json); } catch (_) { return null; }
+  })() : null;
+  const shapEl = document.getElementById("shap-chart");
+  const shapEmpty = document.getElementById("shap-empty");
+  if (shapChart) shapChart.destroy();
+
+  if (shapData && typeof shapData === "object") {
+    const keys   = Object.keys(shapData);
+    const vals   = Object.values(shapData);
+    shapEl.style.display    = "block";
+    shapEmpty.style.display = "none";
+    const sCtx  = shapEl.getContext("2d");
+    shapChart = new Chart(sCtx, {
+      type: "bar",
+      data: {
+        labels: keys,
+        datasets: [{
+          label: "SHAP Value",
+          data:            vals,
+          backgroundColor: vals.map(v => v >= 0 ? "rgba(212,175,55,0.65)" : "rgba(248,113,113,0.65)"),
+          borderColor:     vals.map(v => v >= 0 ? GOLD : RED),
+          borderWidth:     1,
+          borderRadius:    3,
+        }],
+      },
+      options: {
+        indexAxis: "y",
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: { label: ctx => ` ${ctx.raw.toFixed(3)}` } },
+        },
+        scales: {
+          x: { ticks: { color:"#a1a1a1" }, grid: { color:"rgba(255,255,255,0.06)" } },
+          y: { ticks: { color:"#f5f5f5" }, grid: { display: false } },
+        },
+      },
+    });
+  } else {
+    shapEl.style.display    = "none";
+    shapEmpty.style.display = "block";
+  }
+}
+
+/* ── Load all insurers ────────────────────────────────────────────────────── */
+async function loadAllInsurers() {
+  showProgress(30, "Loading all WCS scores…");
+  try {
+    const data = await apiGet("/api/settlement-power/all");
+    showProgress(0);
+    renderAll(data);
+    document.getElementById("all-panel").style.display = "block";
+  } catch (err) {
+    showProgress(0);
+    showToast("Failed: " + err.message, "error");
+  }
+}
+
+function renderAll(data) {
+  const scores = Array.isArray(data) ? data : (data.scores || []);
+  const sorted = scores.slice().sort((a,b) => (b.wcs_score||0) - (a.wcs_score||0));
+  const top10  = sorted.slice(0, 10);
+
+  // Bubble chart: x=solvency, y=claims settlement, r=reserves
+  // Colour scale: green(CSP>0.7) → amber(0.4-0.7) → red(<0.4) mapped 0–100
+  if (bubbleChart) bubbleChart.destroy();
+  const bCtx = document.getElementById("bubble-chart").getContext("2d");
+  function _cspColor(csp) {
+    const v = (csp || 0) / 100;
+    if (v > 0.7) return "rgba(74,222,128,0.65)";
+    if (v > 0.4) return "rgba(251,191,36,0.65)";
+    return "rgba(248,113,113,0.65)";
+  }
+  bubbleChart = new Chart(bCtx, {
+    type: "bubble",
+    data: {
+      datasets: [{
+        label: "Insurers",
+        data:  scores.map(s => ({
+          x: s.solvency_score || 0,
+          y: s.settlement_capacity_score || 0,
+          r: Math.max(4, (s.reserves_adequacy_score || 0) / 8),
+          _csp: s.wcs_score || 0,
+        })),
+        backgroundColor: scores.map(s => _cspColor(s.wcs_score || 0)),
+        borderColor:     "rgba(255,255,255,0.20)",
+        borderWidth:     1,
+      }],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        x: { title: { display:true, text:"Solvency Score", color:"#a1a1a1" },
+             ticks: { color:"#a1a1a1" }, grid: { color:"rgba(255,255,255,0.06)" } },
+        y: { title: { display:true, text:"Settlement Capacity Score", color:"#a1a1a1" },
+             ticks: { color:"#a1a1a1" }, grid: { color:"rgba(255,255,255,0.06)" } },
+      },
+      plugins: {
+        legend: { labels: { color:"#f5f5f5" } },
+        tooltip: { callbacks: {
+          label: ctx => `Solvency: ${ctx.raw.x.toFixed(1)}, Settlement: ${ctx.raw.y.toFixed(1)}`
+        }},
+      },
+    },
+  });
+
+  // Bar chart: top 10 CSP — sorted descending, gold bars, value labels
+  if (barChart) barChart.destroy();
+  const barCtx = document.getElementById("bar-chart").getContext("2d");
+  barChart = new Chart(barCtx, {
+    type: "bar",
+    data: {
+      labels:   top10.map(s => (s.insurer_name || `#${s.insurer_id}`).substring(0, 20)),
+      datasets: [{
+        label:           "WCS Score",
+        data:            top10.map(s => s.wcs_score || 0),
+        backgroundColor: "rgba(212,175,55,0.80)",
+        borderColor:     GOLD,
+        borderWidth:     1,
+        borderRadius:    4,
+      }],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      indexAxis: "y",
+      scales: {
+        x: { min:0, max:100, ticks: { color:"#a1a1a1" }, grid: { color:"rgba(255,255,255,0.06)" } },
+        y: { ticks: { color:"#f5f5f5" }, grid: { display:false } },
+      },
+      plugins: {
+        legend: { labels: { color:"#f5f5f5" } },
+        datalabels: { display: false },
+      },
+    },
+  });
+}
+
+function _esc(s) { return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+</script>
+{% endblock %}

@@ -1,0 +1,321 @@
+{% extends "base.html" %}
+{#
+  index.html — Home / Dashboard landing page
+  Route: GET /home
+  Shows: summary stats cards, recent activity feed, quick-upload widget.
+  Data loaded client-side via GET /documents to avoid server-side blocking.
+#}
+
+{% block title %}Home — InsureIntel Zimbabwe{% endblock %}
+
+{% block content %}
+<div class="px-8 py-7">
+
+  <!-- ── Breadcrumb ───────────────────────────────────────────────────────── -->
+  <nav style="display:flex;align-items:center;gap:0.5rem;font-size:0.75rem;
+              color:var(--cosv);margin-bottom:1.5rem">
+    <span class="material-symbols-outlined" style="font-size:16px;color:var(--cp)">home</span>
+    <span style="color:var(--cp);font-weight:600">Home</span>
+  </nav>
+
+  <!-- ── Page Header ──────────────────────────────────────────────────────── -->
+  <div style="margin-bottom:2rem;display:flex;align-items:flex-end;
+              justify-content:space-between;flex-wrap:wrap;gap:1rem">
+    <div>
+      <h1 class="font-headline" style="font-size:1.75rem;font-weight:800;
+                 color:var(--cos);margin:0 0 0.25rem">
+        Welcome back{% if full_name %}, {{ full_name }}{% endif %}
+      </h1>
+      <p style="color:var(--cosv);font-size:0.9rem;margin:0">
+        InsureIntel Zimbabwe — IPEC-regulated brokerage intelligence platform
+      </p>
+    </div>
+    <!-- Quick upload shortcut -->
+    <a href="/documents/upload" class="btn-glass-gold" style="flex-shrink:0;border-radius:10px">
+      <span class="material-symbols-outlined" style="font-size:18px">upload_file</span>
+      Quick Upload
+    </a>
+  </div>
+
+  <!-- ── Summary Stats ────────────────────────────────────────────────────── -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+              gap:1.25rem;margin-bottom:2rem" id="stats-grid">
+
+    <!-- Total Documents -->
+    <div class="glass-card stat-card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div>
+          <p style="color:var(--cosv);font-size:0.7rem;font-weight:700;
+                    text-transform:uppercase;letter-spacing:0.1em;margin:0 0 0.5rem">
+            Total Documents
+          </p>
+          <p id="stat-total-docs" class="font-headline"
+             style="font-size:2rem;font-weight:800;color:var(--cos);margin:0;line-height:1">
+            —
+          </p>
+          <p style="color:var(--cosv);font-size:0.75rem;margin:0.25rem 0 0">in vault</p>
+        </div>
+        <div style="width:42px;height:42px;border-radius:10px;flex-shrink:0;
+                    background:rgba(212,175,55,0.12);display:flex;align-items:center;
+                    justify-content:center">
+          <span class="material-symbols-outlined"
+                style="color:var(--cp);font-size:22px;font-variation-settings:'FILL' 1">
+            description
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Compliance Avg -->
+    <div class="glass-card stat-card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div>
+          <p style="color:var(--cosv);font-size:0.7rem;font-weight:700;
+                    text-transform:uppercase;letter-spacing:0.1em;margin:0 0 0.5rem">
+            Avg Compliance
+          </p>
+          <p id="stat-compliance-avg" class="font-headline"
+             style="font-size:2rem;font-weight:800;color:#4ade80;margin:0;line-height:1">
+            —
+          </p>
+          <p style="color:var(--cosv);font-size:0.75rem;margin:0.25rem 0 0">score (0–100)</p>
+        </div>
+        <div style="width:42px;height:42px;border-radius:10px;flex-shrink:0;
+                    background:rgba(74,222,128,0.10);display:flex;align-items:center;
+                    justify-content:center">
+          <span class="material-symbols-outlined"
+                style="color:#4ade80;font-size:22px;font-variation-settings:'FILL' 1">
+            verified_user
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Processed this month -->
+    <div class="glass-card stat-card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div>
+          <p style="color:var(--cosv);font-size:0.7rem;font-weight:700;
+                    text-transform:uppercase;letter-spacing:0.1em;margin:0 0 0.5rem">
+            Processed Docs
+          </p>
+          <p id="stat-processed" class="font-headline"
+             style="font-size:2rem;font-weight:800;color:var(--cos);margin:0;line-height:1">
+            —
+          </p>
+          <p style="color:var(--cosv);font-size:0.75rem;margin:0.25rem 0 0">status: processed</p>
+        </div>
+        <div style="width:42px;height:42px;border-radius:10px;flex-shrink:0;
+                    background:rgba(96,165,250,0.10);display:flex;align-items:center;
+                    justify-content:center">
+          <span class="material-symbols-outlined"
+                style="color:#60a5fa;font-size:22px;font-variation-settings:'FILL' 1">
+            task_alt
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pending Review -->
+    <div class="glass-card stat-card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div>
+          <p style="color:var(--cosv);font-size:0.7rem;font-weight:700;
+                    text-transform:uppercase;letter-spacing:0.1em;margin:0 0 0.5rem">
+            Pending Review
+          </p>
+          <p id="stat-pending" class="font-headline"
+             style="font-size:2rem;font-weight:800;color:#fbbf24;margin:0;line-height:1">
+            —
+          </p>
+          <p style="color:var(--cosv);font-size:0.75rem;margin:0.25rem 0 0">awaiting analysis</p>
+        </div>
+        <div style="width:42px;height:42px;border-radius:10px;flex-shrink:0;
+                    background:rgba(251,191,36,0.10);display:flex;align-items:center;
+                    justify-content:center">
+          <span class="material-symbols-outlined"
+                style="color:#fbbf24;font-size:22px;font-variation-settings:'FILL' 1">
+            pending_actions
+          </span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /stats-grid -->
+
+  <!-- ── Two-column layout: quick actions + recent activity ───────────────── -->
+  <div style="display:grid;grid-template-columns:1fr 1.5fr;gap:1.5rem;align-items:start"
+       class="home-grid">
+
+    <!-- Quick Actions -->
+    <div class="glass-card" style="padding:1.5rem">
+      <h2 style="color:var(--cos);font-size:1rem;font-weight:700;
+                 margin:0 0 1.25rem;display:flex;align-items:center;gap:0.5rem">
+        <span class="material-symbols-outlined" style="font-size:20px;color:var(--cp)">bolt</span>
+        Quick Actions
+      </h2>
+      <div style="display:flex;flex-direction:column;gap:0.625rem">
+
+        <a href="/documents/upload" class="btn-glass"
+           style="width:100%;justify-content:flex-start;gap:0.75rem;padding:0.75rem 1rem">
+          <span class="material-symbols-outlined" style="font-size:20px;color:var(--cp)">upload_file</span>
+          <span>Upload Document</span>
+        </a>
+
+        <a href="/documents/vault" class="btn-glass"
+           style="width:100%;justify-content:flex-start;gap:0.75rem;padding:0.75rem 1rem">
+          <span class="material-symbols-outlined" style="font-size:20px;color:#60a5fa">folder_open</span>
+          <span>Document Vault</span>
+        </a>
+
+        <a href="/analysis/ml" class="btn-glass"
+           style="width:100%;justify-content:flex-start;gap:0.75rem;padding:0.75rem 1rem">
+          <span class="material-symbols-outlined" style="font-size:20px;color:#a78bfa">insights</span>
+          <span>Run ML Analysis</span>
+        </a>
+
+        <a href="/reports/compliance" class="btn-glass"
+           style="width:100%;justify-content:flex-start;gap:0.75rem;padding:0.75rem 1rem">
+          <span class="material-symbols-outlined" style="font-size:20px;color:#4ade80">verified_user</span>
+          <span>Compliance Check</span>
+        </a>
+
+        <a href="/intelligence/settlement-power" class="btn-glass"
+           style="width:100%;justify-content:flex-start;gap:0.75rem;padding:0.75rem 1rem">
+          <span class="material-symbols-outlined" style="font-size:20px;color:var(--cp)">shield_with_heart</span>
+          <span>Settlement Power</span>
+        </a>
+
+        <a href="/intelligence/advisory" class="btn-glass"
+           style="width:100%;justify-content:flex-start;gap:0.75rem;padding:0.75rem 1rem">
+          <span class="material-symbols-outlined" style="font-size:20px;color:#fbbf24">tips_and_updates</span>
+          <span>Advisory Engine</span>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="glass-card" style="padding:1.5rem">
+      <h2 style="color:var(--cos);font-size:1rem;font-weight:700;
+                 margin:0 0 1.25rem;display:flex;align-items:center;
+                 justify-content:space-between;gap:0.5rem">
+        <span style="display:flex;align-items:center;gap:0.5rem">
+          <span class="material-symbols-outlined" style="font-size:20px;color:var(--cp)">history</span>
+          Recent Documents
+        </span>
+        <a href="/documents/vault" style="font-size:0.75rem;color:var(--cp);
+           text-decoration:none;font-weight:600">View all →</a>
+      </h2>
+
+      <!-- Activity list — populated by JS -->
+      <div id="recent-docs-list">
+        <div style="text-align:center;padding:2rem;color:var(--cosv);font-size:0.875rem">
+          <span class="material-symbols-outlined"
+                style="font-size:32px;display:block;margin-bottom:0.5rem;opacity:0.4">
+            hourglass_top
+          </span>
+          Loading recent documents…
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /home-grid -->
+
+</div><!-- /px-8 py-7 -->
+{% endblock %}
+
+{% block scripts %}
+<script>
+/**
+ * Home page — load summary stats and recent documents on page load.
+ * Uses apiGet() from the global api.js layer.
+ * No auto-running pipelines — data is purely display.
+ */
+document.addEventListener("DOMContentLoaded", async function () {
+
+  /* ── Load documents list ──────────────────────────────────────────────── */
+  try {
+    const docs = await apiGet("/api/documents");
+
+    // Stats
+    document.getElementById("stat-total-docs").textContent   = docs.length;
+    document.getElementById("stat-processed").textContent    = docs.filter(d => d.status === "processed").length;
+    document.getElementById("stat-pending").textContent      = docs.filter(d => ["uploaded","processing"].includes(d.status)).length;
+
+    // Render recent 8 documents
+    const listEl = document.getElementById("recent-docs-list");
+    if (docs.length === 0) {
+      listEl.innerHTML = `
+        <div style="text-align:center;padding:2rem;color:var(--cosv);font-size:0.875rem">
+          <span class="material-symbols-outlined"
+                style="font-size:32px;display:block;margin-bottom:0.5rem;opacity:0.4">
+            description
+          </span>
+          No documents yet. <a href="/documents/upload" style="color:var(--cp);font-weight:600">Upload one →</a>
+        </div>`;
+    } else {
+      const recent = docs.slice().reverse().slice(0, 8);
+      listEl.innerHTML = recent.map(d => {
+        const statusColours = {
+          uploaded:   { bg: "rgba(96,165,250,0.10)",  color: "#60a5fa" },
+          processing: { bg: "rgba(251,191,36,0.10)",  color: "#fbbf24" },
+          processed:  { bg: "rgba(74,222,128,0.10)",  color: "#4ade80" },
+          failed:     { bg: "rgba(248,113,113,0.10)", color: "#f87171" },
+        };
+        const sc = statusColours[d.status] || statusColours.uploaded;
+        const dt = d.created_at ? new Date(d.created_at).toLocaleDateString("en-GB") : "—";
+        return `
+          <div style="display:flex;align-items:center;gap:0.75rem;
+                      padding:0.625rem 0;border-bottom:1px solid rgba(255,255,255,0.04)">
+            <span class="material-symbols-outlined"
+                  style="color:var(--cp);font-size:20px;flex-shrink:0;
+                         font-variation-settings:'FILL' 1">description</span>
+            <div style="flex:1;min-width:0">
+              <p style="color:var(--cos);font-size:0.8125rem;font-weight:600;
+                         margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">
+                ${_esc(d.title || d.original_filename || 'Untitled')}
+              </p>
+              <p style="color:var(--cosv);font-size:0.7rem;margin:0">${dt}</p>
+            </div>
+            <span style="background:${sc.bg};color:${sc.color};
+                          border:1px solid ${sc.color}33;border-radius:9999px;
+                          padding:0.1rem 0.5rem;font-size:0.65rem;font-weight:700;
+                          text-transform:uppercase;flex-shrink:0">
+              ${_esc(d.status)}
+            </span>
+            <a href="/documents-ui/${d.id}"
+               style="color:var(--cp);font-size:0.75rem;font-weight:600;
+                      text-decoration:none;flex-shrink:0">View</a>
+          </div>`;
+      }).join("");
+    }
+
+    /* ── Compliance avg — try compliance statistics endpoint ─────────────── */
+    try {
+      const stats = await apiGet("/api/documents/compliance/statistics");
+      const avg   = stats.average_compliance_score;
+      if (avg !== undefined && avg !== null) {
+        document.getElementById("stat-compliance-avg").textContent =
+          typeof avg === "number" ? avg.toFixed(1) : avg;
+      } else {
+        document.getElementById("stat-compliance-avg").textContent = "N/A";
+      }
+    } catch (_) {
+      document.getElementById("stat-compliance-avg").textContent = "N/A";
+    }
+
+  } catch (err) {
+    console.warn("Home stats load error:", err.message);
+    showToast("Could not load dashboard stats.", "warning", 6000);
+  }
+});
+
+/** HTML-escape helper */
+function _esc(s) {
+  return String(s)
+    .replace(/&/g,"&amp;").replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+</script>
+{% endblock %}

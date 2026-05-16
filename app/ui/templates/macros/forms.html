@@ -1,0 +1,107 @@
+{# macros/forms.html — Form input macros for InsureIntel Zimbabwe #}
+
+{% macro text_input(name, label=None, placeholder='', value='', type='text', required=False, autofocus=False, help=None, error=None) %}
+<div style="margin-bottom:1rem">
+  {% if label %}
+  <label class="form-label" for="field-{{ name }}">{{ label }}{% if required %}<span style="color:var(--cerr);margin-left:0.25rem">*</span>{% endif %}</label>
+  {% endif %}
+  <input
+    type="{{ type }}"
+    id="field-{{ name }}"
+    name="{{ name }}"
+    class="form-input{% if error %} border-red-500{% endif %}"
+    placeholder="{{ placeholder }}"
+    value="{{ value }}"
+    {{ 'required' if required else '' }}
+    {{ 'autofocus' if autofocus else '' }}
+  />
+  {% if error %}<p style="color:var(--cerr);font-size:0.75rem;margin:0.25rem 0 0">{{ error }}</p>{% endif %}
+  {% if help %}<p style="color:var(--cosv);font-size:0.75rem;margin:0.25rem 0 0">{{ help }}</p>{% endif %}
+</div>
+{% endmacro %}
+
+{% macro password_input(name, label='Password', placeholder='', required=False, help=None) %}
+<div style="margin-bottom:1rem">
+  <label class="form-label" for="field-{{ name }}">{{ label }}{% if required %}<span style="color:var(--cerr);margin-left:0.25rem">*</span>{% endif %}</label>
+  <div style="position:relative">
+    <input
+      type="password"
+      id="field-{{ name }}"
+      name="{{ name }}"
+      class="form-input"
+      placeholder="{{ placeholder }}"
+      {{ 'required' if required else '' }}
+      style="padding-right:2.75rem"
+    />
+    <button type="button" onclick="(function(b){var i=b.previousElementSibling;i.type=i.type==='password'?'text':'password';b.querySelector('span').textContent=i.type==='password'?'visibility':'visibility_off';})(this)" style="position:absolute;right:0.625rem;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--cosv);display:flex">
+      <span class="material-symbols-outlined" style="font-size:20px">visibility</span>
+    </button>
+  </div>
+  {% if help %}<p style="color:var(--cosv);font-size:0.75rem;margin:0.25rem 0 0">{{ help }}</p>{% endif %}
+</div>
+{% endmacro %}
+
+{% macro select_input(name, label=None, options=[], value='', required=False, help=None) %}
+<div style="margin-bottom:1rem">
+  {% if label %}
+  <label class="form-label" for="field-{{ name }}">{{ label }}{% if required %}<span style="color:var(--cerr);margin-left:0.25rem">*</span>{% endif %}</label>
+  {% endif %}
+  <select id="field-{{ name }}" name="{{ name }}" class="form-input" {{ 'required' if required else '' }}>
+    {% for opt in options %}
+    {% if opt is mapping %}
+    <option value="{{ opt.value }}" {% if opt.value == value %}selected{% endif %}>{{ opt.label }}</option>
+    {% else %}
+    <option value="{{ opt }}" {% if opt == value %}selected{% endif %}>{{ opt }}</option>
+    {% endif %}
+    {% endfor %}
+  </select>
+  {% if help %}<p style="color:var(--cosv);font-size:0.75rem;margin:0.25rem 0 0">{{ help }}</p>{% endif %}
+</div>
+{% endmacro %}
+
+{% macro textarea_input(name, label=None, placeholder='', value='', rows=4, required=False, help=None) %}
+<div style="margin-bottom:1rem">
+  {% if label %}
+  <label class="form-label" for="field-{{ name }}">{{ label }}{% if required %}<span style="color:var(--cerr);margin-left:0.25rem">*</span>{% endif %}</label>
+  {% endif %}
+  <textarea
+    id="field-{{ name }}"
+    name="{{ name }}"
+    class="form-input"
+    rows="{{ rows }}"
+    placeholder="{{ placeholder }}"
+    {{ 'required' if required else '' }}
+  >{{ value }}</textarea>
+  {% if help %}<p style="color:var(--cosv);font-size:0.75rem;margin:0.25rem 0 0">{{ help }}</p>{% endif %}
+</div>
+{% endmacro %}
+
+{% macro checkbox(name, label, checked=False, value='1') %}
+<label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;font-size:0.875rem;color:var(--cosv)">
+  <input type="checkbox" name="{{ name }}" value="{{ value }}" {% if checked %}checked{% endif %}
+         style="width:16px;height:16px;accent-color:var(--cp);cursor:pointer">
+  {{ label }}
+</label>
+{% endmacro %}
+
+{% macro form_error(message) %}
+{% if message %}
+<div class="alert alert-error" style="margin-bottom:1rem">
+  <div style="display:flex;align-items:center;gap:0.5rem">
+    <span class="material-symbols-outlined" style="font-size:18px;flex-shrink:0">error</span>
+    {{ message }}
+  </div>
+</div>
+{% endif %}
+{% endmacro %}
+
+{% macro form_success(message) %}
+{% if message %}
+<div class="alert alert-success" style="margin-bottom:1rem">
+  <div style="display:flex;align-items:center;gap:0.5rem">
+    <span class="material-symbols-outlined" style="font-size:18px;flex-shrink:0">check_circle</span>
+    {{ message }}
+  </div>
+</div>
+{% endif %}
+{% endmacro %}

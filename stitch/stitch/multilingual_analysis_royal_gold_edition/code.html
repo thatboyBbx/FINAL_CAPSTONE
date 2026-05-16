@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>InsureIntel Admin - Multilingual Analysis</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#D4AF37", // Royal Gold
+                        "on-primary": "#111111",
+                        background: "#0A0A0A",
+                        surface: "#141414",
+                        "surface-container": "#1E1E1E",
+                        "surface-container-high": "#282828",
+                        "on-surface": "#F5F5F5",
+                        "on-surface-variant": "#A0A0A0",
+                        outline: "#333333",
+                        "outline-variant": "#444444",
+                        accent: "#D4AF37"
+                    },
+                    fontFamily: {
+                        "headline": ["Manrope", "sans-serif"],
+                        "body": ["Manrope", "sans-serif"],
+                        "label": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "1rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        body { font-family: 'Manrope', sans-serif; }
+        .gold-border-glow { border: 1px solid rgba(212, 175, 55, 0.3); }
+        .gold-border-glow:focus-within { border-color: #D4AF37; box-shadow: 0 0 10px rgba(212, 175, 55, 0.2); }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-primary selection:text-on-primary">
+<!-- Sidebar Navigation -->
+<aside class="bg-surface border-r border-outline h-screen w-64 fixed left-0 top-0 overflow-y-auto z-50 flex flex-col py-8 no-scrollbar">
+<div class="px-8 mb-10">
+<h1 class="text-2xl font-extrabold text-primary tracking-tighter font-headline italic uppercase">InsureIntel</h1>
+<p class="text-[10px] text-on-surface-variant font-bold tracking-[0.2em] uppercase mt-1">Zimbabwe / Sovereign</p>
+</div>
+<nav class="flex-1 space-y-1 px-4">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container hover:text-primary transition-all duration-300 text-sm font-semibold" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container hover:text-primary transition-all duration-300 text-sm font-semibold" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="description">description</span>
+<span>Documents</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 bg-surface-container text-primary border-l-2 border-primary transition-all duration-300 text-sm font-bold" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="analytics">analytics</span>
+<span>Analysis Results</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container hover:text-primary transition-all duration-300 text-sm font-semibold" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="contract">contract</span>
+<span>Circulars Analysis</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container hover:text-primary transition-all duration-300 text-sm font-semibold" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="gavel">gavel</span>
+<span>Compliance Center</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container hover:text-primary transition-all duration-300 text-sm font-semibold" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="psychology">psychology</span>
+<span>ML Predictions</span>
+</a>
+<div class="pt-6 pb-2 px-4">
+<button class="w-full bg-primary text-on-primary py-3 rounded-sm font-bold text-xs uppercase tracking-widest hover:brightness-110 transition-all active:scale-95 shadow-lg shadow-primary/10">
+                    New Analysis
+                </button>
+</div>
+</nav>
+<div class="mt-auto px-4 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-on-surface transition-colors text-xs font-bold uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="settings">settings</span>
+<span>Settings</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-on-surface transition-colors text-xs font-bold uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="help">help</span>
+<span>Support</span>
+</a>
+</div>
+</aside>
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 right-0 w-[calc(100%-16rem)] h-20 bg-background/80 backdrop-blur-xl flex items-center justify-between px-10 z-40 border-b border-outline">
+<div class="flex items-center gap-4 flex-1">
+<div class="relative w-full max-w-lg">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full pl-12 pr-4 py-3 bg-surface border border-outline rounded-sm text-sm focus:ring-1 focus:ring-primary focus:border-primary transition-all placeholder:text-on-surface-variant/50" placeholder="Search the private ledger..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:text-primary transition-colors relative">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute -top-1 -right-1 w-2 h-2 bg-primary rounded-full ring-4 ring-background"></span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="apps">apps</span>
+</button>
+</div>
+<div class="h-8 w-px bg-outline"></div>
+<div class="flex items-center gap-4">
+<div class="text-right">
+<p class="text-xs font-bold text-on-surface uppercase tracking-wider">Admin User</p>
+<p class="text-[10px] text-primary font-bold uppercase tracking-widest">Sovereign Intel</p>
+</div>
+<div class="w-10 h-10 rounded-sm border border-primary p-0.5">
+<img alt="Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDvPdb-Q1Ub-XBt4NeMKpAhvF-ELdxH5VaFXfxSZcjU6j8tHqm7TmyKJmKvVQwEfYa-PkigJqNesbfMV7yJzeWSyMlfWeHe_Pah2MRMkTRxWQKznUWN73LgI5kxlZgN7CxA7H25WET3NYA_e9IxjGXSor_XWlFfxxFpJLQcqZbxxHDIGZ4wBxUjgPEOVHirJLTAmJJz6XZ8g6PceLWGBGetRaJ4tIkijuRuaa7w1ejNDVCH-lr-vAhRtwW7fQCZc28zxckU6uBALwBc"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="ml-64 pt-28 px-10 pb-16 min-h-screen">
+<!-- Breadcrumbs -->
+<nav class="flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.2em] text-on-surface-variant mb-8">
+<a class="hover:text-primary transition-colors" href="#">Vault</a>
+<span class="material-symbols-outlined text-[10px]">chevron_right</span>
+<span class="text-primary">Multilingual Analysis</span>
+</nav>
+<!-- Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+<div>
+<h2 class="text-4xl font-extrabold font-headline tracking-tighter text-on-surface mb-2">SHONA-ENGLISH SUPPORT</h2>
+<p class="text-on-surface-variant text-sm font-medium tracking-wide">Linguistic auditing and cross-translation analysis of policy frameworks.</p>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative min-w-[320px]">
+<select class="w-full bg-surface border-outline rounded-sm pl-4 pr-10 py-3 text-xs font-bold uppercase tracking-widest appearance-none focus:ring-1 focus:ring-primary focus:border-primary transition-all">
+<option>ZIM-Farming-Policy-Draft-2024.pdf</option>
+<option>Harare-District-Public-Liability.doc</option>
+<option>National-Health-Accord-v2.pdf</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-primary">expand_more</span>
+</div>
+<button class="bg-surface border border-primary text-primary px-6 py-3 rounded-sm font-bold text-xs uppercase tracking-widest hover:bg-primary hover:text-on-primary transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">download</span>
+                    Export
+                </button>
+</div>
+</div>
+<!-- Upper Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+<!-- Language Composition Card -->
+<div class="lg:col-span-1 bg-surface border border-outline rounded-sm p-8 flex flex-col justify-between">
+<div>
+<h3 class="text-xs font-bold uppercase tracking-[0.3em] text-on-surface-variant mb-10">Language Composition</h3>
+<div class="relative w-48 h-48 mx-auto mb-10">
+<!-- Updated Chart with Royal Palette -->
+<div class="absolute inset-0 rounded-full border-[12px] border-primary border-r-emerald-500 border-b-emerald-500 border-l-outline rotate-45"></div>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="text-4xl font-extrabold text-on-surface tracking-tighter">84%</span>
+<span class="text-[9px] text-primary uppercase font-bold tracking-[0.2em]">Confidence</span>
+</div>
+</div>
+<div class="space-y-4">
+<div class="flex items-center justify-between text-[11px] font-bold uppercase tracking-wider">
+<div class="flex items-center gap-3">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span class="text-on-surface-variant">English</span>
+</div>
+<span class="text-on-surface">65%</span>
+</div>
+<div class="flex items-center justify-between text-[11px] font-bold uppercase tracking-wider">
+<div class="flex items-center gap-3">
+<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+<span class="text-on-surface-variant">Shona</span>
+</div>
+<span class="text-on-surface">32%</span>
+</div>
+<div class="flex items-center justify-between text-[11px] font-bold uppercase tracking-wider">
+<div class="flex items-center gap-3">
+<span class="w-2 h-2 rounded-full bg-outline"></span>
+<span class="text-on-surface-variant">Other</span>
+</div>
+<span class="text-on-surface">3%</span>
+</div>
+</div>
+</div>
+<div class="mt-10 pt-8 border-t border-outline grid grid-cols-2 gap-4 text-center">
+<div>
+<p class="text-[9px] text-on-surface-variant font-bold uppercase tracking-widest mb-1">Total Segments</p>
+<p class="text-lg font-extrabold text-primary tracking-tight">1,248</p>
+</div>
+<div>
+<p class="text-[9px] text-on-surface-variant font-bold uppercase tracking-widest mb-1">Auto-Translated</p>
+<p class="text-lg font-extrabold text-emerald-500 tracking-tight">392</p>
+</div>
+</div>
+</div>
+<!-- Standalone Detection Tool -->
+<div class="lg:col-span-2 bg-surface border border-outline rounded-sm p-8 flex flex-col">
+<div class="mb-8 flex items-center justify-between">
+<div>
+<h3 class="text-xs font-bold uppercase tracking-[0.3em] text-on-surface-variant">Linguistic Capture</h3>
+<p class="text-[10px] text-on-surface-variant/70 mt-1 uppercase font-medium">Real-time analysis for secure snippets.</p>
+</div>
+<span class="material-symbols-outlined text-primary/40">fingerprint</span>
+</div>
+<div class="flex-1 flex flex-col gap-6">
+<textarea class="flex-1 w-full bg-background/50 border border-outline rounded-sm p-6 text-sm focus:ring-1 focus:ring-primary focus:border-primary resize-none font-body leading-relaxed text-on-surface placeholder:text-on-surface-variant/30" placeholder="Input raw text for sovereign detection..."></textarea>
+<div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-6">
+<div class="flex-1 flex items-center gap-4 bg-surface-container/50 px-6 py-4 rounded-sm border border-outline-variant">
+<span class="material-symbols-outlined text-emerald-500" data-icon="auto_awesome">auto_awesome</span>
+<div>
+<p class="text-[9px] text-primary font-bold uppercase tracking-[0.2em]">Detection Ready</p>
+<p class="text-xs font-semibold text-on-surface italic">"Mazviita zvikuru ne rubatsiro rwenyu..."</p>
+</div>
+</div>
+<button class="bg-primary text-on-primary px-10 py-4 rounded-sm font-bold text-xs uppercase tracking-widest hover:brightness-110 transition-all flex items-center justify-center gap-3 shadow-xl shadow-primary/5">
+<span class="material-symbols-outlined text-sm">translate</span>
+                            Process Intel
+                        </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Segment Analysis Table -->
+<div class="bg-surface border border-outline rounded-sm mb-8 overflow-hidden">
+<div class="px-10 py-8 border-b border-outline flex flex-col sm:flex-row justify-between items-center gap-4">
+<h3 class="text-xs font-bold uppercase tracking-[0.3em] text-on-surface-variant">Segment Analysis Ledger</h3>
+<div class="flex bg-background p-1 border border-outline rounded-sm">
+<button class="px-6 py-2 text-[10px] font-extrabold uppercase tracking-widest bg-primary text-on-primary">All</button>
+<button class="px-6 py-2 text-[10px] font-extrabold uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors">Shona</button>
+<button class="px-6 py-2 text-[10px] font-extrabold uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors">Verified</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container border-b border-outline">
+<tr>
+<th class="px-10 py-5 text-[9px] font-bold text-on-surface-variant uppercase tracking-[0.2em]">ID</th>
+<th class="px-6 py-5 text-[9px] font-bold text-on-surface-variant uppercase tracking-[0.2em]">Raw Source Text</th>
+<th class="px-6 py-5 text-[9px] font-bold text-on-surface-variant uppercase tracking-[0.2em]">Language</th>
+<th class="px-6 py-5 text-[9px] font-bold text-on-surface-variant uppercase tracking-[0.2em]">Conf.</th>
+<th class="px-6 py-5 text-[9px] font-bold text-on-surface-variant uppercase tracking-[0.2em]">Sovereign Translation</th>
+<th class="px-10 py-5 text-[9px] font-bold text-on-surface-variant uppercase tracking-[0.2em] text-right">Audit</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline">
+<tr class="hover:bg-surface-container/50 transition-colors">
+<td class="px-10 py-5 text-xs font-bold text-on-surface-variant tracking-widest">001</td>
+<td class="px-6 py-5 text-sm font-medium text-on-surface truncate max-w-[200px]">This policy covers all agricultural...</td>
+<td class="px-6 py-5">
+<span class="bg-primary/10 text-primary border border-primary/30 px-3 py-1 text-[9px] font-bold uppercase tracking-widest">English</span>
+</td>
+<td class="px-6 py-5 text-sm font-bold text-on-surface">99.8%</td>
+<td class="px-6 py-5 text-xs text-on-surface-variant italic font-medium opacity-50">—</td>
+<td class="px-10 py-5 text-right text-on-surface-variant font-bold text-[10px]">VERIFIED</td>
+</tr>
+<tr class="hover:bg-surface-container/50 transition-colors">
+<td class="px-10 py-5 text-xs font-bold text-on-surface-variant tracking-widest">002</td>
+<td class="px-6 py-5 text-sm font-medium text-on-surface truncate max-w-[200px]">Muripo wepagore unofanirwa...</td>
+<td class="px-6 py-5">
+<span class="bg-emerald-500/10 text-emerald-500 border border-emerald-500/30 px-3 py-1 text-[9px] font-bold uppercase tracking-widest">Shona</span>
+</td>
+<td class="px-6 py-5 text-sm font-bold text-on-surface">97.4%</td>
+<td class="px-6 py-5 text-sm font-medium text-on-surface-variant">The annual premium must be paid...</td>
+<td class="px-10 py-5 text-right">
+<div class="flex items-center justify-end gap-2 text-emerald-500 font-bold text-[10px] tracking-widest">
+<span class="material-symbols-outlined text-xs">verified</span>
+                                    92.1%
+                                </div>
+</td>
+</tr>
+<tr class="hover:bg-surface-container/50 transition-colors">
+<td class="px-10 py-5 text-xs font-bold text-on-surface-variant tracking-widest">003</td>
+<td class="px-6 py-5 text-sm font-medium text-on-surface truncate max-w-[200px]">Ndokumbirawo muone fomu...</td>
+<td class="px-6 py-5">
+<span class="bg-emerald-500/10 text-emerald-500 border border-emerald-500/30 px-3 py-1 text-[9px] font-bold uppercase tracking-widest">Shona</span>
+</td>
+<td class="px-6 py-5 text-sm font-bold text-on-surface">94.0%</td>
+<td class="px-6 py-5 text-sm font-medium text-on-surface-variant">Please refer to the attached form...</td>
+<td class="px-10 py-5 text-right">
+<div class="flex items-center justify-end gap-2 text-emerald-500 font-bold text-[10px] tracking-widest">
+<span class="material-symbols-outlined text-xs">verified</span>
+                                    89.5%
+                                </div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="px-10 py-6 bg-surface-container/30 border-t border-outline flex justify-center">
+<button class="text-primary text-[10px] font-extrabold uppercase tracking-[0.2em] flex items-center gap-2 hover:brightness-125 transition-all">
+                    Load Full Document Segments
+                    <span class="material-symbols-outlined text-sm">keyboard_arrow_down</span>
+</button>
+</div>
+</div>
+<!-- Full Document View -->
+<div class="bg-surface border border-outline rounded-sm overflow-hidden">
+<div class="px-10 py-8 border-b border-outline flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+<div>
+<h3 class="text-xs font-bold uppercase tracking-[0.3em] text-on-surface-variant">Interactive Policy Preview</h3>
+<p class="text-[10px] text-on-surface-variant/70 mt-1 uppercase font-medium">Semantic audit with royal highlighting.</p>
+</div>
+<div class="flex items-center gap-6">
+<span class="text-[9px] font-extrabold text-on-surface-variant uppercase tracking-widest">Linguistic Mode</span>
+<div class="flex p-1 bg-background border border-outline rounded-sm">
+<button class="px-6 py-2 text-[10px] font-bold uppercase tracking-widest bg-primary text-on-primary">Original</button>
+<button class="px-6 py-2 text-[10px] font-bold uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors">Audit View</button>
+</div>
+</div>
+</div>
+<div class="p-16 max-h-[700px] overflow-y-auto no-scrollbar font-body leading-loose text-on-surface-variant text-sm bg-background/30">
+<div class="max-w-3xl mx-auto space-y-12">
+<h1 class="text-3xl font-extrabold text-on-surface tracking-tighter uppercase italic border-b-2 border-primary/20 pb-6">ZIMBABWE FARMING POLICY 2024</h1>
+<div class="space-y-6">
+<p class="leading-relaxed">This comprehensive insurance policy is designed to protect commercial and communal farmers within the Republic of Zimbabwe. <span class="bg-emerald-500/20 border-b-2 border-emerald-500 cursor-help relative group px-1 py-0.5 text-on-surface selection:bg-emerald-500 selection:text-white">Mutemo uyu unoshanda kune vese varimi vanochengetedza zvirimwa nezvipfuyo zvavo.<span class="invisible group-hover:visible absolute bottom-full left-1/2 -translate-x-1/2 mb-4 w-72 p-4 bg-surface border border-primary text-primary text-[10px] font-bold uppercase tracking-widest shadow-2xl z-10 leading-normal">Translation: "This policy applies to all farmers who protect their crops and livestock."</span></span></p>
+</div>
+<div class="space-y-6">
+<h2 class="text-xs font-extrabold uppercase tracking-[0.4em] text-primary">Section 1: Premium Payments</h2>
+<p class="leading-relaxed">All premiums must be remitted by the first day of every operational quarter. <span class="bg-emerald-500/20 border-b-2 border-emerald-500 cursor-help relative group px-1 py-0.5 text-on-surface selection:bg-emerald-500 selection:text-white">Muripo wepagore unofanirwa kubhadharwa nenguva kuitira kuti pasave nekukanganisa kwebasa.<span class="invisible group-hover:visible absolute bottom-full left-1/2 -translate-x-1/2 mb-4 w-72 p-4 bg-surface border border-primary text-primary text-[10px] font-bold uppercase tracking-widest shadow-2xl z-10 leading-normal">Translation: "The annual premium must be paid on time to avoid interruption of service."</span></span> Failure to comply will result in a suspension of the coverage certificate for a period of no less than thirty (30) days.</p>
+</div>
+<div class="space-y-6">
+<h2 class="text-xs font-extrabold uppercase tracking-[0.4em] text-primary">Section 2: Claims Procedure</h2>
+<p class="leading-relaxed">In the event of crop failure due to drought or pest infestation, the policyholder must notify the agent immediately. <span class="bg-emerald-500/20 border-b-2 border-emerald-500 cursor-help relative group px-1 py-0.5 text-on-surface selection:bg-emerald-500 selection:text-white">Ndokumbirawo muone fomu rezvekurima kuti muzive zvimwe zvizhinji maererano nemiripo iyi.<span class="invisible group-hover:visible absolute bottom-full left-1/2 -translate-x-1/2 mb-4 w-72 p-4 bg-surface border border-primary text-primary text-[10px] font-bold uppercase tracking-widest shadow-2xl z-10 leading-normal">Translation: "Please refer to the agricultural form for more details regarding these payments."</span></span></p>
+</div>
+<div class="py-12 border-y border-outline-variant border-dashed text-center">
+<p class="text-[10px] font-extrabold uppercase tracking-[0.5em] text-on-surface-variant/40 italic">End of Primary View - 42 Pages in Vault</p>
+</div>
+</div>
+</div>
+<div class="bg-surface border-t border-outline px-10 py-6 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+<span class="text-[9px] font-bold text-on-surface-variant uppercase tracking-[0.2em]">Sovereign Highlight Active (Hover for Intel)</span>
+</div>
+<div class="flex items-center gap-6">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors text-xl">zoom_out</button>
+<span class="text-[10px] font-extrabold text-on-surface tracking-widest">100%</span>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors text-xl">zoom_in</button>
+<div class="h-5 w-px bg-outline mx-2"></div>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors text-xl">fullscreen</button>
+</div>
+</div>
+</div>
+</main>
+</body></html>

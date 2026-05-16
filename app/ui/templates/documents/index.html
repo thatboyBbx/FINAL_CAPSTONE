@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{# documents/index.html — Documents category landing page #}
+{% block title %}Documents — InsureIntel Zimbabwe{% endblock %}
+
+{% block content %}
+<div class="p-4 md:p-6 lg:p-8">
+
+  <!-- Breadcrumb -->
+  <nav class="flex items-center gap-2 text-xs mb-6" style="color:var(--cosv)">
+    <a href="/home" class="hover:underline" style="color:var(--cosv);text-decoration:none">Home</a>
+    <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+    <span class="font-semibold" style="color:var(--cp)">Documents</span>
+  </nav>
+
+  <!-- Header -->
+  <div class="mb-8">
+    <h1 class="font-headline text-3xl font-bold mb-1" style="color:var(--cos)">
+      Documents
+    </h1>
+    <p class="text-sm md:text-base" style="color:var(--cosv)">
+      Manage, upload, and compare insurance policy documents.
+    </p>
+  </div>
+
+  <!-- Tile Grid -->
+  <div class="tile-grid">
+
+    <!-- Vault -->
+    <div class="glass-card tile-card p-6 flex flex-col">
+      <div class="text-5xl mb-4" aria-hidden="true">🗄️</div>
+      <h2 class="font-headline text-lg font-semibold mb-2" style="color:var(--cos)">Document Vault</h2>
+      <p class="text-sm mb-6 flex-1" style="color:var(--cosv);line-height:1.6">
+        Browse, search, and manage all uploaded documents. Filter by type, status, or folder.
+        Open, analyse, download, or delete individual files.
+      </p>
+      <a href="/documents/vault" class="btn-glass btn-glass-gold flex items-center justify-center gap-1 w-full">
+        Open Vault
+        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+      </a>
+    </div>
+
+    <!-- Upload -->
+    <div class="glass-card tile-card p-6 flex flex-col">
+      <div class="text-5xl mb-4" aria-hidden="true">📤</div>
+      <h2 class="font-headline text-lg font-semibold mb-2" style="color:var(--cos)">Upload Document</h2>
+      <p class="text-sm mb-6 flex-1" style="color:var(--cosv);line-height:1.6">
+        Drag-and-drop or browse to upload PDF insurance documents for classification,
+        NER extraction, and compliance analysis.
+      </p>
+      <a href="/documents/upload" class="btn-glass btn-glass-gold flex items-center justify-center gap-1 w-full">
+        Upload
+        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+      </a>
+    </div>
+
+    <!-- Compare -->
+    <div class="glass-card tile-card p-6 flex flex-col">
+      <div class="text-5xl mb-4" aria-hidden="true">🔀</div>
+      <h2 class="font-headline text-lg font-semibold mb-2" style="color:var(--cos)">Compare Documents</h2>
+      <p class="text-sm mb-6 flex-1" style="color:var(--cosv);line-height:1.6">
+        Side-by-side diff analysis of two policy documents. Identify clauses added,
+        removed, or modified between versions.
+      </p>
+      <a href="/documents/compare" class="btn-glass btn-glass-gold flex items-center justify-center gap-1 w-full">
+        Compare
+        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+      </a>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

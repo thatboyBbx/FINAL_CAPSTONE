@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+{# analysis/risk.html — Risk Analysis for a selected document #}
+{% block title %}Risk Analysis — InsureIntel Zimbabwe{% endblock %}
+
+{% block content %}
+<div class="px-8 py-7" style="max-width:900px">
+
+  <nav style="display:flex;align-items:center;gap:0.5rem;font-size:0.75rem;color:var(--cosv);margin-bottom:1.5rem">
+    <a href="/home" style="color:var(--cosv);text-decoration:none">Home</a>
+    <span>/</span>
+    <a href="/analysis" style="color:var(--cosv);text-decoration:none">Analysis</a>
+    <span>/</span>
+    <span style="color:var(--cp);font-weight:600">Risk Analysis</span>
+  </nav>
+
+  <h1 class="font-headline" style="font-size:1.5rem;font-weight:800;color:var(--cos);margin:0 0 1.75rem">
+    ⚠️ Risk Analysis
+  </h1>
+
+  <!-- Config -->
+  <div class="glass-card" style="padding:1.75rem;margin-bottom:1.5rem">
+    <label class="form-label" for="risk-doc-select">Select Document</label>
+    <select id="risk-doc-select" class="form-input" style="margin-bottom:1.5rem" onchange="onDocSelect()">
+      <option value="">— Select a document —</option>
+    </select>
+    <div style="display:flex;justify-content:flex-end">
+      <button id="risk-btn" onclick="runRisk()" class="btn-glass-gold"
+              style="font-size:0.9375rem;padding:0.625rem 2rem" disabled>
+        <span class="material-symbols-outlined" style="font-size:18px">shield</span>
+        Analyse Risk
+      </button>
+    </div>
+  </div>
+
+  <!-- Results -->
+  <div id="results-area"></div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+"use strict";
+
+document.addEventListener("DOMContentLoaded", async () => {
+  try {
+    const docs = await apiGet("/api/documents");
+    const sel  = document.getElementById("risk-doc-select");
+    docs.forEach(d => {
+      const o = document.createElement("option");
+      o.value = d.id;
+      o.textContent = d.title || d.original_filename || `Doc #${d.id}`;
+      sel.appendChild(o);
+    });
+  } catch (err) { showToast("Could not load documents.", "warning"); }
+});
+
+function onDocSelect() {
+  document.getElementById("risk-btn").disabled = !document.getElementById("risk-doc-select").value;
+}
+
+async function runRisk() {
+  const docId = parseInt(document.getElementById("risk-doc-select").value);
+  if (!docId) return;
+  const btn = document.getElementById("risk-btn");
+  btn.disabled = true;
+  showProgress(40, "Scoring risk factors…");
+  document.getElementById("results-area").innerHTML = "";
+
+  try {
+    const result = await apiPost("/api/analysis/risk", { document_id: docId });
+    showProgress(0);
+    renderRisk(result);
+    showToast("Risk analysis complete.", "success");
+  } catch (err) {
+    showProgress(0);
+    showToast("Risk analysis failed: " + err.message, "error");
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+function renderRisk(data) {
+  const area = document.getElementById("results-area");
+  const score       = data.risk_score        || data.overall_score || 0;
+  const level       = data.risk_level        || (score >= 70 ? "High" : score >= 40 ? "Medium" : "Low");
+  const factors     = data.risk_factors      || [];
+  const recs        = data.recommendations   || [];
+  const levelColors = { High: "#f87171", Medium: "#fbbf24", Low: "#4ade80" };
+  const lc          = levelColors[level] || "#a1a1a1";
+
+  area.innerHTML = `
+    <div style="display:grid;grid-template-columns:auto 1fr;gap:1.5rem;align-items:start;margin-bottom:1.5rem">
+
+      <!-- Score ring -->
+      <div class="glass-card" style="padding:1.5rem;text-align:center;min-width:160px">
+        <svg width="120" height="120" viewBox="0 0 120 120" style="display:block;margin:0 auto">
+          <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="10"/>
+          <circle cx="60" cy="60" r="50" fill="none" stroke="${lc}" stroke-width="10"
+                  stroke-dasharray="${Math.round(score * 3.14)} 999"
+                  stroke-linecap="round"
+                  transform="rotate(-90 60 60)" style="transition:stroke-dasharray 0.8s ease"/>
+          <text x="60" y="58" text-anchor="middle" font-size="24" font-weight="800"
+                fill="${lc}" font-family="Manrope,sans-serif">${Math.round(score)}</text>
+          <text x="60" y="76" text-anchor="middle" font-size="11" fill="#a1a1a1"
+                font-family="Inter,sans-serif">/ 100</text>
+        </svg>
+        <p style="color:${lc};font-weight:700;font-size:0.875rem;margin:0.5rem 0 0">${_esc(level)} Risk</p>
+      </div>
+
+      <!-- Factors -->
+      <div class="glass-card" style="padding:1.5rem">
+        <h3 style="color:var(--cos);font-weight:700;font-size:1rem;margin:0 0 1rem">Risk Factors</h3>
+        ${factors.length === 0
+          ? `<p style="color:var(--cosv);font-size:0.875rem">No specific risk factors identified.</p>`
+          : factors.map(f => `
+          <div style="display:flex;align-items:flex-start;gap:0.75rem;
+                      padding:0.625rem 0;border-bottom:1px solid rgba(255,255,255,0.05)">
+            <span style="color:${f.severity === 'high' ? '#f87171' : f.severity === 'medium' ? '#fbbf24' : '#4ade80'};
+                           flex-shrink:0;font-size:1rem;margin-top:1px">⬤</span>
+            <div>
+              <p style="color:var(--cos);font-size:0.8125rem;font-weight:600;margin:0">
+                ${_esc(f.name || f.factor || '')}</p>
+              <p style="color:var(--cosv);font-size:0.75rem;margin:0.25rem 0 0">
+                ${_esc(f.description || '')}</p>
+            </div>
+            ${f.score !== undefined ? `
+            <span style="margin-left:auto;color:var(--cosv);font-size:0.75rem;font-weight:700;
+                          flex-shrink:0">${f.score}/10</span>` : ''}
+          </div>`).join("")}
+      </div>
+    </div>
+
+    ${recs.length > 0 ? `
+    <div class="glass-card" style="padding:1.5rem">
+      <h3 style="color:var(--cos);font-weight:700;font-size:1rem;margin:0 0 1rem">
+        <span class="material-symbols-outlined" style="font-size:18px;color:var(--cp);
+              vertical-align:middle">tips_and_updates</span>
+        Recommendations
+      </h3>
+      <ul style="margin:0;padding-left:1.25rem;color:var(--cosv)">
+        ${recs.map(r => `<li style="font-size:0.875rem;padding:0.25rem 0">${_esc(typeof r === 'string' ? r : r.text || JSON.stringify(r))}</li>`).join("")}
+      </ul>
+    </div>` : ""}
+    </div>`;
+}
+
+function _esc(s) { return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+</script>
+{% endblock %}

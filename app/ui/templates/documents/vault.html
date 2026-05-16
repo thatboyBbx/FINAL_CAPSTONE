@@ -1,0 +1,488 @@
+{% extends "base.html" %}
+{#
+  documents/vault.html — Document Vault
+  Shows all uploaded documents in a sortable, filterable table.
+  Per-row actions: Open (modal preview), Analyse, Download, Delete, Move.
+  Left-panel folder tree for filtering. Search bar for real-time filter.
+#}
+{% block title %}Document Vault — InsureIntel Zimbabwe{% endblock %}
+
+{% block head_styles %}
+.folder-tree-item { padding:0.5rem 0.75rem; border-radius:6px; cursor:pointer;
+  font-size:0.8125rem; color:var(--cosv); display:flex; align-items:center; gap:0.5rem;
+  transition:background 0.1s, color 0.1s; }
+.folder-tree-item:hover, .folder-tree-item.active {
+  background:rgba(212,175,55,0.08); color:var(--cp); }
+.folder-tree-item .count {
+  margin-left:auto; background:rgba(255,255,255,0.06);
+  border-radius:9999px; padding:0.05rem 0.4rem; font-size:0.65rem; font-weight:700; }
+{% endblock %}
+
+{% block content %}
+<div style="display:flex;height:calc(100vh - 4rem);overflow:hidden">
+
+  <!-- ── Folder Sidebar ──────────────────────────────────────────────── -->
+  <div id="folder-sidebar"
+       style="width:220px;flex-shrink:0;border-right:1px solid rgba(255,255,255,0.06);
+              overflow-y:auto;padding:1rem 0.75rem;background:var(--sidebar-bg)">
+    <div style="display:flex;align-items:center;justify-content:space-between;
+                margin-bottom:1rem">
+      <p style="color:var(--cosv);font-size:0.65rem;font-weight:700;text-transform:uppercase;
+                letter-spacing:0.12em;margin:0">Folders</p>
+      <button onclick="showNewFolderInput()" title="New folder"
+              style="background:none;border:none;color:var(--cp);cursor:pointer;font-size:1.1rem">+</button>
+    </div>
+    <div id="folder-tree">
+      <!-- Populated by JS -->
+      <div class="folder-tree-item active" data-folder="" onclick="filterByFolder(this,'')">
+        <span class="material-symbols-outlined" style="font-size:16px">folder_open</span>
+        All Documents
+        <span class="count" id="folder-count-all">0</span>
+      </div>
+    </div>
+    <div id="new-folder-input" style="display:none;margin-top:0.5rem">
+      <input id="new-folder-name" type="text" placeholder="Folder name"
+             class="form-input" style="font-size:0.8rem;padding:0.375rem 0.625rem"
+             onkeydown="if(event.key==='Enter')createFolder()">
+      <button onclick="createFolder()" class="btn-glass-gold"
+              style="width:100%;margin-top:0.375rem;padding:0.375rem;font-size:0.75rem">
+        Create
+      </button>
+    </div>
+  </div>
+
+  <!-- ── Main Content ────────────────────────────────────────────────── -->
+  <div style="flex:1;overflow-y:auto;padding:1.5rem 2rem">
+
+    <!-- Breadcrumb -->
+    <nav style="display:flex;align-items:center;gap:0.5rem;font-size:0.75rem;
+                color:var(--cosv);margin-bottom:1.25rem">
+      <a href="/home" style="color:var(--cosv);text-decoration:none">Home</a>
+      <span>/</span>
+      <a href="/documents" style="color:var(--cosv);text-decoration:none">Documents</a>
+      <span>/</span>
+      <span style="color:var(--cp);font-weight:600">Vault</span>
+    </nav>
+
+    <!-- Header + Search Bar -->
+    <div style="display:flex;align-items:center;justify-content:space-between;
+                flex-wrap:wrap;gap:1rem;margin-bottom:1.5rem">
+      <h1 class="font-headline"
+          style="font-size:1.5rem;font-weight:800;color:var(--cos);margin:0">
+        📁 Document Vault
+      </h1>
+      <div style="display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap">
+        <!-- Sort -->
+        <select id="sort-select" onchange="renderTable()"
+                style="background:var(--csfc);border:1px solid var(--col);
+                       color:var(--cos);border-radius:6px;padding:0.4rem 0.625rem;
+                       font-size:0.8rem;cursor:pointer;outline:none">
+          <option value="date-desc">Newest first</option>
+          <option value="date-asc">Oldest first</option>
+          <option value="name-asc">Name A→Z</option>
+          <option value="name-desc">Name Z→A</option>
+          <option value="type">Type</option>
+          <option value="status">Status</option>
+        </select>
+        <!-- Search -->
+        <div style="position:relative">
+          <span class="material-symbols-outlined"
+                style="position:absolute;left:0.5rem;top:50%;transform:translateY(-50%);
+                       font-size:16px;color:var(--cosv)">search</span>
+          <input id="search-input" type="text" placeholder="Search documents…"
+                 style="background:var(--csfc);border:1px solid var(--col);
+                        color:var(--cos);border-radius:6px;padding:0.4rem 0.625rem 0.4rem 1.875rem;
+                        font-size:0.8rem;outline:none;width:220px"
+                 oninput="renderTable()">
+        </div>
+        <a href="/documents/upload" class="btn-glass-gold" style="font-size:0.8125rem">
+          <span class="material-symbols-outlined" style="font-size:16px">upload_file</span>
+          Upload
+        </a>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="glass-card" style="overflow:hidden">
+      <div class="overflow-x-auto">
+        <table class="data-table" id="docs-table">
+          <thead>
+            <tr>
+              <th class="sortable" style="width:30%" onclick="sortBy('name')" title="Sort by name">
+                Name <span class="sort-indicator" data-col="name"></span>
+              </th>
+              <th class="sortable" onclick="sortBy('type')" title="Sort by type">
+                Type <span class="sort-indicator" data-col="type"></span>
+              </th>
+              <th>Folder</th>
+              <th class="sortable" onclick="sortBy('status')" title="Sort by status">
+                Status <span class="sort-indicator" data-col="status"></span>
+              </th>
+              <th class="sortable" onclick="sortBy('date')" title="Sort by date">
+                Uploaded <span class="sort-indicator" data-col="date">↓</span>
+              </th>
+              <th style="text-align:right;padding-right:1.25rem">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="docs-tbody">
+            <tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--cosv)">
+              Loading documents…
+            </td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── PDF Preview Modal ───────────────────────────────────────────────── -->
+<div id="preview-modal" style="display:none;position:fixed;inset:0;z-index:5000;
+     background:rgba(0,0,0,0.65);backdrop-filter:blur(4px);
+     align-items:center;justify-content:center">
+  <div class="glass-card" style="width:80vw;height:85vh;display:flex;flex-direction:column">
+    <div style="display:flex;align-items:center;justify-content:space-between;
+                padding:1rem 1.25rem;border-bottom:1px solid rgba(255,255,255,0.06)">
+      <span id="preview-title" style="color:var(--cos);font-weight:700;font-size:0.9375rem"></span>
+      <button onclick="closePreview()"
+              style="background:none;border:none;color:var(--cosv);cursor:pointer;font-size:1.5rem">×</button>
+    </div>
+    <iframe id="preview-frame" style="flex:1;border:none;background:#fff"></iframe>
+  </div>
+</div>
+
+<!-- ── Move Folder Modal ─────────────────────────────────────────────── -->
+<div id="move-modal" style="display:none;position:fixed;inset:0;z-index:5000;
+     background:rgba(0,0,0,0.65);backdrop-filter:blur(4px);
+     align-items:center;justify-content:center">
+  <div class="glass-card" style="width:400px;padding:1.75rem">
+    <h3 style="color:var(--cos);font-weight:700;margin:0 0 1.25rem;font-size:1rem">
+      Move Document
+    </h3>
+    <input type="hidden" id="move-doc-id">
+    <label class="form-label">Select Folder</label>
+    <select id="move-folder-select" class="form-input" style="margin-bottom:0.75rem">
+      <option value="Uncategorised">Uncategorised</option>
+    </select>
+    <p style="color:var(--cosv);font-size:0.8rem;margin:0 0 0.75rem">
+      Or create a new folder:
+    </p>
+    <input id="move-new-folder" type="text" placeholder="New folder name"
+           class="form-input" style="margin-bottom:1rem">
+    <div style="display:flex;gap:0.625rem;justify-content:flex-end">
+      <button onclick="closeMoveModal()" class="btn-glass"
+              style="font-size:0.8rem">Cancel</button>
+      <button onclick="submitMove()" class="btn-glass-gold"
+              style="font-size:0.8rem">Move</button>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+/**
+ * vault.js (inline) — Document Vault page logic
+ * Uses apiGet / apiPost / apiDelete / apiPatch from global api.js.
+ */
+"use strict";
+
+let allDocs      = [];   // full list from /documents
+let activeFolder = "";   // "" = all folders
+let currentSort  = { col: "date", dir: "desc" };
+const clientContextId = new URLSearchParams(window.location.search).get("client_id");
+
+/* ── File type badge helper ─────────────────────────────────────────────── */
+function _typeBadge(category) {
+  const c = (category || "").toUpperCase();
+  let cls = "badge-type-other";
+  if (c.includes("PDF")) cls = "badge-type-pdf";
+  else if (c.includes("DOC") || c.includes("WORD")) cls = "badge-type-docx";
+  else if (c.includes("IMG") || c.includes("PNG") || c.includes("JPG") || c.includes("JPEG")) cls = "badge-type-img";
+  return `<span class="badge ${cls}" style="border-radius:9999px;padding:0.1rem 0.5rem;font-size:0.65rem;font-weight:700;text-transform:uppercase">
+    ${_esc(category || "—")}</span>`;
+}
+
+/* ── Status badge helper ─────────────────────────────────────────────────── */
+function _statusBadge(status) {
+  const s = (status || "").toLowerCase();
+  let cls = "badge-status-pending";
+  if (s === "processed" || s === "complete") cls = "badge-status-complete";
+  else if (s === "processing") cls = "badge-status-processing";
+  else if (s === "failed" || s === "error") cls = "badge-status-error";
+  return `<span class="${cls}" style="border-radius:9999px;padding:0.1rem 0.5rem;font-size:0.65rem;font-weight:700;text-transform:uppercase;display:inline-flex;align-items:center">
+    ${_esc(status || "—")}</span>`;
+}
+
+/* ── Sort columns ────────────────────────────────────────────────────────── */
+function sortBy(col) {
+  if (currentSort.col === col) {
+    currentSort.dir = currentSort.dir === "asc" ? "desc" : "asc";
+  } else {
+    currentSort.col = col;
+    currentSort.dir = "asc";
+  }
+  // Update indicators
+  document.querySelectorAll(".sort-indicator").forEach(el => {
+    const c = el.getAttribute("data-col");
+    if (c === col) {
+      el.textContent = currentSort.dir === "asc" ? " ↑" : " ↓";
+    } else {
+      el.textContent = "";
+    }
+  });
+  renderTable();
+}
+
+/* ── Initialise ─────────────────────────────────────────────────────────── */
+document.addEventListener("DOMContentLoaded", async () => {
+  try {
+    const url = clientContextId ? `/api/documents?client_id=${encodeURIComponent(clientContextId)}` : "/api/documents";
+    allDocs = await apiGet(url);
+    buildFolderTree();
+    renderTable();
+    if (clientContextId) {
+      const heading = document.querySelector("h1.font-headline");
+      if (heading) heading.textContent = "Client Policy Documents";
+    }
+  } catch (err) {
+    showToast("Failed to load documents: " + err.message, "error");
+  }
+});
+
+/* ── Folder tree ────────────────────────────────────────────────────────── */
+function buildFolderTree() {
+  const folders = {};
+  allDocs.forEach(d => {
+    const f = d.folder || "Uncategorised";
+    folders[f] = (folders[f] || 0) + 1;
+  });
+  document.getElementById("folder-count-all").textContent = allDocs.length;
+
+  const tree = document.getElementById("folder-tree");
+  // Remove non-"All" items
+  [...tree.querySelectorAll("[data-folder]:not([data-folder=''])")].forEach(el => el.remove());
+
+  Object.entries(folders).sort().forEach(([name, count]) => {
+    const div = document.createElement("div");
+    div.className = "folder-tree-item";
+    div.setAttribute("data-folder", name);
+    div.onclick = function () { filterByFolder(this, name); };
+    div.innerHTML = `<span class="material-symbols-outlined" style="font-size:16px">folder</span>
+      ${_esc(name)} <span class="count">${count}</span>`;
+    tree.appendChild(div);
+  });
+
+  // Also populate move-folder-select
+  const sel = document.getElementById("move-folder-select");
+  sel.innerHTML = '<option value="Uncategorised">Uncategorised</option>';
+  Object.keys(folders).sort().forEach(f => {
+    if (f !== "Uncategorised") sel.innerHTML += `<option value="${_esc(f)}">${_esc(f)}</option>`;
+  });
+}
+
+function filterByFolder(el, folder) {
+  activeFolder = folder;
+  document.querySelectorAll(".folder-tree-item").forEach(i => i.classList.remove("active"));
+  el.classList.add("active");
+  renderTable();
+}
+
+/* ── Render table ───────────────────────────────────────────────────────── */
+function renderTable() {
+  const q       = (document.getElementById("search-input").value || "").toLowerCase();
+
+  // Also sync sort-select dropdown with currentSort
+  const selectEl = document.getElementById("sort-select");
+  if (selectEl) {
+    const mapFwd = { "date-desc":"date-desc","date-asc":"date-asc","name-asc":"name-asc",
+                     "name-desc":"name-desc","type":"type","status":"status" };
+    // If the dropdown changed, use dropdown value
+    if (selectEl.value !== "_col") {
+      const sv = selectEl.value;
+      if (sv === "date-desc") { currentSort = {col:"date",dir:"desc"}; }
+      else if (sv === "date-asc") { currentSort = {col:"date",dir:"asc"}; }
+      else if (sv === "name-asc") { currentSort = {col:"name",dir:"asc"}; }
+      else if (sv === "name-desc") { currentSort = {col:"name",dir:"desc"}; }
+      else if (sv === "type")   { currentSort = {col:"type",dir:"asc"}; }
+      else if (sv === "status") { currentSort = {col:"status",dir:"asc"}; }
+    }
+  }
+
+  let docs = allDocs.filter(d => {
+    if (activeFolder && (d.folder || "Uncategorised") !== activeFolder) return false;
+    if (!q) return true;
+    return (d.title || d.original_filename || "").toLowerCase().includes(q)
+        || (d.document_category || "").toLowerCase().includes(q)
+        || (d.status || "").toLowerCase().includes(q);
+  });
+
+  // Sort
+  const dir = currentSort.dir === "asc" ? 1 : -1;
+  docs = docs.slice().sort((a, b) => {
+    switch (currentSort.col) {
+      case "date":   return dir * (new Date(a.created_at) - new Date(b.created_at));
+      case "name":   return dir * (a.title || "").localeCompare(b.title || "");
+      case "type":   return dir * (a.document_category || "").localeCompare(b.document_category || "");
+      case "status": return dir * (a.status || "").localeCompare(b.status || "");
+      default:       return 0;
+    }
+  });
+
+  const tbody = document.getElementById("docs-tbody");
+  if (docs.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:3rem;color:var(--cosv)">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:0.75rem">
+        <span class="material-symbols-outlined" style="font-size:48px;color:var(--col)">folder_open</span>
+        <p style="margin:0;font-size:0.9rem">No documents found.</p>
+        <a href="/documents/upload" class="btn-glass btn-glass-gold" style="font-size:0.8rem">
+          Upload your first document
+        </a>
+      </div>
+    </td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = docs.map(d => {
+    const dt  = d.created_at ? new Date(d.created_at).toLocaleDateString("en-GB") : "—";
+    const folder = d.folder || "Uncategorised";
+    return `<tr>
+      <td>
+        <div style="display:flex;align-items:center;gap:0.5rem">
+          <span class="material-symbols-outlined"
+                style="color:var(--cp);font-size:18px;flex-shrink:0;
+                       font-variation-settings:'FILL' 1">description</span>
+          <div style="min-width:0">
+            <a href="/documents-ui/${d.id}"
+               style="color:var(--cos);font-size:0.8125rem;font-weight:600;margin:0;
+                      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:220px;
+                      display:block;text-decoration:none"
+               onmouseover="this.style.color='var(--cp)'" onmouseout="this.style.color='var(--cos)'">
+              ${_esc(d.title || d.original_filename || 'Untitled')}
+            </a>
+            <p style="color:var(--cosv);font-size:0.7rem;margin:0">
+              ${_esc(d.original_filename || '')}
+            </p>
+          </div>
+        </div>
+      </td>
+      <td>${_typeBadge(d.document_category)}</td>
+      <td><span style="color:var(--cosv);font-size:0.8rem">${_esc(folder)}</span></td>
+      <td>${_statusBadge(d.status)}</td>
+      <td style="color:var(--cosv);font-size:0.8rem;white-space:nowrap">${dt}</td>
+      <td>
+        <div style="display:flex;align-items:center;gap:0.25rem;justify-content:flex-end">
+          <button onclick="openPreview(${d.id},'${_esc(d.title||d.original_filename||'Doc')}')"
+                  class="btn btn-sm btn-ghost" title="Preview">
+            <span class="material-symbols-outlined" style="font-size:16px">visibility</span>
+          </button>
+          <button onclick="analyseDoc(${d.id})"
+                  class="btn btn-sm btn-ghost" title="Analyse">
+            <span class="material-symbols-outlined" style="font-size:16px">insights</span>
+          </button>
+          <a href="/api/documents/${d.id}/download"
+             class="btn btn-sm btn-ghost" title="Download">
+            <span class="material-symbols-outlined" style="font-size:16px">download</span>
+          </a>
+          <button onclick="moveDoc(${d.id})"
+                  class="btn btn-sm btn-ghost" title="Move to folder">
+            <span class="material-symbols-outlined" style="font-size:16px">drive_file_move</span>
+          </button>
+          <button onclick="deleteDoc(${d.id})"
+                  class="btn btn-sm btn-danger" title="Delete">
+            <span class="material-symbols-outlined" style="font-size:16px">delete</span>
+          </button>
+        </div>
+      </td>
+    </tr>`;
+  }).join("");
+}
+
+/* ── Actions ────────────────────────────────────────────────────────────── */
+
+function openPreview(id, title) {
+  document.getElementById("preview-title").textContent = title;
+  document.getElementById("preview-frame").src = `/api/documents/${id}/download`;
+  const m = document.getElementById("preview-modal");
+  m.style.display = "flex";
+}
+function closePreview() {
+  document.getElementById("preview-modal").style.display = "none";
+  document.getElementById("preview-frame").src = "";
+}
+
+async function analyseDoc(id) {
+  try {
+    showProgress(30, "Starting analysis…");
+    await apiPost(`/api/analysis/start/${id}`, {});
+    showProgress(100, "Done");
+    setTimeout(() => {
+      showProgress(0);
+      window.location.href = `/documents-ui/${id}`;
+    }, 600);
+  } catch (err) {
+    showProgress(0);
+    showToast("Analysis failed: " + err.message, "error");
+  }
+}
+
+async function deleteDoc(id) {
+  const ok = await confirmDialog("Delete this document? This action cannot be undone.");
+  if (!ok) return;
+  try {
+    await apiDelete(`/api/documents/${id}`);
+    allDocs = allDocs.filter(d => d.id !== id);
+    buildFolderTree();
+    renderTable();
+    showToast("Document deleted.", "success");
+  } catch (err) {
+    showToast("Delete failed: " + err.message, "error");
+  }
+}
+
+function moveDoc(id) {
+  document.getElementById("move-doc-id").value = id;
+  document.getElementById("move-new-folder").value = "";
+  document.getElementById("move-modal").style.display = "flex";
+}
+function closeMoveModal() {
+  document.getElementById("move-modal").style.display = "none";
+}
+async function submitMove() {
+  const id        = document.getElementById("move-doc-id").value;
+  const newFolder = document.getElementById("move-new-folder").value.trim()
+                  || document.getElementById("move-folder-select").value;
+  if (!newFolder) { showToast("Please select or enter a folder.", "warning"); return; }
+  try {
+    await apiPatch(`/api/documents/${id}/folder`, { folder: newFolder });
+    const doc = allDocs.find(d => d.id === parseInt(id));
+    if (doc) doc.folder = newFolder;
+    buildFolderTree();
+    renderTable();
+    closeMoveModal();
+    showToast(`Moved to "${newFolder}".`, "success");
+  } catch (err) {
+    showToast("Move failed: " + err.message, "error");
+  }
+}
+
+function showNewFolderInput() {
+  const inp = document.getElementById("new-folder-input");
+  inp.style.display = inp.style.display === "none" ? "block" : "none";
+  if (inp.style.display === "block") document.getElementById("new-folder-name").focus();
+}
+function createFolder() {
+  const name = document.getElementById("new-folder-name").value.trim();
+  if (!name) { showToast("Enter a folder name.", "warning"); return; }
+  showToast(`Folder "${name}" created. Upload a document to it.`, "success");
+  document.getElementById("new-folder-input").style.display = "none";
+  document.getElementById("new-folder-name").value = "";
+  const sel = document.getElementById("move-folder-select");
+  sel.innerHTML += `<option value="${_esc(name)}">${_esc(name)}</option>`;
+}
+
+function _esc(s) {
+  return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+</script>
+{% endblock %}

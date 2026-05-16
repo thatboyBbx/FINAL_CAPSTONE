@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+{# reports/news.html — News Feed scraper page #}
+{% block title %}News Feed — InsureIntel Zimbabwe{% endblock %}
+
+{% block content %}
+<div class="px-8 py-7">
+
+  <nav style="display:flex;align-items:center;gap:0.5rem;font-size:0.75rem;color:var(--cosv);margin-bottom:1.5rem">
+    <a href="/home" style="color:var(--cosv);text-decoration:none">Home</a>
+    <span>/</span>
+    <a href="/reports" style="color:var(--cosv);text-decoration:none">Reports</a>
+    <span>/</span>
+    <span style="color:var(--cp);font-weight:600">News Feed</span>
+  </nav>
+
+  <div style="display:flex;align-items:center;justify-content:space-between;
+              flex-wrap:wrap;gap:1rem;margin-bottom:1.75rem">
+    <h1 class="font-headline" style="font-size:1.5rem;font-weight:800;color:var(--cos);margin:0">
+      📰 Insurance News Feed
+    </h1>
+    <button id="scrape-btn" onclick="startScrape()" class="btn-glass-gold">
+      <span class="material-symbols-outlined" style="font-size:18px">cloud_download</span>
+      Analyse News Feed
+    </button>
+  </div>
+
+  <!-- Status bar -->
+  <div id="status-bar" style="display:none;margin-bottom:1.25rem"
+       class="glass-card" style="padding:1rem">
+    <div style="display:flex;align-items:center;gap:0.75rem;padding:0.875rem 1rem">
+      <span class="material-symbols-outlined"
+            style="color:var(--cp);font-size:20px;animation:spin 1s linear infinite"
+            id="status-icon">progress_activity</span>
+      <span id="status-text" style="color:var(--cosv);font-size:0.875rem">Initialising scraper…</span>
+      <span id="status-pct" style="color:var(--cp);font-weight:700;font-size:0.875rem;margin-left:auto">0%</span>
+    </div>
+    <div class="progress-track" style="margin:0 1rem 0.875rem">
+      <div id="news-progress-fill" class="progress-fill" style="width:0%"></div>
+    </div>
+  </div>
+
+  <!-- News articles grid -->
+  <div id="articles-grid"
+       style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.25rem">
+    <!-- Populated by JS after scrape or on page load if cached -->
+  </div>
+
+  <div id="empty-state" style="text-align:center;padding:4rem 2rem;color:var(--cosv)">
+    <span class="material-symbols-outlined" style="font-size:48px;display:block;
+          margin-bottom:0.75rem;opacity:0.3;color:var(--cp)">newspaper</span>
+    <p style="font-size:1rem;font-weight:600;margin:0 0 0.375rem;color:var(--cosv)">
+      No articles loaded yet
+    </p>
+    <p style="font-size:0.875rem;margin:0">
+      Click <strong style="color:var(--cp)">Analyse News Feed</strong> to scrape latest Zimbabwe insurance news.
+    </p>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+"use strict";
+
+let pollInterval = null;
+
+// Try to load cached articles on page load
+document.addEventListener("DOMContentLoaded", async () => {
+  try {
+    const data = await apiGet("/api/news/articles?limit=30");
+    if (data && data.length > 0) {
+      renderArticles(data);
+    }
+  } catch (_) {}
+});
+
+async function startScrape() {
+  const btn = document.getElementById("scrape-btn");
+  btn.disabled = true;
+  btn.innerHTML = `<span class="material-symbols-outlined" style="font-size:18px;
+    animation:spin 1s linear infinite">progress_activity</span> Scraping…`;
+
+  document.getElementById("status-bar").style.display = "block";
+  document.getElementById("articles-grid").innerHTML = "";
+  document.getElementById("empty-state").style.display = "none";
+  document.getElementById("status-text").textContent = "Starting news scraper…";
+  document.getElementById("status-pct").textContent  = "0%";
+  document.getElementById("news-progress-fill").style.width = "0%";
+  showProgress(10, "Scraping news…");
+
+  try {
+    await apiPost("/api/news/scrape", {});
+    // Start polling
+    pollInterval = setInterval(pollStatus, 3000);
+    pollStatus();
+  } catch (err) {
+    resetBtn();
+    showToast("Scrape failed: " + err.message, "error");
+    showProgress(0);
+  }
+}
+
+async function pollStatus() {
+  try {
+    const status = await apiGet("/api/news/status");
+    const pct    = status.progress_pct || 0;
+
+    document.getElementById("status-text").textContent = status.message || "Processing…";
+    document.getElementById("status-pct").textContent  = pct + "%";
+    document.getElementById("news-progress-fill").style.width = pct + "%";
+    showProgress(pct, "Scraping news…");
+
+    if (status.completed || pct >= 100) {
+      clearInterval(pollInterval);
+      pollInterval = null;
+      showProgress(0);
+      document.getElementById("status-bar").style.display = "none";
+      resetBtn();
+      // Load articles
+      try {
+        const articles = await apiGet("/api/news/articles?limit=50");
+        renderArticles(articles);
+        showToast(`${articles.length} articles loaded.`, "success");
+      } catch (err) {
+        showToast("Could not load articles: " + err.message, "error");
+      }
+    }
+  } catch (_) {}
+}
+
+function resetBtn() {
+  const btn = document.getElementById("scrape-btn");
+  btn.disabled = false;
+  btn.innerHTML = `<span class="material-symbols-outlined" style="font-size:18px">cloud_download</span>
+    Analyse News Feed`;
+}
+
+function renderArticles(articles) {
+  const grid  = document.getElementById("articles-grid");
+  const empty = document.getElementById("empty-state");
+  if (!articles || articles.length === 0) { empty.style.display = "block"; return; }
+  empty.style.display = "none";
+
+  grid.innerHTML = articles.map(a => {
+    const conf   = a.relevance_score || a.confidence || 0;
+    const confPct = Math.round(conf * 100);
+    const sentCol = a.sentiment === "positive" ? "#4ade80"
+                  : a.sentiment === "negative" ? "#f87171" : "#a1a1a1";
+    const dt = a.published_date || a.scraped_at
+             ? new Date(a.published_date || a.scraped_at).toLocaleDateString("en-GB") : "—";
+    return `
+      <div class="glass-card tile-card" style="padding:1.25rem">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;
+                    gap:0.5rem;margin-bottom:0.75rem">
+          <span style="background:rgba(212,175,55,0.12);color:#d4af37;border:1px solid rgba(212,175,55,0.25);
+                       border-radius:9999px;padding:0.1rem 0.5rem;font-size:0.65rem;font-weight:700;
+                       text-transform:uppercase;flex-shrink:0">
+            ${_esc(a.source || 'News')}
+          </span>
+          ${confPct > 0 ? `<span style="color:var(--cosv);font-size:0.7rem;flex-shrink:0">
+            Confidence: <strong style="color:var(--cp)">${confPct}%</strong></span>` : ""}
+        </div>
+        <h3 style="color:var(--cos);font-weight:700;font-size:0.9rem;margin:0 0 0.5rem;
+                   line-height:1.4">${_esc(a.title || 'Untitled')}</h3>
+        <p style="color:var(--cosv);font-size:0.8125rem;margin:0 0 0.875rem;line-height:1.5;
+                  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden">
+          ${_esc(a.summary || a.content_snippet || '')}
+        </p>
+        <div style="display:flex;align-items:center;justify-content:space-between;
+                    border-top:1px solid rgba(255,255,255,0.05);padding-top:0.625rem;margin-top:auto">
+          <span style="color:var(--cosv);font-size:0.75rem">${dt}</span>
+          <div style="display:flex;align-items:center;gap:0.5rem">
+            ${a.sentiment ? `<span style="color:${sentCol};font-size:0.75rem;font-weight:600">
+              ${_esc(a.sentiment)}</span>` : ""}
+            ${a.url ? `<a href="${_esc(a.url)}" target="_blank" rel="noopener"
+               style="color:var(--cp);font-size:0.75rem;font-weight:600;text-decoration:none">
+               Read →</a>` : ""}
+          </div>
+        </div>
+      </div>`;
+  }).join("");
+}
+
+function _esc(s) { return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+</script>
+<style>@keyframes spin { from{transform:rotate(0)} to{transform:rotate(360deg)} }</style>
+{% endblock %}

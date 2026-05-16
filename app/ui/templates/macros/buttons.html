@@ -1,0 +1,97 @@
+{# macros/buttons.html — Button macros for InsureIntel Zimbabwe #}
+
+{% macro btn_primary(text, href=None, icon=None, size='', type='button', disabled=False, attrs='') %}
+{% if href %}
+<a href="{{ href }}" class="btn btn-primary {{ size }}" {{ 'aria-disabled=true' if disabled else '' }}>
+  {% if icon %}<span class="material-symbols-outlined" style="font-size:18px">{{ icon }}</span>{% endif %}
+  {{ text }}
+</a>
+{% else %}
+<button type="{{ type }}" class="btn btn-primary {{ size }}" {{ 'disabled' if disabled else '' }}>
+  {% if icon %}<span class="material-symbols-outlined" style="font-size:18px">{{ icon }}</span>{% endif %}
+  {{ text }}
+</button>
+{% endif %}
+{% endmacro %}
+
+{% macro btn_secondary(text, href=None, icon=None, size='', type='button', disabled=False) %}
+{% if href %}
+<a href="{{ href }}" class="btn btn-secondary {{ size }}">
+  {% if icon %}<span class="material-symbols-outlined" style="font-size:18px">{{ icon }}</span>{% endif %}
+  {{ text }}
+</a>
+{% else %}
+<button type="{{ type }}" class="btn btn-secondary {{ size }}" {{ 'disabled' if disabled else '' }}>
+  {% if icon %}<span class="material-symbols-outlined" style="font-size:18px">{{ icon }}</span>{% endif %}
+  {{ text }}
+</button>
+{% endif %}
+{% endmacro %}
+
+{% macro btn_glass(text, href=None, icon=None, size='', type='button', disabled=False) %}
+{% if href %}
+<a href="{{ href }}" class="btn-glass {{ size }}">
+  {% if icon %}<span class="material-symbols-outlined" style="font-size:18px">{{ icon }}</span>{% endif %}
+  {{ text }}
+</a>
+{% else %}
+<button type="{{ type }}" class="btn-glass {{ size }}" {{ 'disabled' if disabled else '' }}>
+  {% if icon %}<span class="material-symbols-outlined" style="font-size:18px">{{ icon }}</span>{% endif %}
+  {{ text }}
+</button>
+{% endif %}
+{% endmacro %}
+
+{% macro btn_glass_gold(text, href=None, icon=None, size='', type='button', disabled=False) %}
+{% if href %}
+<a href="{{ href }}" class="btn-glass btn-glass-gold {{ size }}">
+  {% if icon %}<span class="material-symbols-outlined" style="font-size:18px">{{ icon }}</span>{% endif %}
+  {{ text }}
+</a>
+{% else %}
+<button type="{{ type }}" class="btn-glass btn-glass-gold {{ size }}" {{ 'disabled' if disabled else '' }}>
+  {% if icon %}<span class="material-symbols-outlined" style="font-size:18px">{{ icon }}</span>{% endif %}
+  {{ text }}
+</button>
+{% endif %}
+{% endmacro %}
+
+{% macro btn_danger(text, href=None, icon=None, size='', type='button', disabled=False, confirm=None) %}
+{% if href %}
+<a href="{{ href }}" class="btn-glass btn-glass-danger {{ size }}" {{ ('onclick="return confirm(\'' + confirm + '\')"') | safe if confirm else '' }}>
+  {% if icon %}<span class="material-symbols-outlined" style="font-size:18px">{{ icon }}</span>{% endif %}
+  {{ text }}
+</a>
+{% else %}
+<button type="{{ type }}" class="btn-glass btn-glass-danger {{ size }}" {{ 'disabled' if disabled else '' }} {{ ('onclick="return confirm(\'' + confirm + '\')"') | safe if confirm else '' }}>
+  {% if icon %}<span class="material-symbols-outlined" style="font-size:18px">{{ icon }}</span>{% endif %}
+  {{ text }}
+</button>
+{% endif %}
+{% endmacro %}
+
+{% macro btn_ghost(text, href=None, icon=None, size='', type='button') %}
+{% if href %}
+<a href="{{ href }}" class="btn btn-ghost {{ size }}">
+  {% if icon %}<span class="material-symbols-outlined" style="font-size:18px">{{ icon }}</span>{% endif %}
+  {{ text }}
+</a>
+{% else %}
+<button type="{{ type }}" class="btn btn-ghost {{ size }}">
+  {% if icon %}<span class="material-symbols-outlined" style="font-size:18px">{{ icon }}</span>{% endif %}
+  {{ text }}
+</button>
+{% endif %}
+{% endmacro %}
+
+{% macro btn_icon(icon, onclick=None, href=None, title='', size='text-[20px]', style='') %}
+{% if href %}
+<a href="{{ href }}" title="{{ title }}" class="p-2 rounded-lg transition-all hover:opacity-80" style="color:var(--cosv);{{ style }}">
+  <span class="material-symbols-outlined {{ size }}">{{ icon }}</span>
+</a>
+{% else %}
+<button type="button" onclick="{{ onclick }}" title="{{ title }}" class="p-2 rounded-lg transition-all hover:opacity-80" style="color:var(--cosv);{{ style }}">
+  <span class="material-symbols-outlined {{ size }}">{{ icon }}</span>
+</button>
+{% endif %}
+{% endmacro %}

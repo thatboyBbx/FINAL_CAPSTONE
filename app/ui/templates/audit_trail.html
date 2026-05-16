@@ -1,0 +1,113 @@
+﻿{% extends "base.html" %}
+{% block title %}Audit Trail — InsureIntel{% endblock %}
+
+{% block content %}
+<div class="p-6 space-y-6">
+  <div class="flex items-center justify-between">
+    <div style="display:flex;align-items:center;gap:0.75rem">
+      <a href="/home" class="btn btn-ghost btn-sm">
+        <span class="material-symbols-outlined text-[16px]">arrow_back</span>Back
+      </a>
+      <div>
+        <h2 class="text-2xl font-bold font-headline" style="color:var(--cos)">Audit Trail</h2>
+        <p class="text-sm mt-0.5" style="color:var(--cosv)">Immutable log of all platform actions and system events.</p>
+      </div>
+    </div>
+    <div class="flex gap-2">
+      <button onclick="showErrorModal('Export coming soon.'); return false;" class="btn btn-ghost btn-sm"><span class="material-symbols-outlined text-[16px]">download</span>Export CSV</button>
+      <button onclick="showErrorModal('This feature is coming soon.'); return false;" class="btn btn-secondary btn-sm"><span class="material-symbols-outlined text-[16px]">filter_list</span>Filters</button>
+    </div>
+  </div>
+
+  <!-- Filters -->
+  <form method="GET" action="/audit-trail" class="flex flex-wrap gap-3 p-4 rounded-xl" style="background:var(--csf);border:1px solid color-mix(in srgb,var(--col) 50%,transparent)">
+    <select name="action" class="form-input" style="width:auto;min-width:150px">
+      <option value="">All Actions</option>
+      <option value="upload">Upload</option>
+      <option value="update">Update</option>
+      <option value="archive">Archive</option>
+      <option value="login">Login</option>
+      <option value="analysis">Analysis</option>
+    </select>
+    <select name="user" class="form-input" style="width:auto;min-width:150px">
+      <option value="">All Users</option>
+      <option value="current">{{ full_name or 'Current User' }}</option>
+    </select>
+    <input type="date" name="date_from" class="form-input" style="width:auto">
+    <input type="date" name="date_to" class="form-input" style="width:auto">
+    <button type="submit" class="btn btn-primary btn-sm"><span class="material-symbols-outlined text-[16px]">search</span>Search</button>
+  </form>
+
+  <!-- Audit Table -->
+  <div class="rounded-xl overflow-hidden" style="background:var(--csf);border:1px solid color-mix(in srgb,var(--col) 50%,transparent)">
+    <div class="px-5 py-4 flex items-center justify-between" style="border-bottom:1px solid color-mix(in srgb,var(--col) 40%,transparent)">
+      <h3 class="font-semibold font-headline" style="color:var(--cos)">Event Log</h3>
+      <span class="badge badge-gold">Demo Data</span>
+    </div>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Timestamp</th>
+          <th>Action</th>
+          <th>User</th>
+          <th>Resource</th>
+          <th>Status</th>
+          <th>IP Address</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% set events = [
+          ('2024-03-14 09:42:11','Document Upload','J. Mutasa','Zimplats-Fire-Policy.pdf','success','192.168.1.10'),
+          ('2024-03-14 09:38:05','User Login','J. Mutasa','Auth System','success','192.168.1.10'),
+          ('2024-03-14 09:01:44','ML Analysis Run','System','Delta-Corp-Fleet.pdf','success','internal'),
+          ('2024-03-13 17:22:33','Status Update','T. Chikwanda','Innscor-Liability.pdf','success','10.0.0.5'),
+          ('2024-03-13 16:55:10','Document Archive','T. Chikwanda','OldPolicy2022.pdf','success','10.0.0.5'),
+          ('2024-03-13 14:30:22','IPEC Scraper Run','System','Circulars Feed','success','internal'),
+          ('2024-03-13 11:18:44','Compliance Check','System','Econet-Life.pdf','warning','internal'),
+          ('2024-03-12 16:05:09','User Logout','J. Mutasa','Auth System','success','192.168.1.10'),
+          ('2024-03-12 13:22:15','Document Upload','A. Ncube','NSSA-Medical.pdf','success','172.16.0.3'),
+          ('2024-03-12 10:44:01','Batch Analysis','System','Portfolio-Q1-2024','success','internal'),
+        ] %}
+        {% for ts, action, user, resource, status, ip in events %}
+        <tr>
+          <td class="text-xs font-mono" style="color:var(--cosv)">{{ ts }}</td>
+          <td>
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-[16px]" style="color:var(--cp)">
+                {% if 'Upload' in action %}upload_file
+                {% elif 'Login' in action %}login
+                {% elif 'Logout' in action %}logout
+                {% elif 'Analysis' in action or 'Check' in action %}analytics
+                {% elif 'Archive' in action %}archive
+                {% elif 'Update' in action %}edit
+                {% elif 'Scraper' in action %}cloud_sync
+                {% elif 'Batch' in action %}folder_zip
+                {% else %}event_note{% endif %}
+              </span>
+              <span class="text-sm font-medium" style="color:var(--cos)">{{ action }}</span>
+            </div>
+          </td>
+          <td class="text-sm" style="color:var(--cosv)">{{ user }}</td>
+          <td class="text-xs font-medium" style="color:var(--cos)">{{ resource }}</td>
+          <td>
+            {% if status == 'success' %}<span class="badge badge-green">Success</span>
+            {% elif status == 'warning' %}<span class="badge badge-amber">Warning</span>
+            {% elif status == 'error' %}<span class="badge badge-red">Error</span>
+            {% else %}<span class="badge badge-gold">{{ status }}</span>{% endif %}
+          </td>
+          <td class="text-xs font-mono" style="color:var(--cosv)">{{ ip }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <div class="px-5 py-3 flex items-center justify-between text-xs" style="color:var(--cosv);border-top:1px solid color-mix(in srgb,var(--col) 40%,transparent)">
+      <span>Showing 1–10 of 2,841 events</span>
+      <div class="flex items-center gap-2">
+        <a href="?page={{ (page|default(1)|int) - 1 if (page|default(1)|int) > 1 else 1 }}" class="btn btn-ghost btn-sm">← Prev</a>
+        <span class="px-3 py-1 rounded font-semibold" style="background:color-mix(in srgb,var(--cp) 10%,transparent);color:var(--cp)">{{ page|default(1) }}</span>
+        <a href="?page={{ (page|default(1)|int) + 1 }}" class="btn btn-ghost btn-sm">Next →</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

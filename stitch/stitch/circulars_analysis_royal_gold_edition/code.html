@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Circulars Analysis | InsureIntel Zimbabwe</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#D4AF37", // Royal Gold
+                        "on-primary": "#121212",
+                        "primary-container": "#D4AF37",
+                        "on-primary-container": "#121212",
+                        "surface": "#121212",
+                        "on-surface": "#F5F5F5",
+                        "surface-container": "#1E1E1E",
+                        "surface-container-low": "#1A1A1A",
+                        "surface-container-lowest": "#0F0F0F",
+                        "surface-container-high": "#2A2A2A",
+                        "surface-container-highest": "#333333",
+                        "outline": "#4D4D4D",
+                        "outline-variant": "#333333",
+                        "secondary": "#A6A6A6",
+                        "error": "#CF6679",
+                        "on-error": "#000000",
+                        "error-container": "#4B0002",
+                        "on-error-container": "#FFDAD6"
+                    },
+                    fontFamily: {
+                        "headline": ["Manrope", "sans-serif"],
+                        "body": ["Manrope", "sans-serif"],
+                        "label": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body { font-family: 'Manrope', sans-serif; background-color: #121212; color: #F5F5F5; }
+        h1, h2, h3 { font-family: 'Manrope', sans-serif; }
+        .gold-glow { text-shadow: 0 0 10px rgba(212, 175, 55, 0.3); }
+        .border-gold { border-color: #D4AF37; }
+        .bg-gold { background-color: #D4AF37; }
+        .text-gold { color: #D4AF37; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface antialiased">
+<!-- SideNavBar -->
+<aside class="h-screen w-64 fixed left-0 top-0 overflow-y-auto bg-surface-container-lowest border-r border-outline-variant z-50 flex flex-col py-6 font-headline tracking-tight">
+<div class="px-6 mb-8">
+<div class="text-xl font-bold text-primary tracking-wide">InsureIntel</div>
+<div class="text-[10px] text-secondary uppercase tracking-[0.2em] mt-1">Sovereign Intelligence</div>
+</div>
+<nav class="flex-grow space-y-1">
+<a class="text-secondary hover:text-primary mx-2 px-4 py-3 flex items-center gap-3 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="text-secondary hover:text-primary mx-2 px-4 py-3 flex items-center gap-3 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">description</span>
+<span>Documents</span>
+</a>
+<a class="text-secondary hover:text-primary mx-2 px-4 py-3 flex items-center gap-3 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span>Analysis Results</span>
+</a>
+<a class="bg-primary/10 text-primary border-r-2 border-primary mx-2 px-4 py-3 flex items-center gap-3 font-semibold" href="#">
+<span class="material-symbols-outlined">assignment</span>
+<span>Circulars Analysis</span>
+</a>
+<a class="text-secondary hover:text-primary mx-2 px-4 py-3 flex items-center gap-3 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">psychology</span>
+<span>ML Predictions</span>
+</a>
+</nav>
+<div class="mt-auto px-4">
+<button class="w-full bg-primary text-on-primary py-3 rounded-lg font-bold flex items-center justify-center gap-2 mb-6 hover:brightness-110 active:scale-95 transition-all">
+<span class="material-symbols-outlined">add</span>
+<span>New Claim</span>
+</button>
+<div class="space-y-1">
+<a class="text-secondary hover:text-white px-4 py-2 flex items-center gap-3 text-sm hover:bg-white/5 transition-all" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Settings</span>
+</a>
+<a class="text-secondary hover:text-white px-4 py-2 flex items-center gap-3 text-sm hover:bg-white/5 transition-all" href="#">
+<span class="material-symbols-outlined">help_outline</span>
+<span>Support</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- TopNavBar -->
+<header class="fixed top-0 right-0 left-64 h-16 z-40 bg-surface/80 backdrop-blur-md border-b border-outline-variant flex justify-between items-center px-8">
+<div class="flex items-center gap-4 flex-1">
+<div class="relative w-full max-w-md">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-secondary">search</span>
+<input class="w-full bg-surface-container border border-outline-variant rounded-lg pl-10 pr-4 py-2 text-sm focus:ring-1 focus:ring-primary focus:border-primary placeholder-secondary" placeholder="Search circulars, entities, or risk data..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<button class="text-secondary hover:text-primary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-secondary hover:text-primary transition-colors">
+<span class="material-symbols-outlined">help</span>
+</button>
+<div class="h-6 w-[1px] bg-outline-variant mx-2"></div>
+<div class="flex items-center gap-3 cursor-pointer group">
+<div class="text-right hidden sm:block">
+<div class="text-sm font-bold text-on-surface leading-none">Admin Profile</div>
+<div class="text-[10px] text-secondary uppercase tracking-wider">Zimbabwe Unit</div>
+</div>
+<div class="w-9 h-9 rounded bg-primary text-on-primary flex items-center justify-center font-bold">IZ</div>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="ml-64 pt-24 p-8 min-h-screen bg-surface">
+<!-- Breadcrumb & Header -->
+<div class="mb-8">
+<nav aria-label="Breadcrumb" class="flex mb-2">
+<ol class="flex items-center space-x-2 text-[10px] font-bold uppercase tracking-widest text-secondary">
+<li><a class="hover:text-primary transition-colors" href="#">Dashboard</a></li>
+<li><span class="material-symbols-outlined text-xs">chevron_right</span></li>
+<li class="text-primary">Circulars Analysis</li>
+</ol>
+</nav>
+<h1 class="text-3xl font-extrabold tracking-tight text-on-surface">Regulatory Circulars Analysis</h1>
+<p class="text-secondary mt-1 font-medium">AI-powered extraction and risk modeling for IPEC and RBZ regulatory updates.</p>
+</div>
+<!-- Grid Layout -->
+<div class="grid grid-cols-12 gap-8">
+<!-- Analysis Engine (Upload & Stepper) -->
+<div class="col-span-12 lg:col-span-8 space-y-8">
+<!-- Upload Section -->
+<section class="bg-surface-container-lowest rounded-lg p-8 shadow-2xl border border-outline-variant">
+<div class="flex items-center justify-between mb-6">
+<h2 class="text-lg font-bold flex items-center gap-2 text-on-surface">
+<span class="material-symbols-outlined text-primary">cloud_upload</span>
+                        Intelligence Ingestion
+                    </h2>
+<span class="text-[10px] font-black text-primary px-3 py-1 bg-primary/10 border border-primary/20 rounded">IPEC READY</span>
+</div>
+<div class="border border-dashed border-outline-variant rounded-lg p-12 text-center hover:border-primary transition-all cursor-pointer bg-surface-container/30 group">
+<span class="material-symbols-outlined text-5xl text-outline group-hover:text-primary transition-colors mb-4">upload_file</span>
+<p class="text-on-surface font-semibold">Drop regulatory PDF here or <span class="text-primary hover:underline">browse files</span></p>
+<p class="text-xs text-secondary mt-2">Maximum file size: 25MB. Supported formats: .pdf, .docx</p>
+</div>
+</section>
+<!-- Processing Pipeline -->
+<section class="bg-surface-container-lowest rounded-lg p-8 shadow-2xl border border-outline-variant overflow-x-auto">
+<h2 class="text-[10px] font-black text-secondary uppercase tracking-[0.2em] mb-10">Analysis Pipeline Progress</h2>
+<div class="flex items-center justify-between min-w-[800px] px-4">
+<!-- Step 1: Upload -->
+<div class="flex flex-col items-center gap-3 relative">
+<div class="w-10 h-10 rounded-lg bg-primary text-on-primary flex items-center justify-center font-bold z-10 shadow-[0_0_15px_rgba(212,175,55,0.4)]">1</div>
+<span class="text-[9px] font-black uppercase tracking-widest text-primary">Upload</span>
+<div class="absolute top-5 left-10 w-24 h-[1px] bg-primary"></div>
+</div>
+<!-- Step 2: Extraction -->
+<div class="flex flex-col items-center gap-3 relative">
+<div class="w-10 h-10 rounded-lg bg-primary text-on-primary flex items-center justify-center font-bold z-10 shadow-[0_0_15px_rgba(212,175,55,0.4)]">2</div>
+<span class="text-[9px] font-black uppercase tracking-widest text-primary">Extraction</span>
+<div class="absolute top-5 left-10 w-24 h-[1px] bg-primary"></div>
+</div>
+<!-- Step 3: NER -->
+<div class="flex flex-col items-center gap-3 relative">
+<div class="w-10 h-10 rounded-lg bg-primary text-on-primary flex items-center justify-center font-bold z-10 shadow-[0_0_15px_rgba(212,175,55,0.4)]">3</div>
+<span class="text-[9px] font-black uppercase tracking-widest text-primary">NER</span>
+<div class="absolute top-5 left-10 w-24 h-[1px] bg-primary"></div>
+</div>
+<!-- Step 4: Keyword -->
+<div class="flex flex-col items-center gap-3 relative">
+<div class="w-10 h-10 rounded-lg bg-primary text-on-primary flex items-center justify-center font-bold z-10 shadow-[0_0_15px_rgba(212,175,55,0.4)]">4</div>
+<span class="text-[9px] font-black uppercase tracking-widest text-primary">Keyword</span>
+<div class="absolute top-5 left-10 w-24 h-[1px] bg-outline-variant"></div>
+</div>
+<!-- Step 5: TF-IDF -->
+<div class="flex flex-col items-center gap-3 relative">
+<div class="w-10 h-10 rounded-lg bg-surface-container text-secondary border border-outline-variant flex items-center justify-center font-bold z-10">5</div>
+<span class="text-[9px] font-black uppercase tracking-widest text-secondary">TF-IDF</span>
+<div class="absolute top-5 left-10 w-24 h-[1px] bg-outline-variant"></div>
+</div>
+<!-- Step 6: MLP -->
+<div class="flex flex-col items-center gap-3 relative">
+<div class="w-10 h-10 rounded-lg bg-surface-container text-secondary border border-outline-variant flex items-center justify-center font-bold z-10">6</div>
+<span class="text-[9px] font-black uppercase tracking-widest text-secondary">MLP</span>
+<div class="absolute top-5 left-10 w-24 h-[1px] bg-outline-variant"></div>
+</div>
+<!-- Step 7: Risk Score -->
+<div class="flex flex-col items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container text-secondary border border-outline-variant flex items-center justify-center font-bold z-10">7</div>
+<span class="text-[9px] font-black uppercase tracking-widest text-secondary">Risk Score</span>
+</div>
+</div>
+</section>
+<!-- History Table -->
+<section class="bg-surface-container-lowest rounded-lg shadow-2xl border border-outline-variant overflow-hidden">
+<div class="p-6 border-b border-outline-variant flex justify-between items-center">
+<h2 class="text-lg font-bold text-on-surface">Analysis History</h2>
+<button class="text-primary text-[10px] font-black uppercase tracking-widest hover:underline">View All Documents</button>
+</div>
+<table class="w-full text-left">
+<thead>
+<tr class="bg-surface-container text-secondary text-[10px] font-black uppercase tracking-widest">
+<th class="px-6 py-4">Circular Reference</th>
+<th class="px-6 py-4">Date Processed</th>
+<th class="px-6 py-4">Authority</th>
+<th class="px-6 py-4">Risk Status</th>
+<th class="px-6 py-4 text-right">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<tr class="hover:bg-primary/[0.03] transition-colors">
+<td class="px-6 py-4 font-bold text-on-surface">IC-2023-R04: Solvency Framework</td>
+<td class="px-6 py-4 text-sm text-secondary">Oct 12, 2023</td>
+<td class="px-6 py-4 text-xs font-bold text-primary">IPEC</td>
+<td class="px-6 py-4">
+<span class="bg-error/10 text-error border border-error/20 px-2 py-1 rounded text-[9px] font-black uppercase tracking-wider">High Risk</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary hover:text-primary/80 text-xs font-bold uppercase tracking-widest">Report</button>
+</td>
+</tr>
+<tr class="hover:bg-primary/[0.03] transition-colors">
+<td class="px-6 py-4 font-bold text-on-surface">RBZ-D3: Foreign Currency Holdings</td>
+<td class="px-6 py-4 text-sm text-secondary">Sep 28, 2023</td>
+<td class="px-6 py-4 text-xs font-bold text-primary">RBZ</td>
+<td class="px-6 py-4">
+<span class="bg-primary/10 text-primary border border-primary/20 px-2 py-1 rounded text-[9px] font-black uppercase tracking-wider">Moderate</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-primary hover:text-primary/80 text-xs font-bold uppercase tracking-widest">Report</button>
+</td>
+</tr>
+</tbody>
+</table>
+</section>
+</div>
+<!-- Side Panels (Active Results) -->
+<div class="col-span-12 lg:col-span-4 space-y-8">
+<!-- Selected Circular Breakdown -->
+<section class="bg-surface-container-lowest rounded-lg p-6 shadow-2xl border border-outline-variant">
+<div class="flex items-start justify-between mb-6">
+<div>
+<span class="text-[9px] font-black text-secondary uppercase tracking-[0.2em]">Selected Result</span>
+<h3 class="text-xl font-extrabold mt-1 text-on-surface leading-tight">Circular 14: Micro-Insurance Assets</h3>
+</div>
+<div class="bg-primary/10 border border-primary/30 p-2 rounded-lg flex flex-col items-center min-w-[50px] shadow-[0_0_10px_rgba(212,175,55,0.2)]">
+<span class="text-[9px] font-black text-primary uppercase">RISK</span>
+<span class="text-xl font-black text-primary">8.4</span>
+</div>
+</div>
+<div class="flex gap-4 mb-8">
+<div class="bg-surface-container px-3 py-1.5 rounded-md text-[11px] font-bold text-secondary border border-outline-variant">15 Nov 2023</div>
+<div class="bg-surface-container px-3 py-1.5 rounded-md text-[11px] font-bold text-primary border border-primary/20">Auth: IPEC</div>
+</div>
+<!-- Risk Analysis Pulse -->
+<div class="space-y-5 pt-6 border-t border-outline-variant">
+<div>
+<div class="flex justify-between text-[11px] mb-2 font-bold uppercase tracking-widest">
+<span class="text-secondary">Compliance Impact</span>
+<span class="text-primary">Critical</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary shadow-[0_0_8px_rgba(212,175,55,0.6)] w-[92%]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-[11px] mb-2 font-bold uppercase tracking-widest">
+<span class="text-secondary">Financial Liability</span>
+<span class="text-primary/70">Significant</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary/60 w-[65%]"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Impact Assessment -->
+<section class="bg-surface-container-lowest rounded-lg p-6 shadow-2xl border border-outline-variant">
+<h2 class="text-[10px] font-black text-secondary uppercase tracking-[0.2em] mb-4">Impact Assessment</h2>
+<div class="space-y-3">
+<div class="flex items-center justify-between p-4 bg-surface-container/50 border border-outline-variant rounded-lg">
+<span class="text-[11px] font-bold text-secondary uppercase tracking-widest">Affected Insurers</span>
+<span class="text-sm font-black text-primary">All Tier 1 &amp; 2</span>
+</div>
+<div class="flex items-center justify-between p-4 bg-surface-container/50 border border-outline-variant rounded-lg">
+<span class="text-[11px] font-bold text-secondary uppercase tracking-widest">Policy Types</span>
+<span class="text-sm font-black text-primary">Life, Agri</span>
+</div>
+</div>
+</section>
+<!-- Extracted Entities Panel -->
+<section class="bg-surface-container-lowest rounded-lg p-6 shadow-2xl border-t-2 border-primary">
+<h2 class="text-[10px] font-black text-secondary uppercase tracking-[0.2em] mb-6">Extracted Intelligence (NER)</h2>
+<div class="space-y-6">
+<div>
+<p class="text-[9px] text-secondary font-black mb-3 uppercase tracking-widest">Financial Figures</p>
+<div class="flex flex-wrap gap-2">
+<span class="px-2 py-1.5 bg-primary/5 text-primary text-[11px] font-bold rounded border border-primary/20">$15,000,000 USD</span>
+<span class="px-2 py-1.5 bg-primary/5 text-primary text-[11px] font-bold rounded border border-primary/20">5% Levy</span>
+</div>
+</div>
+<div>
+<p class="text-[9px] text-secondary font-black mb-3 uppercase tracking-widest">Key References</p>
+<div class="flex flex-wrap gap-2">
+<span class="px-2 py-1.5 bg-surface-container text-on-surface text-[11px] font-bold rounded border border-outline-variant">Statutory Instrument 122</span>
+<span class="px-2 py-1.5 bg-surface-container text-on-surface text-[11px] font-bold rounded border border-outline-variant">IPEC Act Sec 14</span>
+</div>
+</div>
+<div>
+<p class="text-[9px] text-secondary font-black mb-3 uppercase tracking-widest">Critical Dates</p>
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-sm">event</span>
+<span class="text-xs font-black uppercase tracking-widest">Deadline: 31 Dec 2023</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Tag Cloud (Key Terms) -->
+<section class="bg-surface-container-lowest rounded-lg p-6 shadow-2xl border border-outline-variant">
+<h2 class="text-[10px] font-black text-secondary uppercase tracking-[0.2em] mb-4">Semantic Cloud</h2>
+<div class="flex flex-wrap gap-3 items-center">
+<span class="text-xl font-black text-primary hover:scale-110 transition-transform cursor-default">Solvency</span>
+<span class="text-[11px] font-bold text-secondary uppercase tracking-widest">Risk-Weighted</span>
+<span class="text-lg font-black text-primary/80 hover:scale-110 transition-transform cursor-default">Capitalization</span>
+<span class="text-[12px] font-bold text-on-surface/70 uppercase">Assets</span>
+<span class="text-base font-black text-primary hover:scale-110 transition-transform cursor-default">Compliance</span>
+<span class="text-[10px] font-bold text-secondary tracking-[0.2em]">REINSURANCE</span>
+<span class="text-xl font-black text-primary shadow-primary/20 drop-shadow-sm">Zimbabwe</span>
+<span class="text-[13px] font-bold text-on-surface">Premium</span>
+</div>
+</section>
+</div>
+</div>
+</main>
+<!-- Trust Badge Section (Zimbabwean Context) -->
+<footer class="ml-64 p-8 pt-0">
+<div class="bg-surface-container-low rounded-lg p-5 flex items-center justify-between border border-outline-variant/30">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded bg-white flex items-center justify-center shadow-md p-1 overflow-hidden">
+<img alt="Zimbabwe Flag" class="w-full object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDYrYqibyDYSYZU6W-eV2VeSF09zsnAWjy8zNqWV7wA7TYIq76fmh_mkXhqlaOTUurTpyVlGsgTiE9k6Wkp2go3eMhBv7PA4K12-xIO0zNH0b8SoSFo0AYIyPyYbokAGVWzSH1Vkf7TCroBEQ0jVbIKSIWPHHg0GT2XUc9g8Xlp3VTBz8eEl5LUkdewB__r5FgqUqs-6hG9m6qZ7AibpDlwUckhCpkHEUKDCDOpkLNq_pR08pxeM1NJv-zSNXrgzGl6W6YX6SaqYUd-"/>
+</div>
+<div>
+<p class="text-[9px] font-black text-secondary uppercase tracking-[0.2em]">Regulatory Compliance Node</p>
+<p class="text-xs font-bold text-on-surface">Harare Financial District Hub #442</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-[9px] font-black text-secondary uppercase tracking-[0.2em]">IPEC Registered Data Provider</p>
+<p class="text-xs font-mono font-bold text-primary">REG-ID: ZW-INS-772910</p>
+</div>
+</div>
+</footer>
+</body></html>

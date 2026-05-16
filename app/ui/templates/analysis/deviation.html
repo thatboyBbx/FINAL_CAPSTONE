@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+{# analysis/deviation.html — Clause Deviation analysis #}
+{% block title %}Clause Deviation — InsureIntel Zimbabwe{% endblock %}
+
+{% block content %}
+<div class="px-8 py-7" style="max-width:900px">
+
+  <nav style="display:flex;align-items:center;gap:0.5rem;font-size:0.75rem;color:var(--cosv);margin-bottom:1.5rem">
+    <a href="/home" style="color:var(--cosv);text-decoration:none">Home</a>
+    <span>/</span>
+    <a href="/analysis" style="color:var(--cosv);text-decoration:none">Analysis</a>
+    <span>/</span>
+    <span style="color:var(--cp);font-weight:600">Clause Deviation</span>
+  </nav>
+
+  <h1 class="font-headline" style="font-size:1.5rem;font-weight:800;color:var(--cos);margin:0 0 1.75rem">
+    📐 Clause Deviation Analysis
+  </h1>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1.5rem">
+
+    <!-- Panel A: Template -->
+    <div class="glass-card" style="padding:1.5rem">
+      <h3 style="color:var(--cos);font-weight:700;font-size:0.9375rem;margin:0 0 1rem">
+        Panel A — Master Template
+      </h3>
+      <label class="form-label">Select from vault</label>
+      <select id="template-select" class="form-input" style="margin-bottom:0.75rem" onchange="checkReady()">
+        <option value="">— Select template —</option>
+      </select>
+      <p style="color:var(--cosv);font-size:0.75rem;text-align:center;margin:0.25rem 0">— or upload —</p>
+      <div class="drop-zone" style="margin-top:0.5rem;padding:1.25rem"
+           onclick="document.getElementById('template-file').click()">
+        <span class="material-symbols-outlined" style="font-size:24px;color:var(--cp);opacity:0.6;
+              font-variation-settings:'FILL' 1">upload_file</span>
+        <p style="color:var(--cosv);font-size:0.8rem;margin:0.25rem 0 0">Upload template PDF</p>
+        <input id="template-file" type="file" accept=".pdf" style="display:none"
+               onchange="uploadTemplate(this.files[0])">
+      </div>
+      <p id="template-status" style="color:var(--cp);font-size:0.8rem;margin:0.5rem 0 0;display:none"></p>
+    </div>
+
+    <!-- Panel B: Documents to compare -->
+    <div class="glass-card" style="padding:1.5rem">
+      <h3 style="color:var(--cos);font-weight:700;font-size:0.9375rem;margin:0 0 1rem">
+        Panel B — Documents to Check
+      </h3>
+      <p style="color:var(--cosv);font-size:0.8rem;margin:0 0 0.5rem">Hold Ctrl/Cmd to select multiple</p>
+      <select id="docs-select" class="form-input" multiple style="height:160px" onchange="checkReady()">
+        <!-- Populated by JS -->
+      </select>
+    </div>
+
+  </div>
+
+  <div style="text-align:center;margin-bottom:2rem">
+    <button id="run-btn" onclick="runDeviation()" class="btn-glass-gold"
+            style="font-size:0.9375rem;padding:0.625rem 2rem" disabled>
+      <span class="material-symbols-outlined" style="font-size:18px">difference</span>
+      Analyse Deviations
+    </button>
+  </div>
+
+  <div id="results-area"></div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+"use strict";
+let templateId = null;
+
+document.addEventListener("DOMContentLoaded", async () => {
+  try {
+    const docs = await apiGet("/api/documents");
+    ["template-select","docs-select"].forEach(id => {
+      const sel = document.getElementById(id);
+      const isMulti = id === "docs-select";
+      if (!isMulti) sel.innerHTML = '<option value="">— Select template —</option>';
+      docs.forEach(d => {
+        const o = document.createElement("option");
+        o.value = d.id;
+        o.textContent = d.title || d.original_filename || `Doc #${d.id}`;
+        sel.appendChild(o);
+      });
+    });
+  } catch (err) { showToast("Could not load documents.", "warning"); }
+});
+
+document.getElementById("template-select").addEventListener("change", function() {
+  templateId = this.value ? parseInt(this.value) : null;
+  checkReady();
+});
+
+async function uploadTemplate(file) {
+  if (!file) return;
+  const fd = new FormData();
+  fd.append("file",  file);
+  fd.append("title", file.name.replace(/\.pdf$/i,""));
+  const st = document.getElementById("template-status");
+  st.textContent = "Uploading…"; st.style.display = "block";
+  try {
+    const match = document.cookie.match(/(?:^|;\s*)access_token=([^;]+)/);
+    const resp  = await fetch("/documents/upload", {
+      method: "POST",
+      headers: match ? { Authorization: `Bearer ${decodeURIComponent(match[1])}` } : {},
+      body: fd,
+    });
+    const data = await resp.json();
+    if (!resp.ok) throw new Error(data.detail || "Upload failed");
+    templateId = data.id;
+    st.textContent = `✓ ${file.name}`;
+    checkReady();
+  } catch (err) { st.textContent = `✗ ${err.message}`; }
+}
+
+function checkReady() {
+  const tId  = templateId || (document.getElementById("template-select").value ? parseInt(document.getElementById("template-select").value) : null);
+  const dIds = [...document.getElementById("docs-select").selectedOptions].map(o => parseInt(o.value));
+  document.getElementById("run-btn").disabled = !(tId && dIds.length > 0);
+}
+
+async function runDeviation() {
+  const tId  = templateId || parseInt(document.getElementById("template-select").value);
+  const dIds = [...document.getElementById("docs-select").selectedOptions].map(o => parseInt(o.value));
+  if (!tId || dIds.length === 0) { showToast("Select template and at least one document.", "warning"); return; }
+
+  const btn = document.getElementById("run-btn");
+  btn.disabled = true;
+  showProgress(30, "Analysing deviations…");
+  document.getElementById("results-area").innerHTML = "";
+
+  try {
+    const result = await apiPost("/api/analysis/deviation", { template_id: tId, document_ids: dIds });
+    showProgress(0);
+    renderResults(result);
+    showToast("Deviation analysis complete.", "success");
+  } catch (err) {
+    showProgress(0);
+    showToast("Analysis failed: " + err.message, "error");
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+function renderResults(data) {
+  const area = document.getElementById("results-area");
+  area.innerHTML = `<h2 style="color:var(--cos);font-size:1.125rem;font-weight:700;margin:0 0 1.25rem">
+    Deviation Results</h2>
+    <div class="glass-card" style="padding:1.5rem">
+      <pre style="color:var(--cosv);font-size:0.75rem;overflow-x:auto;white-space:pre-wrap">
+${_esc(JSON.stringify(data, null, 2))}</pre>
+    </div>`;
+}
+
+function _esc(s) { return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+</script>
+{% endblock %}

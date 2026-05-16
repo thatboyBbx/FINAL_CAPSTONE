@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{# intelligence/index.html — Intelligence category landing page #}
+{% block title %}Intelligence — InsureIntel Zimbabwe{% endblock %}
+
+{% block content %}
+<div class="p-4 md:p-6 lg:p-8">
+
+  <!-- Breadcrumb -->
+  <nav class="flex items-center gap-2 text-xs mb-6" style="color:var(--cosv)">
+    <a href="/home" class="hover:underline" style="color:var(--cosv);text-decoration:none">Home</a>
+    <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+    <span class="font-semibold" style="color:var(--cp)">Intelligence</span>
+  </nav>
+
+  <!-- Header -->
+  <div class="mb-8">
+    <h1 class="font-headline text-3xl font-bold mb-1" style="color:var(--cos)">
+      Intelligence
+    </h1>
+    <p class="text-sm md:text-base" style="color:var(--cosv)">
+      Insurer profiling, settlement power scoring, and broker advisory intelligence.
+    </p>
+  </div>
+
+  <!-- Tile Grid -->
+  <div class="tile-grid">
+
+    <!-- Insurer Intel -->
+    <div class="glass-card tile-card p-6 flex flex-col">
+      <div class="text-5xl mb-4" aria-hidden="true">🏢</div>
+      <h2 class="font-headline text-lg font-semibold mb-2" style="color:var(--cos)">Insurer Intel</h2>
+      <p class="text-sm mb-6 flex-1" style="color:var(--cosv);line-height:1.6">
+        Full IPEC-regulated insurer registry with solvency data, licences,
+        CSP scores, news mentions, and CSV import capability.
+      </p>
+      <a href="/intelligence/insurers" class="btn-glass btn-glass-gold flex items-center justify-center gap-1 w-full">
+        Open
+        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+      </a>
+    </div>
+
+    <!-- Settlement Power -->
+    <div class="glass-card tile-card p-6 flex flex-col">
+      <div class="text-5xl mb-4" aria-hidden="true">⚖️</div>
+      <h2 class="font-headline text-lg font-semibold mb-2" style="color:var(--cos)">Settlement Power</h2>
+      <p class="text-sm mb-6 flex-1" style="color:var(--cosv);line-height:1.6">
+        Weighted Composite Score (WCS) model — solvency, claims settlement ratio,
+        reserves adequacy, and liquidity scoring for all insurers.
+      </p>
+      <a href="/intelligence/settlement-power" class="btn-glass btn-glass-gold flex items-center justify-center gap-1 w-full">
+        Open
+        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+      </a>
+    </div>
+
+    <!-- Advisory -->
+    <div class="glass-card tile-card p-6 flex flex-col">
+      <div class="text-5xl mb-4" aria-hidden="true">💡</div>
+      <h2 class="font-headline text-lg font-semibold mb-2" style="color:var(--cos)">Advisory Engine</h2>
+      <p class="text-sm mb-6 flex-1" style="color:var(--cosv);line-height:1.6">
+        Upload a policy document to receive ranked insurer recommendations,
+        coverage gap analysis, and CSP-based advisory output.
+      </p>
+      <a href="/intelligence/advisory" class="btn-glass btn-glass-gold flex items-center justify-center gap-1 w-full">
+        Open
+        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+      </a>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

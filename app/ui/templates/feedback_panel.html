@@ -1,0 +1,91 @@
+﻿{% extends "base.html" %}
+{% block title %}Model Feedback — InsureIntel{% endblock %}
+
+{% block content %}
+<div class="p-6 space-y-6">
+  <div class="flex items-center justify-between">
+    <div>
+      <h2 class="text-2xl font-bold font-headline" style="color:var(--cos)">Model Performance Feedback</h2>
+      <p class="text-sm mt-0.5" style="color:var(--cosv)">Active learning loop — correct model outputs to improve accuracy.</p>
+    </div>
+    <button class="btn btn-primary" onclick="showErrorModal('Model retraining is scheduled automatically. Manual trigger coming soon.')"><span class="material-symbols-outlined text-[18px]">model_training</span>Trigger Retraining</button>
+  </div>
+
+  <!-- Performance Metrics -->
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    {% for icon, label, value, badge in [
+      ('edit_note','Entity Corrections','1,248','badge-gold'),
+      ('flag','Risk Flag Overrides','412','badge-amber'),
+      ('school','Retraining Readiness','94%','badge-green'),
+      ('trending_up','Accuracy Improvement','+3.2%','badge-green'),
+    ] %}
+    <div class="stat-card">
+      <div class="w-9 h-9 rounded-lg flex items-center justify-center mb-3" style="background:color-mix(in srgb,var(--cp) 10%,transparent)">
+        <span class="material-symbols-outlined text-[20px]" style="color:var(--cp)">{{ icon }}</span>
+      </div>
+      <p class="text-2xl font-bold font-headline" style="color:var(--cos)">{{ value }}</p>
+      <p class="text-xs mt-1" style="color:var(--cosv)">{{ label }}</p>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Retraining Readiness -->
+  <div class="rounded-xl p-6" style="background:var(--csf);border:1px solid color-mix(in srgb,var(--col) 50%,transparent)">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="font-semibold font-headline" style="color:var(--cos)">Retraining Queue Status</h3>
+      <span class="badge badge-green">Ready to Retrain</span>
+    </div>
+    <div class="grid grid-cols-3 gap-6">
+      {% for label, pct, color in [('Data Coverage',94,'#4ade80'),('Label Quality',88,'#4ade80'),('Correction Threshold',76,'#fbbf24')] %}
+      <div>
+        <div class="flex justify-between text-sm mb-2">
+          <span style="color:var(--cos)">{{ label }}</span>
+          <span class="font-bold" style="color:{{ color }}">{{ pct }}%</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" style="width:{{ pct }}%;background:{{ color }}"></div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Feedback Table -->
+  <div class="rounded-xl overflow-hidden" style="background:var(--csf);border:1px solid color-mix(in srgb,var(--col) 50%,transparent)">
+    <div class="px-5 py-4 flex items-center justify-between" style="border-bottom:1px solid color-mix(in srgb,var(--col) 40%,transparent)">
+      <h3 class="font-semibold font-headline" style="color:var(--cos)">Recent Feedback Submissions</h3>
+      <div class="flex gap-2">
+        <button class="btn btn-ghost btn-sm" onclick="showErrorModal('Filter coming soon.')">Filter</button>
+        <button class="btn btn-ghost btn-sm" onclick="showErrorModal('Export coming soon.')"><span class="material-symbols-outlined text-[14px]">download</span>Export</button>
+      </div>
+    </div>
+    <table class="data-table">
+      <thead><tr><th>Document</th><th>Entity Type</th><th>Model Output</th><th>Corrected Value</th><th>Reviewer</th><th>Status</th><th>Date</th></tr></thead>
+      <tbody>
+        {% for doc, etype, model_out, corrected, reviewer, status, date in [
+          ('Zimplats-Fire-Policy.pdf','Insurer Name','Standard Chartered','Standard Bank Zimbabwe','J. Mutasa','accepted','14 Mar 2024'),
+          ('Delta-Corp-Motor.pdf','Premium Amount','USD 45,000','USD 450,000','T. Chikwanda','accepted','13 Mar 2024'),
+          ('Innscor-Liability.pdf','Risk Flag','Low Risk','High Risk','J. Mutasa','pending','13 Mar 2024'),
+          ('NSSA-Medical.pdf','Policy Period','12 months','24 months','A. Ncube','accepted','12 Mar 2024'),
+          ('Econet-Life.pdf','Jurisdiction','South Africa','Zimbabwe','T. Chikwanda','accepted','12 Mar 2024'),
+          ('OldPolicy2022.pdf','Risk Flag','Medium Risk','Critical Risk','J. Mutasa','rejected','11 Mar 2024'),
+        ] %}
+        <tr>
+          <td class="text-sm font-medium" style="color:var(--cos)">{{ doc }}</td>
+          <td><span class="badge badge-gold">{{ etype }}</span></td>
+          <td class="text-xs" style="color:var(--cosv);text-decoration:line-through">{{ model_out }}</td>
+          <td class="text-xs font-semibold" style="color:var(--cos)">{{ corrected }}</td>
+          <td class="text-xs" style="color:var(--cosv)">{{ reviewer }}</td>
+          <td>
+            {% if status=='accepted' %}<span class="badge badge-green">Accepted</span>
+            {% elif status=='rejected' %}<span class="badge badge-red">Rejected</span>
+            {% else %}<span class="badge badge-amber">Pending</span>{% endif %}
+          </td>
+          <td class="text-xs" style="color:var(--cosv)">{{ date }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

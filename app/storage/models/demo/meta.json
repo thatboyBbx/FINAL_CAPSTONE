@@ -1,0 +1,25 @@
+{
+  "profile": "demo",
+  "model_label": "DEMO: Settlement-Risk Classifier (Proxy-Labeled)",
+  "label_source": "proxy_labels",
+  "model_path": "C:\\Users\\lenovo\\Desktop\\New folder (2)\\app\\storage\\models\\demo\\model.joblib",
+  "feature_names": [
+    "reserve_adequacy_index",
+    "claims_pressure_indicator",
+    "liquidity_stress_score",
+    "reserve_depletion_velocity",
+    "adverse_event_count",
+    "settlement_event_count",
+    "regulatory_event_count",
+    "lawsuit_event_count",
+    "catastrophe_event_count",
+    "news_risk_score"
+  ],
+  "metrics": {
+    "accuracy": 0.95,
+    "rows": 64,
+    "test_size": 0.3,
+    "model_label": "GBDT: Settlement-Risk Classifier (HistGradientBoosting)"
+  },
+  "saved_at": "2026-03-10T16:58:37.793406Z"
+}

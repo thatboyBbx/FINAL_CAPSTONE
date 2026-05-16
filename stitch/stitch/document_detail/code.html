@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>InsureIntel Zimbabwe | Policy_Zim_2024.pdf</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Manrope:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-tertiary-container": "#ffede6",
+                        "secondary": "#585d77",
+                        "on-tertiary-fixed": "#360f00",
+                        "surface": "#f8f9fb",
+                        "on-secondary-container": "#5c617c",
+                        "secondary-fixed": "#dde1ff",
+                        "on-primary-container": "#eeefff",
+                        "primary-fixed": "#dbe1ff",
+                        "inverse-primary": "#b4c5ff",
+                        "surface-container": "#edeef0",
+                        "primary-fixed-dim": "#b4c5ff",
+                        "on-background": "#191c1e",
+                        "outline-variant": "#c3c6d7",
+                        "outline": "#737686",
+                        "on-primary-fixed-variant": "#003ea8",
+                        "surface-container-low": "#f3f4f6",
+                        "tertiary-fixed-dim": "#ffb596",
+                        "secondary-fixed-dim": "#c1c5e3",
+                        "on-error": "#ffffff",
+                        "surface-container-highest": "#e1e2e4",
+                        "on-secondary-fixed-variant": "#41455f",
+                        "on-primary-fixed": "#00174b",
+                        "inverse-on-surface": "#f0f1f3",
+                        "tertiary-container": "#bc4800",
+                        "surface-dim": "#d9dadc",
+                        "background": "#f8f9fb",
+                        "primary-container": "#2563eb",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-fixed-variant": "#7d2d00",
+                        "on-secondary-fixed": "#151a31",
+                        "on-surface": "#191c1e",
+                        "on-secondary": "#ffffff",
+                        "inverse-surface": "#2e3132",
+                        "on-tertiary": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "tertiary-fixed": "#ffdbcd",
+                        "secondary-container": "#dadefd",
+                        "surface-variant": "#e1e2e4",
+                        "surface-tint": "#0053db",
+                        "primary": "#004ac6",
+                        "surface-container-high": "#e7e8ea",
+                        "surface-bright": "#f8f9fb",
+                        "error-container": "#ffdad6",
+                        "tertiary": "#943700",
+                        "on-surface-variant": "#434655",
+                        "error": "#ba1a1a"
+                    },
+                    fontFamily: {
+                        "headline": ["Manrope"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface antialiased">
+<!-- SideNavBar Component -->
+<aside class="fixed left-0 top-0 h-screen w-64 z-40 bg-[#1a1f36] flex flex-col py-6 font-manrope antialiased tracking-tight shadow-2xl">
+<div class="px-6 mb-8">
+<h1 class="text-xl font-bold text-white tracking-wide">InsureIntel</h1>
+<p class="text-xs text-slate-400 uppercase tracking-widest">Zimbabwe</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white transition-colors hover:bg-slate-800/50" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white transition-colors hover:bg-slate-800/50" href="#">
+<span class="material-symbols-outlined">description</span>
+<span>Policies</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white transition-colors hover:bg-slate-800/50" href="#">
+<span class="material-symbols-outlined">assignment_late</span>
+<span>Claims</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white transition-colors hover:bg-slate-800/50" href="#">
+<span class="material-symbols-outlined">bar_chart</span>
+<span>Analytics</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white transition-colors hover:bg-slate-800/50" href="#">
+<span class="material-symbols-outlined">groups</span>
+<span>Customers</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white transition-colors hover:bg-slate-800/50" href="#">
+<span class="material-symbols-outlined">calculate</span>
+<span>Calculators</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-white bg-blue-700/30 border-r-4 border-blue-500 rounded-r-lg transition-all" href="#">
+<span class="material-symbols-outlined">folder_shared</span>
+<span>Documents</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white transition-colors hover:bg-slate-800/50" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Settings</span>
+</a>
+</nav>
+<div class="px-4 mt-auto space-y-1 border-t border-slate-700/50 pt-4">
+<button class="w-full bg-primary hover:bg-primary-container text-white py-3 rounded-xl font-bold flex items-center justify-center gap-2 transition-all active:scale-95 mb-4">
+<span class="material-symbols-outlined">add</span>
+                New Claim
+            </button>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined">help_outline</span>
+<span>Support</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span>Sign Out</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-64 min-h-screen flex flex-col">
+<!-- TopNavBar Component -->
+<header class="sticky top-0 w-full z-30 bg-[#f8f9fb] dark:bg-slate-900 flex items-center justify-between px-8 py-3 w-full font-inter text-sm font-medium">
+<div class="flex items-center gap-4 bg-surface-container-low px-4 py-2 rounded-full w-96">
+<span class="material-symbols-outlined text-outline">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm w-full" placeholder="Search policies, claims, or documents..." type="text"/>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined hover:bg-slate-100 rounded-full p-2 cursor-pointer transition-all">notifications</span>
+<span class="material-symbols-outlined hover:bg-slate-100 rounded-full p-2 cursor-pointer transition-all">help_outline</span>
+</div>
+<div class="h-8 w-[1px] bg-outline-variant/30"></div>
+<div class="flex items-center gap-3">
+<span class="text-on-surface-variant">John Mutasa</span>
+<img alt="User Profile Avatar" class="w-8 h-8 rounded-full border border-outline-variant" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAZMSMwtdhkPDXDgAHCwfoqse7mJKfgZhU9PNsRO-sEy9RAq6iOVqd1ka3ur3Tba4zYFx1iqrh8wRWE1Z82biIL4-MzUGRFeqPeggjJTmwxWIOD27gSY-kG5zGH9O3p32_yWrS72gZ2Honh-YZCcU-QMxx-bTXWV6k9zXKdnYiJba-Nk6Zg0uVNYhG5icGrc4E9mAa1nbutjGnjFQ8cbu2KlGdc8w_8jiZ6OjOt6eoJEAnnkjwMmPfQ-DCQRWKhiYxz7BW9ojx2qrvd"/>
+</div>
+</div>
+</header>
+<!-- Breadcrumbs -->
+<nav class="px-8 py-4 bg-surface-container-low flex items-center gap-2 text-xs font-medium text-outline">
+<span>Dashboard</span>
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+<span>Documents</span>
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+<span class="text-primary font-bold">Policy_Zim_2024.pdf</span>
+</nav>
+<div class="p-8 space-y-8">
+<!-- Top Summary Bar -->
+<section class="flex flex-wrap items-center justify-between gap-6 p-6 bg-surface-container-lowest rounded-xl shadow-sm border-l-4 border-primary">
+<div class="flex items-center gap-5">
+<div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" style="font-size: 32px;">description</span>
+</div>
+<div>
+<h2 class="text-xl font-headline font-extrabold text-on-surface">Policy_Zim_2024.pdf</h2>
+<div class="flex items-center gap-3 mt-1">
+<span class="px-2 py-0.5 bg-blue-100 text-blue-700 rounded text-[10px] font-bold uppercase tracking-wider">Corporate Policy</span>
+<span class="text-xs text-outline">Uploaded: 14 Oct 2023</span>
+<span class="text-xs text-outline">• 2.4 MB</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex flex-col items-end">
+<span class="text-[10px] font-bold text-outline uppercase tracking-widest">Processing Status</span>
+<div class="flex items-center gap-2 text-green-600 font-bold">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span>Fully Analyzed</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Summary Metric Cards (Asymmetric Bento) -->
+<section class="grid grid-cols-1 md:grid-cols-12 gap-6">
+<!-- Risk Score Gauge -->
+<div class="md:col-span-4 bg-surface-container-lowest p-6 rounded-xl flex items-center gap-6 group hover:shadow-md transition-shadow">
+<div class="relative w-24 h-24 flex items-center justify-center">
+<svg class="w-full h-full -rotate-90">
+<circle class="text-surface-container" cx="48" cy="48" fill="transparent" r="40" stroke="currentColor" stroke-width="8"></circle>
+<circle class="text-orange-500" cx="48" cy="48" fill="transparent" r="40" stroke="currentColor" stroke-dasharray="251.2" stroke-dashoffset="62.8" stroke-width="8"></circle>
+</svg>
+<span class="absolute font-headline text-2xl font-bold">75</span>
+</div>
+<div>
+<h3 class="text-sm font-bold text-outline uppercase tracking-wider">Risk Score</h3>
+<p class="text-2xl font-headline font-extrabold text-orange-600">Elevated</p>
+<p class="text-xs text-outline mt-1">3 critical clauses identified</p>
+</div>
+</div>
+<!-- Compliance Score -->
+<div class="md:col-span-5 bg-surface-container-lowest p-6 rounded-xl flex flex-col justify-between group hover:shadow-md transition-shadow">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="text-sm font-bold text-outline uppercase tracking-wider">Compliance Score</h3>
+<p class="text-3xl font-headline font-extrabold text-green-600">92%</p>
+</div>
+<span class="material-symbols-outlined text-green-600 bg-green-50 p-2 rounded-lg">verified_user</span>
+</div>
+<div class="flex gap-4 mt-4">
+<div class="flex-1 bg-green-50 p-2 rounded text-center">
+<p class="text-[10px] font-bold text-green-700 uppercase">Pass</p>
+<p class="font-bold">24</p>
+</div>
+<div class="flex-1 bg-red-50 p-2 rounded text-center">
+<p class="text-[10px] font-bold text-red-700 uppercase">Fail</p>
+<p class="font-bold">2</p>
+</div>
+</div>
+</div>
+<!-- Language Detected -->
+<div class="md:col-span-3 bg-surface-container-lowest p-6 rounded-xl group hover:shadow-md transition-shadow">
+<h3 class="text-sm font-bold text-outline uppercase tracking-wider">Detected Language</h3>
+<div class="mt-4 space-y-3">
+<div class="flex justify-between items-center">
+<span class="font-bold">English (UK)</span>
+<span class="text-xs font-medium text-primary">88%</span>
+</div>
+<div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[88%]"></div>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-bold">Shona</span>
+<span class="text-xs font-medium text-purple-600">12%</span>
+</div>
+<div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
+<div class="bg-purple-500 h-full w-[12%]"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Two Column Layout -->
+<section class="grid grid-cols-1 lg:grid-cols-10 gap-8 h-[800px]">
+<!-- LEFT: Document Viewer (60%) -->
+<div class="lg:col-span-6 flex flex-col bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm">
+<!-- Toolbar -->
+<div class="px-6 py-3 bg-surface-container-low flex items-center justify-between border-b border-outline-variant/20">
+<div class="flex gap-2">
+<button class="px-3 py-1.5 bg-blue-600 text-white text-[11px] font-bold rounded-lg flex items-center gap-1.5 transition-transform active:scale-95">
+<span class="material-symbols-outlined text-sm">person_search</span> Entities
+                            </button>
+<button class="px-3 py-1.5 bg-surface-container-highest text-on-surface-variant text-[11px] font-bold rounded-lg flex items-center gap-1.5 hover:bg-red-50 hover:text-red-600 transition-colors">
+<span class="material-symbols-outlined text-sm">warning</span> Risks
+                            </button>
+<button class="px-3 py-1.5 bg-surface-container-highest text-on-surface-variant text-[11px] font-bold rounded-lg flex items-center gap-1.5 hover:bg-green-50 hover:text-green-600 transition-colors">
+<span class="material-symbols-outlined text-sm">check_circle</span> Compliance
+                            </button>
+<button class="px-3 py-1.5 bg-surface-container-highest text-on-surface-variant text-[11px] font-bold rounded-lg flex items-center gap-1.5 hover:bg-purple-50 hover:text-purple-600 transition-colors">
+<span class="material-symbols-outlined text-sm">translate</span> Shona
+                            </button>
+</div>
+<div class="flex items-center gap-3">
+<button class="material-symbols-outlined text-outline hover:text-on-surface">zoom_in</button>
+<button class="material-symbols-outlined text-outline hover:text-on-surface">zoom_out</button>
+<button class="material-symbols-outlined text-outline hover:text-on-surface">print</button>
+</div>
+</div>
+<div class="flex flex-1 overflow-hidden">
+<!-- Clause Navigation Sidebar -->
+<div class="w-48 bg-surface-container border-r border-outline-variant/20 overflow-y-auto p-4 space-y-4">
+<p class="text-[10px] font-extrabold text-outline uppercase tracking-widest">Outline</p>
+<ul class="space-y-2 text-xs">
+<li class="text-primary font-bold cursor-pointer">1. Introduction</li>
+<li class="text-outline-variant hover:text-on-surface cursor-pointer">2. Definitions</li>
+<li class="text-outline-variant hover:text-on-surface cursor-pointer">3. Scope of Cover</li>
+<li class="text-outline-variant hover:text-on-surface cursor-pointer">4. Premium Terms</li>
+<li class="text-outline-variant hover:text-on-surface cursor-pointer">5. Statutory Compliance</li>
+<li class="text-outline-variant hover:text-on-surface cursor-pointer">6. Dispute Resolution</li>
+</ul>
+</div>
+<!-- Main Document Content -->
+<div class="flex-1 overflow-y-auto p-12 leading-relaxed text-sm bg-white font-serif">
+<h1 class="text-2xl font-bold mb-8">INSURANCE POLICY AGREEMENT - HARARE OFFICE</h1>
+<p class="mb-6">
+                                This Insurance Policy Agreement (the "Agreement") is entered into this 14th day of October 2023 by and between <span class="bg-blue-100 border-b-2 border-blue-400 px-1 font-bold">Standard Bank Zimbabwe</span> (the "Insurer") and <span class="bg-blue-100 border-b-2 border-blue-400 px-1 font-bold">Greenfield Agritech Ltd</span> (the "Policyholder").
+                            </p>
+<h2 class="text-lg font-bold mb-4">1. DEFINITIONS</h2>
+<p class="mb-6">
+                                "Policy Period" shall mean the term from January 1, 2024 to December 31, 2024. 
+                                <span class="bg-yellow-100 border-b-2 border-yellow-400 px-1">Note: This period overlaps with existing agricultural cycle protections.</span>
+</p>
+<h2 class="text-lg font-bold mb-4">2. PREMIUM REPAYMENT TERMS</h2>
+<p class="mb-6">
+                                The Total Premium payable for this coverage is <span class="bg-blue-100 border-b-2 border-blue-400 px-1 font-bold">USD 450,000.00</span> per annum. Failure to settle the premium within 30 days of the invoice date will result in immediate suspension of coverage.
+                                <span class="bg-red-100 border-b-2 border-red-400 px-1 font-bold">Risk: Immediate suspension clause violates the IPEC Grace Period directive (2019).</span>
+</p>
+<h2 class="text-lg font-bold mb-4">3. SPECIAL PROVISIONS (SHONA)</h2>
+<div class="bg-purple-50 p-4 border-l-4 border-purple-400 mb-6 italic italic font-sans text-purple-900">
+                                "Mutemo uyu unoshanda chete kana paine chibvumirano chakanyorwa pakati pemapato maviri aya. Kana paine dambudziko, nyaya iyi ichaonekwa nematare emuHarare."
+                                <p class="text-[10px] mt-2 font-bold text-purple-600 uppercase">Shona Text Detected - Translation available in Findings</p>
+</div>
+<p class="mb-6">
+<span class="bg-green-100 border-b-2 border-green-400 px-1">Compliant Clause: 3.2 Arbitration shall be conducted under the Zimbabwe Arbitration Act [Chapter 7:15].</span>
+</p>
+<p class="text-outline text-xs mt-20 text-center">--- End of Document Sample ---</p>
+</div>
+</div>
+</div>
+<!-- RIGHT: Tabbed Findings Panel (40%) -->
+<div class="lg:col-span-4 flex flex-col bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm border border-outline-variant/10">
+<!-- Tab Header -->
+<div class="flex overflow-x-auto bg-surface-container-low scrollbar-hide no-scrollbar">
+<button class="flex-shrink-0 px-4 py-4 text-[10px] font-bold uppercase tracking-wider text-primary border-b-2 border-primary bg-white">Entities</button>
+<button class="flex-shrink-0 px-4 py-4 text-[10px] font-bold uppercase tracking-wider text-outline hover:text-on-surface">Risks</button>
+<button class="flex-shrink-0 px-4 py-4 text-[10px] font-bold uppercase tracking-wider text-outline hover:text-on-surface">Compliance</button>
+<button class="flex-shrink-0 px-4 py-4 text-[10px] font-bold uppercase tracking-wider text-outline hover:text-on-surface">Deviations</button>
+<button class="flex-shrink-0 px-4 py-4 text-[10px] font-bold uppercase tracking-wider text-outline hover:text-on-surface">Q&amp;A</button>
+<button class="flex-shrink-0 px-4 py-4 text-[10px] font-bold uppercase tracking-wider text-outline hover:text-on-surface">Translations</button>
+<button class="flex-shrink-0 px-4 py-4 text-[10px] font-bold uppercase tracking-wider text-outline hover:text-on-surface">Audit</button>
+</div>
+<div class="flex-1 overflow-y-auto p-6 space-y-6">
+<!-- Content for Tab "Entities" -->
+<div class="space-y-4">
+<div class="flex items-center justify-between p-3 bg-surface-container-low rounded-lg border border-transparent hover:border-outline-variant/30 transition-all group">
+<div>
+<p class="text-[10px] font-bold text-outline uppercase tracking-widest">Insurer</p>
+<p class="font-bold text-sm">Standard Bank Zimbabwe</p>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-[10px] font-bold text-green-600 bg-green-50 px-1.5 py-0.5 rounded">99% Conf.</span>
+<span class="material-symbols-outlined text-sm text-outline group-hover:text-primary cursor-pointer">edit</span>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 bg-surface-container-low rounded-lg border border-transparent hover:border-outline-variant/30 transition-all group">
+<div>
+<p class="text-[10px] font-bold text-outline uppercase tracking-widest">Total Premium</p>
+<p class="font-bold text-sm">USD 450,000.00</p>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-[10px] font-bold text-green-600 bg-green-50 px-1.5 py-0.5 rounded">96% Conf.</span>
+<span class="material-symbols-outlined text-sm text-outline group-hover:text-primary cursor-pointer">edit</span>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 bg-surface-container-low rounded-lg border border-transparent hover:border-outline-variant/30 transition-all group">
+<div>
+<p class="text-[10px] font-bold text-outline uppercase tracking-widest">Policy Period</p>
+<p class="font-bold text-sm">Jan 1, 2024 - Dec 31, 2024</p>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-[10px] font-bold text-primary bg-blue-50 px-1.5 py-0.5 rounded">92% Conf.</span>
+<span class="material-symbols-outlined text-sm text-outline group-hover:text-primary cursor-pointer">edit</span>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 bg-surface-container-low rounded-lg border border-transparent hover:border-outline-variant/30 transition-all group">
+<div>
+<p class="text-[10px] font-bold text-outline uppercase tracking-widest">Jurisdiction</p>
+<p class="font-bold text-sm">Harare, Zimbabwe</p>
+</div>
+<div class="flex items-center gap-3">
+<span class="text-[10px] font-bold text-green-600 bg-green-50 px-1.5 py-0.5 rounded">100% Conf.</span>
+<span class="material-symbols-outlined text-sm text-outline group-hover:text-primary cursor-pointer">edit</span>
+</div>
+</div>
+</div>
+<!-- Mini "Trust Badge" section for regional context -->
+<div class="mt-8 p-4 bg-surface-container-high rounded-lg flex items-center gap-4">
+<span class="material-symbols-outlined text-outline">verified</span>
+<div>
+<p class="text-[10px] font-bold text-outline uppercase">IPEC Regulatory Scan</p>
+<p class="text-xs">Policy matches authorized commercial templates for 2023-2024 cycles.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Bottom Action Bar (Fixed to Page Bottom) -->
+<footer class="fixed bottom-0 left-64 right-0 bg-surface-container-lowest border-t border-outline-variant/10 px-8 py-4 flex items-center justify-between z-30 shadow-2xl">
+<div class="flex gap-2">
+<button class="px-4 py-2 bg-surface-container-high text-on-surface text-sm font-bold rounded-xl flex items-center gap-2 hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-lg">refresh</span> Re-analyze
+                </button>
+<button class="px-4 py-2 bg-surface-container-high text-on-surface text-sm font-bold rounded-xl flex items-center gap-2 hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-lg">compare_arrows</span> Compare with...
+                </button>
+<button class="px-4 py-2 bg-surface-container-high text-on-surface text-sm font-bold rounded-xl flex items-center gap-2 hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-lg">database</span> Index for Q&amp;A
+                </button>
+</div>
+<div class="flex gap-3">
+<div class="flex items-center bg-surface-container-low rounded-xl px-1">
+<button class="px-4 py-2 text-primary hover:bg-white rounded-lg text-xs font-bold transition-all">Export PDF</button>
+<button class="px-4 py-2 text-outline hover:bg-white rounded-lg text-xs font-bold transition-all">Export DOCX</button>
+</div>
+<button class="px-6 py-2 bg-primary text-white text-sm font-bold rounded-xl shadow-md hover:bg-primary-container active:scale-95 transition-all">
+                    Mark for Review
+                </button>
+<button class="w-10 h-10 flex items-center justify-center bg-orange-100 text-orange-700 rounded-xl hover:bg-orange-200 transition-colors" title="Track Expiry">
+<span class="material-symbols-outlined">event_busy</span>
+</button>
+</div>
+</footer>
+<!-- Spacer for fixed footer -->
+<div class="h-24"></div>
+</main>
+</body></html>

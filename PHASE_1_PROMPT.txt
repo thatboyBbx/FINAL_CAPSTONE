@@ -1,0 +1,163 @@
+You are working on InsureIntel Zimbabwe — an AI-powered insurance document intelligence platform built with FastAPI, SQLAlchemy 2.0, Pydantic v2, and Jinja2 templates. This is a BSc Honours capstone project at the University of Zimbabwe.
+
+Your task is to execute Phase 1 of the project rebuild plan: structural cleanup, modular monolith enforcement, security fixes, and GitHub repository initialisation.
+
+==============================================================
+WORKING DIRECTORY
+==============================================================
+All work happens inside:
+  CAPSTONE_ARCHIVE/PRIMARY/EXPERIMENT/
+
+This is also the directory where PHASE_1_SPEC.md lives. It has already been
+placed there for you. Read it with:
+  Read("CAPSTONE_ARCHIVE/PRIMARY/EXPERIMENT/PHASE_1_SPEC.md")
+or if you are already cd'd into the project root:
+  Read("PHASE_1_SPEC.md")
+
+This is the ONLY copy of the codebase you touch. All paths in this prompt are relative to this root.
+
+==============================================================
+READ FIRST — MANDATORY
+==============================================================
+Before writing a single line, read the full spec file. It is located at:
+  CAPSTONE_ARCHIVE/PRIMARY/EXPERIMENT/PHASE_1_SPEC.md
+
+Read it now using your Read tool before doing anything else.
+
+That file contains the complete authoritative instructions for every step. This prompt is the execution order. The spec is the detail.
+
+==============================================================
+EXECUTION RULES (NON-NEGOTIABLE)
+==============================================================
+1. Full code only — no placeholders, no "# TODO", no stubs
+2. Python only — all code is Python 3.11+
+3. Type hints everywhere — use `str | None` not `Optional[str]`
+4. SQLAlchemy 2.0 Mapped[] / mapped_column() syntax in all models
+5. Pydantic v2 model_config = ConfigDict(...) in all schemas
+6. After EVERY major step, run: python -c "from app.main import app; print('OK')"
+7. After ALL steps, run: python -m pytest tests/ -q --tb=short
+8. NEVER delete a file without first updating all its importers
+9. NEVER overwrite .env — only append the SECRET_KEY line if it's still a placeholder
+10. Preserve all existing business logic — structural migration only
+11. Clear inline comments in every file you create or modify
+
+==============================================================
+EXECUTION ORDER
+==============================================================
+
+STEP 1 — Fix SECRET_KEY
+  Read .env. If SECRET_KEY is still "your-very-long-random-secret-key" or similar placeholder:
+    Run: python -c "import secrets; print(secrets.token_hex(32))"
+    Write the output into .env as: SECRET_KEY=<output>
+  Verify app/core/config.py reads it correctly (it should already — don't change it).
+
+STEP 2 — Verify RBAC on all routers
+  Run: grep -rn "APIRouter(" app/modules/ app/api/ --include="*.py" | grep -v "__pycache__"
+  For any router definition NOT already wrapped with dependencies=[Depends(get_current_user)],
+  add it. Auth router (/auth/login, /auth/register) is exempt — it's intentionally public.
+
+STEP 3 — Junk removal
+  Delete: zip_dash.txt, zip_router.txt, zip_svc.txt
+  Delete: stitch_extracted/ (entire directory)
+  Delete: app/domains/ (entire directory — empty stubs only)
+  Delete: find storage/ -name "Monaco*" (accidental test image)
+
+STEP 4 — Remove duplicate directories (update imports first, then delete)
+  4a. app/ml/ → canonical is app/ai/inference/ + app/ai/training/
+  4b. app/rag/ → canonical is app/ai/rag/
+  4c. app/multilingual/ → canonical is app/ai/multilingual/
+  4d. app/scrapers/ → canonical is app/infrastructure/scrapers/
+  For each: grep for all callers, fix imports, then rm -rf the directory.
+
+STEP 5 — Merge split-identity modules (move service files INTO modules/)
+  5a. app/comparison/ → app/modules/comparison/  (rename comparison_service.py → service.py)
+  5b. app/deviation/ → app/modules/deviation/
+  5c. app/feedback/ → app/modules/feedback/
+  5d. app/tracker/ → app/modules/tracker/  (rename policy_tracker_service.py → service.py)
+  5e. app/audit/ → app/modules/audit/
+  For each: grep callers, update imports (especially app/main.py for audit_middleware), move files, delete old dir.
+
+STEP 6 — Create app/modules/clients/ module
+  The full module must be created from scratch. Files required:
+    __init__.py, model.py, schemas.py, repo.py, service.py, router.py
+  Source material:
+    - model.py content: app/models/client.py
+    - service.py + repo.py content: app/modules/users/client_service.py
+    - router.py content: app/modules/users/client_router.py (same routes, updated imports)
+  After creating:
+    - Update app/main.py: swap client_router import to app.modules.clients.router
+    - Update app/main.py: swap model import to app.modules.clients.model
+    - Delete: app/modules/users/client_router.py, app/modules/users/client_service.py
+    - Delete: app/models/client.py
+
+STEP 7 — Create app/modules/csp/ module
+  Files required: __init__.py, model.py, schemas.py, service.py
+  Source material:
+    - model.py content: app/models/csp_score.py
+    - service.py content: app/services/csp_service.py
+  After creating:
+    - Update app/main.py: swap model import to app.modules.csp.model
+    - Update app/api/routes/csp_routes.py: import CSPService from app.modules.csp.service
+    - Update app/modules/intel/settlement_router.py: same
+    - Delete: app/models/csp_score.py, app/services/csp_service.py
+
+STEP 8 — Create app/modules/compliance/ module
+  Files required: __init__.py, service.py, schemas.py
+  Source material:
+    - service.py content: app/services/compliance_checker.py (keep get_compliance_checker() factory)
+  After creating:
+    - Update all callers (documents/router.py, documents/service.py, compat_router.py)
+    - Delete: app/services/compliance_checker.py
+
+STEP 9 — Delete remaining app/models/ stubs
+  9a. app/models/insurer_financials.py — verify identical to modules/financials/model.py, then delete
+  9b. app/models/insurer.py — stub, canonical is modules/insurers/model.py — find callers, update, delete
+  9c. Remove both import app.models.* lines from app/main.py
+  9d. If app/models/ is now empty (only __init__.py), delete the directory
+
+STEP 10 — Distribute app/services/ to owning modules
+  Move each file to its new home (see PHASE_1_SPEC.md table), update all importers.
+  Special handling for app/ui/router.py (imports demo_dashboard_service etc — see spec).
+  Files to DELETE (not move): demo_dashboard_service.py, mode_registry.py, zse_service.py
+  After all moves: delete app/services/ if empty
+
+STEP 11 — Delete dead code
+  11a. rm -rf app/modules/zse/
+  11b. rm -rf app/portfolio/
+  11c. Add README note to app/modules/circulars/ (do NOT delete — feeds ML classifier)
+
+STEP 12 — Update .gitignore
+  Append the additional entries from PHASE_1_SPEC.md section 9.1
+
+STEP 13 — Verify everything works
+  Run: python -c "from app.main import app; print('App imports OK')"
+  Run: python -m pytest tests/ -q --tb=short
+  Run the full grep check from PHASE_1_SPEC.md section 10 to confirm no stale imports remain
+
+STEP 14 — GitHub repo init and push
+  Follow PHASE_1_SPEC.md section 9.2 exactly.
+  Use `gh` CLI if available. If not, print the manual steps clearly.
+  Commit message must be exactly as specified in the spec.
+
+==============================================================
+IF SOMETHING BREAKS
+==============================================================
+If pytest fails after a step:
+  1. Read the error carefully — it's almost always a broken import path
+  2. Find the file with the broken import using the error traceback
+  3. Fix the import to point to the new canonical location
+  4. Re-run pytest until green
+  5. Do NOT move on to the next step until tests are green
+
+If app import fails:
+  Run: python -c "import traceback; from app.main import app" 2>&1 | head -30
+  Fix the import error shown, then re-verify.
+
+==============================================================
+FINAL DELIVERABLE
+==============================================================
+When complete, report:
+  - ✅ or ❌ for each of the 14 steps
+  - pytest result: X passed, Y failed
+  - GitHub repo URL (or manual push instructions if gh CLI unavailable)
+  - List of any files that could NOT be moved/deleted and why

@@ -1,0 +1,152 @@
+app/
+  __init__.py
+  main.py
+  api/
+    __init__.py
+    routes/
+  audit/
+    __init__.py
+    audit_logger.py
+    audit_middleware.py
+  batch/
+    __init__.py
+    batch_processor.py
+    tasks.py
+  comparison/
+    __init__.py
+    clause_aligner.py
+    comparison_service.py
+    delta_reporter.py
+  config/
+    exchange_rates.json
+  core/
+    __init__.py
+    config.py
+    db.py
+    logging.py
+  deviation/
+    __init__.py
+    clause_scorer.py
+    knowledge_base_seeder.py
+  feedback/
+    __init__.py
+    feedback_store.py
+    retraining_pipeline.py
+  ml/
+    __init__.py
+    csp_nlg.py
+    csp_normalizer.py
+    csp_training_pipeline.py
+    csp_wcs_scorer.py
+    csp_xgboost_model.py
+    models/
+  models/
+    __init__.py
+    csp_score.py
+    insurer_financials.py
+    insurer.py
+  modules/
+    __init__.py
+    audit/
+    auth/
+    batch/
+    circulars/
+    comparison/
+    deviation/
+    documents/
+    feedback/
+    financials/
+    insurers/
+    intel/
+    ml/
+    multilingual/
+    news/
+    qa/
+    scoring/
+    tests/
+    tracker/
+    users/
+    zse/
+  multilingual/
+    __init__.py
+    language_detector.py
+    multilingual_pipeline.py
+  portfolio/
+    __init__.py
+    portfolio_analytics.py
+  rag/
+    __init__.py
+    indexing_pipeline.py
+    qa_engine.py
+    vector_store.py
+  schemas/
+  scrapers/
+    __init__.py
+    base_scraper.py
+    ipec_fsr1_scraper.py
+    ipec_scraper.py
+    news_scraper.py
+    scraper_scheduler.py
+    scraper_utils.py
+    zse_scraper.py
+  services/
+    advisory_service.py
+    circular_classifier.py
+    compliance_checker.py
+    csp_service.py
+    dataset_registry.py
+    demo_dashboard_service.py
+    document_classifier_service.py
+    document_ingestion/
+      __init__.py
+      corpus_builder.py
+      feature_extractor.py
+      pdf_extractor.py
+    entity_extraction_service.py
+    insurer_analytics.py
+    model_training_service.py
+    mode_registry.py
+    prediction_service.py
+    training_orchestrator.py
+    visualization_service.py
+    zse_service.py
+  storage/
+  tasks/
+  tracker/
+  ui/
+    extra_router.py
+    router.py
+    static/
+    templates/
+md files/
+  DOCUMENT_CLASSIFICATION_PROMPT_PART1.md
+  DOCUMENT_CLASSIFICATION_PROMPT_PART2.md
+  PROMPT_claims_settlement_power_module (1).md
+scripts/
+  generate_classification_training_data.py
+  test_compliance.py
+  train_document_classifier.py
+  train_ner_model.py
+  train_xgboost_financial_model.py
+stitch/
+  stitch/
+stitch_extracted/
+  stitch/
+storage/
+  datasets/
+  documents/
+  models/
+    app/
+    demo/
+  system/
+  training_data/
+tests/
+  __init__.py
+  test_csp_module.py
+requirements.txt
+generate_seed_financials.py
+seed_financials.csv
+structure.txt
+zip_dash.txt
+zip_router.txt
+zip_svc.txt

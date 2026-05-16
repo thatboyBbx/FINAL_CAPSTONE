@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}Risk Alerts — InsureIntel{% endblock %}
+
+{% block content %}
+<div class="p-8 space-y-6">
+
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-2xl font-extrabold font-headline" style="color:var(--cos)">Risk Alerts</h1>
+      <p class="text-sm mt-0.5" style="color:var(--cosv)">Regulatory, claims, and market risk signals from scraped intelligence.</p>
+    </div>
+  </div>
+
+  <!-- Severity filters -->
+  <div class="flex gap-2 flex-wrap">
+    <a href="/alerts-ui" class="btn btn-sm {% if not risk_filter %}btn-primary{% else %}btn-ghost{% endif %}">All</a>
+    {% for label in ['Regulatory Risk','Claims Alert','Market Risk'] %}
+    {% set badge_cls = 'badge-red' if 'Regulatory' in label else ('badge-amber' if 'Claims' in label else 'badge-blue') %}
+    <a href="/alerts-ui?risk_label={{ label }}"
+       class="btn btn-sm {% if risk_filter == label %}btn-primary{% else %}btn-ghost{% endif %}">
+      {{ label }}
+      {% if risk_counts and risk_counts.get(label) %}
+      <span class="badge {{ badge_cls }} text-[9px] ml-1">{{ risk_counts[label] }}</span>
+      {% endif %}
+    </a>
+    {% endfor %}
+  </div>
+
+  {% if articles %}
+  <div class="space-y-3">
+    {% for a in articles %}
+    {% set risk = a.risk_label or 'General' %}
+    <div class="glass-card gold-accent-glow rounded-xl p-5 flex gap-4">
+      <div class="flex-shrink-0 mt-0.5">
+        <span class="material-symbols-outlined text-[22px]"
+              style="color:{% if 'Regulatory' in risk %}var(--cerr){% elif 'Claims' in risk %}#fbbf24{% else %}#60a5fa{% endif %};font-variation-settings:'FILL' 1">
+          {% if 'Regulatory' in risk %}gavel{% elif 'Claims' in risk %}assignment_late{% else %}trending_down{% endif %}
+        </span>
+      </div>
+      <div class="flex-1 min-w-0">
+        <div class="flex items-center gap-2 mb-1 flex-wrap">
+          <span class="badge {% if 'Regulatory' in risk %}badge-red{% elif 'Claims' in risk %}badge-amber{% else %}badge-blue{% endif %} text-[9px]">{{ risk }}</span>
+          <span class="text-[10px]" style="color:var(--cosv)">{{ (a.published_at or a.created_at or '')[:10] }}</span>
+          {% if a.source %}<span class="text-[10px]" style="color:var(--cosv)">· {{ a.source }}</span>{% endif %}
+        </div>
+        <h3 class="text-sm font-bold" style="color:var(--cos)">{{ a.title or 'Risk Signal' }}</h3>
+        <p class="text-xs mt-1 leading-relaxed" style="color:var(--cosv)">{{ a.summary or a.content or '' }}</p>
+      </div>
+      {% if a.url %}
+      <div class="flex-shrink-0">
+        <a href="{{ a.url }}" target="_blank" class="btn btn-ghost btn-sm" style="color:var(--cp)">
+          <span class="material-symbols-outlined text-[16px]">open_in_new</span>
+        </a>
+      </div>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="glass-card rounded-xl p-16 text-center">
+    <span class="material-symbols-outlined text-5xl mb-4 block" style="color:var(--col)">notifications_off</span>
+    <p class="font-semibold" style="color:var(--cos)">No risk alerts found</p>
+    <p class="text-sm mt-2" style="color:var(--cosv)">
+      {% if risk_filter %}No alerts match the selected filter.{% else %}Alerts will appear when the scraper detects risk signals.{% endif %}
+    </p>
+  </div>
+  {% endif %}
+
+</div>
+{% endblock %}

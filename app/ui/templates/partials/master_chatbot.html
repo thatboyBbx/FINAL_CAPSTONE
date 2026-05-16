@@ -1,0 +1,268 @@
+{#
+  partials/master_chatbot.html — Floating AI chatbot widget
+  Included globally in base.html before </body>.
+
+  Features:
+  - Floating Action Button (bottom-right, fixed) — gold gradient .glass-card
+  - Slide-up panel (380px × 560px) with document picker, message history, input
+  - Current page URL auto-appended to every message context
+  - User messages: right-aligned gold bubble; AI: left-aligned glass-card
+  - Typing indicator (3-dot animation)
+  - Conversation history in sessionStorage (max 20 turns)
+  - Calls POST /api/chatbot/message
+#}
+
+<!-- ── Chatbot FAB ─────────────────────────────────────────────────────── -->
+<button id="chatbot-fab"
+        onclick="chatbotToggle()"
+        title="AI Assistant"
+        class="idle"
+        style="bottom: max(1.75rem, env(safe-area-inset-bottom, 1.75rem));
+               right: 1.75rem"
+        aria-label="Open AI chat assistant">
+  <span id="chatbot-fab-icon" class="material-symbols-outlined"
+        style="color:#0f0f0f;font-size:26px;font-variation-settings:'FILL' 1">smart_toy</span>
+</button>
+
+<!-- ── Chatbot Panel ─────────────────────────────────────────────────── -->
+<div id="chatbot-panel" class="glass-card hidden"
+     role="dialog" aria-modal="true" aria-label="InsureIntel AI Assistant">
+
+  <!-- Panel Header -->
+  <div style="padding:0.875rem 1rem;border-bottom:1px solid rgba(212,175,55,0.12);
+              display:flex;align-items:center;gap:0.625rem;flex-shrink:0;
+              background:linear-gradient(135deg,rgba(212,175,55,0.10),transparent)">
+    <span class="material-symbols-outlined" style="color:#d4af37;font-size:20px;
+          font-variation-settings:'FILL' 1">smart_toy</span>
+    <div style="flex:1">
+      <p style="color:#f5f5f5;font-weight:700;font-size:0.9rem;line-height:1;margin:0">
+        InsureIntel AI
+      </p>
+      <p style="color:#a1a1a1;font-size:0.7rem;margin:2px 0 0;line-height:1">
+        Zimbabwe Insurance Expert
+      </p>
+    </div>
+    <!-- Document selector -->
+    <select id="chatbot-doc-select"
+            style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);
+                   border-radius:6px;color:#a1a1a1;font-size:0.7rem;padding:0.25rem 0.5rem;
+                   max-width:130px;cursor:pointer;outline:none"
+            title="Attach a document for context">
+      <option value="">No document</option>
+    </select>
+    <!-- Close button -->
+    <button onclick="chatbotToggle()" aria-label="Close chatbot"
+            style="background:none;border:none;color:#a1a1a1;cursor:pointer;
+                   padding:2px;font-size:1.1rem;line-height:1;flex-shrink:0">×</button>
+  </div>
+
+  <!-- Message History -->
+  <div id="chatbot-messages"
+       style="flex:1;overflow-y:auto;padding:0.875rem 1rem;display:flex;
+              flex-direction:column;gap:0.625rem;min-height:0">
+    <!-- Welcome message -->
+    <div class="chat-msg-ai">
+      <div style="background:rgba(26,26,26,0.80);border:1px solid rgba(212,175,55,0.12);
+                  border-radius:12px 12px 12px 2px;padding:0.625rem 0.875rem;
+                  font-size:0.8125rem;color:#f5f5f5;line-height:1.5;max-width:88%">
+        Hello! I'm your InsureIntel AI assistant specialised in Zimbabwe insurance —
+        IPEC regulations, the Insurance Act Chapter 24:07, policy analysis, and
+        insurer intelligence. How can I help you today?
+      </div>
+    </div>
+  </div>
+
+  <!-- Typing Indicator (hidden by default) -->
+  <div id="chatbot-typing" style="padding:0 1rem 0.5rem;display:none">
+    <div style="display:inline-flex;align-items:center;gap:3px;
+                background:rgba(26,26,26,0.80);border:1px solid rgba(255,255,255,0.08);
+                border-radius:12px 12px 12px 2px;padding:0.5rem 0.75rem">
+      <span class="typing-dot"></span>
+      <span class="typing-dot"></span>
+      <span class="typing-dot"></span>
+    </div>
+  </div>
+
+  <!-- Input Bar -->
+  <div style="padding:0.75rem 1rem;border-top:1px solid rgba(255,255,255,0.07);
+              display:flex;gap:0.5rem;flex-shrink:0">
+    <input id="chatbot-input"
+           type="text"
+           placeholder="Ask about insurance policies, IPEC, compliance…"
+           autocomplete="off"
+           style="flex:1;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);
+                  border-radius:8px;padding:0.5rem 0.75rem;color:#f5f5f5;font-size:0.8125rem;
+                  outline:none;transition:border-color 0.15s"
+           onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();chatbotSend()}"
+           onfocus="this.style.borderColor='rgba(212,175,55,0.4)'"
+           onblur="this.style.borderColor='rgba(255,255,255,0.12)'">
+    <button onclick="chatbotSend()"
+            class="btn-glass-gold"
+            style="padding:0.5rem 0.875rem;font-size:0.8125rem;flex-shrink:0"
+            id="chatbot-send-btn"
+            aria-label="Send message">
+      <span class="material-symbols-outlined" style="font-size:18px">send</span>
+    </button>
+  </div>
+</div>
+
+
+<!-- ── Chatbot JS ─────────────────────────────────────────────────────── -->
+<script>
+(function () {
+  "use strict";
+
+  /** Max conversation turns stored in sessionStorage */
+  const MAX_TURNS = 20;
+  const STORAGE_KEY = "chatbot_history";
+
+  /** Whether the panel is currently visible */
+  let panelOpen = false;
+
+  /** In-memory conversation history: [{role, content}, …] */
+  let history = [];
+
+  // Restore history from sessionStorage
+  try {
+    const stored = sessionStorage.getItem(STORAGE_KEY);
+    if (stored) history = JSON.parse(stored);
+  } catch (_) {}
+
+  /**
+   * chatbotToggle — show/hide the chat panel.
+   * Loads document list into selector on first open.
+   */
+  window.chatbotToggle = function () {
+    const panel = document.getElementById("chatbot-panel");
+    const fab   = document.getElementById("chatbot-fab");
+    const fabIcon = document.getElementById("chatbot-fab-icon");
+    panelOpen = !panelOpen;
+
+    if (panelOpen) {
+      panel.classList.remove("hidden");
+      // Slide-up animation via CSS class
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => panel.classList.add("open"));
+      });
+      // Stop idle pulse while open
+      fab.classList.remove("idle");
+      // Change icon to close
+      fabIcon.textContent = "close";
+      _loadDocuments();
+      setTimeout(() => document.getElementById("chatbot-input").focus(), 320);
+    } else {
+      panel.classList.remove("open");
+      // Restore idle pulse
+      fab.classList.add("idle");
+      fabIcon.textContent = "smart_toy";
+      // Hide after transition
+      setTimeout(() => panel.classList.add("hidden"), 300);
+    }
+  };
+
+  /**
+   * _loadDocuments — populate the doc selector via GET /api/documents/list.
+   * Only fetches once (if the selector already has >1 option, skip).
+   */
+  async function _loadDocuments() {
+    const sel = document.getElementById("chatbot-doc-select");
+    if (sel.options.length > 1) return;
+    try {
+      // Try the documents list endpoint — fallback silently if unavailable
+      const docs = await apiGet("/api/documents");
+      docs.forEach((d) => {
+        const opt = document.createElement("option");
+        opt.value = d.id;
+        opt.textContent = d.title || d.original_filename || `Doc #${d.id}`;
+        sel.appendChild(opt);
+      });
+    } catch (_) {
+      // Non-fatal: document context just won't be available
+    }
+  }
+
+  /**
+   * _appendMessage — adds a message bubble to #chatbot-messages.
+   * @param {"user"|"assistant"} role
+   * @param {string} content
+   */
+  function _appendMessage(role, content) {
+    const container = document.getElementById("chatbot-messages");
+    const wrap = document.createElement("div");
+    wrap.className = role === "user" ? "chat-msg-user" : "chat-msg-ai";
+    wrap.style.cssText = `display:flex;justify-content:${role === "user" ? "flex-end" : "flex-start"}`;
+
+    const bubble = document.createElement("div");
+    bubble.style.cssText = role === "user"
+      ? `background:rgba(212,175,55,0.18);border:1px solid rgba(212,175,55,0.30);
+         border-radius:12px 12px 2px 12px;padding:0.625rem 0.875rem;
+         font-size:0.8125rem;color:#f5f5f5;line-height:1.5;max-width:88%`
+      : `background:rgba(26,26,26,0.80);border:1px solid rgba(212,175,55,0.12);
+         border-radius:12px 12px 12px 2px;padding:0.625rem 0.875rem;
+         font-size:0.8125rem;color:#f5f5f5;line-height:1.5;max-width:88%;
+         white-space:pre-wrap`;
+
+    // Sanitise content (no innerHTML from API)
+    bubble.textContent = content;
+    wrap.appendChild(bubble);
+    container.appendChild(wrap);
+    container.scrollTop = container.scrollHeight;
+  }
+
+  /**
+   * chatbotSend — reads the input, sends to /api/chatbot/message, renders reply.
+   */
+  window.chatbotSend = async function () {
+    const input  = document.getElementById("chatbot-input");
+    const btn    = document.getElementById("chatbot-send-btn");
+    const typing = document.getElementById("chatbot-typing");
+    const msg    = input.value.trim();
+    if (!msg) return;
+
+    // Clear input, disable send
+    input.value = "";
+    btn.disabled = true;
+
+    // Show user bubble
+    _appendMessage("user", msg);
+
+    // Add to history
+    history.push({ role: "user", content: msg });
+    if (history.length > MAX_TURNS * 2) history = history.slice(-MAX_TURNS * 2);
+
+    // Show typing indicator
+    typing.style.display = "block";
+    document.getElementById("chatbot-messages").scrollTop = 99999;
+
+    try {
+      const docId    = document.getElementById("chatbot-doc-select").value || null;
+      const pageCtx  = window.location.pathname + window.location.search;
+
+      const payload = {
+        message:              msg,
+        document_id:          docId ? parseInt(docId, 10) : null,
+        page_context:         pageCtx,
+        conversation_history: history.slice(-MAX_TURNS * 2),
+      };
+
+      const resp = await apiPost("/api/chatbot/message", payload);
+      const reply = resp.response || "I'm sorry, I couldn't generate a response.";
+
+      typing.style.display = "none";
+      _appendMessage("assistant", reply);
+
+      // Add to history
+      history.push({ role: "assistant", content: reply });
+      try { sessionStorage.setItem(STORAGE_KEY, JSON.stringify(history)); } catch (_) {}
+
+    } catch (err) {
+      typing.style.display = "none";
+      _appendMessage("assistant", `Error: ${err.message || "Could not reach the AI service."}`);
+    } finally {
+      btn.disabled = false;
+      input.focus();
+    }
+  };
+
+})();
+</script>

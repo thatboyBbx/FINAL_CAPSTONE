@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Clause Deviation Scoring | InsureIntel Zimbabwe</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Manrope:wght@500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-container": "#dadefd",
+                        "surface-container-high": "#e7e8ea",
+                        "on-secondary-fixed": "#151a31",
+                        "on-primary-fixed-variant": "#003ea8",
+                        "surface-variant": "#e1e2e4",
+                        "on-tertiary": "#ffffff",
+                        "tertiary": "#943700",
+                        "inverse-surface": "#2e3132",
+                        "surface-bright": "#f8f9fb",
+                        "on-tertiary-fixed": "#360f00",
+                        "on-tertiary-fixed-variant": "#7d2d00",
+                        "secondary-fixed-dim": "#c1c5e3",
+                        "on-primary": "#ffffff",
+                        "on-secondary-fixed-variant": "#41455f",
+                        "primary": "#004ac6",
+                        "error": "#ba1a1a",
+                        "on-error-container": "#93000a",
+                        "on-surface-variant": "#434655",
+                        "on-error": "#ffffff",
+                        "primary-container": "#2563eb",
+                        "outline-variant": "#c3c6d7",
+                        "surface": "#f8f9fb",
+                        "tertiary-fixed-dim": "#ffb596",
+                        "surface-container-highest": "#e1e2e4",
+                        "error-container": "#ffdad6",
+                        "surface-container-low": "#f3f4f6",
+                        "tertiary-container": "#bc4800",
+                        "secondary-fixed": "#dde1ff",
+                        "primary-fixed-dim": "#b4c5ff",
+                        "on-secondary": "#ffffff",
+                        "on-primary-fixed": "#00174b",
+                        "on-secondary-container": "#5c617c",
+                        "inverse-primary": "#b4c5ff",
+                        "secondary": "#585d77",
+                        "surface-tint": "#0053db",
+                        "primary-fixed": "#dbe1ff",
+                        "on-background": "#191c1e",
+                        "surface-dim": "#d9dadc",
+                        "surface-container": "#edeef0",
+                        "on-tertiary-container": "#ffede6",
+                        "on-surface": "#191c1e",
+                        "on-primary-container": "#eeefff",
+                        "tertiary-fixed": "#ffdbcd",
+                        "background": "#f8f9fb",
+                        "outline": "#737686",
+                        "inverse-on-surface": "#f0f1f3"
+                    },
+                    fontFamily: {
+                        "headline": ["Manrope"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, .font-headline { font-family: 'Manrope', sans-serif; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface selection:bg-primary-container selection:text-on-primary-container">
+<!-- SideNavBar Shell -->
+<aside class="bg-slate-900 dark:bg-slate-950 h-screen w-64 fixed left-0 top-0 overflow-y-auto flex flex-col border-r border-slate-800 z-20 shadow-xl bg-gradient-to-b from-slate-900 to-slate-800">
+<div class="p-6">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-blue-600 flex items-center justify-center text-white font-bold text-xl">I</div>
+<div>
+<h1 class="text-xl font-bold text-white tracking-tight leading-none">InsureIntel</h1>
+<p class="text-xs text-slate-400 mt-1 uppercase tracking-widest font-semibold">Zimbabwe</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 mt-4 font-manrope text-sm font-medium tracking-wide">
+<!-- Dashboard -->
+<a class="text-slate-400 hover:text-slate-100 py-3 px-6 flex items-center gap-3 transition-colors hover:bg-slate-800/50" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</a>
+<!-- Upload Documents -->
+<a class="text-slate-400 hover:text-slate-100 py-3 px-6 flex items-center gap-3 transition-colors hover:bg-slate-800/50" href="#">
+<span class="material-symbols-outlined" data-icon="upload_file">upload_file</span>
+<span>Upload Documents</span>
+</a>
+<!-- Documents -->
+<a class="text-slate-400 hover:text-slate-100 py-3 px-6 flex items-center gap-3 transition-colors hover:bg-slate-800/50" href="#">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+<span>Documents</span>
+</a>
+<!-- Analysis Results (Active for Clause Deviation) -->
+<a class="bg-blue-600/10 text-blue-400 border-r-4 border-blue-500 py-3 px-6 flex items-center gap-3 transition-opacity opacity-90" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span>Analysis Results</span>
+</a>
+<!-- Circulars Analysis -->
+<a class="text-slate-400 hover:text-slate-100 py-3 px-6 flex items-center gap-3 transition-colors hover:bg-slate-800/50" href="#">
+<span class="material-symbols-outlined" data-icon="contract">contract</span>
+<span>Circulars Analysis</span>
+</a>
+<!-- Knowledge Base -->
+<a class="text-slate-400 hover:text-slate-100 py-3 px-6 flex items-center gap-3 transition-colors hover:bg-slate-800/50" href="#">
+<span class="material-symbols-outlined" data-icon="library_books">library_books</span>
+<span>Knowledge Base</span>
+</a>
+<!-- Compliance Center -->
+<a class="text-slate-400 hover:text-slate-100 py-3 px-6 flex items-center gap-3 transition-colors hover:bg-slate-800/50" href="#">
+<span class="material-symbols-outlined" data-icon="gavel">gavel</span>
+<span>Compliance Center</span>
+</a>
+<!-- ML Predictions -->
+<a class="text-slate-400 hover:text-slate-100 py-3 px-6 flex items-center gap-3 transition-colors hover:bg-slate-800/50" href="#">
+<span class="material-symbols-outlined" data-icon="psychology">psychology</span>
+<span>ML Predictions</span>
+</a>
+<!-- Settings -->
+<a class="text-slate-400 hover:text-slate-100 py-3 px-6 flex items-center gap-3 transition-colors hover:bg-slate-800/50 mt-auto mb-6" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span>Settings</span>
+</a>
+</nav>
+</aside>
+<!-- TopNavBar Shell -->
+<header class="fixed top-0 right-0 left-64 h-16 z-10 bg-slate-50 flex justify-between items-center px-8 w-full no-border">
+<div class="flex items-center gap-4">
+<div class="relative group">
+<span class="absolute inset-y-0 left-0 flex items-center pl-3 text-outline">
+<span class="material-symbols-outlined text-sm">search</span>
+</span>
+<input class="pl-10 pr-4 py-2 bg-white border-none rounded-xl text-sm focus:ring-2 focus:ring-blue-500/20 w-64 transition-all outline-none" placeholder="Search across documents..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-4 text-slate-500">
+<button class="hover:text-blue-500 transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="hover:text-blue-500 transition-colors">
+<span class="material-symbols-outlined" data-icon="help_outline">help_outline</span>
+</button>
+<button class="text-sm font-medium hover:text-blue-500 transition-colors">Support</button>
+</div>
+<div class="h-8 w-px bg-surface-container-high"></div>
+<div class="flex items-center gap-3">
+<span class="text-sm font-semibold text-on-surface">Admin User</span>
+<img alt="User Profile" class="w-10 h-10 rounded-full border-2 border-white shadow-sm" data-alt="professional portrait of an insurance executive in a sharp suit with a neutral background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuASzYF7afS5-ZqH-uq6EqFJiNDw0byQmN5Wv0tFWJ-OmEbJpehQTgvQFSx1LqesV9r9GClIYtbzm4Af2Sw1-YTB_jI7jng-vVEfGGGBJWyuG3PVsVh3yQx6AuEpkS_7TRhr4V40vTCjqAaeGqE_FuV5b3u5T8lTMJajKqThHkLH6-gK2EQi1ne-AWqqGIvcHI96eACJ-46sNPxrzbAa6O3XCCOLPFSqC_01v_tfot8l1UDD6Wo-K7It4xQmjGCPVSLa8bQlgjvx9QD7"/>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-64 pt-24 px-10 pb-16 min-h-screen bg-surface">
+<!-- Breadcrumb & Header -->
+<div class="mb-10">
+<nav class="flex items-center gap-2 text-sm font-medium text-outline mb-3">
+<a class="hover:text-primary transition-colors" href="#">Dashboard</a>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<span class="text-on-surface-variant">Clause Deviations</span>
+</nav>
+<div class="flex justify-between items-end">
+<div>
+<h2 class="text-3xl font-extrabold text-on-surface tracking-tight font-headline">Clause Deviation Scoring</h2>
+<p class="text-on-surface-variant mt-1 text-lg">Detailed analysis of policy deviations against IPEC-aligned standard clauses.</p>
+</div>
+<div class="flex gap-3">
+<button class="px-5 py-2.5 bg-white border border-outline-variant text-on-surface font-semibold rounded-xl hover:bg-surface-container-low transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-xl">download</span> Export Report
+                    </button>
+<button class="px-5 py-2.5 bg-gradient-to-r from-primary to-primary-container text-white font-semibold rounded-xl shadow-lg hover:shadow-primary/20 transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-xl">bolt</span> Run Analysis
+                    </button>
+</div>
+</div>
+</div>
+<!-- Summary Row (5 Metrics) -->
+<div class="grid grid-cols-5 gap-6 mb-12">
+<!-- Metric 1 -->
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0px_2px_4px_rgba(25,28,30,0.02)] border border-surface-container-high flex flex-col gap-2">
+<span class="text-outline text-xs font-bold uppercase tracking-wider">Documents Scored</span>
+<div class="flex items-baseline gap-2">
+<span class="text-3xl font-extrabold font-headline">42</span>
+<span class="text-primary text-xs font-bold">+12%</span>
+</div>
+</div>
+<!-- Metric 2 -->
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0px_2px_4px_rgba(25,28,30,0.02)] border border-surface-container-high flex flex-col gap-2">
+<span class="text-outline text-xs font-bold uppercase tracking-wider">Avg Deviation Score</span>
+<div class="flex items-baseline gap-2">
+<span class="text-3xl font-extrabold font-headline">88.4%</span>
+<span class="text-error text-xs font-bold">-2.1%</span>
+</div>
+</div>
+<!-- Metric 3 -->
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0px_2px_4px_rgba(25,28,30,0.02)] border border-surface-container-high flex flex-col gap-2">
+<span class="text-outline text-xs font-bold uppercase tracking-wider">Major Deviations</span>
+<div class="flex items-baseline gap-2">
+<span class="text-3xl font-extrabold font-headline text-error">15</span>
+<span class="text-on-surface-variant text-xs font-medium">Critical focus</span>
+</div>
+</div>
+<!-- Metric 4 -->
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0px_2px_4px_rgba(25,28,30,0.02)] border border-surface-container-high flex flex-col gap-2">
+<span class="text-outline text-xs font-bold uppercase tracking-wider">Standard Clauses</span>
+<div class="flex items-baseline gap-2">
+<span class="text-3xl font-extrabold font-headline">1,240</span>
+<span class="text-on-surface-variant text-xs font-medium">In library</span>
+</div>
+</div>
+<!-- Metric 5 -->
+<div class="bg-surface-container-lowest p-6 rounded-xl shadow-[0px_2px_4px_rgba(25,28,30,0.02)] border border-surface-container-high flex flex-col gap-2">
+<span class="text-outline text-xs font-bold uppercase tracking-wider">Coverage %</span>
+<div class="flex items-baseline gap-2">
+<span class="text-3xl font-extrabold font-headline">94.2%</span>
+<span class="text-primary text-xs font-bold">Optimal</span>
+</div>
+</div>
+</div>
+<!-- Document Selection & Analysis Results -->
+<div class="bg-surface-container-low rounded-full p-1.5 mb-10 inline-flex items-center gap-4 pr-6 border border-surface-container-high">
+<div class="bg-white rounded-full px-4 py-2 shadow-sm border border-surface-container-high flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="description">description</span>
+<select class="border-none focus:ring-0 text-sm font-bold bg-transparent pr-8">
+<option>Standard_Fire_Policy_v4_Draft.pdf</option>
+<option>Motor_Commercial_Retail_2023.pdf</option>
+<option>Health_Care_Plan_Platinum.pdf</option>
+</select>
+</div>
+<div class="h-6 w-px bg-outline-variant/50"></div>
+<div class="flex items-center gap-4 ml-2">
+<span class="text-sm font-semibold text-on-surface-variant">Status: <span class="text-primary">Analysis Complete</span></span>
+<span class="text-xs text-outline font-medium">Uploaded on 24 Oct, 2023</span>
+</div>
+</div>
+<!-- Results Panel Bento Grid -->
+<div class="grid grid-cols-12 gap-8">
+<!-- Main Results Table -->
+<div class="col-span-12 bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden border border-surface-container-high">
+<div class="px-8 py-6 border-b border-surface-container-high flex justify-between items-center">
+<h3 class="text-xl font-bold font-headline">Clause Analysis Results</h3>
+<div class="flex items-center gap-2">
+<span class="text-xs font-bold text-outline uppercase">Filter By Risk:</span>
+<div class="flex gap-1">
+<span class="px-2 py-1 rounded bg-error-container text-on-error-container text-[10px] font-bold cursor-pointer">CRITICAL</span>
+<span class="px-2 py-1 rounded bg-tertiary-fixed text-on-tertiary-fixed text-[10px] font-bold cursor-pointer">MAJOR</span>
+<span class="px-2 py-1 rounded bg-surface-container-high text-outline text-[10px] font-bold cursor-pointer">STANDARD</span>
+</div>
+</div>
+</div>
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-low text-xs font-bold text-outline uppercase tracking-wider">
+<tr>
+<th class="px-8 py-4">Clause Name</th>
+<th class="px-6 py-4">Similarity Score</th>
+<th class="px-6 py-4">Deviation Label</th>
+<th class="px-6 py-4">Recommended Action</th>
+<th class="px-8 py-4 text-right">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container-high">
+<!-- Row 1: Major Deviation -->
+<tr class="hover:bg-surface-container-low/50 transition-colors group">
+<td class="px-8 py-5">
+<p class="font-bold text-on-surface text-sm">Force Majeure Definition</p>
+<p class="text-xs text-outline mt-0.5">Section 4.2 - General Terms</p>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-24 h-2 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-tertiary-container w-[42%]"></div>
+</div>
+<span class="text-sm font-bold text-tertiary">42%</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 rounded-full bg-tertiary-fixed text-on-tertiary-fixed text-[11px] font-bold">MAJOR</span>
+</td>
+<td class="px-6 py-5">
+<span class="text-sm font-medium text-on-surface-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary text-lg">edit_note</span> Redraft to align with IPEC 2023
+                                </span>
+</td>
+<td class="px-8 py-5 text-right">
+<button class="text-primary hover:bg-primary-container/10 p-2 rounded-lg transition-all">
+<span class="material-symbols-outlined">expand_more</span>
+</button>
+</td>
+</tr>
+<!-- Expandable Comparison View (Active State Mockup) -->
+<tr class="bg-surface-container-low/30">
+<td class="px-8 py-8" colspan="5">
+<div class="grid grid-cols-2 gap-8">
+<div class="flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<span class="text-xs font-bold text-outline uppercase tracking-widest">Target Document Text</span>
+<span class="px-2 py-0.5 rounded bg-error-container text-on-error-container text-[10px] font-bold">DEVIATION DETECTED</span>
+</div>
+<div class="p-4 bg-white rounded-xl border border-error/20 text-sm leading-relaxed text-on-surface shadow-sm italic">
+                                            "The company shall not be liable for any loss arising from events beyond reasonable control, <span class="bg-error-container/40 border-b-2 border-error">including but not limited to localized civil unrest</span> that does not reach the threshold of national emergency."
+                                        </div>
+</div>
+<div class="flex flex-col gap-3">
+<div class="flex items-center justify-between">
+<span class="text-xs font-bold text-outline uppercase tracking-widest">Standard Library Reference</span>
+<span class="px-2 py-0.5 rounded bg-secondary-fixed text-on-secondary-container text-[10px] font-bold">IPEC COMPLIANT</span>
+</div>
+<div class="p-4 bg-white rounded-xl border border-secondary/20 text-sm leading-relaxed text-on-surface shadow-sm">
+                                            "Force Majeure refers to any event beyond the reasonable control of a party, including acts of God, war, riot, <span class="bg-secondary-container/40 border-b-2 border-primary">but excluding localized industrial action or standard civil disturbances</span> as defined in the Regulatory Act."
+                                        </div>
+</div>
+</div>
+<div class="mt-6 flex justify-end gap-3">
+<button class="px-4 py-2 bg-white border border-outline-variant text-xs font-bold rounded-lg hover:bg-surface-container-high transition-colors">IGNORE DEVIATION</button>
+<button class="px-4 py-2 bg-primary text-white text-xs font-bold rounded-lg hover:bg-primary-container transition-colors shadow-sm">OVERWRITE WITH STANDARD</button>
+</div>
+</td>
+</tr>
+<!-- Row 2: Minor Deviation -->
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="px-8 py-5">
+<p class="font-bold text-on-surface text-sm">Arbitration &amp; Dispute Resolution</p>
+<p class="text-xs text-outline mt-0.5">Section 12.1 - Legal</p>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-24 h-2 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-blue-600 w-[91%]"></div>
+</div>
+<span class="text-sm font-bold text-primary">91%</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 rounded-full bg-surface-container-high text-outline text-[11px] font-bold uppercase">Minor</span>
+</td>
+<td class="px-6 py-5">
+<span class="text-sm font-medium text-on-surface-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-outline text-lg">check_circle</span> Update specific venue to Harare
+                                </span>
+</td>
+<td class="px-8 py-5 text-right">
+<button class="text-outline hover:bg-surface-container-low p-2 rounded-lg transition-all">
+<span class="material-symbols-outlined">expand_more</span>
+</button>
+</td>
+</tr>
+<!-- Row 3: Critical Deviation -->
+<tr class="hover:bg-surface-container-low/50 transition-colors">
+<td class="px-8 py-5">
+<p class="font-bold text-on-surface text-sm">Premium Payment Grace Period</p>
+<p class="text-xs text-outline mt-0.5">Section 2.4 - Payments</p>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-24 h-2 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-error w-[12%]"></div>
+</div>
+<span class="text-sm font-bold text-error">12%</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 rounded-full bg-error-container text-on-error-container text-[11px] font-bold uppercase tracking-tight">Critical</span>
+</td>
+<td class="px-6 py-5">
+<span class="text-sm font-medium text-on-surface-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-error text-lg">warning</span> Legal Violation: Min 30 days required
+                                </span>
+</td>
+<td class="px-8 py-5 text-right">
+<button class="text-outline hover:bg-surface-container-low p-2 rounded-lg transition-all">
+<span class="material-symbols-outlined">expand_more</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="p-4 bg-surface-container-low flex justify-center">
+<button class="text-primary font-bold text-sm hover:underline">View 18 More Analyzed Clauses</button>
+</div>
+</div>
+</div>
+<!-- Standard Clause Library Management Section -->
+<div class="mt-16 grid grid-cols-12 gap-8">
+<div class="col-span-12 md:col-span-8 bg-surface-container-lowest rounded-xl shadow-sm border border-surface-container-high flex flex-col">
+<div class="px-8 py-6 border-b border-surface-container-high flex justify-between items-center">
+<div>
+<h3 class="text-xl font-bold font-headline">Standard Clause Library</h3>
+<p class="text-sm text-outline">Manage global standard reference templates.</p>
+</div>
+<div class="relative">
+<span class="absolute inset-y-0 left-0 flex items-center pl-3 text-outline">
+<span class="material-symbols-outlined text-sm">search</span>
+</span>
+<input class="pl-10 pr-4 py-2 bg-surface-container-low border-none rounded-lg text-xs w-48 focus:ring-1 focus:ring-primary" placeholder="Search library..." type="text"/>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="bg-surface-container-low/50 text-[10px] font-bold text-outline uppercase tracking-widest">
+<tr>
+<th class="px-8 py-3">Reference ID</th>
+<th class="px-6 py-3">Clause Category</th>
+<th class="px-6 py-3">Version</th>
+<th class="px-8 py-3 text-right">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container-high">
+<tr class="hover:bg-surface-container-low/30">
+<td class="px-8 py-4 font-mono text-xs text-primary">STD-FIRE-001</td>
+<td class="px-6 py-4 text-sm font-medium">Reinstatement Value</td>
+<td class="px-6 py-4 text-sm text-on-surface-variant">v2.1 (2023)</td>
+<td class="px-8 py-4 text-right">
+<span class="inline-block w-2 h-2 rounded-full bg-primary mr-2"></span>
+<span class="text-xs font-bold text-on-surface">Active</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low/30">
+<td class="px-8 py-4 font-mono text-xs text-primary">STD-LIAB-042</td>
+<td class="px-6 py-4 text-sm font-medium">Public Liability Scope</td>
+<td class="px-6 py-4 text-sm text-on-surface-variant">v1.4 (2022)</td>
+<td class="px-8 py-4 text-right">
+<span class="inline-block w-2 h-2 rounded-full bg-primary mr-2"></span>
+<span class="text-xs font-bold text-on-surface">Active</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low/30">
+<td class="px-8 py-4 font-mono text-xs text-primary">STD-MOTR-019</td>
+<td class="px-6 py-4 text-sm font-medium">Excess Structure</td>
+<td class="px-6 py-4 text-sm text-on-surface-variant">v3.0 (2024)</td>
+<td class="px-8 py-4 text-right">
+<span class="inline-block w-2 h-2 rounded-full bg-outline mr-2"></span>
+<span class="text-xs font-bold text-outline">Draft</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Add Standard Clause Form / FAB replacement -->
+<div class="col-span-12 md:col-span-4 bg-primary rounded-xl shadow-xl p-8 text-white relative overflow-hidden">
+<div class="relative z-10">
+<h3 class="text-2xl font-bold font-headline mb-2">New Standard Clause</h3>
+<p class="text-primary-fixed text-sm mb-6 leading-relaxed">Contribute to the collective intelligence. Add a new regulatory-vetted clause to the reference library.</p>
+<form class="space-y-4">
+<div>
+<label class="block text-[10px] font-bold uppercase tracking-widest text-primary-fixed mb-1.5">Clause Title</label>
+<input class="w-full bg-primary-container border-none rounded-lg text-sm placeholder:text-blue-300 focus:ring-2 focus:ring-white/20" placeholder="e.g. Terrorism Exclusion" type="text"/>
+</div>
+<div>
+<label class="block text-[10px] font-bold uppercase tracking-widest text-primary-fixed mb-1.5">Legal Category</label>
+<select class="w-full bg-primary-container border-none rounded-lg text-sm focus:ring-2 focus:ring-white/20">
+<option>General Liability</option>
+<option>Property &amp; Fire</option>
+<option>Life &amp; Pensions</option>
+<option>Motor</option>
+</select>
+</div>
+<div>
+<label class="block text-[10px] font-bold uppercase tracking-widest text-primary-fixed mb-1.5">Clause Text (Legalese)</label>
+<textarea class="w-full bg-primary-container border-none rounded-lg text-sm placeholder:text-blue-300 focus:ring-2 focus:ring-white/20" placeholder="Enter full clause text..." rows="4"></textarea>
+</div>
+<button class="w-full bg-white text-primary font-bold py-3 rounded-lg mt-4 hover:bg-surface transition-colors flex items-center justify-center gap-2" type="submit">
+<span class="material-symbols-outlined">add_circle</span> Add Standard Clause
+                        </button>
+</form>
+</div>
+<!-- Abstract Background Pattern -->
+<div class="absolute -right-12 -bottom-12 w-48 h-48 bg-white/10 rounded-full blur-3xl"></div>
+<div class="absolute -left-12 -top-12 w-32 h-32 bg-primary-container/40 rounded-full blur-2xl"></div>
+</div>
+</div>
+<!-- Trust Badging Footer -->
+<div class="mt-16 pt-8 border-t border-surface-container-high flex flex-col md:flex-row justify-between items-center gap-4">
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center">
+<span class="material-symbols-outlined text-outline text-lg">verified_user</span>
+</div>
+<span class="text-xs font-bold text-on-surface-variant uppercase tracking-widest">Regulatory Compliance: IPEC-ZIM</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center">
+<span class="material-symbols-outlined text-outline text-lg">lock</span>
+</div>
+<span class="text-xs font-bold text-on-surface-variant uppercase tracking-widest">Bank-Grade Encryption</span>
+</div>
+</div>
+<div class="text-xs text-outline font-medium">
+                © 2023 InsureIntel Zimbabwe. All rights reserved. 
+            </div>
+</div>
+</main>
+<!-- Contextual FAB - Suppression Logic: Hidden on Detail/Transactional pages as per rules, but showing for global document upload action if context allows. Suppressing here to follow "Details" screen suppression rule. -->
+</body></html>

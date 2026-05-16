@@ -1,0 +1,818 @@
+{
+  "data": [
+    {
+      "text": "INSURANCE BROKERAGE AGREEMENT\n\n    Between: First Mutual Zimbabwe (the Insurer)\n    And: Prime Brokers Limited (the Broker)\n\n    Effective Date: 11/04/2026\n\n    ARTICLE 1 - APPOINTMENT\n    The Insurer appoints the Broker as its authorized insurance broker for the territory of Zimbabwe.\n\n    ARTICLE 2 - BROKER RESPONSIBILITIES\n    The Broker shall:\n    (a) Solicit and procure insurance business\n    (b) Issue cover notes and policy documents\n    (c) Collect premiums from policyholders\n    (d) Remit premiums to the Insurer within 30 days\n\n    ARTICLE 3 - COMMISSION\n    Commission Rate:\n    - Motor Insurance: 17%\n    - Property Insurance: 15%\n    - Life Insurance: 28%\n\n    Commission shall be paid monthly within 30 days of premium receipt.\n\n    ARTICLE 4 - AUTHORITY LIMITS\n    Maximum Sum Insured per Risk: $259,703\n    Binding Authority: $139,059\n\n    ARTICLE 5 - TERMINATION\n    Either party may terminate this agreement with 60 days written notice.",
+      "category": "broker_agreement"
+    },
+    {
+      "text": "INSURANCE BROKERAGE AGREEMENT\n\n    Between: First Mutual Zimbabwe (the Insurer)\n    And: Prime Brokers Limited (the Broker)\n\n    Effective Date: 11/04/2026\n\n    ARTICLE 1 - APPOINTMENT\n    The Insurer appoints the Broker as its authorized insurance broker for the territory of Zimbabwe.\n\n    ARTICLE 2 - BROKER RESPONSIBILITIES\n    The Broker shall:\n    (a) Solicit and procure insurance business\n    (b) Issue cover notes and policy documents\n    (c) Collect premiums from policyholders\n    (d) Remit premiums to the Insurer within 14 days\n\n    ARTICLE 3 - COMMISSION\n    Commission Rate:\n    - Motor Insurance: 20%\n    - Property Insurance: 12%\n    - Life Insurance: 19%\n\n    Commission shall be paid monthly within 14 days of premium receipt.\n\n    ARTICLE 4 - AUTHORITY LIMITS\n    Maximum Sum Insured per Risk: $170,996\n    Binding Authority: $59,958\n\n    ARTICLE 5 - TERMINATION\n    Either party may terminate this agreement with 60 days written notice.",
+      "category": "broker_agreement"
+    },
+    {
+      "text": "MOTOR VEHICLE INSURANCE POLICY\n\n    Policy Number: POL-6930\n\n    SECTION A - COVERAGE\n    This policy provides coverage for loss or damage to the insured vehicle arising from:\n    (a) Collision or overturning\n    (b) Fire, explosion, or lightning\n    (c) Theft or attempted theft\n    (d) Malicious damage\n\n    SECTION B - EXCLUSIONS\n    The Insurer shall not be liable for:\n    1. Wear and tear\n    2. Mechanical or electrical breakdown\n    3. Driving under the influence of alcohol or drugs\n\n    SECTION C - CONDITIONS\n    Sum Insured: $109,145\n    Premium: $1,332 per annum\n    Excess: $924 per claim\n\n    The Insured must notify any claim within 30 days of the incident.",
+      "category": "policy_wording"
+    },
+    {
+      "text": "LIFE ASSURANCE POLICY\n\n    Life Assured: Jane Smith\n    Policy Number: POL-9867\n\n    BENEFITS:\n    Death Benefit: $266,754\n    Maturity Benefit: $240,503\n\n    PREMIUMS:\n    Monthly Premium: $865\n    Premium Payment Term: 10 years\n\n    EXCLUSIONS:\n    Death by suicide within 12 months of policy commencement\n    Death due to engaging in hazardous activities not disclosed\n\n    BENEFICIARY DESIGNATION:\n    The Life Assured may nominate beneficiaries who shall receive the death benefit.",
+      "category": "policy_wording"
+    },
+    {
+      "text": "INSURANCE BROKERAGE AGREEMENT\n\n    Between: First Mutual Zimbabwe (the Insurer)\n    And: XYZ Risk Solutions (the Broker)\n\n    Effective Date: 11/04/2026\n\n    ARTICLE 1 - APPOINTMENT\n    The Insurer appoints the Broker as its authorized insurance broker for the territory of Zimbabwe.\n\n    ARTICLE 2 - BROKER RESPONSIBILITIES\n    The Broker shall:\n    (a) Solicit and procure insurance business\n    (b) Issue cover notes and policy documents\n    (c) Collect premiums from policyholders\n    (d) Remit premiums to the Insurer within 14 days\n\n    ARTICLE 3 - COMMISSION\n    Commission Rate:\n    - Motor Insurance: 19%\n    - Property Insurance: 18%\n    - Life Insurance: 17%\n\n    Commission shall be paid monthly within 30 days of premium receipt.\n\n    ARTICLE 4 - AUTHORITY LIMITS\n    Maximum Sum Insured per Risk: $165,541\n    Binding Authority: $53,444\n\n    ARTICLE 5 - TERMINATION\n    Either party may terminate this agreement with 30 days written notice.",
+      "category": "broker_agreement"
+    },
+    {
+      "text": "EXCESS OF LOSS REINSURANCE AGREEMENT\n\n    Reinsured: Zimre Holdings\n    Reinsurer: Swiss Re\n\n    Treaty Year: 2026\n\n    SECTION 1 - LIMIT AND RETENTION\n    Layer: $1,529,015 xs $155,896\n    The Reinsurer shall indemnify the Reinsured for the amount of each loss\n    in excess of $155,896 up to $1,529,015.\n\n    SECTION 2 - PREMIUM\n    Provisional Premium: $152,715\n    Minimum Premium: $55,249\n    Deposit Premium due: 11/04/2026\n\n    SECTION 3 - CLAIMS COOPERATION\n    The Reinsured shall notify the Reinsurer of all claims exceeding $154,956\n    within 72 hours.\n\n    SECTION 4 - ARBITRATION\n    Any disputes shall be resolved by arbitration in accordance with ARIAS rules.",
+      "category": "reinsurance_treaty"
+    },
+    {
+      "text": "CLAIM ASSESSMENT REPORT\n\n    Claim Reference: REF-40253\n    Insured: John Doe\n\n    ASSESSMENT SUMMARY:\n    Loss Adjustor: Peter Loss Adjustor\n    Inspection Date: 11/04/2026\n\n    FINDINGS:\n    Nature of Loss: Theft\n    Cause: Electrical fault\n\n    VALUATION:\n    Sum Insured: $360,649\n    Assessed Loss: $40,962\n    Less Depreciation: $4,790\n    Less Excess: $673\n\n    NET CLAIM AMOUNT: $14,202\n\n    RECOMMENDATION:\n    Claim approved for settlement\n\n    This claim requires further review.\n\n    Signed: _____________\n    Date: 11/04/2026",
+      "category": "claims_documentation"
+    },
+    {
+      "text": "EXCESS OF LOSS REINSURANCE AGREEMENT\n\n    Reinsured: Zimre Holdings\n    Reinsurer: Swiss Re\n\n    Treaty Year: 2026\n\n    SECTION 1 - LIMIT AND RETENTION\n    Layer: $1,750,883 xs $136,233\n    The Reinsurer shall indemnify the Reinsured for the amount of each loss\n    in excess of $136,233 up to $1,750,883.\n\n    SECTION 2 - PREMIUM\n    Provisional Premium: $187,667\n    Minimum Premium: $85,026\n    Deposit Premium due: 11/04/2026\n\n    SECTION 3 - CLAIMS COOPERATION\n    The Reinsured shall notify the Reinsurer of all claims exceeding $150,051\n    within 72 hours.\n\n    SECTION 4 - ARBITRATION\n    Any disputes shall be resolved by arbitration in accordance with ARIAS rules.",
+      "category": "reinsurance_treaty"
+    },
+    {
+      "text": "REINSURANCE TREATY\n\n    Between: Old Mutual (the Reinsured)\n    And: Swiss Re (the Reinsurer)\n\n    Treaty Type: Quota Share Treaty\n    Treaty Period: 04/09/2025 to 06/07/2026\n\n    ARTICLE 1 - SCOPE\n    The Reinsurer agrees to accept 30% of all policies written by the Reinsured\n    under the following classes of business:\n    - Motor Insurance\n    - Property Insurance\n    - Liability Insurance\n\n    ARTICLE 2 - RETENTION AND CESSION\n    The Reinsured shall retain 53% of each risk and cede the balance to the Reinsurer.\n\n    ARTICLE 3 - PREMIUM\n    Reinsurance Premium: 15% of gross written premium\n    Commission: 14%\n\n    ARTICLE 4 - CLAIMS\n    The Reinsurer shall pay its proportionate share of all claims within 30 days of settlement by the Reinsured.",
+      "category": "reinsurance_treaty"
+    },
+    {
+      "text": "BROKER COMMISSION STATEMENT\n\n    Broker: ABC Insurance Brokers\n    Statement Period: April 2026 to May 2026\n\n    PREMIUM SUMMARY:\n    Gross Written Premium: $3,837,344\n    Less Returns/Cancellations: $69,307\n    Net Written Premium: $2,729,438\n\n    COMMISSION CALCULATION:\n    Motor (12%): $13\n    Property (21%): $16\n    Life (18%): $21\n\n    TOTAL COMMISSION DUE: $398,969\n\n    Less Previous Advances: $94,773\n\n    NET PAYABLE: $95,087\n\n    Payment will be made via bank transfer within 7 working days.",
+      "category": "broker_agreement"
+    },
+    {
+      "text": "PROPERTY ALL RISKS INSURANCE POLICY\n\n    INSURED: ABC Limited\n    POLICY PERIOD: 22/01/2026 to 05/02/2027\n\n    COVERAGE:\n    This policy covers all risks of physical loss or damage to the property described below,\n    except as provided in the Exclusions section.\n\n    PROPERTY INSURED:\n    Building situated at 488 Main Street, Harare\n    Sum Insured: $202,208\n\n    PREMIUM: $4,102 annually\n    DEDUCTIBLE: $790 per occurrence\n\n    CLAIMS PROCEDURE:\n    All claims must be reported within 48 hours with supporting documentation.",
+      "category": "policy_wording"
+    },
+    {
+      "text": "MOTOR VEHICLE CLAIM FORM\n\n    Claim Number: CLM-7870\n    Policy Number: POL-2678\n    Date of Loss: 11/02/2026\n\n    CLAIMANT DETAILS:\n    Name: Robert Brown\n    Contact: +263 734 936 229\n\n    INCIDENT DETAILS:\n    Date and Time: 02/04/2026 23:57\n    Location: Eastlea\n    Description: Fire damage to building\n\n    VEHICLE DAMAGE:\n    Make/Model: Nissan March\n    Registration: A920-405\n    Estimated Repair Cost: $7,214\n\n    POLICE REPORT:\n    Report Number: PR99515\n    Attending Officer: Sgt. Moyo\n\n    DECLARATION:\n    I declare that the information provided is true and accurate to the best of my knowledge.\n\n    Signature: _______________\n    Date: 11/04/2026",
+      "category": "claims_documentation"
+    },
+    {
+      "text": "BROKER COMMISSION STATEMENT\n\n    Broker: XYZ Risk Solutions\n    Statement Period: April 2026 to May 2026\n\n    PREMIUM SUMMARY:\n    Gross Written Premium: $3,719,810\n    Less Returns/Cancellations: $50,670\n    Net Written Premium: $1,409,163\n\n    COMMISSION CALCULATION:\n    Motor (15%): $10\n    Property (18%): $20\n    Life (25%): $18\n\n    TOTAL COMMISSION DUE: $428,282\n\n    Less Previous Advances: $34,980\n\n    NET PAYABLE: $190,587\n\n    Payment will be made via bank transfer within 7 working days.",
+      "category": "broker_agreement"
+    },
+    {
+      "text": "CLAIM SETTLEMENT ADVICE\n\n    Settlement Number: SET-6636\n    Claim Number: CLM-6081\n\n    CLAIMANT: John Doe\n\n    SETTLEMENT BREAKDOWN:\n    Assessed Claim Value: $32,454\n    Less Policy Excess: $184\n    Less Salvage Recovery: $1,309\n\n    TOTAL PAYABLE: $15,640\n\n    PAYMENT DETAILS:\n    Method: Mobile Money\n    Bank: FBC Bank\n    Account Number: 19736-6799\n\n    Payment Date: 11/04/2026\n\n    This settlement is in full and final discharge of all liability under Policy POL-9539.",
+      "category": "claims_documentation"
+    },
+    {
+      "text": "INSURANCE BROKERAGE AGREEMENT\n\n    Between: First Mutual Zimbabwe (the Insurer)\n    And: Prime Brokers Limited (the Broker)\n\n    Effective Date: 11/04/2026\n\n    ARTICLE 1 - APPOINTMENT\n    The Insurer appoints the Broker as its authorized insurance broker for the territory of Zimbabwe.\n\n    ARTICLE 2 - BROKER RESPONSIBILITIES\n    The Broker shall:\n    (a) Solicit and procure insurance business\n    (b) Issue cover notes and policy documents\n    (c) Collect premiums from policyholders\n    (d) Remit premiums to the Insurer within 30 days\n\n    ARTICLE 3 - COMMISSION\n    Commission Rate:\n    - Motor Insurance: 18%\n    - Property Insurance: 14%\n    - Life Insurance: 21%\n\n    Commission shall be paid monthly within 30 days of premium receipt.\n\n    ARTICLE 4 - AUTHORITY LIMITS\n    Maximum Sum Insured per Risk: $310,320\n    Binding Authority: $60,128\n\n    ARTICLE 5 - TERMINATION\n    Either party may terminate this agreement with 90 days written notice.",
+      "category": "broker_agreement"
+    },
+    {
+      "text": "INSURANCE BROKERAGE AGREEMENT\n\n    Between: Zimre Holdings (the Insurer)\n    And: Prime Brokers Limited (the Broker)\n\n    Effective Date: 11/04/2026\n\n    ARTICLE 1 - APPOINTMENT\n    The Insurer appoints the Broker as its authorized insurance broker for the territory of Zimbabwe.\n\n    ARTICLE 2 - BROKER RESPONSIBILITIES\n    The Broker shall:\n    (a) Solicit and procure insurance business\n    (b) Issue cover notes and policy documents\n    (c) Collect premiums from policyholders\n    (d) Remit premiums to the Insurer within 14 days\n\n    ARTICLE 3 - COMMISSION\n    Commission Rate:\n    - Motor Insurance: 13%\n    - Property Insurance: 20%\n    - Life Insurance: 17%\n\n    Commission shall be paid monthly within 30 days of premium receipt.\n\n    ARTICLE 4 - AUTHORITY LIMITS\n    Maximum Sum Insured per Risk: $375,624\n    Binding Authority: $86,253\n\n    ARTICLE 5 - TERMINATION\n    Either party may terminate this agreement with 60 days written notice.",
+      "category": "broker_agreement"
+    },
+    {
+      "text": "BROKER COMMISSION STATEMENT\n\n    Broker: XYZ Risk Solutions\n    Statement Period: April 2026 to May 2026\n\n    PREMIUM SUMMARY:\n    Gross Written Premium: $637,653\n    Less Returns/Cancellations: $20,321\n    Net Written Premium: $1,919,498\n\n    COMMISSION CALCULATION:\n    Motor (18%): $18\n    Property (21%): $15\n    Life (20%): $23\n\n    TOTAL COMMISSION DUE: $151,071\n\n    Less Previous Advances: $26,439\n\n    NET PAYABLE: $313,052\n\n    Payment will be made via bank transfer within 7 working days.",
+      "category": "broker_agreement"
+    },
+    {
+      "text": "INSURANCE BROKERAGE AGREEMENT\n\n    Between: First Mutual Zimbabwe (the Insurer)\n    And: Prime Brokers Limited (the Broker)\n\n    Effective Date: 11/04/2026\n\n    ARTICLE 1 - APPOINTMENT\n    The Insurer appoints the Broker as its authorized insurance broker for the territory of Zimbabwe.\n\n    ARTICLE 2 - BROKER RESPONSIBILITIES\n    The Broker shall:\n    (a) Solicit and procure insurance business\n    (b) Issue cover notes and policy documents\n    (c) Collect premiums from policyholders\n    (d) Remit premiums to the Insurer within 7 days\n\n    ARTICLE 3 - COMMISSION\n    Commission Rate:\n    - Motor Insurance: 18%\n    - Property Insurance: 16%\n    - Life Insurance: 30%\n\n    Commission shall be paid monthly within 30 days of premium receipt.\n\n    ARTICLE 4 - AUTHORITY LIMITS\n    Maximum Sum Insured per Risk: $338,163\n    Binding Authority: $144,339\n\n    ARTICLE 5 - TERMINATION\n    Either party may terminate this agreement with 90 days written notice.",
+      "category": "broker_agreement"
+    },
+    {
+      "text": "BROKER COMMISSION STATEMENT\n\n    Broker: XYZ Risk Solutions\n    Statement Period: April 2026 to May 2026\n\n    PREMIUM SUMMARY:\n    Gross Written Premium: $2,995,380\n    Less Returns/Cancellations: $96,339\n    Net Written Premium: $3,378,435\n\n    COMMISSION CALCULATION:\n    Motor (13%): $15\n    Property (21%): $20\n    Life (24%): $25\n\n    TOTAL COMMISSION DUE: $439,771\n\n    Less Previous Advances: $47,600\n\n    NET PAYABLE: $209,207\n\n    Payment will be made via bank transfer within 7 working days.",
+      "category": "broker_agreement"
+    },
+    {
+      "text": "REINSURANCE TREATY\n\n    Between: First Mutual Zimbabwe (the Reinsured)\n    And: Swiss Re (the Reinsurer)\n\n    Treaty Type: Quota Share Treaty\n    Treaty Period: 14/09/2025 to 30/11/2026\n\n    ARTICLE 1 - SCOPE\n    The Reinsurer agrees to accept 48% of all policies written by the Reinsured\n    under the following classes of business:\n    - Motor Insurance\n    - Property Insurance\n    - Liability Insurance\n\n    ARTICLE 2 - RETENTION AND CESSION\n    The Reinsured shall retain 50% of each risk and cede the balance to the Reinsurer.\n\n    ARTICLE 3 - PREMIUM\n    Reinsurance Premium: 10% of gross written premium\n    Commission: 16%\n\n    ARTICLE 4 - CLAIMS\n    The Reinsurer shall pay its proportionate share of all claims within 30 days of settlement by the Reinsured.",
+      "category": "reinsurance_treaty"
+    },
+    {
+      "text": "INSURANCE BROKERAGE AGREEMENT\n\n    Between: First Mutual Zimbabwe (the Insurer)\n    And: XYZ Risk Solutions (the Broker)\n\n    Effective Date: 11/04/2026\n\n    ARTICLE 1 - APPOINTMENT\n    The Insurer appoints the Broker as its authorized insurance broker for the territory of Zimbabwe.\n\n    ARTICLE 2 - BROKER RESPONSIBILITIES\n    The Broker shall:\n    (a) Solicit and procure insurance business\n    (b) Issue cover notes and policy documents\n    (c) Collect premiums from policyholders\n    (d) Remit premiums to the Insurer within 7 days\n\n    ARTICLE 3 - COMMISSION\n    Commission Rate:\n    - Motor Insurance: 15%\n    - Property Insurance: 17%\n    - Life Insurance: 16%\n\n    Commission shall be paid monthly within 7 days of premium receipt.\n\n    ARTICLE 4 - AUTHORITY LIMITS\n    Maximum Sum Insured per Risk: $169,391\n    Binding Authority: $166,015\n\n    ARTICLE 5 - TERMINATION\n    Either party may terminate this agreement with 60 days written notice.",
+      "category": "broker_agreement"
+    },
+    {
+      "text": "BROKER COMMISSION STATEMENT\n\n    Broker: XYZ Risk Solutions\n    Statement Period: April 2026 to May 2026\n\n    PREMIUM SUMMARY:\n    Gross Written Premium: $2,498,705\n    Less Returns/Cancellations: $67,862\n    Net Written Premium: $2,641,439\n\n    COMMISSION CALCULATION:\n    Motor (10%): $12\n    Property (16%): $16\n    Life (22%): $27\n\n    TOTAL COMMISSION DUE: $203,100\n\n    Less Previous Advances: $58,382\n\n    NET PAYABLE: $193,552\n\n    Payment will be made via bank transfer within 7 working days.",
+      "category": "broker_agreement"
+    },
+    {
+      "text": "EXCESS OF LOSS REINSURANCE AGREEMENT\n\n    Reinsured: Zimre Holdings\n    Reinsurer: Hannover Re\n\n    Treaty Year: 2026\n\n    SECTION 1 - LIMIT AND RETENTION\n    Layer: $793,508 xs $158,944\n    The Reinsurer shall indemnify the Reinsured for the amount of each loss\n    in excess of $158,944 up to $793,508.\n\n    SECTION 2 - PREMIUM\n    Provisional Premium: $166,398\n    Minimum Premium: $50,183\n    Deposit Premium due: 11/04/2026\n\n    SECTION 3 - CLAIMS COOPERATION\n    The Reinsured shall notify the Reinsurer of all claims exceeding $99,919\n    within 72 hours.\n\n    SECTION 4 - ARBITRATION\n    Any disputes shall be resolved by arbitration in accordance with ARIAS rules.",
+      "category": "reinsurance_treaty"
+    },
+    {
+      "text": "PROPERTY ALL RISKS INSURANCE POLICY\n\n    INSURED: Jane Smith\n    POLICY PERIOD: 20/12/2025 to 19/01/2027\n\n    COVERAGE:\n    This policy covers all risks of physical loss or damage to the property described below,\n    except as provided in the Exclusions section.\n\n    PROPERTY INSURED:\n    Building situated at 830 Main Street, Harare\n    Sum Insured: $224,381\n\n    PREMIUM: $1,512 annually\n    DEDUCTIBLE: $583 per occurrence\n\n    CLAIMS PROCEDURE:\n    All claims must be reported within 48 hours with supporting documentation.",
+      "category": "policy_wording"
+    },
+    {
+      "text": "EXCESS OF LOSS REINSURANCE AGREEMENT\n\n    Reinsured: Zimre Holdings\n    Reinsurer: Swiss Re\n\n    Treaty Year: 2026\n\n    SECTION 1 - LIMIT AND RETENTION\n    Layer: $1,567,982 xs $165,041\n    The Reinsurer shall indemnify the Reinsured for the amount of each loss\n    in excess of $165,041 up to $1,567,982.\n\n    SECTION 2 - PREMIUM\n    Provisional Premium: $184,292\n    Minimum Premium: $97,297\n    Deposit Premium due: 11/04/2026\n\n    SECTION 3 - CLAIMS COOPERATION\n    The Reinsured shall notify the Reinsurer of all claims exceeding $122,125\n    within 72 hours.\n\n    SECTION 4 - ARBITRATION\n    Any disputes shall be resolved by arbitration in accordance with ARIAS rules.",
+      "category": "reinsurance_treaty"
+    },
+    {
+      "text": "BROKER COMMISSION STATEMENT\n\n    Broker: ABC Insurance Brokers\n    Statement Period: April 2026 to May 2026\n\n    PREMIUM SUMMARY:\n    Gross Written Premium: $3,653,698\n    Less Returns/Cancellations: $79,482\n    Net Written Premium: $3,503,313\n\n    COMMISSION CALCULATION:\n    Motor (18%): $20\n    Property (14%): $14\n    Life (22%): $19\n\n    TOTAL COMMISSION DUE: $393,185\n\n    Less Previous Advances: $43,201\n\n    NET PAYABLE: $174,954\n\n    Payment will be made via bank transfer within 7 working days.",
+      "category": "broker_agreement"
+    },
+    {
+      "text": "EXCESS OF LOSS REINSURANCE AGREEMENT\n\n    Reinsured: Old Mutual\n    Reinsurer: Hannover Re\n\n    Treaty Year: 2026\n\n    SECTION 1 - LIMIT AND RETENTION\n    Layer: $1,205,987 xs $132,989\n    The Reinsurer shall indemnify the Reinsured for the amount of each loss\n    in excess of $132,989 up to $1,205,987.\n\n    SECTION 2 - PREMIUM\n    Provisional Premium: $88,140\n    Minimum Premium: $38,291\n    Deposit Premium due: 11/04/2026\n\n    SECTION 3 - CLAIMS COOPERATION\n    The Reinsured shall notify the Reinsurer of all claims exceeding $74,323\n    within 72 hours.\n\n    SECTION 4 - ARBITRATION\n    Any disputes shall be resolved by arbitration in accordance with ARIAS rules.",
+      "category": "reinsurance_treaty"
+    },
+    {
+      "text": "BROKER COMMISSION STATEMENT\n\n    Broker: ABC Insurance Brokers\n    Statement Period: April 2026 to May 2026\n\n    PREMIUM SUMMARY:\n    Gross Written Premium: $1,936,318\n    Less Returns/Cancellations: $58,497\n    Net Written Premium: $2,958,102\n\n    COMMISSION CALCULATION:\n    Motor (14%): $20\n    Property (20%): $18\n    Life (21%): $22\n\n    TOTAL COMMISSION DUE: $364,766\n\n    Less Previous Advances: $14,636\n\n    NET PAYABLE: $230,653\n\n    Payment will be made via bank transfer within 7 working days.",
+      "category": "broker_agreement"
+    },
+    {
+      "text": "EXCESS OF LOSS REINSURANCE AGREEMENT\n\n    Reinsured: Old Mutual\n    Reinsurer: Swiss Re\n\n    Treaty Year: 2026\n\n    SECTION 1 - LIMIT AND RETENTION\n    Layer: $1,137,860 xs $98,350\n    The Reinsurer shall indemnify the Reinsured for the amount of each loss\n    in excess of $98,350 up to $1,137,860.\n\n    SECTION 2 - PREMIUM\n    Provisional Premium: $88,747\n    Minimum Premium: $76,676\n    Deposit Premium due: 11/04/2026\n\n    SECTION 3 - CLAIMS COOPERATION\n    The Reinsured shall notify the Reinsurer of all claims exceeding $141,020\n    within 72 hours.\n\n    SECTION 4 - ARBITRATION\n    Any disputes shall be resolved by arbitration in accordance with ARIAS rules.",
+      "category": "reinsurance_treaty"
+    },
+    {
+      "text": "INSURANCE BROKERAGE AGREEMENT\n\n    Between: First Mutual Zimbabwe (the Insurer)\n    And: Prime Brokers Limited (the Broker)\n\n    Effective Date: 11/04/2026\n\n    ARTICLE 1 - APPOINTMENT\n    The Insurer appoints the Broker as its authorized insurance broker for the territory of Zimbabwe.\n\n    ARTICLE 2 - BROKER RESPONSIBILITIES\n    The Broker shall:\n    (a) Solicit and procure insurance business\n    (b) Issue cover notes and policy documents\n    (c) Collect premiums from policyholders\n    (d) Remit premiums to the Insurer within 30 days\n\n    ARTICLE 3 - COMMISSION\n    Commission Rate:\n    - Motor Insurance: 16%\n    - Property Insurance: 15%\n    - Life Insurance: 19%\n\n    Commission shall be paid monthly within 7 days of premium receipt.\n\n    ARTICLE 4 - AUTHORITY LIMITS\n    Maximum Sum Insured per Risk: $475,396\n    Binding Authority: $50,117\n\n    ARTICLE 5 - TERMINATION\n    Either party may terminate this agreement with 30 days written notice.",
+      "category": "broker_agreement"
+    },
+    {
+      "text": "BROKER COMMISSION STATEMENT\n\n    Broker: ABC Insurance Brokers\n    Statement Period: April 2026 to May 2026\n\n    PREMIUM SUMMARY:\n    Gross Written Premium: $880,749\n    Less Returns/Cancellations: $13,688\n    Net Written Premium: $4,342,403\n\n    COMMISSION CALCULATION:\n    Motor (14%): $10\n    Property (17%): $21\n    Life (18%): $15\n\n    TOTAL COMMISSION DUE: $162,683\n\n    Less Previous Advances: $98,010\n\n    NET PAYABLE: $395,410\n\n    Payment will be made via bank transfer within 7 working days.",
+      "category": "broker_agreement"
+    },
+    {
+      "text": "EXCESS OF LOSS REINSURANCE AGREEMENT\n\n    Reinsured: First Mutual Zimbabwe\n    Reinsurer: Munich Re\n\n    Treaty Year: 2026\n\n    SECTION 1 - LIMIT AND RETENTION\n    Layer: $942,442 xs $100,540\n    The Reinsurer shall indemnify the Reinsured for the amount of each loss\n    in excess of $100,540 up to $942,442.\n\n    SECTION 2 - PREMIUM\n    Provisional Premium: $134,062\n    Minimum Premium: $31,633\n    Deposit Premium due: 11/04/2026\n\n    SECTION 3 - CLAIMS COOPERATION\n    The Reinsured shall notify the Reinsurer of all claims exceeding $179,050\n    within 72 hours.\n\n    SECTION 4 - ARBITRATION\n    Any disputes shall be resolved by arbitration in accordance with ARIAS rules.",
+      "category": "reinsurance_treaty"
+    },
+    {
+      "text": "EXCESS OF LOSS REINSURANCE AGREEMENT\n\n    Reinsured: Zimre Holdings\n    Reinsurer: Munich Re\n\n    Treaty Year: 2026\n\n    SECTION 1 - LIMIT AND RETENTION\n    Layer: $559,986 xs $139,050\n    The Reinsurer shall indemnify the Reinsured for the amount of each loss\n    in excess of $139,050 up to $559,986.\n\n    SECTION 2 - PREMIUM\n    Provisional Premium: $160,470\n    Minimum Premium: $34,924\n    Deposit Premium due: 11/04/2026\n\n    SECTION 3 - CLAIMS COOPERATION\n    The Reinsured shall notify the Reinsurer of all claims exceeding $119,563\n    within 72 hours.\n\n    SECTION 4 - ARBITRATION\n    Any disputes shall be resolved by arbitration in accordance with ARIAS rules.",
+      "category": "reinsurance_treaty"
+    },
+    {
+      "text": "MOTOR VEHICLE CLAIM FORM\n\n    Claim Number: CLM-3136\n    Policy Number: POL-1555\n    Date of Loss: 30/03/2026\n\n    CLAIMANT DETAILS:\n    Name: Robert Brown\n    Contact: +263 755 456 443\n\n    INCIDENT DETAILS:\n    Date and Time: 14/03/2026 23:57\n    Location: Borrowdale\n    Description: Fire damage to building\n\n    VEHICLE DAMAGE:\n    Make/Model: Toyota Corolla\n    Registration: A861-293\n    Estimated Repair Cost: $677\n\n    POLICE REPORT:\n    Report Number: PR18389\n    Attending Officer: Insp. Dube\n\n    DECLARATION:\n    I declare that the information provided is true and accurate to the best of my knowledge.\n\n    Signature: _______________\n    Date: 11/04/2026",
+      "category": "claims_documentation"
+    },
+    {
+      "text": "BROKER COMMISSION STATEMENT\n\n    Broker: XYZ Risk Solutions\n    Statement Period: April 2026 to May 2026\n\n    PREMIUM SUMMARY:\n    Gross Written Premium: $545,672\n    Less Returns/Cancellations: $46,049\n    Net Written Premium: $1,066,951\n\n    COMMISSION CALCULATION:\n    Motor (12%): $10\n    Property (15%): $20\n    Life (23%): $26\n\n    TOTAL COMMISSION DUE: $53,941\n\n    Less Previous Advances: $6,988\n\n    NET PAYABLE: $49,146\n\n    Payment will be made via bank transfer within 7 working days.",
+      "category": "broker_agreement"
+    },
+    {
+      "text": "LIFE ASSURANCE POLICY\n\n    Life Assured: Robert Brown\n    Policy Number: POL-5651\n\n    BENEFITS:\n    Death Benefit: $303,778\n    Maturity Benefit: $239,558\n\n    PREMIUMS:\n    Monthly Premium: $3,114\n    Premium Payment Term: 25 years\n\n    EXCLUSIONS:\n    Death by suicide within 12 months of policy commencement\n    Death due to engaging in hazardous activities not disclosed\n\n    BENEFICIARY DESIGNATION:\n    The Life Assured may nominate beneficiaries who shall receive the death benefit.",
+      "category": "policy_wording"
+    },
+    {
+      "text": "CLAIM ASSESSMENT REPORT\n\n    Claim Reference: REF-29780\n    Insured: XYZ Corporation\n\n    ASSESSMENT SUMMARY:\n    Loss Adjustor: Sarah Assessment Ltd\n    Inspection Date: 11/04/2026\n\n    FINDINGS:\n    Nature of Loss: Theft\n    Cause: Third party negligence\n\n    VALUATION:\n    Sum Insured: $47,158\n    Assessed Loss: $31,230\n    Less Depreciation: $1,453\n    Less Excess: $618\n\n    NET CLAIM AMOUNT: $25,154\n\n    RECOMMENDATION:\n    Further investigation required\n\n    This claim is approved.\n\n    Signed: _____________\n    Date: 11/04/2026",
+      "category": "claims_documentation"
+    },
+    {
+      "text": "MOTOR VEHICLE CLAIM FORM\n\n    Claim Number: CLM-9953\n    Policy Number: POL-7596\n    Date of Loss: 12/01/2026\n\n    CLAIMANT DETAILS:\n    Name: John Doe\n    Contact: +263 743 845 845\n\n    INCIDENT DETAILS:\n    Date and Time: 13/02/2026 23:57\n    Location: Eastlea\n    Description: Water damage from burst pipe\n\n    VEHICLE DAMAGE:\n    Make/Model: Mazda Demio\n    Registration: A784-390\n    Estimated Repair Cost: $5,931\n\n    POLICE REPORT:\n    Report Number: PR20428\n    Attending Officer: Insp. Dube\n\n    DECLARATION:\n    I declare that the information provided is true and accurate to the best of my knowledge.\n\n    Signature: _______________\n    Date: 11/04/2026",
+      "category": "claims_documentation"
+    },
+    {
+      "text": "LIFE ASSURANCE POLICY\n\n    Life Assured: John Doe\n    Policy Number: POL-2703\n\n    BENEFITS:\n    Death Benefit: $135,477\n    Maturity Benefit: $119,493\n\n    PREMIUMS:\n    Monthly Premium: $3,076\n    Premium Payment Term: 15 years\n\n    EXCLUSIONS:\n    Death by suicide within 12 months of policy commencement\n    Death due to engaging in hazardous activities not disclosed\n\n    BENEFICIARY DESIGNATION:\n    The Life Assured may nominate beneficiaries who shall receive the death benefit.",
+      "category": "policy_wording"
+    },
+    {
+      "text": "CLAIM SETTLEMENT ADVICE\n\n    Settlement Number: SET-2035\n    Claim Number: CLM-5043\n\n    CLAIMANT: Robert Brown\n\n    SETTLEMENT BREAKDOWN:\n    Assessed Claim Value: $18,265\n    Less Policy Excess: $841\n    Less Salvage Recovery: $353\n\n    TOTAL PAYABLE: $27,239\n\n    PAYMENT DETAILS:\n    Method: Mobile Money\n    Bank: CBZ Bank\n    Account Number: 27799-7554\n\n    Payment Date: 11/04/2026\n\n    This settlement is in full and final discharge of all liability under Policy POL-6034.",
+      "category": "claims_documentation"
+    },
+    {
+      "text": "REINSURANCE TREATY\n\n    Between: Zimre Holdings (the Reinsured)\n    And: Hannover Re (the Reinsurer)\n\n    Treaty Type: Quota Share Treaty\n    Treaty Period: 21/05/2025 to 21/12/2026\n\n    ARTICLE 1 - SCOPE\n    The Reinsurer agrees to accept 31% of all policies written by the Reinsured\n    under the following classes of business:\n    - Motor Insurance\n    - Property Insurance\n    - Liability Insurance\n\n    ARTICLE 2 - RETENTION AND CESSION\n    The Reinsured shall retain 52% of each risk and cede the balance to the Reinsurer.\n\n    ARTICLE 3 - PREMIUM\n    Reinsurance Premium: 15% of gross written premium\n    Commission: 10%\n\n    ARTICLE 4 - CLAIMS\n    The Reinsurer shall pay its proportionate share of all claims within 30 days of settlement by the Reinsured.",
+      "category": "reinsurance_treaty"
+    },
+    {
+      "text": "CLAIM ASSESSMENT REPORT\n\n    Claim Reference: REF-96439\n    Insured: ABC Limited\n\n    ASSESSMENT SUMMARY:\n    Loss Adjustor: Peter Loss Adjustor\n    Inspection Date: 11/04/2026\n\n    FINDINGS:\n    Nature of Loss: Fire\n    Cause: Third party negligence\n\n    VALUATION:\n    Sum Insured: $474,596\n    Assessed Loss: $40,315\n    Less Depreciation: $692\n    Less Excess: $933\n\n    NET CLAIM AMOUNT: $1,517\n\n    RECOMMENDATION:\n    Partial settlement recommended\n\n    This claim requires further review.\n\n    Signed: _____________\n    Date: 11/04/2026",
+      "category": "claims_documentation"
+    },
+    {
+      "text": "EXCESS OF LOSS REINSURANCE AGREEMENT\n\n    Reinsured: Zimre Holdings\n    Reinsurer: Hannover Re\n\n    Treaty Year: 2026\n\n    SECTION 1 - LIMIT AND RETENTION\n    Layer: $594,897 xs $198,137\n    The Reinsurer shall indemnify the Reinsured for the amount of each loss\n    in excess of $198,137 up to $594,897.\n\n    SECTION 2 - PREMIUM\n    Provisional Premium: $188,197\n    Minimum Premium: $42,820\n    Deposit Premium due: 11/04/2026\n\n    SECTION 3 - CLAIMS COOPERATION\n    The Reinsured shall notify the Reinsurer of all claims exceeding $123,771\n    within 72 hours.\n\n    SECTION 4 - ARBITRATION\n    Any disputes shall be resolved by arbitration in accordance with ARIAS rules.",
+      "category": "reinsurance_treaty"
+    },
+    {
+      "text": "REINSURANCE TREATY\n\n    Between: Zimre Holdings (the Reinsured)\n    And: Swiss Re (the Reinsurer)\n\n    Treaty Type: Quota Share Treaty\n    Treaty Period: 14/03/2026 to 07/09/2026\n\n    ARTICLE 1 - SCOPE\n    The Reinsurer agrees to accept 21% of all policies written by the Reinsured\n    under the following classes of business:\n    - Motor Insurance\n    - Property Insurance\n    - Liability Insurance\n\n    ARTICLE 2 - RETENTION AND CESSION\n    The Reinsured shall retain 55% of each risk and cede the balance to the Reinsurer.\n\n    ARTICLE 3 - PREMIUM\n    Reinsurance Premium: 11% of gross written premium\n    Commission: 17%\n\n    ARTICLE 4 - CLAIMS\n    The Reinsurer shall pay its proportionate share of all claims within 30 days of settlement by the Reinsured.",
+      "category": "reinsurance_treaty"
+    },
+    {
+      "text": "PROPERTY ALL RISKS INSURANCE POLICY\n\n    INSURED: John Doe\n    POLICY PERIOD: 25/02/2026 to 29/10/2026\n\n    COVERAGE:\n    This policy covers all risks of physical loss or damage to the property described below,\n    except as provided in the Exclusions section.\n\n    PROPERTY INSURED:\n    Building situated at 996 Main Street, Harare\n    Sum Insured: $137,507\n\n    PREMIUM: $3,077 annually\n    DEDUCTIBLE: $452 per occurrence\n\n    CLAIMS PROCEDURE:\n    All claims must be reported within 48 hours with supporting documentation.",
+      "category": "policy_wording"
+    },
+    {
+      "text": "MOTOR VEHICLE CLAIM FORM\n\n    Claim Number: CLM-8662\n    Policy Number: POL-1489\n    Date of Loss: 15/01/2026\n\n    CLAIMANT DETAILS:\n    Name: Jane Smith\n    Contact: +263 769 945 533\n\n    INCIDENT DETAILS:\n    Date and Time: 14/02/2026 23:57\n    Location: Harare CBD\n    Description: Water damage from burst pipe\n\n    VEHICLE DAMAGE:\n    Make/Model: Toyota Corolla\n    Registration: A339-943\n    Estimated Repair Cost: $5,821\n\n    POLICE REPORT:\n    Report Number: PR44629\n    Attending Officer: Sgt. Moyo\n\n    DECLARATION:\n    I declare that the information provided is true and accurate to the best of my knowledge.\n\n    Signature: _______________\n    Date: 11/04/2026",
+      "category": "claims_documentation"
+    },
+    {
+      "text": "PROPERTY ALL RISKS INSURANCE POLICY\n\n    INSURED: ABC Limited\n    POLICY PERIOD: 09/11/2025 to 15/06/2026\n\n    COVERAGE:\n    This policy covers all risks of physical loss or damage to the property described below,\n    except as provided in the Exclusions section.\n\n    PROPERTY INSURED:\n    Building situated at 259 Main Street, Harare\n    Sum Insured: $300,750\n\n    PREMIUM: $3,039 annually\n    DEDUCTIBLE: $887 per occurrence\n\n    CLAIMS PROCEDURE:\n    All claims must be reported within 48 hours with supporting documentation.",
+      "category": "policy_wording"
+    },
+    {
+      "text": "INSURANCE BROKERAGE AGREEMENT\n\n    Between: Zimre Holdings (the Insurer)\n    And: ABC Insurance Brokers (the Broker)\n\n    Effective Date: 11/04/2026\n\n    ARTICLE 1 - APPOINTMENT\n    The Insurer appoints the Broker as its authorized insurance broker for the territory of Zimbabwe.\n\n    ARTICLE 2 - BROKER RESPONSIBILITIES\n    The Broker shall:\n    (a) Solicit and procure insurance business\n    (b) Issue cover notes and policy documents\n    (c) Collect premiums from policyholders\n    (d) Remit premiums to the Insurer within 7 days\n\n    ARTICLE 3 - COMMISSION\n    Commission Rate:\n    - Motor Insurance: 18%\n    - Property Insurance: 19%\n    - Life Insurance: 22%\n\n    Commission shall be paid monthly within 30 days of premium receipt.\n\n    ARTICLE 4 - AUTHORITY LIMITS\n    Maximum Sum Insured per Risk: $400,921\n    Binding Authority: $139,596\n\n    ARTICLE 5 - TERMINATION\n    Either party may terminate this agreement with 30 days written notice.",
+      "category": "broker_agreement"
+    },
+    {
+      "text": "CLAIM ASSESSMENT REPORT\n\n    Claim Reference: REF-36644\n    Insured: John Doe\n\n    ASSESSMENT SUMMARY:\n    Loss Adjustor: Peter Loss Adjustor\n    Inspection Date: 11/04/2026\n\n    FINDINGS:\n    Nature of Loss: Accidental damage\n    Cause: Electrical fault\n\n    VALUATION:\n    Sum Insured: $351,251\n    Assessed Loss: $28,769\n    Less Depreciation: $4,576\n    Less Excess: $432\n\n    NET CLAIM AMOUNT: $12,296\n\n    RECOMMENDATION:\n    Partial settlement recommended\n\n    This claim requires further review.\n\n    Signed: _____________\n    Date: 11/04/2026",
+      "category": "claims_documentation"
+    },
+    {
+      "text": "INSURANCE BROKERAGE AGREEMENT\n\n    Between: Zimre Holdings (the Insurer)\n    And: XYZ Risk Solutions (the Broker)\n\n    Effective Date: 11/04/2026\n\n    ARTICLE 1 - APPOINTMENT\n    The Insurer appoints the Broker as its authorized insurance broker for the territory of Zimbabwe.\n\n    ARTICLE 2 - BROKER RESPONSIBILITIES\n    The Broker shall:\n    (a) Solicit and procure insurance business\n    (b) Issue cover notes and policy documents\n    (c) Collect premiums from policyholders\n    (d) Remit premiums to the Insurer within 14 days\n\n    ARTICLE 3 - COMMISSION\n    Commission Rate:\n    - Motor Insurance: 18%\n    - Property Insurance: 22%\n    - Life Insurance: 22%\n\n    Commission shall be paid monthly within 30 days of premium receipt.\n\n    ARTICLE 4 - AUTHORITY LIMITS\n    Maximum Sum Insured per Risk: $460,503\n    Binding Authority: $115,946\n\n    ARTICLE 5 - TERMINATION\n    Either party may terminate this agreement with 30 days written notice.",
+      "category": "broker_agreement"
+    },
+    {
+      "text": "BROKER COMMISSION STATEMENT\n\n    Broker: ABC Insurance Brokers\n    Statement Period: April 2026 to May 2026\n\n    PREMIUM SUMMARY:\n    Gross Written Premium: $3,402,951\n    Less Returns/Cancellations: $71,797\n    Net Written Premium: $1,432,475\n\n    COMMISSION CALCULATION:\n    Motor (14%): $14\n    Property (16%): $17\n    Life (23%): $20\n\n    TOTAL COMMISSION DUE: $258,294\n\n    Less Previous Advances: $46,950\n\n    NET PAYABLE: $286,177\n\n    Payment will be made via bank transfer within 7 working days.",
+      "category": "broker_agreement"
+    },
+    {
+      "text": "BROKER COMMISSION STATEMENT\n\n    Broker: ABC Insurance Brokers\n    Statement Period: April 2026 to May 2026\n\n    PREMIUM SUMMARY:\n    Gross Written Premium: $1,074,950\n    Less Returns/Cancellations: $76,982\n    Net Written Premium: $1,648,347\n\n    COMMISSION CALCULATION:\n    Motor (11%): $15\n    Property (13%): $12\n    Life (23%): $30\n\n    TOTAL COMMISSION DUE: $429,253\n\n    Less Previous Advances: $98,275\n\n    NET PAYABLE: $186,213\n\n    Payment will be made via bank transfer within 7 working days.",
+      "category": "broker_agreement"
+    },
+    {
+      "text": "CLAIM ASSESSMENT REPORT\n\n    Claim Reference: REF-97289\n    Insured: John Doe\n\n    ASSESSMENT SUMMARY:\n    Loss Adjustor: Sarah Assessment Ltd\n    Inspection Date: 11/04/2026\n\n    FINDINGS:\n    Nature of Loss: Accidental damage\n    Cause: Driver error\n\n    VALUATION:\n    Sum Insured: $330,266\n    Assessed Loss: $7,850\n    Less Depreciation: $1,426\n    Less Excess: $363\n\n    NET CLAIM AMOUNT: $4,123\n\n    RECOMMENDATION:\n    Further investigation required\n\n    This claim requires further review.\n\n    Signed: _____________\n    Date: 11/04/2026",
+      "category": "claims_documentation"
+    },
+    {
+      "text": "LIFE ASSURANCE POLICY\n\n    Life Assured: John Doe\n    Policy Number: POL-9258\n\n    BENEFITS:\n    Death Benefit: $173,879\n    Maturity Benefit: $127,644\n\n    PREMIUMS:\n    Monthly Premium: $3,398\n    Premium Payment Term: 10 years\n\n    EXCLUSIONS:\n    Death by suicide within 12 months of policy commencement\n    Death due to engaging in hazardous activities not disclosed\n\n    BENEFICIARY DESIGNATION:\n    The Life Assured may nominate beneficiaries who shall receive the death benefit.",
+      "category": "policy_wording"
+    },
+    {
+      "text": "MOTOR VEHICLE CLAIM FORM\n\n    Claim Number: CLM-1558\n    Policy Number: POL-5854\n    Date of Loss: 05/04/2026\n\n    CLAIMANT DETAILS:\n    Name: John Doe\n    Contact: +263 756 311 915\n\n    INCIDENT DETAILS:\n    Date and Time: 26/01/2026 23:57\n    Location: Harare CBD\n    Description: Theft of vehicle\n\n    VEHICLE DAMAGE:\n    Make/Model: Nissan March\n    Registration: A706-454\n    Estimated Repair Cost: $6,632\n\n    POLICE REPORT:\n    Report Number: PR78412\n    Attending Officer: Sgt. Moyo\n\n    DECLARATION:\n    I declare that the information provided is true and accurate to the best of my knowledge.\n\n    Signature: _______________\n    Date: 11/04/2026",
+      "category": "claims_documentation"
+    },
+    {
+      "text": "LIFE ASSURANCE POLICY\n\n    Life Assured: Jane Smith\n    Policy Number: POL-4686\n\n    BENEFITS:\n    Death Benefit: $452,924\n    Maturity Benefit: $58,147\n\n    PREMIUMS:\n    Monthly Premium: $4,952\n    Premium Payment Term: 25 years\n\n    EXCLUSIONS:\n    Death by suicide within 12 months of policy commencement\n    Death due to engaging in hazardous activities not disclosed\n\n    BENEFICIARY DESIGNATION:\n    The Life Assured may nominate beneficiaries who shall receive the death benefit.",
+      "category": "policy_wording"
+    },
+    {
+      "text": "LIFE ASSURANCE POLICY\n\n    Life Assured: John Doe\n    Policy Number: POL-4216\n\n    BENEFITS:\n    Death Benefit: $430,444\n    Maturity Benefit: $134,860\n\n    PREMIUMS:\n    Monthly Premium: $4,976\n    Premium Payment Term: 15 years\n\n    EXCLUSIONS:\n    Death by suicide within 12 months of policy commencement\n    Death due to engaging in hazardous activities not disclosed\n\n    BENEFICIARY DESIGNATION:\n    The Life Assured may nominate beneficiaries who shall receive the death benefit.",
+      "category": "policy_wording"
+    },
+    {
+      "text": "EXCESS OF LOSS REINSURANCE AGREEMENT\n\n    Reinsured: Zimre Holdings\n    Reinsurer: Munich Re\n\n    Treaty Year: 2026\n\n    SECTION 1 - LIMIT AND RETENTION\n    Layer: $940,056 xs $55,377\n    The Reinsurer shall indemnify the Reinsured for the amount of each loss\n    in excess of $55,377 up to $940,056.\n\n    SECTION 2 - PREMIUM\n    Provisional Premium: $137,016\n    Minimum Premium: $25,135\n    Deposit Premium due: 11/04/2026\n\n    SECTION 3 - CLAIMS COOPERATION\n    The Reinsured shall notify the Reinsurer of all claims exceeding $120,329\n    within 72 hours.\n\n    SECTION 4 - ARBITRATION\n    Any disputes shall be resolved by arbitration in accordance with ARIAS rules.",
+      "category": "reinsurance_treaty"
+    },
+    {
+      "text": "LIFE ASSURANCE POLICY\n\n    Life Assured: John Doe\n    Policy Number: POL-1679\n\n    BENEFITS:\n    Death Benefit: $473,005\n    Maturity Benefit: $115,619\n\n    PREMIUMS:\n    Monthly Premium: $4,595\n    Premium Payment Term: 25 years\n\n    EXCLUSIONS:\n    Death by suicide within 12 months of policy commencement\n    Death due to engaging in hazardous activities not disclosed\n\n    BENEFICIARY DESIGNATION:\n    The Life Assured may nominate beneficiaries who shall receive the death benefit.",
+      "category": "policy_wording"
+    },
+    {
+      "text": "LIFE ASSURANCE POLICY\n\n    Life Assured: Jane Smith\n    Policy Number: POL-6485\n\n    BENEFITS:\n    Death Benefit: $143,073\n    Maturity Benefit: $292,051\n\n    PREMIUMS:\n    Monthly Premium: $4,069\n    Premium Payment Term: 15 years\n\n    EXCLUSIONS:\n    Death by suicide within 12 months of policy commencement\n    Death due to engaging in hazardous activities not disclosed\n\n    BENEFICIARY DESIGNATION:\n    The Life Assured may nominate beneficiaries who shall receive the death benefit.",
+      "category": "policy_wording"
+    },
+    {
+      "text": "CLAIM ASSESSMENT REPORT\n\n    Claim Reference: REF-31316\n    Insured: Jane Smith\n\n    ASSESSMENT SUMMARY:\n    Loss Adjustor: Sarah Assessment Ltd\n    Inspection Date: 11/04/2026\n\n    FINDINGS:\n    Nature of Loss: Natural disaster\n    Cause: Electrical fault\n\n    VALUATION:\n    Sum Insured: $314,311\n    Assessed Loss: $37,687\n    Less Depreciation: $2,665\n    Less Excess: $652\n\n    NET CLAIM AMOUNT: $28,839\n\n    RECOMMENDATION:\n    Claim approved for settlement\n\n    This claim is approved.\n\n    Signed: _____________\n    Date: 11/04/2026",
+      "category": "claims_documentation"
+    },
+    {
+      "text": "BROKER COMMISSION STATEMENT\n\n    Broker: ABC Insurance Brokers\n    Statement Period: April 2026 to May 2026\n\n    PREMIUM SUMMARY:\n    Gross Written Premium: $3,459,013\n    Less Returns/Cancellations: $52,577\n    Net Written Premium: $2,256,348\n\n    COMMISSION CALCULATION:\n    Motor (14%): $10\n    Property (17%): $12\n    Life (26%): $15\n\n    TOTAL COMMISSION DUE: $243,929\n\n    Less Previous Advances: $58,102\n\n    NET PAYABLE: $370,447\n\n    Payment will be made via bank transfer within 7 working days.",
+      "category": "broker_agreement"
+    },
+    {
+      "text": "PROPERTY ALL RISKS INSURANCE POLICY\n\n    INSURED: XYZ Corporation\n    POLICY PERIOD: 13/03/2026 to 26/01/2027\n\n    COVERAGE:\n    This policy covers all risks of physical loss or damage to the property described below,\n    except as provided in the Exclusions section.\n\n    PROPERTY INSURED:\n    Building situated at 12 Main Street, Harare\n    Sum Insured: $353,831\n\n    PREMIUM: $1,499 annually\n    DEDUCTIBLE: $571 per occurrence\n\n    CLAIMS PROCEDURE:\n    All claims must be reported within 48 hours with supporting documentation.",
+      "category": "policy_wording"
+    },
+    {
+      "text": "PROPERTY ALL RISKS INSURANCE POLICY\n\n    INSURED: ABC Limited\n    POLICY PERIOD: 20/08/2025 to 18/03/2027\n\n    COVERAGE:\n    This policy covers all risks of physical loss or damage to the property described below,\n    except as provided in the Exclusions section.\n\n    PROPERTY INSURED:\n    Building situated at 884 Main Street, Harare\n    Sum Insured: $27,314\n\n    PREMIUM: $2,895 annually\n    DEDUCTIBLE: $433 per occurrence\n\n    CLAIMS PROCEDURE:\n    All claims must be reported within 48 hours with supporting documentation.",
+      "category": "policy_wording"
+    },
+    {
+      "text": "REINSURANCE TREATY\n\n    Between: First Mutual Zimbabwe (the Reinsured)\n    And: Munich Re (the Reinsurer)\n\n    Treaty Type: Quota Share Treaty\n    Treaty Period: 14/10/2025 to 03/09/2026\n\n    ARTICLE 1 - SCOPE\n    The Reinsurer agrees to accept 43% of all policies written by the Reinsured\n    under the following classes of business:\n    - Motor Insurance\n    - Property Insurance\n    - Liability Insurance\n\n    ARTICLE 2 - RETENTION AND CESSION\n    The Reinsured shall retain 50% of each risk and cede the balance to the Reinsurer.\n\n    ARTICLE 3 - PREMIUM\n    Reinsurance Premium: 9% of gross written premium\n    Commission: 12%\n\n    ARTICLE 4 - CLAIMS\n    The Reinsurer shall pay its proportionate share of all claims within 30 days of settlement by the Reinsured.",
+      "category": "reinsurance_treaty"
+    },
+    {
+      "text": "CLAIM SETTLEMENT ADVICE\n\n    Settlement Number: SET-3242\n    Claim Number: CLM-5922\n\n    CLAIMANT: Robert Brown\n\n    SETTLEMENT BREAKDOWN:\n    Assessed Claim Value: $33,635\n    Less Policy Excess: $233\n    Less Salvage Recovery: $1,096\n\n    TOTAL PAYABLE: $18,642\n\n    PAYMENT DETAILS:\n    Method: Mobile Money\n    Bank: Stanbic Bank\n    Account Number: 33346-9320\n\n    Payment Date: 11/04/2026\n\n    This settlement is in full and final discharge of all liability under Policy POL-2681.",
+      "category": "claims_documentation"
+    },
+    {
+      "text": "LIFE ASSURANCE POLICY\n\n    Life Assured: Robert Brown\n    Policy Number: POL-3573\n\n    BENEFITS:\n    Death Benefit: $130,397\n    Maturity Benefit: $60,392\n\n    PREMIUMS:\n    Monthly Premium: $2,287\n    Premium Payment Term: 20 years\n\n    EXCLUSIONS:\n    Death by suicide within 12 months of policy commencement\n    Death due to engaging in hazardous activities not disclosed\n\n    BENEFICIARY DESIGNATION:\n    The Life Assured may nominate beneficiaries who shall receive the death benefit.",
+      "category": "policy_wording"
+    },
+    {
+      "text": "BROKER COMMISSION STATEMENT\n\n    Broker: Prime Brokers Limited\n    Statement Period: April 2026 to May 2026\n\n    PREMIUM SUMMARY:\n    Gross Written Premium: $2,883,698\n    Less Returns/Cancellations: $27,995\n    Net Written Premium: $3,239,540\n\n    COMMISSION CALCULATION:\n    Motor (17%): $12\n    Property (14%): $12\n    Life (17%): $19\n\n    TOTAL COMMISSION DUE: $63,181\n\n    Less Previous Advances: $97,815\n\n    NET PAYABLE: $286,164\n\n    Payment will be made via bank transfer within 7 working days.",
+      "category": "broker_agreement"
+    },
+    {
+      "text": "REINSURANCE TREATY\n\n    Between: Zimre Holdings (the Reinsured)\n    And: Swiss Re (the Reinsurer)\n\n    Treaty Type: Quota Share Treaty\n    Treaty Period: 07/02/2026 to 01/01/2027\n\n    ARTICLE 1 - SCOPE\n    The Reinsurer agrees to accept 25% of all policies written by the Reinsured\n    under the following classes of business:\n    - Motor Insurance\n    - Property Insurance\n    - Liability Insurance\n\n    ARTICLE 2 - RETENTION AND CESSION\n    The Reinsured shall retain 68% of each risk and cede the balance to the Reinsurer.\n\n    ARTICLE 3 - PREMIUM\n    Reinsurance Premium: 8% of gross written premium\n    Commission: 19%\n\n    ARTICLE 4 - CLAIMS\n    The Reinsurer shall pay its proportionate share of all claims within 30 days of settlement by the Reinsured.",
+      "category": "reinsurance_treaty"
+    },
+    {
+      "text": "CLAIM ASSESSMENT REPORT\n\n    Claim Reference: REF-84678\n    Insured: Jane Smith\n\n    ASSESSMENT SUMMARY:\n    Loss Adjustor: Peter Loss Adjustor\n    Inspection Date: 11/04/2026\n\n    FINDINGS:\n    Nature of Loss: Fire\n    Cause: Driver error\n\n    VALUATION:\n    Sum Insured: $444,278\n    Assessed Loss: $32,051\n    Less Depreciation: $3,730\n    Less Excess: $833\n\n    NET CLAIM AMOUNT: $35,451\n\n    RECOMMENDATION:\n    Claim approved for settlement\n\n    This claim is approved.\n\n    Signed: _____________\n    Date: 11/04/2026",
+      "category": "claims_documentation"
+    },
+    {
+      "text": "MOTOR VEHICLE INSURANCE POLICY\n\n    Policy Number: POL-5765\n\n    SECTION A - COVERAGE\n    This policy provides coverage for loss or damage to the insured vehicle arising from:\n    (a) Collision or overturning\n    (b) Fire, explosion, or lightning\n    (c) Theft or attempted theft\n    (d) Malicious damage\n\n    SECTION B - EXCLUSIONS\n    The Insurer shall not be liable for:\n    1. Wear and tear\n    2. Mechanical or electrical breakdown\n    3. Driving under the influence of alcohol or drugs\n\n    SECTION C - CONDITIONS\n    Sum Insured: $145,891\n    Premium: $4,897 per annum\n    Excess: $153 per claim\n\n    The Insured must notify any claim within 30 days of the incident.",
+      "category": "policy_wording"
+    },
+    {
+      "text": "MOTOR VEHICLE CLAIM FORM\n\n    Claim Number: CLM-2192\n    Policy Number: POL-6586\n    Date of Loss: 03/04/2026\n\n    CLAIMANT DETAILS:\n    Name: Jane Smith\n    Contact: +263 746 819 509\n\n    INCIDENT DETAILS:\n    Date and Time: 28/03/2026 23:57\n    Location: Harare CBD\n    Description: Collision with another vehicle\n\n    VEHICLE DAMAGE:\n    Make/Model: Mazda Demio\n    Registration: A772-776\n    Estimated Repair Cost: $4,601\n\n    POLICE REPORT:\n    Report Number: PR84384\n    Attending Officer: Const. Ncube\n\n    DECLARATION:\n    I declare that the information provided is true and accurate to the best of my knowledge.\n\n    Signature: _______________\n    Date: 11/04/2026",
+      "category": "claims_documentation"
+    },
+    {
+      "text": "INSURANCE BROKERAGE AGREEMENT\n\n    Between: Zimre Holdings (the Insurer)\n    And: XYZ Risk Solutions (the Broker)\n\n    Effective Date: 11/04/2026\n\n    ARTICLE 1 - APPOINTMENT\n    The Insurer appoints the Broker as its authorized insurance broker for the territory of Zimbabwe.\n\n    ARTICLE 2 - BROKER RESPONSIBILITIES\n    The Broker shall:\n    (a) Solicit and procure insurance business\n    (b) Issue cover notes and policy documents\n    (c) Collect premiums from policyholders\n    (d) Remit premiums to the Insurer within 14 days\n\n    ARTICLE 3 - COMMISSION\n    Commission Rate:\n    - Motor Insurance: 14%\n    - Property Insurance: 16%\n    - Life Insurance: 28%\n\n    Commission shall be paid monthly within 7 days of premium receipt.\n\n    ARTICLE 4 - AUTHORITY LIMITS\n    Maximum Sum Insured per Risk: $391,754\n    Binding Authority: $92,621\n\n    ARTICLE 5 - TERMINATION\n    Either party may terminate this agreement with 90 days written notice.",
+      "category": "broker_agreement"
+    },
+    {
+      "text": "CLAIM ASSESSMENT REPORT\n\n    Claim Reference: REF-44211\n    Insured: Jane Smith\n\n    ASSESSMENT SUMMARY:\n    Loss Adjustor: Sarah Assessment Ltd\n    Inspection Date: 11/04/2026\n\n    FINDINGS:\n    Nature of Loss: Theft\n    Cause: Third party negligence\n\n    VALUATION:\n    Sum Insured: $182,921\n    Assessed Loss: $17,134\n    Less Depreciation: $1,982\n    Less Excess: $128\n\n    NET CLAIM AMOUNT: $21,892\n\n    RECOMMENDATION:\n    Claim approved for settlement\n\n    This claim is partially approved.\n\n    Signed: _____________\n    Date: 11/04/2026",
+      "category": "claims_documentation"
+    },
+    {
+      "text": "MOTOR VEHICLE INSURANCE POLICY\n\n    Policy Number: POL-7625\n\n    SECTION A - COVERAGE\n    This policy provides coverage for loss or damage to the insured vehicle arising from:\n    (a) Collision or overturning\n    (b) Fire, explosion, or lightning\n    (c) Theft or attempted theft\n    (d) Malicious damage\n\n    SECTION B - EXCLUSIONS\n    The Insurer shall not be liable for:\n    1. Wear and tear\n    2. Mechanical or electrical breakdown\n    3. Driving under the influence of alcohol or drugs\n\n    SECTION C - CONDITIONS\n    Sum Insured: $477,767\n    Premium: $3,231 per annum\n    Excess: $648 per claim\n\n    The Insured must notify any claim within 30 days of the incident.",
+      "category": "policy_wording"
+    },
+    {
+      "text": "INSURANCE BROKERAGE AGREEMENT\n\n    Between: Old Mutual (the Insurer)\n    And: XYZ Risk Solutions (the Broker)\n\n    Effective Date: 11/04/2026\n\n    ARTICLE 1 - APPOINTMENT\n    The Insurer appoints the Broker as its authorized insurance broker for the territory of Zimbabwe.\n\n    ARTICLE 2 - BROKER RESPONSIBILITIES\n    The Broker shall:\n    (a) Solicit and procure insurance business\n    (b) Issue cover notes and policy documents\n    (c) Collect premiums from policyholders\n    (d) Remit premiums to the Insurer within 30 days\n\n    ARTICLE 3 - COMMISSION\n    Commission Rate:\n    - Motor Insurance: 15%\n    - Property Insurance: 15%\n    - Life Insurance: 17%\n\n    Commission shall be paid monthly within 30 days of premium receipt.\n\n    ARTICLE 4 - AUTHORITY LIMITS\n    Maximum Sum Insured per Risk: $157,805\n    Binding Authority: $151,690\n\n    ARTICLE 5 - TERMINATION\n    Either party may terminate this agreement with 30 days written notice.",
+      "category": "broker_agreement"
+    },
+    {
+      "text": "INSURANCE BROKERAGE AGREEMENT\n\n    Between: Old Mutual (the Insurer)\n    And: Prime Brokers Limited (the Broker)\n\n    Effective Date: 11/04/2026\n\n    ARTICLE 1 - APPOINTMENT\n    The Insurer appoints the Broker as its authorized insurance broker for the territory of Zimbabwe.\n\n    ARTICLE 2 - BROKER RESPONSIBILITIES\n    The Broker shall:\n    (a) Solicit and procure insurance business\n    (b) Issue cover notes and policy documents\n    (c) Collect premiums from policyholders\n    (d) Remit premiums to the Insurer within 7 days\n\n    ARTICLE 3 - COMMISSION\n    Commission Rate:\n    - Motor Insurance: 19%\n    - Property Insurance: 12%\n    - Life Insurance: 28%\n\n    Commission shall be paid monthly within 30 days of premium receipt.\n\n    ARTICLE 4 - AUTHORITY LIMITS\n    Maximum Sum Insured per Risk: $344,932\n    Binding Authority: $147,245\n\n    ARTICLE 5 - TERMINATION\n    Either party may terminate this agreement with 30 days written notice.",
+      "category": "broker_agreement"
+    },
+    {
+      "text": "PROPERTY ALL RISKS INSURANCE POLICY\n\n    INSURED: Jane Smith\n    POLICY PERIOD: 02/10/2025 to 25/09/2026\n\n    COVERAGE:\n    This policy covers all risks of physical loss or damage to the property described below,\n    except as provided in the Exclusions section.\n\n    PROPERTY INSURED:\n    Building situated at 853 Main Street, Harare\n    Sum Insured: $362,223\n\n    PREMIUM: $3,981 annually\n    DEDUCTIBLE: $235 per occurrence\n\n    CLAIMS PROCEDURE:\n    All claims must be reported within 48 hours with supporting documentation.",
+      "category": "policy_wording"
+    },
+    {
+      "text": "CLAIM ASSESSMENT REPORT\n\n    Claim Reference: REF-70308\n    Insured: Jane Smith\n\n    ASSESSMENT SUMMARY:\n    Loss Adjustor: Sarah Assessment Ltd\n    Inspection Date: 11/04/2026\n\n    FINDINGS:\n    Nature of Loss: Theft\n    Cause: Weather\n\n    VALUATION:\n    Sum Insured: $313,294\n    Assessed Loss: $30,425\n    Less Depreciation: $1,520\n    Less Excess: $781\n\n    NET CLAIM AMOUNT: $15,722\n\n    RECOMMENDATION:\n    Further investigation required\n\n    This claim is partially approved.\n\n    Signed: _____________\n    Date: 11/04/2026",
+      "category": "claims_documentation"
+    },
+    {
+      "text": "BROKER COMMISSION STATEMENT\n\n    Broker: Prime Brokers Limited\n    Statement Period: April 2026 to May 2026\n\n    PREMIUM SUMMARY:\n    Gross Written Premium: $676,872\n    Less Returns/Cancellations: $37,699\n    Net Written Premium: $2,258,086\n\n    COMMISSION CALCULATION:\n    Motor (15%): $20\n    Property (18%): $22\n    Life (22%): $19\n\n    TOTAL COMMISSION DUE: $165,521\n\n    Less Previous Advances: $11,918\n\n    NET PAYABLE: $177,934\n\n    Payment will be made via bank transfer within 7 working days.",
+      "category": "broker_agreement"
+    },
+    {
+      "text": "CLAIM SETTLEMENT ADVICE\n\n    Settlement Number: SET-5388\n    Claim Number: CLM-4504\n\n    CLAIMANT: Robert Brown\n\n    SETTLEMENT BREAKDOWN:\n    Assessed Claim Value: $27,708\n    Less Policy Excess: $773\n    Less Salvage Recovery: $737\n\n    TOTAL PAYABLE: $29,255\n\n    PAYMENT DETAILS:\n    Method: Mobile Money\n    Bank: FBC Bank\n    Account Number: 22124-3386\n\n    Payment Date: 11/04/2026\n\n    This settlement is in full and final discharge of all liability under Policy POL-3826.",
+      "category": "claims_documentation"
+    },
+    {
+      "text": "BROKER COMMISSION STATEMENT\n\n    Broker: XYZ Risk Solutions\n    Statement Period: April 2026 to May 2026\n\n    PREMIUM SUMMARY:\n    Gross Written Premium: $1,459,476\n    Less Returns/Cancellations: $15,023\n    Net Written Premium: $2,562,995\n\n    COMMISSION CALCULATION:\n    Motor (17%): $20\n    Property (16%): $14\n    Life (30%): $26\n\n    TOTAL COMMISSION DUE: $188,431\n\n    Less Previous Advances: $16,356\n\n    NET PAYABLE: $94,296\n\n    Payment will be made via bank transfer within 7 working days.",
+      "category": "broker_agreement"
+    },
+    {
+      "text": "CLAIM SETTLEMENT ADVICE\n\n    Settlement Number: SET-5088\n    Claim Number: CLM-3197\n\n    CLAIMANT: John Doe\n\n    SETTLEMENT BREAKDOWN:\n    Assessed Claim Value: $13,499\n    Less Policy Excess: $704\n    Less Salvage Recovery: $917\n\n    TOTAL PAYABLE: $22,096\n\n    PAYMENT DETAILS:\n    Method: EFT\n    Bank: FBC Bank\n    Account Number: 81556-4112\n\n    Payment Date: 11/04/2026\n\n    This settlement is in full and final discharge of all liability under Policy POL-3464.",
+      "category": "claims_documentation"
+    },
+    {
+      "text": "REINSURANCE TREATY\n\n    Between: First Mutual Zimbabwe (the Reinsured)\n    And: Swiss Re (the Reinsurer)\n\n    Treaty Type: Quota Share Treaty\n    Treaty Period: 11/04/2026 to 20/11/2026\n\n    ARTICLE 1 - SCOPE\n    The Reinsurer agrees to accept 44% of all policies written by the Reinsured\n    under the following classes of business:\n    - Motor Insurance\n    - Property Insurance\n    - Liability Insurance\n\n    ARTICLE 2 - RETENTION AND CESSION\n    The Reinsured shall retain 80% of each risk and cede the balance to the Reinsurer.\n\n    ARTICLE 3 - PREMIUM\n    Reinsurance Premium: 14% of gross written premium\n    Commission: 24%\n\n    ARTICLE 4 - CLAIMS\n    The Reinsurer shall pay its proportionate share of all claims within 30 days of settlement by the Reinsured.",
+      "category": "reinsurance_treaty"
+    },
+    {
+      "text": "PROPERTY ALL RISKS INSURANCE POLICY\n\n    INSURED: ABC Limited\n    POLICY PERIOD: 16/06/2025 to 16/05/2026\n\n    COVERAGE:\n    This policy covers all risks of physical loss or damage to the property described below,\n    except as provided in the Exclusions section.\n\n    PROPERTY INSURED:\n    Building situated at 585 Main Street, Harare\n    Sum Insured: $496,977\n\n    PREMIUM: $3,984 annually\n    DEDUCTIBLE: $402 per occurrence\n\n    CLAIMS PROCEDURE:\n    All claims must be reported within 48 hours with supporting documentation.",
+      "category": "policy_wording"
+    },
+    {
+      "text": "MOTOR VEHICLE CLAIM FORM\n\n    Claim Number: CLM-7673\n    Policy Number: POL-1848\n    Date of Loss: 26/02/2026\n\n    CLAIMANT DETAILS:\n    Name: John Doe\n    Contact: +263 731 529 743\n\n    INCIDENT DETAILS:\n    Date and Time: 02/03/2026 23:57\n    Location: Belvedere\n    Description: Theft of vehicle\n\n    VEHICLE DAMAGE:\n    Make/Model: Mazda Demio\n    Registration: A831-246\n    Estimated Repair Cost: $1,132\n\n    POLICE REPORT:\n    Report Number: PR76724\n    Attending Officer: Insp. Dube\n\n    DECLARATION:\n    I declare that the information provided is true and accurate to the best of my knowledge.\n\n    Signature: _______________\n    Date: 11/04/2026",
+      "category": "claims_documentation"
+    },
+    {
+      "text": "PROPERTY ALL RISKS INSURANCE POLICY\n\n    INSURED: John Doe\n    POLICY PERIOD: 03/03/2026 to 09/07/2026\n\n    COVERAGE:\n    This policy covers all risks of physical loss or damage to the property described below,\n    except as provided in the Exclusions section.\n\n    PROPERTY INSURED:\n    Building situated at 337 Main Street, Harare\n    Sum Insured: $302,711\n\n    PREMIUM: $3,985 annually\n    DEDUCTIBLE: $654 per occurrence\n\n    CLAIMS PROCEDURE:\n    All claims must be reported within 48 hours with supporting documentation.",
+      "category": "policy_wording"
+    },
+    {
+      "text": "PROPERTY ALL RISKS INSURANCE POLICY\n\n    INSURED: Jane Smith\n    POLICY PERIOD: 31/07/2025 to 20/11/2026\n\n    COVERAGE:\n    This policy covers all risks of physical loss or damage to the property described below,\n    except as provided in the Exclusions section.\n\n    PROPERTY INSURED:\n    Building situated at 827 Main Street, Harare\n    Sum Insured: $14,146\n\n    PREMIUM: $2,104 annually\n    DEDUCTIBLE: $965 per occurrence\n\n    CLAIMS PROCEDURE:\n    All claims must be reported within 48 hours with supporting documentation.",
+      "category": "policy_wording"
+    },
+    {
+      "text": "CLAIM SETTLEMENT ADVICE\n\n    Settlement Number: SET-6293\n    Claim Number: CLM-2453\n\n    CLAIMANT: Jane Smith\n\n    SETTLEMENT BREAKDOWN:\n    Assessed Claim Value: $40,738\n    Less Policy Excess: $324\n    Less Salvage Recovery: $1,771\n\n    TOTAL PAYABLE: $1,625\n\n    PAYMENT DETAILS:\n    Method: Mobile Money\n    Bank: FBC Bank\n    Account Number: 39698-4465\n\n    Payment Date: 11/04/2026\n\n    This settlement is in full and final discharge of all liability under Policy POL-6575.",
+      "category": "claims_documentation"
+    },
+    {
+      "text": "MOTOR VEHICLE CLAIM FORM\n\n    Claim Number: CLM-7395\n    Policy Number: POL-1573\n    Date of Loss: 11/02/2026\n\n    CLAIMANT DETAILS:\n    Name: John Doe\n    Contact: +263 702 346 383\n\n    INCIDENT DETAILS:\n    Date and Time: 06/02/2026 23:57\n    Location: Eastlea\n    Description: Collision with another vehicle\n\n    VEHICLE DAMAGE:\n    Make/Model: Mazda Demio\n    Registration: A601-670\n    Estimated Repair Cost: $3,687\n\n    POLICE REPORT:\n    Report Number: PR70319\n    Attending Officer: Sgt. Moyo\n\n    DECLARATION:\n    I declare that the information provided is true and accurate to the best of my knowledge.\n\n    Signature: _______________\n    Date: 11/04/2026",
+      "category": "claims_documentation"
+    },
+    {
+      "text": "MOTOR VEHICLE CLAIM FORM\n\n    Claim Number: CLM-7013\n    Policy Number: POL-9674\n    Date of Loss: 02/03/2026\n\n    CLAIMANT DETAILS:\n    Name: Jane Smith\n    Contact: +263 708 112 330\n\n    INCIDENT DETAILS:\n    Date and Time: 16/03/2026 23:57\n    Location: Eastlea\n    Description: Fire damage to building\n\n    VEHICLE DAMAGE:\n    Make/Model: Toyota Corolla\n    Registration: A580-812\n    Estimated Repair Cost: $7,458\n\n    POLICE REPORT:\n    Report Number: PR45937\n    Attending Officer: Const. Ncube\n\n    DECLARATION:\n    I declare that the information provided is true and accurate to the best of my knowledge.\n\n    Signature: _______________\n    Date: 11/04/2026",
+      "category": "claims_documentation"
+    },
+    {
+      "text": "MOTOR VEHICLE CLAIM FORM\n\n    Claim Number: CLM-8983\n    Policy Number: POL-7404\n    Date of Loss: 01/04/2026\n\n    CLAIMANT DETAILS:\n    Name: Jane Smith\n    Contact: +263 705 143 448\n\n    INCIDENT DETAILS:\n    Date and Time: 30/01/2026 23:57\n    Location: Belvedere\n    Description: Water damage from burst pipe\n\n    VEHICLE DAMAGE:\n    Make/Model: Nissan March\n    Registration: A833-983\n    Estimated Repair Cost: $2,778\n\n    POLICE REPORT:\n    Report Number: PR15643\n    Attending Officer: Const. Ncube\n\n    DECLARATION:\n    I declare that the information provided is true and accurate to the best of my knowledge.\n\n    Signature: _______________\n    Date: 11/04/2026",
+      "category": "claims_documentation"
+    },
+    {
+      "text": "EXCESS OF LOSS REINSURANCE AGREEMENT\n\n    Reinsured: Old Mutual\n    Reinsurer: Swiss Re\n\n    Treaty Year: 2026\n\n    SECTION 1 - LIMIT AND RETENTION\n    Layer: $753,522 xs $180,521\n    The Reinsurer shall indemnify the Reinsured for the amount of each loss\n    in excess of $180,521 up to $753,522.\n\n    SECTION 2 - PREMIUM\n    Provisional Premium: $162,464\n    Minimum Premium: $73,690\n    Deposit Premium due: 11/04/2026\n\n    SECTION 3 - CLAIMS COOPERATION\n    The Reinsured shall notify the Reinsurer of all claims exceeding $109,087\n    within 72 hours.\n\n    SECTION 4 - ARBITRATION\n    Any disputes shall be resolved by arbitration in accordance with ARIAS rules.",
+      "category": "reinsurance_treaty"
+    },
+    {
+      "text": "BROKER COMMISSION STATEMENT\n\n    Broker: XYZ Risk Solutions\n    Statement Period: April 2026 to May 2026\n\n    PREMIUM SUMMARY:\n    Gross Written Premium: $4,438,154\n    Less Returns/Cancellations: $40,832\n    Net Written Premium: $2,443,322\n\n    COMMISSION CALCULATION:\n    Motor (17%): $14\n    Property (22%): $21\n    Life (21%): $25\n\n    TOTAL COMMISSION DUE: $363,383\n\n    Less Previous Advances: $56,365\n\n    NET PAYABLE: $145,248\n\n    Payment will be made via bank transfer within 7 working days.",
+      "category": "broker_agreement"
+    },
+    {
+      "text": "CLAIM SETTLEMENT ADVICE\n\n    Settlement Number: SET-3138\n    Claim Number: CLM-4222\n\n    CLAIMANT: Jane Smith\n\n    SETTLEMENT BREAKDOWN:\n    Assessed Claim Value: $26,764\n    Less Policy Excess: $489\n    Less Salvage Recovery: $836\n\n    TOTAL PAYABLE: $1,765\n\n    PAYMENT DETAILS:\n    Method: Cheque\n    Bank: FBC Bank\n    Account Number: 92102-1219\n\n    Payment Date: 11/04/2026\n\n    This settlement is in full and final discharge of all liability under Policy POL-2691.",
+      "category": "claims_documentation"
+    },
+    {
+      "text": "BROKER COMMISSION STATEMENT\n\n    Broker: ABC Insurance Brokers\n    Statement Period: April 2026 to May 2026\n\n    PREMIUM SUMMARY:\n    Gross Written Premium: $3,477,729\n    Less Returns/Cancellations: $74,559\n    Net Written Premium: $2,533,030\n\n    COMMISSION CALCULATION:\n    Motor (16%): $15\n    Property (12%): $22\n    Life (16%): $16\n\n    TOTAL COMMISSION DUE: $211,741\n\n    Less Previous Advances: $60,413\n\n    NET PAYABLE: $156,315\n\n    Payment will be made via bank transfer within 7 working days.",
+      "category": "broker_agreement"
+    },
+    {
+      "text": "EXCESS OF LOSS REINSURANCE AGREEMENT\n\n    Reinsured: First Mutual Zimbabwe\n    Reinsurer: Munich Re\n\n    Treaty Year: 2026\n\n    SECTION 1 - LIMIT AND RETENTION\n    Layer: $1,666,776 xs $79,693\n    The Reinsurer shall indemnify the Reinsured for the amount of each loss\n    in excess of $79,693 up to $1,666,776.\n\n    SECTION 2 - PREMIUM\n    Provisional Premium: $164,462\n    Minimum Premium: $32,692\n    Deposit Premium due: 11/04/2026\n\n    SECTION 3 - CLAIMS COOPERATION\n    The Reinsured shall notify the Reinsurer of all claims exceeding $64,351\n    within 72 hours.\n\n    SECTION 4 - ARBITRATION\n    Any disputes shall be resolved by arbitration in accordance with ARIAS rules.",
+      "category": "reinsurance_treaty"
+    },
+    {
+      "text": "REINSURANCE TREATY\n\n    Between: Old Mutual (the Reinsured)\n    And: Hannover Re (the Reinsurer)\n\n    Treaty Type: Quota Share Treaty\n    Treaty Period: 22/12/2025 to 02/03/2027\n\n    ARTICLE 1 - SCOPE\n    The Reinsurer agrees to accept 24% of all policies written by the Reinsured\n    under the following classes of business:\n    - Motor Insurance\n    - Property Insurance\n    - Liability Insurance\n\n    ARTICLE 2 - RETENTION AND CESSION\n    The Reinsured shall retain 64% of each risk and cede the balance to the Reinsurer.\n\n    ARTICLE 3 - PREMIUM\n    Reinsurance Premium: 6% of gross written premium\n    Commission: 13%\n\n    ARTICLE 4 - CLAIMS\n    The Reinsurer shall pay its proportionate share of all claims within 30 days of settlement by the Reinsured.",
+      "category": "reinsurance_treaty"
+    },
+    {
+      "text": "LIFE ASSURANCE POLICY\n\n    Life Assured: Jane Smith\n    Policy Number: POL-9189\n\n    BENEFITS:\n    Death Benefit: $337,586\n    Maturity Benefit: $201,111\n\n    PREMIUMS:\n    Monthly Premium: $971\n    Premium Payment Term: 20 years\n\n    EXCLUSIONS:\n    Death by suicide within 12 months of policy commencement\n    Death due to engaging in hazardous activities not disclosed\n\n    BENEFICIARY DESIGNATION:\n    The Life Assured may nominate beneficiaries who shall receive the death benefit.",
+      "category": "policy_wording"
+    },
+    {
+      "text": "MOTOR VEHICLE CLAIM FORM\n\n    Claim Number: CLM-7867\n    Policy Number: POL-6055\n    Date of Loss: 01/03/2026\n\n    CLAIMANT DETAILS:\n    Name: Jane Smith\n    Contact: +263 701 743 867\n\n    INCIDENT DETAILS:\n    Date and Time: 02/03/2026 23:57\n    Location: Borrowdale\n    Description: Collision with another vehicle\n\n    VEHICLE DAMAGE:\n    Make/Model: Toyota Corolla\n    Registration: A629-825\n    Estimated Repair Cost: $5,552\n\n    POLICE REPORT:\n    Report Number: PR66490\n    Attending Officer: Const. Ncube\n\n    DECLARATION:\n    I declare that the information provided is true and accurate to the best of my knowledge.\n\n    Signature: _______________\n    Date: 11/04/2026",
+      "category": "claims_documentation"
+    },
+    {
+      "text": "BROKER COMMISSION STATEMENT\n\n    Broker: Prime Brokers Limited\n    Statement Period: April 2026 to May 2026\n\n    PREMIUM SUMMARY:\n    Gross Written Premium: $2,072,243\n    Less Returns/Cancellations: $64,365\n    Net Written Premium: $2,270,389\n\n    COMMISSION CALCULATION:\n    Motor (18%): $16\n    Property (22%): $14\n    Life (26%): $27\n\n    TOTAL COMMISSION DUE: $61,169\n\n    Less Previous Advances: $60,882\n\n    NET PAYABLE: $281,615\n\n    Payment will be made via bank transfer within 7 working days.",
+      "category": "broker_agreement"
+    },
+    {
+      "text": "MOTOR VEHICLE CLAIM FORM\n\n    Claim Number: CLM-7270\n    Policy Number: POL-9293\n    Date of Loss: 24/03/2026\n\n    CLAIMANT DETAILS:\n    Name: Robert Brown\n    Contact: +263 720 304 873\n\n    INCIDENT DETAILS:\n    Date and Time: 14/01/2026 23:57\n    Location: Belvedere\n    Description: Collision with another vehicle\n\n    VEHICLE DAMAGE:\n    Make/Model: Honda Fit\n    Registration: A665-366\n    Estimated Repair Cost: $9,291\n\n    POLICE REPORT:\n    Report Number: PR14668\n    Attending Officer: Const. Ncube\n\n    DECLARATION:\n    I declare that the information provided is true and accurate to the best of my knowledge.\n\n    Signature: _______________\n    Date: 11/04/2026",
+      "category": "claims_documentation"
+    },
+    {
+      "text": "REINSURANCE TREATY\n\n    Between: Old Mutual (the Reinsured)\n    And: Munich Re (the Reinsurer)\n\n    Treaty Type: Quota Share Treaty\n    Treaty Period: 08/01/2026 to 22/12/2026\n\n    ARTICLE 1 - SCOPE\n    The Reinsurer agrees to accept 27% of all policies written by the Reinsured\n    under the following classes of business:\n    - Motor Insurance\n    - Property Insurance\n    - Liability Insurance\n\n    ARTICLE 2 - RETENTION AND CESSION\n    The Reinsured shall retain 72% of each risk and cede the balance to the Reinsurer.\n\n    ARTICLE 3 - PREMIUM\n    Reinsurance Premium: 6% of gross written premium\n    Commission: 13%\n\n    ARTICLE 4 - CLAIMS\n    The Reinsurer shall pay its proportionate share of all claims within 30 days of settlement by the Reinsured.",
+      "category": "reinsurance_treaty"
+    },
+    {
+      "text": "REINSURANCE TREATY\n\n    Between: Zimre Holdings (the Reinsured)\n    And: Swiss Re (the Reinsurer)\n\n    Treaty Type: Quota Share Treaty\n    Treaty Period: 06/11/2025 to 21/01/2027\n\n    ARTICLE 1 - SCOPE\n    The Reinsurer agrees to accept 34% of all policies written by the Reinsured\n    under the following classes of business:\n    - Motor Insurance\n    - Property Insurance\n    - Liability Insurance\n\n    ARTICLE 2 - RETENTION AND CESSION\n    The Reinsured shall retain 71% of each risk and cede the balance to the Reinsurer.\n\n    ARTICLE 3 - PREMIUM\n    Reinsurance Premium: 12% of gross written premium\n    Commission: 18%\n\n    ARTICLE 4 - CLAIMS\n    The Reinsurer shall pay its proportionate share of all claims within 30 days of settlement by the Reinsured.",
+      "category": "reinsurance_treaty"
+    },
+    {
+      "text": "CLAIM ASSESSMENT REPORT\n\n    Claim Reference: REF-46967\n    Insured: XYZ Corporation\n\n    ASSESSMENT SUMMARY:\n    Loss Adjustor: Peter Loss Adjustor\n    Inspection Date: 11/04/2026\n\n    FINDINGS:\n    Nature of Loss: Theft\n    Cause: Driver error\n\n    VALUATION:\n    Sum Insured: $499,218\n    Assessed Loss: $11,107\n    Less Depreciation: $3,884\n    Less Excess: $403\n\n    NET CLAIM AMOUNT: $13,147\n\n    RECOMMENDATION:\n    Partial settlement recommended\n\n    This claim is partially approved.\n\n    Signed: _____________\n    Date: 11/04/2026",
+      "category": "claims_documentation"
+    },
+    {
+      "text": "LIFE ASSURANCE POLICY\n\n    Life Assured: Robert Brown\n    Policy Number: POL-4346\n\n    BENEFITS:\n    Death Benefit: $391,669\n    Maturity Benefit: $132,563\n\n    PREMIUMS:\n    Monthly Premium: $2,304\n    Premium Payment Term: 15 years\n\n    EXCLUSIONS:\n    Death by suicide within 12 months of policy commencement\n    Death due to engaging in hazardous activities not disclosed\n\n    BENEFICIARY DESIGNATION:\n    The Life Assured may nominate beneficiaries who shall receive the death benefit.",
+      "category": "policy_wording"
+    },
+    {
+      "text": "LIFE ASSURANCE POLICY\n\n    Life Assured: Robert Brown\n    Policy Number: POL-5717\n\n    BENEFITS:\n    Death Benefit: $351,046\n    Maturity Benefit: $192,945\n\n    PREMIUMS:\n    Monthly Premium: $1,647\n    Premium Payment Term: 20 years\n\n    EXCLUSIONS:\n    Death by suicide within 12 months of policy commencement\n    Death due to engaging in hazardous activities not disclosed\n\n    BENEFICIARY DESIGNATION:\n    The Life Assured may nominate beneficiaries who shall receive the death benefit.",
+      "category": "policy_wording"
+    },
+    {
+      "text": "EXCESS OF LOSS REINSURANCE AGREEMENT\n\n    Reinsured: Zimre Holdings\n    Reinsurer: Swiss Re\n\n    Treaty Year: 2026\n\n    SECTION 1 - LIMIT AND RETENTION\n    Layer: $1,770,996 xs $139,423\n    The Reinsurer shall indemnify the Reinsured for the amount of each loss\n    in excess of $139,423 up to $1,770,996.\n\n    SECTION 2 - PREMIUM\n    Provisional Premium: $138,601\n    Minimum Premium: $48,560\n    Deposit Premium due: 11/04/2026\n\n    SECTION 3 - CLAIMS COOPERATION\n    The Reinsured shall notify the Reinsurer of all claims exceeding $94,672\n    within 72 hours.\n\n    SECTION 4 - ARBITRATION\n    Any disputes shall be resolved by arbitration in accordance with ARIAS rules.",
+      "category": "reinsurance_treaty"
+    },
+    {
+      "text": "CLAIM ASSESSMENT REPORT\n\n    Claim Reference: REF-73804\n    Insured: John Doe\n\n    ASSESSMENT SUMMARY:\n    Loss Adjustor: Peter Loss Adjustor\n    Inspection Date: 11/04/2026\n\n    FINDINGS:\n    Nature of Loss: Theft\n    Cause: Driver error\n\n    VALUATION:\n    Sum Insured: $290,461\n    Assessed Loss: $31,750\n    Less Depreciation: $2,130\n    Less Excess: $908\n\n    NET CLAIM AMOUNT: $6,278\n\n    RECOMMENDATION:\n    Claim approved for settlement\n\n    This claim is partially approved.\n\n    Signed: _____________\n    Date: 11/04/2026",
+      "category": "claims_documentation"
+    },
+    {
+      "text": "BROKER COMMISSION STATEMENT\n\n    Broker: XYZ Risk Solutions\n    Statement Period: April 2026 to May 2026\n\n    PREMIUM SUMMARY:\n    Gross Written Premium: $757,989\n    Less Returns/Cancellations: $38,086\n    Net Written Premium: $2,371,960\n\n    COMMISSION CALCULATION:\n    Motor (11%): $15\n    Property (14%): $13\n    Life (19%): $24\n\n    TOTAL COMMISSION DUE: $456,515\n\n    Less Previous Advances: $1,800\n\n    NET PAYABLE: $99,498\n\n    Payment will be made via bank transfer within 7 working days.",
+      "category": "broker_agreement"
+    },
+    {
+      "text": "EXCESS OF LOSS REINSURANCE AGREEMENT\n\n    Reinsured: First Mutual Zimbabwe\n    Reinsurer: Swiss Re\n\n    Treaty Year: 2026\n\n    SECTION 1 - LIMIT AND RETENTION\n    Layer: $1,761,354 xs $130,901\n    The Reinsurer shall indemnify the Reinsured for the amount of each loss\n    in excess of $130,901 up to $1,761,354.\n\n    SECTION 2 - PREMIUM\n    Provisional Premium: $65,176\n    Minimum Premium: $36,203\n    Deposit Premium due: 11/04/2026\n\n    SECTION 3 - CLAIMS COOPERATION\n    The Reinsured shall notify the Reinsurer of all claims exceeding $132,855\n    within 72 hours.\n\n    SECTION 4 - ARBITRATION\n    Any disputes shall be resolved by arbitration in accordance with ARIAS rules.",
+      "category": "reinsurance_treaty"
+    },
+    {
+      "text": "BROKER COMMISSION STATEMENT\n\n    Broker: ABC Insurance Brokers\n    Statement Period: April 2026 to May 2026\n\n    PREMIUM SUMMARY:\n    Gross Written Premium: $1,875,112\n    Less Returns/Cancellations: $23,825\n    Net Written Premium: $1,122,267\n\n    COMMISSION CALCULATION:\n    Motor (14%): $12\n    Property (18%): $20\n    Life (15%): $21\n\n    TOTAL COMMISSION DUE: $187,871\n\n    Less Previous Advances: $2,282\n\n    NET PAYABLE: $326,175\n\n    Payment will be made via bank transfer within 7 working days.",
+      "category": "broker_agreement"
+    },
+    {
+      "text": "EXCESS OF LOSS REINSURANCE AGREEMENT\n\n    Reinsured: First Mutual Zimbabwe\n    Reinsurer: Hannover Re\n\n    Treaty Year: 2026\n\n    SECTION 1 - LIMIT AND RETENTION\n    Layer: $1,998,067 xs $143,834\n    The Reinsurer shall indemnify the Reinsured for the amount of each loss\n    in excess of $143,834 up to $1,998,067.\n\n    SECTION 2 - PREMIUM\n    Provisional Premium: $66,590\n    Minimum Premium: $92,775\n    Deposit Premium due: 11/04/2026\n\n    SECTION 3 - CLAIMS COOPERATION\n    The Reinsured shall notify the Reinsurer of all claims exceeding $55,803\n    within 72 hours.\n\n    SECTION 4 - ARBITRATION\n    Any disputes shall be resolved by arbitration in accordance with ARIAS rules.",
+      "category": "reinsurance_treaty"
+    },
+    {
+      "text": "REINSURANCE TREATY\n\n    Between: Zimre Holdings (the Reinsured)\n    And: Hannover Re (the Reinsurer)\n\n    Treaty Type: Quota Share Treaty\n    Treaty Period: 25/07/2025 to 12/01/2027\n\n    ARTICLE 1 - SCOPE\n    The Reinsurer agrees to accept 41% of all policies written by the Reinsured\n    under the following classes of business:\n    - Motor Insurance\n    - Property Insurance\n    - Liability Insurance\n\n    ARTICLE 2 - RETENTION AND CESSION\n    The Reinsured shall retain 77% of each risk and cede the balance to the Reinsurer.\n\n    ARTICLE 3 - PREMIUM\n    Reinsurance Premium: 6% of gross written premium\n    Commission: 13%\n\n    ARTICLE 4 - CLAIMS\n    The Reinsurer shall pay its proportionate share of all claims within 30 days of settlement by the Reinsured.",
+      "category": "reinsurance_treaty"
+    },
+    {
+      "text": "LIFE ASSURANCE POLICY\n\n    Life Assured: John Doe\n    Policy Number: POL-9443\n\n    BENEFITS:\n    Death Benefit: $226,091\n    Maturity Benefit: $227,268\n\n    PREMIUMS:\n    Monthly Premium: $1,747\n    Premium Payment Term: 15 years\n\n    EXCLUSIONS:\n    Death by suicide within 12 months of policy commencement\n    Death due to engaging in hazardous activities not disclosed\n\n    BENEFICIARY DESIGNATION:\n    The Life Assured may nominate beneficiaries who shall receive the death benefit.",
+      "category": "policy_wording"
+    },
+    {
+      "text": "MOTOR VEHICLE INSURANCE POLICY\n\n    Policy Number: POL-9374\n\n    SECTION A - COVERAGE\n    This policy provides coverage for loss or damage to the insured vehicle arising from:\n    (a) Collision or overturning\n    (b) Fire, explosion, or lightning\n    (c) Theft or attempted theft\n    (d) Malicious damage\n\n    SECTION B - EXCLUSIONS\n    The Insurer shall not be liable for:\n    1. Wear and tear\n    2. Mechanical or electrical breakdown\n    3. Driving under the influence of alcohol or drugs\n\n    SECTION C - CONDITIONS\n    Sum Insured: $443,233\n    Premium: $1,010 per annum\n    Excess: $768 per claim\n\n    The Insured must notify any claim within 30 days of the incident.",
+      "category": "policy_wording"
+    },
+    {
+      "text": "CLAIM ASSESSMENT REPORT\n\n    Claim Reference: REF-58791\n    Insured: XYZ Corporation\n\n    ASSESSMENT SUMMARY:\n    Loss Adjustor: Sarah Assessment Ltd\n    Inspection Date: 11/04/2026\n\n    FINDINGS:\n    Nature of Loss: Natural disaster\n    Cause: Electrical fault\n\n    VALUATION:\n    Sum Insured: $169,888\n    Assessed Loss: $2,585\n    Less Depreciation: $1,487\n    Less Excess: $334\n\n    NET CLAIM AMOUNT: $5,724\n\n    RECOMMENDATION:\n    Partial settlement recommended\n\n    This claim is approved.\n\n    Signed: _____________\n    Date: 11/04/2026",
+      "category": "claims_documentation"
+    },
+    {
+      "text": "PROPERTY ALL RISKS INSURANCE POLICY\n\n    INSURED: ABC Limited\n    POLICY PERIOD: 07/06/2025 to 15/12/2026\n\n    COVERAGE:\n    This policy covers all risks of physical loss or damage to the property described below,\n    except as provided in the Exclusions section.\n\n    PROPERTY INSURED:\n    Building situated at 559 Main Street, Harare\n    Sum Insured: $123,357\n\n    PREMIUM: $2,215 annually\n    DEDUCTIBLE: $976 per occurrence\n\n    CLAIMS PROCEDURE:\n    All claims must be reported within 48 hours with supporting documentation.",
+      "category": "policy_wording"
+    },
+    {
+      "text": "EXCESS OF LOSS REINSURANCE AGREEMENT\n\n    Reinsured: First Mutual Zimbabwe\n    Reinsurer: Hannover Re\n\n    Treaty Year: 2026\n\n    SECTION 1 - LIMIT AND RETENTION\n    Layer: $962,911 xs $199,653\n    The Reinsurer shall indemnify the Reinsured for the amount of each loss\n    in excess of $199,653 up to $962,911.\n\n    SECTION 2 - PREMIUM\n    Provisional Premium: $194,857\n    Minimum Premium: $62,883\n    Deposit Premium due: 11/04/2026\n\n    SECTION 3 - CLAIMS COOPERATION\n    The Reinsured shall notify the Reinsurer of all claims exceeding $143,275\n    within 72 hours.\n\n    SECTION 4 - ARBITRATION\n    Any disputes shall be resolved by arbitration in accordance with ARIAS rules.",
+      "category": "reinsurance_treaty"
+    },
+    {
+      "text": "INSURANCE BROKERAGE AGREEMENT\n\n    Between: First Mutual Zimbabwe (the Insurer)\n    And: ABC Insurance Brokers (the Broker)\n\n    Effective Date: 11/04/2026\n\n    ARTICLE 1 - APPOINTMENT\n    The Insurer appoints the Broker as its authorized insurance broker for the territory of Zimbabwe.\n\n    ARTICLE 2 - BROKER RESPONSIBILITIES\n    The Broker shall:\n    (a) Solicit and procure insurance business\n    (b) Issue cover notes and policy documents\n    (c) Collect premiums from policyholders\n    (d) Remit premiums to the Insurer within 30 days\n\n    ARTICLE 3 - COMMISSION\n    Commission Rate:\n    - Motor Insurance: 10%\n    - Property Insurance: 18%\n    - Life Insurance: 18%\n\n    Commission shall be paid monthly within 30 days of premium receipt.\n\n    ARTICLE 4 - AUTHORITY LIMITS\n    Maximum Sum Insured per Risk: $408,541\n    Binding Authority: $134,583\n\n    ARTICLE 5 - TERMINATION\n    Either party may terminate this agreement with 60 days written notice.",
+      "category": "broker_agreement"
+    },
+    {
+      "text": "EXCESS OF LOSS REINSURANCE AGREEMENT\n\n    Reinsured: Old Mutual\n    Reinsurer: Hannover Re\n\n    Treaty Year: 2026\n\n    SECTION 1 - LIMIT AND RETENTION\n    Layer: $1,501,579 xs $164,089\n    The Reinsurer shall indemnify the Reinsured for the amount of each loss\n    in excess of $164,089 up to $1,501,579.\n\n    SECTION 2 - PREMIUM\n    Provisional Premium: $76,843\n    Minimum Premium: $57,905\n    Deposit Premium due: 11/04/2026\n\n    SECTION 3 - CLAIMS COOPERATION\n    The Reinsured shall notify the Reinsurer of all claims exceeding $129,344\n    within 72 hours.\n\n    SECTION 4 - ARBITRATION\n    Any disputes shall be resolved by arbitration in accordance with ARIAS rules.",
+      "category": "reinsurance_treaty"
+    },
+    {
+      "text": "PROPERTY ALL RISKS INSURANCE POLICY\n\n    INSURED: Jane Smith\n    POLICY PERIOD: 19/06/2025 to 07/06/2026\n\n    COVERAGE:\n    This policy covers all risks of physical loss or damage to the property described below,\n    except as provided in the Exclusions section.\n\n    PROPERTY INSURED:\n    Building situated at 517 Main Street, Harare\n    Sum Insured: $98,514\n\n    PREMIUM: $1,166 annually\n    DEDUCTIBLE: $229 per occurrence\n\n    CLAIMS PROCEDURE:\n    All claims must be reported within 48 hours with supporting documentation.",
+      "category": "policy_wording"
+    },
+    {
+      "text": "REINSURANCE TREATY\n\n    Between: First Mutual Zimbabwe (the Reinsured)\n    And: Swiss Re (the Reinsurer)\n\n    Treaty Type: Quota Share Treaty\n    Treaty Period: 28/08/2025 to 05/09/2026\n\n    ARTICLE 1 - SCOPE\n    The Reinsurer agrees to accept 22% of all policies written by the Reinsured\n    under the following classes of business:\n    - Motor Insurance\n    - Property Insurance\n    - Liability Insurance\n\n    ARTICLE 2 - RETENTION AND CESSION\n    The Reinsured shall retain 50% of each risk and cede the balance to the Reinsurer.\n\n    ARTICLE 3 - PREMIUM\n    Reinsurance Premium: 15% of gross written premium\n    Commission: 25%\n\n    ARTICLE 4 - CLAIMS\n    The Reinsurer shall pay its proportionate share of all claims within 30 days of settlement by the Reinsured.",
+      "category": "reinsurance_treaty"
+    },
+    {
+      "text": "INSURANCE BROKERAGE AGREEMENT\n\n    Between: Old Mutual (the Insurer)\n    And: XYZ Risk Solutions (the Broker)\n\n    Effective Date: 11/04/2026\n\n    ARTICLE 1 - APPOINTMENT\n    The Insurer appoints the Broker as its authorized insurance broker for the territory of Zimbabwe.\n\n    ARTICLE 2 - BROKER RESPONSIBILITIES\n    The Broker shall:\n    (a) Solicit and procure insurance business\n    (b) Issue cover notes and policy documents\n    (c) Collect premiums from policyholders\n    (d) Remit premiums to the Insurer within 7 days\n\n    ARTICLE 3 - COMMISSION\n    Commission Rate:\n    - Motor Insurance: 19%\n    - Property Insurance: 17%\n    - Life Insurance: 26%\n\n    Commission shall be paid monthly within 30 days of premium receipt.\n\n    ARTICLE 4 - AUTHORITY LIMITS\n    Maximum Sum Insured per Risk: $270,716\n    Binding Authority: $66,029\n\n    ARTICLE 5 - TERMINATION\n    Either party may terminate this agreement with 60 days written notice.",
+      "category": "broker_agreement"
+    },
+    {
+      "text": "EXCESS OF LOSS REINSURANCE AGREEMENT\n\n    Reinsured: First Mutual Zimbabwe\n    Reinsurer: Swiss Re\n\n    Treaty Year: 2026\n\n    SECTION 1 - LIMIT AND RETENTION\n    Layer: $1,886,688 xs $195,354\n    The Reinsurer shall indemnify the Reinsured for the amount of each loss\n    in excess of $195,354 up to $1,886,688.\n\n    SECTION 2 - PREMIUM\n    Provisional Premium: $53,066\n    Minimum Premium: $93,947\n    Deposit Premium due: 11/04/2026\n\n    SECTION 3 - CLAIMS COOPERATION\n    The Reinsured shall notify the Reinsurer of all claims exceeding $181,249\n    within 72 hours.\n\n    SECTION 4 - ARBITRATION\n    Any disputes shall be resolved by arbitration in accordance with ARIAS rules.",
+      "category": "reinsurance_treaty"
+    },
+    {
+      "text": "LIFE ASSURANCE POLICY\n\n    Life Assured: Jane Smith\n    Policy Number: POL-4295\n\n    BENEFITS:\n    Death Benefit: $142,061\n    Maturity Benefit: $227,667\n\n    PREMIUMS:\n    Monthly Premium: $524\n    Premium Payment Term: 15 years\n\n    EXCLUSIONS:\n    Death by suicide within 12 months of policy commencement\n    Death due to engaging in hazardous activities not disclosed\n\n    BENEFICIARY DESIGNATION:\n    The Life Assured may nominate beneficiaries who shall receive the death benefit.",
+      "category": "policy_wording"
+    },
+    {
+      "text": "CLAIM ASSESSMENT REPORT\n\n    Claim Reference: REF-62368\n    Insured: Jane Smith\n\n    ASSESSMENT SUMMARY:\n    Loss Adjustor: Sarah Assessment Ltd\n    Inspection Date: 11/04/2026\n\n    FINDINGS:\n    Nature of Loss: Accidental damage\n    Cause: Electrical fault\n\n    VALUATION:\n    Sum Insured: $331,302\n    Assessed Loss: $48,764\n    Less Depreciation: $641\n    Less Excess: $105\n\n    NET CLAIM AMOUNT: $16,165\n\n    RECOMMENDATION:\n    Further investigation required\n\n    This claim is approved.\n\n    Signed: _____________\n    Date: 11/04/2026",
+      "category": "claims_documentation"
+    },
+    {
+      "text": "REINSURANCE TREATY\n\n    Between: Zimre Holdings (the Reinsured)\n    And: Hannover Re (the Reinsurer)\n\n    Treaty Type: Quota Share Treaty\n    Treaty Period: 07/07/2025 to 09/04/2027\n\n    ARTICLE 1 - SCOPE\n    The Reinsurer agrees to accept 43% of all policies written by the Reinsured\n    under the following classes of business:\n    - Motor Insurance\n    - Property Insurance\n    - Liability Insurance\n\n    ARTICLE 2 - RETENTION AND CESSION\n    The Reinsured shall retain 60% of each risk and cede the balance to the Reinsurer.\n\n    ARTICLE 3 - PREMIUM\n    Reinsurance Premium: 9% of gross written premium\n    Commission: 16%\n\n    ARTICLE 4 - CLAIMS\n    The Reinsurer shall pay its proportionate share of all claims within 30 days of settlement by the Reinsured.",
+      "category": "reinsurance_treaty"
+    },
+    {
+      "text": "REINSURANCE TREATY\n\n    Between: Zimre Holdings (the Reinsured)\n    And: Swiss Re (the Reinsurer)\n\n    Treaty Type: Quota Share Treaty\n    Treaty Period: 23/11/2025 to 15/03/2027\n\n    ARTICLE 1 - SCOPE\n    The Reinsurer agrees to accept 32% of all policies written by the Reinsured\n    under the following classes of business:\n    - Motor Insurance\n    - Property Insurance\n    - Liability Insurance\n\n    ARTICLE 2 - RETENTION AND CESSION\n    The Reinsured shall retain 79% of each risk and cede the balance to the Reinsurer.\n\n    ARTICLE 3 - PREMIUM\n    Reinsurance Premium: 6% of gross written premium\n    Commission: 20%\n\n    ARTICLE 4 - CLAIMS\n    The Reinsurer shall pay its proportionate share of all claims within 30 days of settlement by the Reinsured.",
+      "category": "reinsurance_treaty"
+    },
+    {
+      "text": "EXCESS OF LOSS REINSURANCE AGREEMENT\n\n    Reinsured: Old Mutual\n    Reinsurer: Hannover Re\n\n    Treaty Year: 2026\n\n    SECTION 1 - LIMIT AND RETENTION\n    Layer: $1,892,920 xs $193,282\n    The Reinsurer shall indemnify the Reinsured for the amount of each loss\n    in excess of $193,282 up to $1,892,920.\n\n    SECTION 2 - PREMIUM\n    Provisional Premium: $94,484\n    Minimum Premium: $62,313\n    Deposit Premium due: 11/04/2026\n\n    SECTION 3 - CLAIMS COOPERATION\n    The Reinsured shall notify the Reinsurer of all claims exceeding $135,922\n    within 72 hours.\n\n    SECTION 4 - ARBITRATION\n    Any disputes shall be resolved by arbitration in accordance with ARIAS rules.",
+      "category": "reinsurance_treaty"
+    },
+    {
+      "text": "LIFE ASSURANCE POLICY\n\n    Life Assured: Robert Brown\n    Policy Number: POL-3924\n\n    BENEFITS:\n    Death Benefit: $366,914\n    Maturity Benefit: $171,023\n\n    PREMIUMS:\n    Monthly Premium: $710\n    Premium Payment Term: 10 years\n\n    EXCLUSIONS:\n    Death by suicide within 12 months of policy commencement\n    Death due to engaging in hazardous activities not disclosed\n\n    BENEFICIARY DESIGNATION:\n    The Life Assured may nominate beneficiaries who shall receive the death benefit.",
+      "category": "policy_wording"
+    },
+    {
+      "text": "LIFE ASSURANCE POLICY\n\n    Life Assured: Jane Smith\n    Policy Number: POL-8318\n\n    BENEFITS:\n    Death Benefit: $87,559\n    Maturity Benefit: $220,442\n\n    PREMIUMS:\n    Monthly Premium: $1,365\n    Premium Payment Term: 15 years\n\n    EXCLUSIONS:\n    Death by suicide within 12 months of policy commencement\n    Death due to engaging in hazardous activities not disclosed\n\n    BENEFICIARY DESIGNATION:\n    The Life Assured may nominate beneficiaries who shall receive the death benefit.",
+      "category": "policy_wording"
+    },
+    {
+      "text": "INSURANCE BROKERAGE AGREEMENT\n\n    Between: First Mutual Zimbabwe (the Insurer)\n    And: Prime Brokers Limited (the Broker)\n\n    Effective Date: 11/04/2026\n\n    ARTICLE 1 - APPOINTMENT\n    The Insurer appoints the Broker as its authorized insurance broker for the territory of Zimbabwe.\n\n    ARTICLE 2 - BROKER RESPONSIBILITIES\n    The Broker shall:\n    (a) Solicit and procure insurance business\n    (b) Issue cover notes and policy documents\n    (c) Collect premiums from policyholders\n    (d) Remit premiums to the Insurer within 14 days\n\n    ARTICLE 3 - COMMISSION\n    Commission Rate:\n    - Motor Insurance: 13%\n    - Property Insurance: 16%\n    - Life Insurance: 23%\n\n    Commission shall be paid monthly within 30 days of premium receipt.\n\n    ARTICLE 4 - AUTHORITY LIMITS\n    Maximum Sum Insured per Risk: $337,653\n    Binding Authority: $183,656\n\n    ARTICLE 5 - TERMINATION\n    Either party may terminate this agreement with 30 days written notice.",
+      "category": "broker_agreement"
+    },
+    {
+      "text": "MOTOR VEHICLE INSURANCE POLICY\n\n    Policy Number: POL-8560\n\n    SECTION A - COVERAGE\n    This policy provides coverage for loss or damage to the insured vehicle arising from:\n    (a) Collision or overturning\n    (b) Fire, explosion, or lightning\n    (c) Theft or attempted theft\n    (d) Malicious damage\n\n    SECTION B - EXCLUSIONS\n    The Insurer shall not be liable for:\n    1. Wear and tear\n    2. Mechanical or electrical breakdown\n    3. Driving under the influence of alcohol or drugs\n\n    SECTION C - CONDITIONS\n    Sum Insured: $156,016\n    Premium: $4,877 per annum\n    Excess: $511 per claim\n\n    The Insured must notify any claim within 30 days of the incident.",
+      "category": "policy_wording"
+    },
+    {
+      "text": "BROKER COMMISSION STATEMENT\n\n    Broker: Prime Brokers Limited\n    Statement Period: April 2026 to May 2026\n\n    PREMIUM SUMMARY:\n    Gross Written Premium: $1,346,184\n    Less Returns/Cancellations: $58,437\n    Net Written Premium: $1,593,384\n\n    COMMISSION CALCULATION:\n    Motor (19%): $20\n    Property (19%): $12\n    Life (16%): $22\n\n    TOTAL COMMISSION DUE: $124,144\n\n    Less Previous Advances: $56,811\n\n    NET PAYABLE: $161,245\n\n    Payment will be made via bank transfer within 7 working days.",
+      "category": "broker_agreement"
+    },
+    {
+      "text": "INSURANCE BROKERAGE AGREEMENT\n\n    Between: Old Mutual (the Insurer)\n    And: XYZ Risk Solutions (the Broker)\n\n    Effective Date: 11/04/2026\n\n    ARTICLE 1 - APPOINTMENT\n    The Insurer appoints the Broker as its authorized insurance broker for the territory of Zimbabwe.\n\n    ARTICLE 2 - BROKER RESPONSIBILITIES\n    The Broker shall:\n    (a) Solicit and procure insurance business\n    (b) Issue cover notes and policy documents\n    (c) Collect premiums from policyholders\n    (d) Remit premiums to the Insurer within 30 days\n\n    ARTICLE 3 - COMMISSION\n    Commission Rate:\n    - Motor Insurance: 13%\n    - Property Insurance: 17%\n    - Life Insurance: 20%\n\n    Commission shall be paid monthly within 30 days of premium receipt.\n\n    ARTICLE 4 - AUTHORITY LIMITS\n    Maximum Sum Insured per Risk: $164,989\n    Binding Authority: $65,968\n\n    ARTICLE 5 - TERMINATION\n    Either party may terminate this agreement with 60 days written notice.",
+      "category": "broker_agreement"
+    },
+    {
+      "text": "PROPERTY ALL RISKS INSURANCE POLICY\n\n    INSURED: ABC Limited\n    POLICY PERIOD: 30/01/2026 to 04/03/2027\n\n    COVERAGE:\n    This policy covers all risks of physical loss or damage to the property described below,\n    except as provided in the Exclusions section.\n\n    PROPERTY INSURED:\n    Building situated at 382 Main Street, Harare\n    Sum Insured: $40,979\n\n    PREMIUM: $759 annually\n    DEDUCTIBLE: $851 per occurrence\n\n    CLAIMS PROCEDURE:\n    All claims must be reported within 48 hours with supporting documentation.",
+      "category": "policy_wording"
+    },
+    {
+      "text": "BROKER COMMISSION STATEMENT\n\n    Broker: ABC Insurance Brokers\n    Statement Period: April 2026 to May 2026\n\n    PREMIUM SUMMARY:\n    Gross Written Premium: $4,695,926\n    Less Returns/Cancellations: $41,224\n    Net Written Premium: $4,623,874\n\n    COMMISSION CALCULATION:\n    Motor (13%): $12\n    Property (16%): $18\n    Life (20%): $23\n\n    TOTAL COMMISSION DUE: $264,172\n\n    Less Previous Advances: $67,961\n\n    NET PAYABLE: $430,431\n\n    Payment will be made via bank transfer within 7 working days.",
+      "category": "broker_agreement"
+    },
+    {
+      "text": "EXCESS OF LOSS REINSURANCE AGREEMENT\n\n    Reinsured: Old Mutual\n    Reinsurer: Swiss Re\n\n    Treaty Year: 2026\n\n    SECTION 1 - LIMIT AND RETENTION\n    Layer: $527,344 xs $53,969\n    The Reinsurer shall indemnify the Reinsured for the amount of each loss\n    in excess of $53,969 up to $527,344.\n\n    SECTION 2 - PREMIUM\n    Provisional Premium: $193,500\n    Minimum Premium: $52,039\n    Deposit Premium due: 11/04/2026\n\n    SECTION 3 - CLAIMS COOPERATION\n    The Reinsured shall notify the Reinsurer of all claims exceeding $51,265\n    within 72 hours.\n\n    SECTION 4 - ARBITRATION\n    Any disputes shall be resolved by arbitration in accordance with ARIAS rules.",
+      "category": "reinsurance_treaty"
+    },
+    {
+      "text": "INSURANCE BROKERAGE AGREEMENT\n\n    Between: First Mutual Zimbabwe (the Insurer)\n    And: ABC Insurance Brokers (the Broker)\n\n    Effective Date: 11/04/2026\n\n    ARTICLE 1 - APPOINTMENT\n    The Insurer appoints the Broker as its authorized insurance broker for the territory of Zimbabwe.\n\n    ARTICLE 2 - BROKER RESPONSIBILITIES\n    The Broker shall:\n    (a) Solicit and procure insurance business\n    (b) Issue cover notes and policy documents\n    (c) Collect premiums from policyholders\n    (d) Remit premiums to the Insurer within 14 days\n\n    ARTICLE 3 - COMMISSION\n    Commission Rate:\n    - Motor Insurance: 11%\n    - Property Insurance: 19%\n    - Life Insurance: 20%\n\n    Commission shall be paid monthly within 30 days of premium receipt.\n\n    ARTICLE 4 - AUTHORITY LIMITS\n    Maximum Sum Insured per Risk: $263,048\n    Binding Authority: $143,794\n\n    ARTICLE 5 - TERMINATION\n    Either party may terminate this agreement with 90 days written notice.",
+      "category": "broker_agreement"
+    },
+    {
+      "text": "BROKER COMMISSION STATEMENT\n\n    Broker: Prime Brokers Limited\n    Statement Period: April 2026 to May 2026\n\n    PREMIUM SUMMARY:\n    Gross Written Premium: $573,167\n    Less Returns/Cancellations: $30,175\n    Net Written Premium: $763,250\n\n    COMMISSION CALCULATION:\n    Motor (13%): $18\n    Property (13%): $19\n    Life (28%): $25\n\n    TOTAL COMMISSION DUE: $430,124\n\n    Less Previous Advances: $55,495\n\n    NET PAYABLE: $45,336\n\n    Payment will be made via bank transfer within 7 working days.",
+      "category": "broker_agreement"
+    },
+    {
+      "text": "MOTOR VEHICLE CLAIM FORM\n\n    Claim Number: CLM-7463\n    Policy Number: POL-7409\n    Date of Loss: 01/03/2026\n\n    CLAIMANT DETAILS:\n    Name: Jane Smith\n    Contact: +263 756 864 119\n\n    INCIDENT DETAILS:\n    Date and Time: 10/03/2026 23:57\n    Location: Borrowdale\n    Description: Fire damage to building\n\n    VEHICLE DAMAGE:\n    Make/Model: Honda Fit\n    Registration: A808-906\n    Estimated Repair Cost: $6,593\n\n    POLICE REPORT:\n    Report Number: PR85007\n    Attending Officer: Const. Ncube\n\n    DECLARATION:\n    I declare that the information provided is true and accurate to the best of my knowledge.\n\n    Signature: _______________\n    Date: 11/04/2026",
+      "category": "claims_documentation"
+    },
+    {
+      "text": "CLAIM ASSESSMENT REPORT\n\n    Claim Reference: REF-20241\n    Insured: Jane Smith\n\n    ASSESSMENT SUMMARY:\n    Loss Adjustor: Peter Loss Adjustor\n    Inspection Date: 11/04/2026\n\n    FINDINGS:\n    Nature of Loss: Natural disaster\n    Cause: Driver error\n\n    VALUATION:\n    Sum Insured: $224,365\n    Assessed Loss: $29,081\n    Less Depreciation: $1,332\n    Less Excess: $402\n\n    NET CLAIM AMOUNT: $5,413\n\n    RECOMMENDATION:\n    Further investigation required\n\n    This claim is partially approved.\n\n    Signed: _____________\n    Date: 11/04/2026",
+      "category": "claims_documentation"
+    },
+    {
+      "text": "CLAIM ASSESSMENT REPORT\n\n    Claim Reference: REF-24296\n    Insured: John Doe\n\n    ASSESSMENT SUMMARY:\n    Loss Adjustor: Sarah Assessment Ltd\n    Inspection Date: 11/04/2026\n\n    FINDINGS:\n    Nature of Loss: Accidental damage\n    Cause: Weather\n\n    VALUATION:\n    Sum Insured: $169,944\n    Assessed Loss: $4,901\n    Less Depreciation: $3,650\n    Less Excess: $367\n\n    NET CLAIM AMOUNT: $17,349\n\n    RECOMMENDATION:\n    Further investigation required\n\n    This claim is approved.\n\n    Signed: _____________\n    Date: 11/04/2026",
+      "category": "claims_documentation"
+    },
+    {
+      "text": "CLAIM SETTLEMENT ADVICE\n\n    Settlement Number: SET-8194\n    Claim Number: CLM-6159\n\n    CLAIMANT: John Doe\n\n    SETTLEMENT BREAKDOWN:\n    Assessed Claim Value: $41,022\n    Less Policy Excess: $721\n    Less Salvage Recovery: $1,372\n\n    TOTAL PAYABLE: $1,116\n\n    PAYMENT DETAILS:\n    Method: EFT\n    Bank: Stanbic Bank\n    Account Number: 47809-8087\n\n    Payment Date: 11/04/2026\n\n    This settlement is in full and final discharge of all liability under Policy POL-1022.",
+      "category": "claims_documentation"
+    },
+    {
+      "text": "MOTOR VEHICLE INSURANCE POLICY\n\n    Policy Number: POL-7873\n\n    SECTION A - COVERAGE\n    This policy provides coverage for loss or damage to the insured vehicle arising from:\n    (a) Collision or overturning\n    (b) Fire, explosion, or lightning\n    (c) Theft or attempted theft\n    (d) Malicious damage\n\n    SECTION B - EXCLUSIONS\n    The Insurer shall not be liable for:\n    1. Wear and tear\n    2. Mechanical or electrical breakdown\n    3. Driving under the influence of alcohol or drugs\n\n    SECTION C - CONDITIONS\n    Sum Insured: $49,649\n    Premium: $1,262 per annum\n    Excess: $138 per claim\n\n    The Insured must notify any claim within 30 days of the incident.",
+      "category": "policy_wording"
+    },
+    {
+      "text": "CLAIM SETTLEMENT ADVICE\n\n    Settlement Number: SET-8604\n    Claim Number: CLM-9932\n\n    CLAIMANT: Robert Brown\n\n    SETTLEMENT BREAKDOWN:\n    Assessed Claim Value: $3,684\n    Less Policy Excess: $879\n    Less Salvage Recovery: $219\n\n    TOTAL PAYABLE: $6,604\n\n    PAYMENT DETAILS:\n    Method: Cheque\n    Bank: FBC Bank\n    Account Number: 47098-6912\n\n    Payment Date: 11/04/2026\n\n    This settlement is in full and final discharge of all liability under Policy POL-4627.",
+      "category": "claims_documentation"
+    },
+    {
+      "text": "REINSURANCE TREATY\n\n    Between: First Mutual Zimbabwe (the Reinsured)\n    And: Swiss Re (the Reinsurer)\n\n    Treaty Type: Quota Share Treaty\n    Treaty Period: 03/04/2026 to 11/04/2027\n\n    ARTICLE 1 - SCOPE\n    The Reinsurer agrees to accept 22% of all policies written by the Reinsured\n    under the following classes of business:\n    - Motor Insurance\n    - Property Insurance\n    - Liability Insurance\n\n    ARTICLE 2 - RETENTION AND CESSION\n    The Reinsured shall retain 75% of each risk and cede the balance to the Reinsurer.\n\n    ARTICLE 3 - PREMIUM\n    Reinsurance Premium: 9% of gross written premium\n    Commission: 23%\n\n    ARTICLE 4 - CLAIMS\n    The Reinsurer shall pay its proportionate share of all claims within 30 days of settlement by the Reinsured.",
+      "category": "reinsurance_treaty"
+    },
+    {
+      "text": "MOTOR VEHICLE INSURANCE POLICY\n\n    Policy Number: POL-9882\n\n    SECTION A - COVERAGE\n    This policy provides coverage for loss or damage to the insured vehicle arising from:\n    (a) Collision or overturning\n    (b) Fire, explosion, or lightning\n    (c) Theft or attempted theft\n    (d) Malicious damage\n\n    SECTION B - EXCLUSIONS\n    The Insurer shall not be liable for:\n    1. Wear and tear\n    2. Mechanical or electrical breakdown\n    3. Driving under the influence of alcohol or drugs\n\n    SECTION C - CONDITIONS\n    Sum Insured: $214,993\n    Premium: $1,347 per annum\n    Excess: $872 per claim\n\n    The Insured must notify any claim within 30 days of the incident.",
+      "category": "policy_wording"
+    },
+    {
+      "text": "MOTOR VEHICLE CLAIM FORM\n\n    Claim Number: CLM-8570\n    Policy Number: POL-5831\n    Date of Loss: 20/03/2026\n\n    CLAIMANT DETAILS:\n    Name: Jane Smith\n    Contact: +263 788 911 181\n\n    INCIDENT DETAILS:\n    Date and Time: 01/02/2026 23:57\n    Location: Borrowdale\n    Description: Collision with another vehicle\n\n    VEHICLE DAMAGE:\n    Make/Model: Nissan March\n    Registration: A131-223\n    Estimated Repair Cost: $3,396\n\n    POLICE REPORT:\n    Report Number: PR81552\n    Attending Officer: Const. Ncube\n\n    DECLARATION:\n    I declare that the information provided is true and accurate to the best of my knowledge.\n\n    Signature: _______________\n    Date: 11/04/2026",
+      "category": "claims_documentation"
+    },
+    {
+      "text": "EXCESS OF LOSS REINSURANCE AGREEMENT\n\n    Reinsured: Old Mutual\n    Reinsurer: Munich Re\n\n    Treaty Year: 2026\n\n    SECTION 1 - LIMIT AND RETENTION\n    Layer: $1,957,614 xs $157,634\n    The Reinsurer shall indemnify the Reinsured for the amount of each loss\n    in excess of $157,634 up to $1,957,614.\n\n    SECTION 2 - PREMIUM\n    Provisional Premium: $183,514\n    Minimum Premium: $59,087\n    Deposit Premium due: 11/04/2026\n\n    SECTION 3 - CLAIMS COOPERATION\n    The Reinsured shall notify the Reinsurer of all claims exceeding $154,682\n    within 72 hours.\n\n    SECTION 4 - ARBITRATION\n    Any disputes shall be resolved by arbitration in accordance with ARIAS rules.",
+      "category": "reinsurance_treaty"
+    },
+    {
+      "text": "EXCESS OF LOSS REINSURANCE AGREEMENT\n\n    Reinsured: Old Mutual\n    Reinsurer: Munich Re\n\n    Treaty Year: 2026\n\n    SECTION 1 - LIMIT AND RETENTION\n    Layer: $1,395,137 xs $58,630\n    The Reinsurer shall indemnify the Reinsured for the amount of each loss\n    in excess of $58,630 up to $1,395,137.\n\n    SECTION 2 - PREMIUM\n    Provisional Premium: $124,726\n    Minimum Premium: $40,448\n    Deposit Premium due: 11/04/2026\n\n    SECTION 3 - CLAIMS COOPERATION\n    The Reinsured shall notify the Reinsurer of all claims exceeding $69,010\n    within 72 hours.\n\n    SECTION 4 - ARBITRATION\n    Any disputes shall be resolved by arbitration in accordance with ARIAS rules.",
+      "category": "reinsurance_treaty"
+    },
+    {
+      "text": "PROPERTY ALL RISKS INSURANCE POLICY\n\n    INSURED: Jane Smith\n    POLICY PERIOD: 26/02/2026 to 23/09/2026\n\n    COVERAGE:\n    This policy covers all risks of physical loss or damage to the property described below,\n    except as provided in the Exclusions section.\n\n    PROPERTY INSURED:\n    Building situated at 463 Main Street, Harare\n    Sum Insured: $123,978\n\n    PREMIUM: $782 annually\n    DEDUCTIBLE: $435 per occurrence\n\n    CLAIMS PROCEDURE:\n    All claims must be reported within 48 hours with supporting documentation.",
+      "category": "policy_wording"
+    },
+    {
+      "text": "REINSURANCE TREATY\n\n    Between: First Mutual Zimbabwe (the Reinsured)\n    And: Hannover Re (the Reinsurer)\n\n    Treaty Type: Quota Share Treaty\n    Treaty Period: 02/01/2026 to 22/06/2026\n\n    ARTICLE 1 - SCOPE\n    The Reinsurer agrees to accept 30% of all policies written by the Reinsured\n    under the following classes of business:\n    - Motor Insurance\n    - Property Insurance\n    - Liability Insurance\n\n    ARTICLE 2 - RETENTION AND CESSION\n    The Reinsured shall retain 78% of each risk and cede the balance to the Reinsurer.\n\n    ARTICLE 3 - PREMIUM\n    Reinsurance Premium: 11% of gross written premium\n    Commission: 10%\n\n    ARTICLE 4 - CLAIMS\n    The Reinsurer shall pay its proportionate share of all claims within 30 days of settlement by the Reinsured.",
+      "category": "reinsurance_treaty"
+    },
+    {
+      "text": "CLAIM ASSESSMENT REPORT\n\n    Claim Reference: REF-55266\n    Insured: XYZ Corporation\n\n    ASSESSMENT SUMMARY:\n    Loss Adjustor: Peter Loss Adjustor\n    Inspection Date: 11/04/2026\n\n    FINDINGS:\n    Nature of Loss: Accidental damage\n    Cause: Third party negligence\n\n    VALUATION:\n    Sum Insured: $75,447\n    Assessed Loss: $15,038\n    Less Depreciation: $3,888\n    Less Excess: $836\n\n    NET CLAIM AMOUNT: $6,295\n\n    RECOMMENDATION:\n    Claim approved for settlement\n\n    This claim is partially approved.\n\n    Signed: _____________\n    Date: 11/04/2026",
+      "category": "claims_documentation"
+    },
+    {
+      "text": "PROPERTY ALL RISKS INSURANCE POLICY\n\n    INSURED: XYZ Corporation\n    POLICY PERIOD: 20/05/2025 to 11/06/2026\n\n    COVERAGE:\n    This policy covers all risks of physical loss or damage to the property described below,\n    except as provided in the Exclusions section.\n\n    PROPERTY INSURED:\n    Building situated at 741 Main Street, Harare\n    Sum Insured: $315,258\n\n    PREMIUM: $3,501 annually\n    DEDUCTIBLE: $246 per occurrence\n\n    CLAIMS PROCEDURE:\n    All claims must be reported within 48 hours with supporting documentation.",
+      "category": "policy_wording"
+    },
+    {
+      "text": "CLAIM SETTLEMENT ADVICE\n\n    Settlement Number: SET-5102\n    Claim Number: CLM-7612\n\n    CLAIMANT: Robert Brown\n\n    SETTLEMENT BREAKDOWN:\n    Assessed Claim Value: $12,767\n    Less Policy Excess: $243\n    Less Salvage Recovery: $21\n\n    TOTAL PAYABLE: $6,329\n\n    PAYMENT DETAILS:\n    Method: EFT\n    Bank: FBC Bank\n    Account Number: 85302-5222\n\n    Payment Date: 11/04/2026\n\n    This settlement is in full and final discharge of all liability under Policy POL-6915.",
+      "category": "claims_documentation"
+    },
+    {
+      "text": "REINSURANCE TREATY\n\n    Between: Old Mutual (the Reinsured)\n    And: Swiss Re (the Reinsurer)\n\n    Treaty Type: Quota Share Treaty\n    Treaty Period: 04/11/2025 to 15/07/2026\n\n    ARTICLE 1 - SCOPE\n    The Reinsurer agrees to accept 27% of all policies written by the Reinsured\n    under the following classes of business:\n    - Motor Insurance\n    - Property Insurance\n    - Liability Insurance\n\n    ARTICLE 2 - RETENTION AND CESSION\n    The Reinsured shall retain 61% of each risk and cede the balance to the Reinsurer.\n\n    ARTICLE 3 - PREMIUM\n    Reinsurance Premium: 12% of gross written premium\n    Commission: 16%\n\n    ARTICLE 4 - CLAIMS\n    The Reinsurer shall pay its proportionate share of all claims within 30 days of settlement by the Reinsured.",
+      "category": "reinsurance_treaty"
+    },
+    {
+      "text": "REINSURANCE TREATY\n\n    Between: First Mutual Zimbabwe (the Reinsured)\n    And: Munich Re (the Reinsurer)\n\n    Treaty Type: Quota Share Treaty\n    Treaty Period: 22/07/2025 to 23/08/2026\n\n    ARTICLE 1 - SCOPE\n    The Reinsurer agrees to accept 46% of all policies written by the Reinsured\n    under the following classes of business:\n    - Motor Insurance\n    - Property Insurance\n    - Liability Insurance\n\n    ARTICLE 2 - RETENTION AND CESSION\n    The Reinsured shall retain 60% of each risk and cede the balance to the Reinsurer.\n\n    ARTICLE 3 - PREMIUM\n    Reinsurance Premium: 14% of gross written premium\n    Commission: 18%\n\n    ARTICLE 4 - CLAIMS\n    The Reinsurer shall pay its proportionate share of all claims within 30 days of settlement by the Reinsured.",
+      "category": "reinsurance_treaty"
+    },
+    {
+      "text": "CLAIM ASSESSMENT REPORT\n\n    Claim Reference: REF-18080\n    Insured: ABC Limited\n\n    ASSESSMENT SUMMARY:\n    Loss Adjustor: Peter Loss Adjustor\n    Inspection Date: 11/04/2026\n\n    FINDINGS:\n    Nature of Loss: Theft\n    Cause: Electrical fault\n\n    VALUATION:\n    Sum Insured: $321,136\n    Assessed Loss: $35,379\n    Less Depreciation: $3,442\n    Less Excess: $997\n\n    NET CLAIM AMOUNT: $23,212\n\n    RECOMMENDATION:\n    Partial settlement recommended\n\n    This claim requires further review.\n\n    Signed: _____________\n    Date: 11/04/2026",
+      "category": "claims_documentation"
+    },
+    {
+      "text": "MOTOR VEHICLE CLAIM FORM\n\n    Claim Number: CLM-1616\n    Policy Number: POL-4031\n    Date of Loss: 22/01/2026\n\n    CLAIMANT DETAILS:\n    Name: Robert Brown\n    Contact: +263 716 565 918\n\n    INCIDENT DETAILS:\n    Date and Time: 26/02/2026 23:57\n    Location: Eastlea\n    Description: Water damage from burst pipe\n\n    VEHICLE DAMAGE:\n    Make/Model: Nissan March\n    Registration: A514-786\n    Estimated Repair Cost: $3,792\n\n    POLICE REPORT:\n    Report Number: PR19995\n    Attending Officer: Const. Ncube\n\n    DECLARATION:\n    I declare that the information provided is true and accurate to the best of my knowledge.\n\n    Signature: _______________\n    Date: 11/04/2026",
+      "category": "claims_documentation"
+    },
+    {
+      "text": "PROPERTY ALL RISKS INSURANCE POLICY\n\n    INSURED: XYZ Corporation\n    POLICY PERIOD: 20/12/2025 to 18/08/2026\n\n    COVERAGE:\n    This policy covers all risks of physical loss or damage to the property described below,\n    except as provided in the Exclusions section.\n\n    PROPERTY INSURED:\n    Building situated at 664 Main Street, Harare\n    Sum Insured: $138,305\n\n    PREMIUM: $625 annually\n    DEDUCTIBLE: $189 per occurrence\n\n    CLAIMS PROCEDURE:\n    All claims must be reported within 48 hours with supporting documentation.",
+      "category": "policy_wording"
+    },
+    {
+      "text": "BROKER COMMISSION STATEMENT\n\n    Broker: XYZ Risk Solutions\n    Statement Period: April 2026 to May 2026\n\n    PREMIUM SUMMARY:\n    Gross Written Premium: $540,216\n    Less Returns/Cancellations: $25,267\n    Net Written Premium: $2,026,036\n\n    COMMISSION CALCULATION:\n    Motor (20%): $18\n    Property (12%): $21\n    Life (20%): $16\n\n    TOTAL COMMISSION DUE: $279,827\n\n    Less Previous Advances: $65,447\n\n    NET PAYABLE: $406,980\n\n    Payment will be made via bank transfer within 7 working days.",
+      "category": "broker_agreement"
+    },
+    {
+      "text": "BROKER COMMISSION STATEMENT\n\n    Broker: ABC Insurance Brokers\n    Statement Period: April 2026 to May 2026\n\n    PREMIUM SUMMARY:\n    Gross Written Premium: $4,577,140\n    Less Returns/Cancellations: $44,428\n    Net Written Premium: $4,193,842\n\n    COMMISSION CALCULATION:\n    Motor (12%): $13\n    Property (15%): $17\n    Life (18%): $19\n\n    TOTAL COMMISSION DUE: $243,956\n\n    Less Previous Advances: $66,208\n\n    NET PAYABLE: $418,184\n\n    Payment will be made via bank transfer within 7 working days.",
+      "category": "broker_agreement"
+    },
+    {
+      "text": "BROKER COMMISSION STATEMENT\n\n    Broker: Prime Brokers Limited\n    Statement Period: April 2026 to May 2026\n\n    PREMIUM SUMMARY:\n    Gross Written Premium: $3,965,468\n    Less Returns/Cancellations: $16,147\n    Net Written Premium: $4,897,689\n\n    COMMISSION CALCULATION:\n    Motor (14%): $12\n    Property (18%): $12\n    Life (18%): $17\n\n    TOTAL COMMISSION DUE: $223,879\n\n    Less Previous Advances: $28,798\n\n    NET PAYABLE: $307,258\n\n    Payment will be made via bank transfer within 7 working days.",
+      "category": "broker_agreement"
+    },
+    {
+      "text": "MOTOR VEHICLE INSURANCE POLICY\n\n    Policy Number: POL-6178\n\n    SECTION A - COVERAGE\n    This policy provides coverage for loss or damage to the insured vehicle arising from:\n    (a) Collision or overturning\n    (b) Fire, explosion, or lightning\n    (c) Theft or attempted theft\n    (d) Malicious damage\n\n    SECTION B - EXCLUSIONS\n    The Insurer shall not be liable for:\n    1. Wear and tear\n    2. Mechanical or electrical breakdown\n    3. Driving under the influence of alcohol or drugs\n\n    SECTION C - CONDITIONS\n    Sum Insured: $305,805\n    Premium: $2,033 per annum\n    Excess: $235 per claim\n\n    The Insured must notify any claim within 30 days of the incident.",
+      "category": "policy_wording"
+    },
+    {
+      "text": "MOTOR VEHICLE INSURANCE POLICY\n\n    Policy Number: POL-7711\n\n    SECTION A - COVERAGE\n    This policy provides coverage for loss or damage to the insured vehicle arising from:\n    (a) Collision or overturning\n    (b) Fire, explosion, or lightning\n    (c) Theft or attempted theft\n    (d) Malicious damage\n\n    SECTION B - EXCLUSIONS\n    The Insurer shall not be liable for:\n    1. Wear and tear\n    2. Mechanical or electrical breakdown\n    3. Driving under the influence of alcohol or drugs\n\n    SECTION C - CONDITIONS\n    Sum Insured: $188,586\n    Premium: $4,862 per annum\n    Excess: $370 per claim\n\n    The Insured must notify any claim within 30 days of the incident.",
+      "category": "policy_wording"
+    },
+    {
+      "text": "BROKER COMMISSION STATEMENT\n\n    Broker: Prime Brokers Limited\n    Statement Period: April 2026 to May 2026\n\n    PREMIUM SUMMARY:\n    Gross Written Premium: $1,654,678\n    Less Returns/Cancellations: $76,817\n    Net Written Premium: $1,929,518\n\n    COMMISSION CALCULATION:\n    Motor (13%): $11\n    Property (18%): $18\n    Life (17%): $20\n\n    TOTAL COMMISSION DUE: $458,311\n\n    Less Previous Advances: $66,848\n\n    NET PAYABLE: $315,882\n\n    Payment will be made via bank transfer within 7 working days.",
+      "category": "broker_agreement"
+    },
+    {
+      "text": "PROPERTY ALL RISKS INSURANCE POLICY\n\n    INSURED: John Doe\n    POLICY PERIOD: 26/05/2025 to 29/01/2027\n\n    COVERAGE:\n    This policy covers all risks of physical loss or damage to the property described below,\n    except as provided in the Exclusions section.\n\n    PROPERTY INSURED:\n    Building situated at 379 Main Street, Harare\n    Sum Insured: $494,326\n\n    PREMIUM: $2,838 annually\n    DEDUCTIBLE: $346 per occurrence\n\n    CLAIMS PROCEDURE:\n    All claims must be reported within 48 hours with supporting documentation.",
+      "category": "policy_wording"
+    },
+    {
+      "text": "LIFE ASSURANCE POLICY\n\n    Life Assured: Jane Smith\n    Policy Number: POL-4934\n\n    BENEFITS:\n    Death Benefit: $81,088\n    Maturity Benefit: $280,572\n\n    PREMIUMS:\n    Monthly Premium: $4,907\n    Premium Payment Term: 25 years\n\n    EXCLUSIONS:\n    Death by suicide within 12 months of policy commencement\n    Death due to engaging in hazardous activities not disclosed\n\n    BENEFICIARY DESIGNATION:\n    The Life Assured may nominate beneficiaries who shall receive the death benefit.",
+      "category": "policy_wording"
+    },
+    {
+      "text": "CLAIM ASSESSMENT REPORT\n\n    Claim Reference: REF-74804\n    Insured: John Doe\n\n    ASSESSMENT SUMMARY:\n    Loss Adjustor: Sarah Assessment Ltd\n    Inspection Date: 11/04/2026\n\n    FINDINGS:\n    Nature of Loss: Natural disaster\n    Cause: Electrical fault\n\n    VALUATION:\n    Sum Insured: $364,669\n    Assessed Loss: $1,885\n    Less Depreciation: $4,401\n    Less Excess: $955\n\n    NET CLAIM AMOUNT: $36,621\n\n    RECOMMENDATION:\n    Further investigation required\n\n    This claim is approved.\n\n    Signed: _____________\n    Date: 11/04/2026",
+      "category": "claims_documentation"
+    },
+    {
+      "text": "CLAIM SETTLEMENT ADVICE\n\n    Settlement Number: SET-8355\n    Claim Number: CLM-3379\n\n    CLAIMANT: Robert Brown\n\n    SETTLEMENT BREAKDOWN:\n    Assessed Claim Value: $4,125\n    Less Policy Excess: $646\n    Less Salvage Recovery: $1,754\n\n    TOTAL PAYABLE: $20,130\n\n    PAYMENT DETAILS:\n    Method: EFT\n    Bank: FBC Bank\n    Account Number: 61552-6124\n\n    Payment Date: 11/04/2026\n\n    This settlement is in full and final discharge of all liability under Policy POL-6643.",
+      "category": "claims_documentation"
+    },
+    {
+      "text": "INSURANCE BROKERAGE AGREEMENT\n\n    Between: Zimre Holdings (the Insurer)\n    And: XYZ Risk Solutions (the Broker)\n\n    Effective Date: 11/04/2026\n\n    ARTICLE 1 - APPOINTMENT\n    The Insurer appoints the Broker as its authorized insurance broker for the territory of Zimbabwe.\n\n    ARTICLE 2 - BROKER RESPONSIBILITIES\n    The Broker shall:\n    (a) Solicit and procure insurance business\n    (b) Issue cover notes and policy documents\n    (c) Collect premiums from policyholders\n    (d) Remit premiums to the Insurer within 14 days\n\n    ARTICLE 3 - COMMISSION\n    Commission Rate:\n    - Motor Insurance: 20%\n    - Property Insurance: 18%\n    - Life Insurance: 24%\n\n    Commission shall be paid monthly within 14 days of premium receipt.\n\n    ARTICLE 4 - AUTHORITY LIMITS\n    Maximum Sum Insured per Risk: $128,003\n    Binding Authority: $106,879\n\n    ARTICLE 5 - TERMINATION\n    Either party may terminate this agreement with 60 days written notice.",
+      "category": "broker_agreement"
+    },
+    {
+      "text": "BROKER COMMISSION STATEMENT\n\n    Broker: XYZ Risk Solutions\n    Statement Period: April 2026 to May 2026\n\n    PREMIUM SUMMARY:\n    Gross Written Premium: $1,970,422\n    Less Returns/Cancellations: $15,387\n    Net Written Premium: $2,420,557\n\n    COMMISSION CALCULATION:\n    Motor (17%): $10\n    Property (20%): $18\n    Life (29%): $17\n\n    TOTAL COMMISSION DUE: $463,203\n\n    Less Previous Advances: $22,149\n\n    NET PAYABLE: $230,784\n\n    Payment will be made via bank transfer within 7 working days.",
+      "category": "broker_agreement"
+    },
+    {
+      "text": "REINSURANCE TREATY\n\n    Between: Old Mutual (the Reinsured)\n    And: Swiss Re (the Reinsurer)\n\n    Treaty Type: Quota Share Treaty\n    Treaty Period: 20/03/2026 to 15/09/2026\n\n    ARTICLE 1 - SCOPE\n    The Reinsurer agrees to accept 35% of all policies written by the Reinsured\n    under the following classes of business:\n    - Motor Insurance\n    - Property Insurance\n    - Liability Insurance\n\n    ARTICLE 2 - RETENTION AND CESSION\n    The Reinsured shall retain 71% of each risk and cede the balance to the Reinsurer.\n\n    ARTICLE 3 - PREMIUM\n    Reinsurance Premium: 15% of gross written premium\n    Commission: 18%\n\n    ARTICLE 4 - CLAIMS\n    The Reinsurer shall pay its proportionate share of all claims within 30 days of settlement by the Reinsured.",
+      "category": "reinsurance_treaty"
+    },
+    {
+      "text": "EXCESS OF LOSS REINSURANCE AGREEMENT\n\n    Reinsured: Old Mutual\n    Reinsurer: Swiss Re\n\n    Treaty Year: 2026\n\n    SECTION 1 - LIMIT AND RETENTION\n    Layer: $1,186,487 xs $91,540\n    The Reinsurer shall indemnify the Reinsured for the amount of each loss\n    in excess of $91,540 up to $1,186,487.\n\n    SECTION 2 - PREMIUM\n    Provisional Premium: $182,416\n    Minimum Premium: $62,102\n    Deposit Premium due: 11/04/2026\n\n    SECTION 3 - CLAIMS COOPERATION\n    The Reinsured shall notify the Reinsurer of all claims exceeding $118,074\n    within 72 hours.\n\n    SECTION 4 - ARBITRATION\n    Any disputes shall be resolved by arbitration in accordance with ARIAS rules.",
+      "category": "reinsurance_treaty"
+    },
+    {
+      "text": "EXCESS OF LOSS REINSURANCE AGREEMENT\n\n    Reinsured: Old Mutual\n    Reinsurer: Swiss Re\n\n    Treaty Year: 2026\n\n    SECTION 1 - LIMIT AND RETENTION\n    Layer: $1,089,436 xs $173,169\n    The Reinsurer shall indemnify the Reinsured for the amount of each loss\n    in excess of $173,169 up to $1,089,436.\n\n    SECTION 2 - PREMIUM\n    Provisional Premium: $171,983\n    Minimum Premium: $29,371\n    Deposit Premium due: 11/04/2026\n\n    SECTION 3 - CLAIMS COOPERATION\n    The Reinsured shall notify the Reinsurer of all claims exceeding $160,058\n    within 72 hours.\n\n    SECTION 4 - ARBITRATION\n    Any disputes shall be resolved by arbitration in accordance with ARIAS rules.",
+      "category": "reinsurance_treaty"
+    },
+    {
+      "text": "PROPERTY ALL RISKS INSURANCE POLICY\n\n    INSURED: ABC Limited\n    POLICY PERIOD: 18/03/2026 to 27/12/2026\n\n    COVERAGE:\n    This policy covers all risks of physical loss or damage to the property described below,\n    except as provided in the Exclusions section.\n\n    PROPERTY INSURED:\n    Building situated at 546 Main Street, Harare\n    Sum Insured: $357,315\n\n    PREMIUM: $1,486 annually\n    DEDUCTIBLE: $188 per occurrence\n\n    CLAIMS PROCEDURE:\n    All claims must be reported within 48 hours with supporting documentation.",
+      "category": "policy_wording"
+    },
+    {
+      "text": "MOTOR VEHICLE CLAIM FORM\n\n    Claim Number: CLM-3729\n    Policy Number: POL-2092\n    Date of Loss: 15/03/2026\n\n    CLAIMANT DETAILS:\n    Name: Robert Brown\n    Contact: +263 770 347 274\n\n    INCIDENT DETAILS:\n    Date and Time: 01/02/2026 23:57\n    Location: Belvedere\n    Description: Theft of vehicle\n\n    VEHICLE DAMAGE:\n    Make/Model: Toyota Corolla\n    Registration: A316-622\n    Estimated Repair Cost: $9,234\n\n    POLICE REPORT:\n    Report Number: PR10945\n    Attending Officer: Sgt. Moyo\n\n    DECLARATION:\n    I declare that the information provided is true and accurate to the best of my knowledge.\n\n    Signature: _______________\n    Date: 11/04/2026",
+      "category": "claims_documentation"
+    },
+    {
+      "text": "EXCESS OF LOSS REINSURANCE AGREEMENT\n\n    Reinsured: Zimre Holdings\n    Reinsurer: Munich Re\n\n    Treaty Year: 2026\n\n    SECTION 1 - LIMIT AND RETENTION\n    Layer: $1,713,468 xs $85,835\n    The Reinsurer shall indemnify the Reinsured for the amount of each loss\n    in excess of $85,835 up to $1,713,468.\n\n    SECTION 2 - PREMIUM\n    Provisional Premium: $93,569\n    Minimum Premium: $45,317\n    Deposit Premium due: 11/04/2026\n\n    SECTION 3 - CLAIMS COOPERATION\n    The Reinsured shall notify the Reinsurer of all claims exceeding $125,687\n    within 72 hours.\n\n    SECTION 4 - ARBITRATION\n    Any disputes shall be resolved by arbitration in accordance with ARIAS rules.",
+      "category": "reinsurance_treaty"
+    },
+    {
+      "text": "REINSURANCE TREATY\n\n    Between: First Mutual Zimbabwe (the Reinsured)\n    And: Swiss Re (the Reinsurer)\n\n    Treaty Type: Quota Share Treaty\n    Treaty Period: 20/01/2026 to 14/04/2026\n\n    ARTICLE 1 - SCOPE\n    The Reinsurer agrees to accept 30% of all policies written by the Reinsured\n    under the following classes of business:\n    - Motor Insurance\n    - Property Insurance\n    - Liability Insurance\n\n    ARTICLE 2 - RETENTION AND CESSION\n    The Reinsured shall retain 62% of each risk and cede the balance to the Reinsurer.\n\n    ARTICLE 3 - PREMIUM\n    Reinsurance Premium: 8% of gross written premium\n    Commission: 21%\n\n    ARTICLE 4 - CLAIMS\n    The Reinsurer shall pay its proportionate share of all claims within 30 days of settlement by the Reinsured.",
+      "category": "reinsurance_treaty"
+    },
+    {
+      "text": "CLAIM ASSESSMENT REPORT\n\n    Claim Reference: REF-82509\n    Insured: Jane Smith\n\n    ASSESSMENT SUMMARY:\n    Loss Adjustor: Sarah Assessment Ltd\n    Inspection Date: 11/04/2026\n\n    FINDINGS:\n    Nature of Loss: Natural disaster\n    Cause: Weather\n\n    VALUATION:\n    Sum Insured: $19,718\n    Assessed Loss: $19,275\n    Less Depreciation: $4,331\n    Less Excess: $152\n\n    NET CLAIM AMOUNT: $36,911\n\n    RECOMMENDATION:\n    Claim approved for settlement\n\n    This claim is partially approved.\n\n    Signed: _____________\n    Date: 11/04/2026",
+      "category": "claims_documentation"
+    },
+    {
+      "text": "EXCESS OF LOSS REINSURANCE AGREEMENT\n\n    Reinsured: Old Mutual\n    Reinsurer: Swiss Re\n\n    Treaty Year: 2026\n\n    SECTION 1 - LIMIT AND RETENTION\n    Layer: $1,802,115 xs $157,141\n    The Reinsurer shall indemnify the Reinsured for the amount of each loss\n    in excess of $157,141 up to $1,802,115.\n\n    SECTION 2 - PREMIUM\n    Provisional Premium: $152,958\n    Minimum Premium: $77,348\n    Deposit Premium due: 11/04/2026\n\n    SECTION 3 - CLAIMS COOPERATION\n    The Reinsured shall notify the Reinsurer of all claims exceeding $66,064\n    within 72 hours.\n\n    SECTION 4 - ARBITRATION\n    Any disputes shall be resolved by arbitration in accordance with ARIAS rules.",
+      "category": "reinsurance_treaty"
+    },
+    {
+      "text": "CLAIM SETTLEMENT ADVICE\n\n    Settlement Number: SET-8841\n    Claim Number: CLM-2961\n\n    CLAIMANT: Jane Smith\n\n    SETTLEMENT BREAKDOWN:\n    Assessed Claim Value: $30,453\n    Less Policy Excess: $282\n    Less Salvage Recovery: $98\n\n    TOTAL PAYABLE: $7,962\n\n    PAYMENT DETAILS:\n    Method: EFT\n    Bank: NMB Bank\n    Account Number: 84451-4360\n\n    Payment Date: 11/04/2026\n\n    This settlement is in full and final discharge of all liability under Policy POL-1247.",
+      "category": "claims_documentation"
+    },
+    {
+      "text": "REINSURANCE TREATY\n\n    Between: Zimre Holdings (the Reinsured)\n    And: Hannover Re (the Reinsurer)\n\n    Treaty Type: Quota Share Treaty\n    Treaty Period: 29/12/2025 to 22/01/2027\n\n    ARTICLE 1 - SCOPE\n    The Reinsurer agrees to accept 46% of all policies written by the Reinsured\n    under the following classes of business:\n    - Motor Insurance\n    - Property Insurance\n    - Liability Insurance\n\n    ARTICLE 2 - RETENTION AND CESSION\n    The Reinsured shall retain 61% of each risk and cede the balance to the Reinsurer.\n\n    ARTICLE 3 - PREMIUM\n    Reinsurance Premium: 11% of gross written premium\n    Commission: 11%\n\n    ARTICLE 4 - CLAIMS\n    The Reinsurer shall pay its proportionate share of all claims within 30 days of settlement by the Reinsured.",
+      "category": "reinsurance_treaty"
+    },
+    {
+      "text": "PROPERTY ALL RISKS INSURANCE POLICY\n\n    INSURED: Jane Smith\n    POLICY PERIOD: 02/05/2025 to 19/11/2026\n\n    COVERAGE:\n    This policy covers all risks of physical loss or damage to the property described below,\n    except as provided in the Exclusions section.\n\n    PROPERTY INSURED:\n    Building situated at 219 Main Street, Harare\n    Sum Insured: $367,650\n\n    PREMIUM: $4,012 annually\n    DEDUCTIBLE: $942 per occurrence\n\n    CLAIMS PROCEDURE:\n    All claims must be reported within 48 hours with supporting documentation.",
+      "category": "policy_wording"
+    },
+    {
+      "text": "REINSURANCE TREATY\n\n    Between: First Mutual Zimbabwe (the Reinsured)\n    And: Hannover Re (the Reinsurer)\n\n    Treaty Type: Quota Share Treaty\n    Treaty Period: 15/07/2025 to 23/03/2027\n\n    ARTICLE 1 - SCOPE\n    The Reinsurer agrees to accept 20% of all policies written by the Reinsured\n    under the following classes of business:\n    - Motor Insurance\n    - Property Insurance\n    - Liability Insurance\n\n    ARTICLE 2 - RETENTION AND CESSION\n    The Reinsured shall retain 62% of each risk and cede the balance to the Reinsurer.\n\n    ARTICLE 3 - PREMIUM\n    Reinsurance Premium: 15% of gross written premium\n    Commission: 18%\n\n    ARTICLE 4 - CLAIMS\n    The Reinsurer shall pay its proportionate share of all claims within 30 days of settlement by the Reinsured.",
+      "category": "reinsurance_treaty"
+    },
+    {
+      "text": "MOTOR VEHICLE INSURANCE POLICY\n\n    Policy Number: POL-4269\n\n    SECTION A - COVERAGE\n    This policy provides coverage for loss or damage to the insured vehicle arising from:\n    (a) Collision or overturning\n    (b) Fire, explosion, or lightning\n    (c) Theft or attempted theft\n    (d) Malicious damage\n\n    SECTION B - EXCLUSIONS\n    The Insurer shall not be liable for:\n    1. Wear and tear\n    2. Mechanical or electrical breakdown\n    3. Driving under the influence of alcohol or drugs\n\n    SECTION C - CONDITIONS\n    Sum Insured: $211,927\n    Premium: $1,382 per annum\n    Excess: $389 per claim\n\n    The Insured must notify any claim within 30 days of the incident.",
+      "category": "policy_wording"
+    },
+    {
+      "text": "BROKER COMMISSION STATEMENT\n\n    Broker: Prime Brokers Limited\n    Statement Period: April 2026 to May 2026\n\n    PREMIUM SUMMARY:\n    Gross Written Premium: $3,153,907\n    Less Returns/Cancellations: $72,181\n    Net Written Premium: $4,593,408\n\n    COMMISSION CALCULATION:\n    Motor (12%): $10\n    Property (14%): $20\n    Life (25%): $25\n\n    TOTAL COMMISSION DUE: $217,017\n\n    Less Previous Advances: $81,094\n\n    NET PAYABLE: $393,485\n\n    Payment will be made via bank transfer within 7 working days.",
+      "category": "broker_agreement"
+    },
+    {
+      "text": "CLAIM SETTLEMENT ADVICE\n\n    Settlement Number: SET-9482\n    Claim Number: CLM-1925\n\n    CLAIMANT: Robert Brown\n\n    SETTLEMENT BREAKDOWN:\n    Assessed Claim Value: $27,872\n    Less Policy Excess: $212\n    Less Salvage Recovery: $623\n\n    TOTAL PAYABLE: $9,317\n\n    PAYMENT DETAILS:\n    Method: Cheque\n    Bank: FBC Bank\n    Account Number: 95823-1185\n\n    Payment Date: 11/04/2026\n\n    This settlement is in full and final discharge of all liability under Policy POL-5334.",
+      "category": "claims_documentation"
+    },
+    {
+      "text": "MOTOR VEHICLE INSURANCE POLICY\n\n    Policy Number: POL-3485\n\n    SECTION A - COVERAGE\n    This policy provides coverage for loss or damage to the insured vehicle arising from:\n    (a) Collision or overturning\n    (b) Fire, explosion, or lightning\n    (c) Theft or attempted theft\n    (d) Malicious damage\n\n    SECTION B - EXCLUSIONS\n    The Insurer shall not be liable for:\n    1. Wear and tear\n    2. Mechanical or electrical breakdown\n    3. Driving under the influence of alcohol or drugs\n\n    SECTION C - CONDITIONS\n    Sum Insured: $168,462\n    Premium: $4,369 per annum\n    Excess: $542 per claim\n\n    The Insured must notify any claim within 30 days of the incident.",
+      "category": "policy_wording"
+    },
+    {
+      "text": "CLAIM ASSESSMENT REPORT\n\n    Claim Reference: REF-78475\n    Insured: John Doe\n\n    ASSESSMENT SUMMARY:\n    Loss Adjustor: Peter Loss Adjustor\n    Inspection Date: 11/04/2026\n\n    FINDINGS:\n    Nature of Loss: Fire\n    Cause: Electrical fault\n\n    VALUATION:\n    Sum Insured: $44,422\n    Assessed Loss: $32,294\n    Less Depreciation: $4,931\n    Less Excess: $534\n\n    NET CLAIM AMOUNT: $20,607\n\n    RECOMMENDATION:\n    Further investigation required\n\n    This claim requires further review.\n\n    Signed: _____________\n    Date: 11/04/2026",
+      "category": "claims_documentation"
+    },
+    {
+      "text": "CLAIM SETTLEMENT ADVICE\n\n    Settlement Number: SET-4022\n    Claim Number: CLM-2108\n\n    CLAIMANT: Jane Smith\n\n    SETTLEMENT BREAKDOWN:\n    Assessed Claim Value: $49,716\n    Less Policy Excess: $394\n    Less Salvage Recovery: $916\n\n    TOTAL PAYABLE: $15,697\n\n    PAYMENT DETAILS:\n    Method: Cheque\n    Bank: FBC Bank\n    Account Number: 92055-8991\n\n    Payment Date: 11/04/2026\n\n    This settlement is in full and final discharge of all liability under Policy POL-7903.",
+      "category": "claims_documentation"
+    },
+    {
+      "text": "REINSURANCE TREATY\n\n    Between: Old Mutual (the Reinsured)\n    And: Hannover Re (the Reinsurer)\n\n    Treaty Type: Quota Share Treaty\n    Treaty Period: 21/09/2025 to 06/07/2026\n\n    ARTICLE 1 - SCOPE\n    The Reinsurer agrees to accept 40% of all policies written by the Reinsured\n    under the following classes of business:\n    - Motor Insurance\n    - Property Insurance\n    - Liability Insurance\n\n    ARTICLE 2 - RETENTION AND CESSION\n    The Reinsured shall retain 51% of each risk and cede the balance to the Reinsurer.\n\n    ARTICLE 3 - PREMIUM\n    Reinsurance Premium: 15% of gross written premium\n    Commission: 13%\n\n    ARTICLE 4 - CLAIMS\n    The Reinsurer shall pay its proportionate share of all claims within 30 days of settlement by the Reinsured.",
+      "category": "reinsurance_treaty"
+    },
+    {
+      "text": "BROKER COMMISSION STATEMENT\n\n    Broker: ABC Insurance Brokers\n    Statement Period: April 2026 to May 2026\n\n    PREMIUM SUMMARY:\n    Gross Written Premium: $3,747,822\n    Less Returns/Cancellations: $94,194\n    Net Written Premium: $1,703,466\n\n    COMMISSION CALCULATION:\n    Motor (20%): $18\n    Property (14%): $18\n    Life (28%): $26\n\n    TOTAL COMMISSION DUE: $83,176\n\n    Less Previous Advances: $96,135\n\n    NET PAYABLE: $227,295\n\n    Payment will be made via bank transfer within 7 working days.",
+      "category": "broker_agreement"
+    },
+    {
+      "text": "INSURANCE BROKERAGE AGREEMENT\n\n    Between: Zimre Holdings (the Insurer)\n    And: Prime Brokers Limited (the Broker)\n\n    Effective Date: 11/04/2026\n\n    ARTICLE 1 - APPOINTMENT\n    The Insurer appoints the Broker as its authorized insurance broker for the territory of Zimbabwe.\n\n    ARTICLE 2 - BROKER RESPONSIBILITIES\n    The Broker shall:\n    (a) Solicit and procure insurance business\n    (b) Issue cover notes and policy documents\n    (c) Collect premiums from policyholders\n    (d) Remit premiums to the Insurer within 30 days\n\n    ARTICLE 3 - COMMISSION\n    Commission Rate:\n    - Motor Insurance: 12%\n    - Property Insurance: 18%\n    - Life Insurance: 22%\n\n    Commission shall be paid monthly within 7 days of premium receipt.\n\n    ARTICLE 4 - AUTHORITY LIMITS\n    Maximum Sum Insured per Risk: $475,214\n    Binding Authority: $72,894\n\n    ARTICLE 5 - TERMINATION\n    Either party may terminate this agreement with 30 days written notice.",
+      "category": "broker_agreement"
+    },
+    {
+      "text": "LIFE ASSURANCE POLICY\n\n    Life Assured: Jane Smith\n    Policy Number: POL-1111\n\n    BENEFITS:\n    Death Benefit: $178,576\n    Maturity Benefit: $256,338\n\n    PREMIUMS:\n    Monthly Premium: $4,176\n    Premium Payment Term: 20 years\n\n    EXCLUSIONS:\n    Death by suicide within 12 months of policy commencement\n    Death due to engaging in hazardous activities not disclosed\n\n    BENEFICIARY DESIGNATION:\n    The Life Assured may nominate beneficiaries who shall receive the death benefit.",
+      "category": "policy_wording"
+    },
+    {
+      "text": "LIFE ASSURANCE POLICY\n\n    Life Assured: Robert Brown\n    Policy Number: POL-6417\n\n    BENEFITS:\n    Death Benefit: $272,278\n    Maturity Benefit: $285,006\n\n    PREMIUMS:\n    Monthly Premium: $645\n    Premium Payment Term: 10 years\n\n    EXCLUSIONS:\n    Death by suicide within 12 months of policy commencement\n    Death due to engaging in hazardous activities not disclosed\n\n    BENEFICIARY DESIGNATION:\n    The Life Assured may nominate beneficiaries who shall receive the death benefit.",
+      "category": "policy_wording"
+    },
+    {
+      "text": "REINSURANCE TREATY\n\n    Between: Zimre Holdings (the Reinsured)\n    And: Hannover Re (the Reinsurer)\n\n    Treaty Type: Quota Share Treaty\n    Treaty Period: 15/12/2025 to 16/05/2026\n\n    ARTICLE 1 - SCOPE\n    The Reinsurer agrees to accept 31% of all policies written by the Reinsured\n    under the following classes of business:\n    - Motor Insurance\n    - Property Insurance\n    - Liability Insurance\n\n    ARTICLE 2 - RETENTION AND CESSION\n    The Reinsured shall retain 60% of each risk and cede the balance to the Reinsurer.\n\n    ARTICLE 3 - PREMIUM\n    Reinsurance Premium: 9% of gross written premium\n    Commission: 17%\n\n    ARTICLE 4 - CLAIMS\n    The Reinsurer shall pay its proportionate share of all claims within 30 days of settlement by the Reinsured.",
+      "category": "reinsurance_treaty"
+    },
+    {
+      "text": "LIFE ASSURANCE POLICY\n\n    Life Assured: John Doe\n    Policy Number: POL-5517\n\n    BENEFITS:\n    Death Benefit: $100,891\n    Maturity Benefit: $205,817\n\n    PREMIUMS:\n    Monthly Premium: $688\n    Premium Payment Term: 15 years\n\n    EXCLUSIONS:\n    Death by suicide within 12 months of policy commencement\n    Death due to engaging in hazardous activities not disclosed\n\n    BENEFICIARY DESIGNATION:\n    The Life Assured may nominate beneficiaries who shall receive the death benefit.",
+      "category": "policy_wording"
+    }
+  ],
+  "generated_at": "2026-04-11T21:57:36.654502+00:00",
+  "total_samples": 200,
+  "categories": [
+    "broker_agreement",
+    "policy_wording",
+    "reinsurance_treaty",
+    "claims_documentation"
+  ],
+  "samples_per_category": {
+    "broker_agreement": 50,
+    "policy_wording": 50,
+    "reinsurance_treaty": 50,
+    "claims_documentation": 50
+  }
+}

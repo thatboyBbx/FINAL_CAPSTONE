@@ -1,0 +1,304 @@
+{# Jinja2 partial — rendered inline via AJAX GET /insurer-intelligence/{id} #}
+{% if not profile %}
+<div style="color:var(--red);padding:20px;">Insurer not found.</div>
+{% else %}
+{% set ins = profile.insurer %}
+{% set fin = profile.latest_financials %}
+{% set claims = profile.latest_claims %}
+{% set sent = profile.sentiment_summary %}
+
+<div class="profile-panel" id="profilePanelInner">
+
+  <!-- Header -->
+  <div
+    style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:18px;flex-wrap:wrap;">
+    <div>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px;">
+        <h2 style="font-size:1.15rem;font-weight:700;color:var(--text);margin:0;">{{ ins.name }}</h2>
+        {% if ins.short_name and ins.short_name != ins.name %}
+        <span style="font-size:0.80rem;color:var(--muted2);">({{ ins.short_name }})</span>
+        {% endif %}
+        <span class="badge badge-neutral">{{ ins.category or '—' }}</span>
+        {% if ins.zse_listed %}
+        <span class="badge badge-gold">{{ ins.zse_ticker or 'ZSE' }}</span>
+        {% endif %}
+        {% if ins.icm_member %}
+        <span class="badge badge-positive">ICM</span>
+        {% endif %}
+      </div>
+      <div style="font-size:0.80rem;color:var(--muted);display:flex;gap:16px;flex-wrap:wrap;">
+        <span>
+          <span
+            class="status-dot {% if ins.ipec_registration_status == 'active' %}green{% elif ins.ipec_registration_status == 'suspended' %}amber{% else %}red{% endif %}"
+            style="margin-right:4px;"></span>
+          {{ ins.ipec_registration_status or 'active' }}
+        </span>
+        {% if ins.head_office_city %}<span>{{ ins.head_office_city }}</span>{% endif %}
+        {% if ins.parent_group %}<span>Group: {{ ins.parent_group }}</span>{% endif %}
+        {% if ins.website %}<a href="{{ ins.website }}" target="_blank" style="color:var(--gold);">Website ↗</a>{% endif
+        %}
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;">
+      <button class="btn btn-primary" onclick="loadPrediction({{ ins.id }})" id="predictBtn-{{ ins.id }}">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+        </svg>
+        Predict
+      </button>
+      <button class="btn" onclick="document.getElementById('profilePanel').style.display='none'"
+        style="padding:7px 12px;">✕</button>
+    </div>
+  </div>
+
+  <!-- Risk flags -->
+  {% if profile.risk_flags %}
+  <div style="margin-bottom:18px;">
+    <div
+      style="font-size:0.72rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;">
+      Risk Flags</div>
+    <div class="flag-list">
+      {% for flag in profile.risk_flags %}
+      <div class="flag-item">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
+          <line x1="12" y1="9" x2="12" y2="13" />
+          <line x1="12" y1="17" x2="12.01" y2="17" />
+        </svg>
+        {{ flag }}
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Settlement Score Gauge + Latest Financials -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px;">
+
+    <!-- Settlement Score -->
+    <div>
+      <div
+        style="font-size:0.72rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">
+        Settlement Power Score</div>
+      {% set sps = profile.settlement_power_score %}
+      {% if sps is not none %}
+      {% set sps_f = sps | float %}
+      <div
+        style="font-size:2.2rem;font-weight:700;letter-spacing:-0.04em;color:{% if sps_f >= 70 %}var(--green){% elif sps_f >= 45 %}var(--amber){% else %}var(--red){% endif %};">
+        {{ sps_f | round(1) }}</div>
+      <div style="font-size:0.78rem;color:var(--muted);margin-bottom:8px;">out of 100</div>
+      <div
+        class="score-meter prog-bar {% if sps_f >= 70 %}prog-green{% elif sps_f >= 45 %}prog-amber{% else %}prog-red{% endif %}">
+        <div class="prog-fill score-fill" style="width:{{ sps_f }}%;"></div>
+      </div>
+      <div style="font-size:0.75rem;color:var(--muted);margin-top:6px;">
+        {% if sps_f >= 75 %}Strong settlement capacity{% elif sps_f >= 50 %}Moderate settlement capacity{% else
+        %}Potential settlement stress{% endif %}
+      </div>
+      {% else %}
+      <div id="gaugeChart-{{ ins.id }}" style="height:180px;"></div>
+      <div style="color:var(--muted2);font-size:0.82rem;">Score not yet computed — trigger a prediction.</div>
+      {% endif %}
+    </div>
+
+    <!-- Latest Financials Stats -->
+    <div>
+      <div
+        style="font-size:0.72rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">
+        Latest Financials
+        {% if fin.period_label %}<span style="font-weight:400;color:var(--muted2);margin-left:6px;">{{ fin.period_label
+          }}</span>{% endif %}
+      </div>
+      {% macro fmt_usd(val) %}{% if val %}${{ '{:,.0f}'.format(val) }}{% else %}—{% endif %}{% endmacro %}
+      <div class="stat-row"><span class="stat-label">Total Revenue</span><span class="stat-value">{{
+          fmt_usd(fin.total_revenue_usd) }}</span></div>
+      <div class="stat-row"><span class="stat-label">Total Assets</span><span class="stat-value">{{
+          fmt_usd(fin.total_assets_usd) }}</span></div>
+      <div class="stat-row"><span class="stat-label">Capital Position</span><span class="stat-value">{{
+          fmt_usd(fin.capital_position_usd) }}</span></div>
+      <div class="stat-row"><span class="stat-label">Capital Adequacy</span>
+        <span
+          class="stat-value {% if fin.capital_adequacy_ratio and fin.capital_adequacy_ratio | float >= 1.0 %}{% else %}{% endif %}">
+          {% if fin.capital_adequacy_ratio %}{{ (fin.capital_adequacy_ratio | float) | round(2) }}x{% else %}—{% endif
+          %}
+        </span>
+      </div>
+      <div class="stat-row"><span class="stat-label">Profit After Tax</span><span class="stat-value">{{
+          fmt_usd(fin.profit_after_tax_usd) }}</span></div>
+      <div class="stat-row"><span class="stat-label">Market Share</span><span class="stat-value">{% if
+          fin.market_share_pct %}{{ (fin.market_share_pct | float) | round(2) }}%{% else %}—{% endif %}</span></div>
+    </div>
+
+  </div>
+
+  <!-- Financial trend chart -->
+  {% if profile.financial_trend | length > 1 %}
+  <div style="margin-bottom:18px;">
+    <div
+      style="font-size:0.72rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">
+      Financial Trend</div>
+    <div id="trendChart-{{ ins.id }}" style="height:180px;"></div>
+  </div>
+  {% endif %}
+
+  <!-- Sentiment + Recent News -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px;">
+
+    <!-- Sentiment Summary -->
+    <div>
+      <div
+        style="font-size:0.72rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">
+        30-Day Sentiment</div>
+      {% if sent.avg_score_30d is not none %}
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+        <span class="badge badge-{{ sent.label_30d or 'neutral' }}">{{ sent.label_30d or 'neutral' }}</span>
+        <span style="font-size:0.85rem;font-weight:600;color:var(--text);">{{ sent.avg_score_30d | round(3) }}</span>
+      </div>
+      {% else %}
+      <div style="color:var(--muted2);font-size:0.82rem;">No news data.</div>
+      {% endif %}
+    </div>
+
+    <!-- Claims Summary -->
+    <div>
+      <div
+        style="font-size:0.72rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">
+        Claims Metrics
+        {% if claims.period_label %}<span style="font-weight:400;color:var(--muted2);margin-left:6px;">{{
+          claims.period_label }}</span>{% endif %}
+      </div>
+      {% if claims %}
+      <div class="stat-row"><span class="stat-label">Total Policies</span><span class="stat-value">{{
+          claims.total_policies_count or '—' }}</span></div>
+      <div class="stat-row"><span class="stat-label">Complaints</span><span class="stat-value">{{
+          claims.complaints_count or '—' }}</span></div>
+      <div class="stat-row"><span class="stat-label">Resolution Rate</span>
+        <span class="stat-value">{% if claims.complaints_resolution_rate %}{{ (claims.complaints_resolution_rate |
+          float) | round(1) }}%{% else %}—{% endif %}</span>
+      </div>
+      <div class="stat-row"><span class="stat-label">Instalment Flag</span>
+        <span class="stat-value">{% if claims.claims_instalment_flag %}<span style="color:var(--red);">Yes</span>{% else
+          %}<span style="color:var(--green);">No</span>{% endif %}</span>
+      </div>
+      {% else %}
+      <div style="color:var(--muted2);font-size:0.82rem;">No claims data.</div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Recent news -->
+  {% if sent.recent_articles %}
+  <div>
+    <div
+      style="font-size:0.72rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">
+      Recent News</div>
+    <div style="display:flex;flex-direction:column;gap:8px;max-height:240px;overflow-y:auto;">
+      {% for article in sent.recent_articles %}
+      <div
+        style="border:1px solid var(--stroke);border-radius:var(--radius-xs);padding:10px 14px;background:var(--card);">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;">
+          <div style="font-size:0.83rem;font-weight:500;color:var(--text);line-height:1.4;">
+            {% if article.url %}
+            <a href="{{ article.url }}" target="_blank" style="color:inherit;text-decoration:none;">{{ article.title
+              }}</a>
+            {% else %}
+            {{ article.title }}
+            {% endif %}
+          </div>
+          <span class="badge badge-{{ article.sentiment_label or 'neutral' }}"
+            style="flex-shrink:0;font-size:0.65rem;">{{ article.sentiment_label or 'neutral' }}</span>
+        </div>
+        <div style="font-size:0.73rem;color:var(--muted2);margin-top:4px;">{{ article.published_date or '' }}</div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Prediction placeholder -->
+  <div id="predictionResult-{{ ins.id }}" style="margin-top:16px;display:none;"></div>
+
+</div>
+{% endif %}
+
+<script>
+  // Render trend chart if we have data
+  (function () {
+    {% if profile and profile.financial_trend | length > 1 %}
+    const trend = {{ profile.financial_trend | tojson
+  }};
+  const labels = trend.map(t => t.period_label || '');
+  const revenues = trend.map(t => t.total_revenue_usd || null);
+  const capRatio = trend.map(t => t.capital_adequacy_ratio || null);
+
+  function doRender() {
+    const traces = [];
+    if (revenues.some(v => v !== null)) {
+      traces.push({
+        name: 'Revenue USD', x: labels, y: revenues, type: 'scatter', mode: 'lines+markers',
+        line: { color: '#C9A84C', width: 2 }, marker: { size: 5 }, yaxis: 'y1',
+        hovertemplate: '<b>%{x}</b><br>Revenue: $%{y:,.0f}<extra></extra>'
+      });
+    }
+    if (capRatio.some(v => v !== null)) {
+      traces.push({
+        name: 'Cap Ratio', x: labels, y: capRatio, type: 'scatter', mode: 'lines+markers',
+        line: { color: '#60A5FA', width: 2, dash: 'dot' }, marker: { size: 4 }, yaxis: 'y2',
+        hovertemplate: '<b>%{x}</b><br>CAR: %{y:.2f}x<extra></extra>'
+      });
+    }
+    const layout = {
+      paper_bgcolor: 'transparent', plot_bgcolor: 'transparent',
+      margin: { l: 10, r: 40, t: 10, b: 30 },
+      xaxis: { gridcolor: 'rgba(255,255,255,.04)', color: 'rgba(237,237,232,.4)', tickfont: { size: 9 } },
+      yaxis: { gridcolor: 'rgba(255,255,255,.04)', color: 'rgba(237,237,232,.4)', tickfont: { size: 9 }, title: { text: 'Revenue', standoff: 4, font: { size: 9 } } },
+      yaxis2: { overlaying: 'y', side: 'right', color: 'rgba(96,165,250,.6)', tickfont: { size: 9 }, title: { text: 'CAR', standoff: 4, font: { size: 9 } } },
+      legend: { orientation: 'h', y: -0.15, font: { size: 10 }, bgcolor: 'transparent' },
+      font: { family: 'DM Sans,sans-serif', color: 'rgba(237,237,232,.8)' },
+    };
+    const chartId = 'trendChart-{{ ins.id if profile and profile.insurer else "0" }}';
+    if (document.getElementById(chartId) && typeof Plotly !== 'undefined') {
+      Plotly.react(chartId, traces, layout, { responsive: true, displayModeBar: false });
+    }
+  }
+  if (typeof Plotly !== 'undefined') doRender();
+  else window.addEventListener('load', doRender);
+  {% endif %}
+}) ();
+
+  function loadPrediction(id) {
+    const btn = document.getElementById('predictBtn-' + id);
+    if (btn) { btn.disabled = true; btn.innerHTML = '<span class="spin"></span> Predicting…'; }
+    const resultDiv = document.getElementById('predictionResult-' + id);
+    if (resultDiv) resultDiv.style.display = '';
+
+    fetch('/insurers/' + id + '/predict')
+      .then(r => r.json())
+      .then(data => {
+        if (resultDiv) {
+          const rev = data.revenue_forecast || {};
+          resultDiv.innerHTML = `
+          <div style="border:1px solid var(--gold-border);border-radius:var(--radius-xs);padding:14px 18px;background:var(--gold-soft);">
+            <div style="font-size:0.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;">Prediction Results</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+              <div>
+                <div style="font-size:0.73rem;color:var(--muted);margin-bottom:4px;">Settlement Power Score</div>
+                <div style="font-size:1.6rem;font-weight:700;color:${data.settlement_power_score >= 70 ? 'var(--green)' : data.settlement_power_score >= 45 ? 'var(--amber)' : 'var(--red)'};">${data.settlement_power_score}</div>
+              </div>
+              <div>
+                <div style="font-size:0.73rem;color:var(--muted);margin-bottom:4px;">Next Quarter Revenue (${rev.predicted_period || '?'})</div>
+                <div style="font-size:1.2rem;font-weight:700;color:var(--text);">$${rev.predicted_revenue_usd ? rev.predicted_revenue_usd.toLocaleString() : '—'}</div>
+                <div style="font-size:0.73rem;color:var(--muted2);">CI: $${rev.ci_lower?.toLocaleString() || '—'} – $${rev.ci_upper?.toLocaleString() || '—'}</div>
+                <div style="font-size:0.70rem;color:var(--muted2);margin-top:2px;">Model: ${rev.model_used || '—'}</div>
+              </div>
+            </div>
+          </div>`;
+        }
+        if (btn) { btn.disabled = false; btn.innerHTML = '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg> Predict'; }
+      })
+      .catch(err => {
+        if (resultDiv) resultDiv.innerHTML = `<div style="color:var(--red);padding:10px;">Prediction failed: ${err}</div>`;
+        if (btn) { btn.disabled = false; btn.innerHTML = 'Predict'; }
+      });
+  }
+</script>

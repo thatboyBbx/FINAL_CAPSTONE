@@ -1,0 +1,281 @@
+{% extends "base.html" %}
+{#
+  documents/upload.html — Drag-and-drop document upload
+  POST multipart to /documents/upload
+  Shows file type badge preview and progress bar during upload.
+#}
+{% block title %}Upload Document — InsureIntel Zimbabwe{% endblock %}
+
+{% block content %}
+<div class="px-8 py-7" style="max-width:680px;margin:0 auto">
+
+  <!-- Breadcrumb -->
+  <nav style="display:flex;align-items:center;gap:0.5rem;font-size:0.75rem;
+              color:var(--cosv);margin-bottom:1.5rem">
+    <a href="/home" style="color:var(--cosv);text-decoration:none">Home</a>
+    <span>/</span>
+    <a href="/documents/vault" style="color:var(--cosv);text-decoration:none">Documents</a>
+    <span>/</span>
+    <span style="color:var(--cp);font-weight:600">Upload</span>
+  </nav>
+
+  <h1 class="font-headline"
+      style="font-size:1.5rem;font-weight:800;color:var(--cos);margin:0 0 1.75rem">
+    📤 Upload Document
+  </h1>
+
+  <div class="glass-card" style="padding:2rem">
+
+    <!-- Drop Zone -->
+    <div id="drop-zone" class="drop-zone" onclick="document.getElementById('file-input').click()">
+      <span class="material-symbols-outlined"
+            style="font-size:48px;color:var(--cp);display:block;margin-bottom:0.75rem;
+                   opacity:0.6;font-variation-settings:'FILL' 1">upload_file</span>
+      <p style="color:var(--cos);font-weight:600;margin:0 0 0.375rem">
+        Drag & drop your PDF here
+      </p>
+      <p style="color:var(--cosv);font-size:0.8125rem;margin:0">
+        or click to browse — PDF files only, max 50 MB
+      </p>
+      <input id="file-input" type="file" accept=".pdf,application/pdf"
+             style="display:none" onchange="onFileSelect(event)">
+    </div>
+
+    <!-- File Preview Badge -->
+    <div id="file-preview" style="display:none;margin-top:1.25rem;
+         padding:0.875rem 1rem;background:rgba(212,175,55,0.06);
+         border:1px solid rgba(212,175,55,0.15);border-radius:10px;
+         display:none;align-items:center;gap:0.75rem">
+      <span class="material-symbols-outlined"
+            style="font-size:28px;color:var(--cp);flex-shrink:0;
+                   font-variation-settings:'FILL' 1">picture_as_pdf</span>
+      <div style="flex:1;min-width:0">
+        <p id="file-name" style="color:var(--cos);font-weight:600;font-size:0.875rem;
+                                  margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></p>
+        <p id="file-size" style="color:var(--cosv);font-size:0.75rem;margin:0"></p>
+      </div>
+      <span style="background:rgba(248,113,113,0.12);border:1px solid rgba(248,113,113,0.30);
+                   color:#f87171;border-radius:9999px;padding:0.1rem 0.5rem;font-size:0.65rem;
+                   font-weight:700;text-transform:uppercase;flex-shrink:0">PDF</span>
+      <button onclick="clearFile()"
+              style="background:none;border:none;color:var(--cosv);cursor:pointer;font-size:1.1rem">×</button>
+    </div>
+
+    <!-- Upload Form Fields -->
+    <div style="margin-top:1.5rem;display:flex;flex-direction:column;gap:1rem">
+      <div>
+        <label class="form-label" for="doc-title">Document Title *</label>
+        <input id="doc-title" type="text" class="form-input" placeholder="e.g. Motor Vehicle Policy — Moyo 2025">
+      </div>
+      <div>
+        <label class="form-label" for="doc-client">Link to Client</label>
+        <select id="doc-client" class="form-input">
+          <option value="">â€” Unlinked for now â€”</option>
+        </select>
+      </div>
+      <div>
+        <label class="form-label" for="doc-category">Category</label>
+        <select id="doc-category" class="form-input">
+          <option value="">— Auto-detect —</option>
+          <option value="motor">Motor</option>
+          <option value="fire">Fire & Burglary</option>
+          <option value="life">Life Assurance</option>
+          <option value="liability">Public Liability</option>
+          <option value="marine">Marine</option>
+          <option value="engineering">Engineering</option>
+          <option value="health">Health</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div>
+        <label class="form-label" for="doc-folder">Folder</label>
+        <input id="doc-folder" type="text" class="form-input"
+               placeholder="e.g. Clients/Moyo — leave blank for Uncategorised">
+      </div>
+      <div>
+        <label class="form-label" for="doc-notes">Notes (optional)</label>
+        <textarea id="doc-notes" class="form-input" rows="2"
+                  placeholder="Internal notes about this document…"></textarea>
+      </div>
+    </div>
+
+    <!-- Upload Progress -->
+    <div id="upload-progress" style="display:none;margin-top:1.25rem">
+      <div style="display:flex;justify-content:space-between;margin-bottom:0.375rem">
+        <span style="color:var(--cosv);font-size:0.8rem">Uploading…</span>
+        <span id="upload-pct" style="color:var(--cp);font-weight:700;font-size:0.8rem">0%</span>
+      </div>
+      <div class="progress-track">
+        <div id="upload-fill" class="progress-fill" style="width:0%"></div>
+      </div>
+    </div>
+
+    <!-- Success message -->
+    <div id="upload-success" style="display:none;margin-top:1.25rem" class="alert alert-success">
+      Document uploaded successfully!
+      <a id="upload-vault-link" href="/documents/vault"
+         style="color:#4ade80;font-weight:700;text-decoration:none"> View in vault →</a>
+    </div>
+
+    <!-- Error message -->
+    <div id="upload-error" style="display:none;margin-top:1.25rem" class="alert alert-error"></div>
+
+    <!-- Submit -->
+    <div style="display:flex;gap:0.75rem;margin-top:1.75rem;justify-content:flex-end">
+      <a href="/documents/vault" class="btn-glass" style="font-size:0.875rem">
+        Cancel
+      </a>
+      <button id="upload-btn" onclick="doUpload()" class="btn-glass-gold"
+              style="font-size:0.875rem" disabled>
+        <span class="material-symbols-outlined" style="font-size:17px">upload</span>
+        Upload Document
+      </button>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+"use strict";
+
+let selectedFile = null;
+let clients = [];
+
+document.addEventListener("DOMContentLoaded", async () => {
+  const clientSelect = document.getElementById("doc-client");
+  const params = new URLSearchParams(window.location.search);
+  const preselectedClientId = params.get("client_id");
+  try {
+    clients = await apiGet("/api/clients");
+    clientSelect.innerHTML = `<option value="">â€” Unlinked for now â€”</option>` + clients.map(c => `
+      <option value="${c.id}">${_esc(c.name)}${c.company ? " â€” " + _esc(c.company) : ""}</option>
+    `).join("");
+    if (preselectedClientId) clientSelect.value = preselectedClientId;
+  } catch (_) {}
+});
+
+/* ── Drag & Drop events ──────────────────────────────────────────────────── */
+const dz = document.getElementById("drop-zone");
+dz.addEventListener("dragover",  e => { e.preventDefault(); dz.classList.add("drag-over"); });
+dz.addEventListener("dragleave", () => dz.classList.remove("drag-over"));
+dz.addEventListener("drop", e => {
+  e.preventDefault();
+  dz.classList.remove("drag-over");
+  const f = e.dataTransfer.files[0];
+  if (f) applyFile(f);
+});
+
+function onFileSelect(evt) { const f = evt.target.files[0]; if (f) applyFile(f); }
+
+function applyFile(f) {
+  if (!f.type.includes("pdf") && !f.name.endsWith(".pdf")) {
+    showErrorModal("Only PDF files are accepted."); return;
+  }
+  if (f.size > 50 * 1024 * 1024) {
+    showErrorModal("File exceeds 50 MB limit."); return;
+  }
+  selectedFile = f;
+  document.getElementById("file-name").textContent = f.name;
+  document.getElementById("file-size").textContent = (f.size / 1024 / 1024).toFixed(2) + " MB";
+  document.getElementById("file-preview").style.display = "flex";
+  document.getElementById("upload-btn").disabled = false;
+  if (!document.getElementById("doc-title").value.trim()) {
+    document.getElementById("doc-title").value = f.name.replace(/\.pdf$/i, "");
+  }
+}
+
+function clearFile() {
+  selectedFile = null;
+  document.getElementById("file-preview").style.display = "none";
+  document.getElementById("upload-btn").disabled = true;
+  document.getElementById("file-input").value = "";
+}
+
+/* ── Upload ──────────────────────────────────────────────────────────────── */
+async function doUpload() {
+  if (!selectedFile) { showErrorModal("Please select a file first."); return; }
+  const title    = document.getElementById("doc-title").value.trim() || selectedFile.name;
+  const clientId = document.getElementById("doc-client").value;
+  const category = document.getElementById("doc-category").value;
+  const notes    = document.getElementById("doc-notes").value.trim();
+
+  const btn = document.getElementById("upload-btn");
+  btn.disabled = true;
+  document.getElementById("upload-error").style.display   = "none";
+  document.getElementById("upload-success").style.display = "none";
+  document.getElementById("upload-progress").style.display = "block";
+
+  const formData = new FormData();
+  formData.append("file",  selectedFile);
+  formData.append("title", title);
+  if (clientId) formData.append("client_id", clientId);
+  if (category) formData.append("document_category", category);
+  if (notes)    formData.append("notes", notes);
+
+  // Read token for auth header
+  const match = document.cookie.match(/(?:^|;\s*)access_token=([^;]+)/);
+  const headers = match ? { Authorization: `Bearer ${decodeURIComponent(match[1])}` } : {};
+
+  try {
+    // Simulate progress via polling (XHR for real progress)
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "/documents/upload");
+    Object.entries(headers).forEach(([k, v]) => xhr.setRequestHeader(k, v));
+
+    xhr.upload.onprogress = e => {
+      if (e.lengthComputable) {
+        const pct = Math.round((e.loaded / e.total) * 100);
+        document.getElementById("upload-fill").style.width = pct + "%";
+        document.getElementById("upload-pct").textContent  = pct + "%";
+        showProgress(pct, "Uploading document…");
+      }
+    };
+
+    xhr.onload = () => {
+      showProgress(0);
+      document.getElementById("upload-progress").style.display = "none";
+      if (xhr.status >= 200 && xhr.status < 300) {
+        const successLink = document.getElementById("upload-vault-link");
+        if (clientId) {
+          successLink.href = `/clients/${clientId}`;
+          successLink.textContent = " View client â†’";
+        } else {
+          successLink.href = "/documents/vault";
+          successLink.textContent = " View in vault â†’";
+        }
+        document.getElementById("upload-success").style.display = "block";
+        showSuccessModal("Document uploaded successfully!");
+        clearFile();
+        btn.disabled = false;
+      } else {
+        let detail = "Upload failed.";
+        try { detail = JSON.parse(xhr.responseText).detail || detail; } catch (_) {}
+        document.getElementById("upload-error").textContent = detail;
+        document.getElementById("upload-error").style.display = "block";
+        btn.disabled = false;
+      }
+    };
+    xhr.onerror = () => {
+      showProgress(0);
+      document.getElementById("upload-progress").style.display = "none";
+      document.getElementById("upload-error").textContent = "Network error during upload.";
+      document.getElementById("upload-error").style.display = "block";
+      btn.disabled = false;
+    };
+    xhr.send(formData);
+  } catch (err) {
+    showProgress(0);
+    document.getElementById("upload-progress").style.display = "none";
+    document.getElementById("upload-error").textContent = err.message;
+    document.getElementById("upload-error").style.display = "block";
+    btn.disabled = false;
+  }
+}
+
+function _esc(s) {
+  return String(s || "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+</script>
+{% endblock %}

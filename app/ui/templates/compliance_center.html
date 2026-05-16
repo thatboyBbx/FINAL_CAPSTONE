@@ -1,0 +1,135 @@
+﻿{% extends "base.html" %}
+{% block title %}Compliance Center — InsureIntel{% endblock %}
+
+{% block content %}
+<div class="p-6 space-y-6">
+  <div class="flex items-center justify-between">
+    <div>
+      <h2 class="text-2xl font-bold font-headline" style="color:var(--cos)">Compliance Center</h2>
+      <p class="text-sm mt-0.5" style="color:var(--cosv)">IPEC regulatory compliance monitoring and alerts.</p>
+    </div>
+    <div class="flex gap-2">
+      <button class="btn btn-secondary btn-sm" disabled style="opacity:0.5;cursor:not-allowed" title="Coming soon"><span class="material-symbols-outlined text-[16px]">schedule</span>Coming Soon</button>
+    </div>
+  </div>
+
+  <!-- Summary KPIs -->
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="stat-card">
+      <div class="w-9 h-9 rounded-lg flex items-center justify-center mb-3" style="background:rgba(74,222,128,0.12)">
+        <span class="material-symbols-outlined text-[20px]" style="color:var(--cp)">verified_user</span>
+      </div>
+      <p class="text-2xl font-bold font-headline" style="color:var(--cos)">{{ avg_compliance_score | round(1) }}%</p>
+      <p class="text-xs mt-1" style="color:var(--cosv)">Avg Compliance Score</p>
+    </div>
+    <div class="stat-card">
+      <div class="w-9 h-9 rounded-lg flex items-center justify-center mb-3" style="background:rgba(74,222,128,0.12)">
+        <span class="material-symbols-outlined text-[20px]" style="color:#4ade80">check_circle</span>
+      </div>
+      <p class="text-2xl font-bold font-headline" style="color:#4ade80">{{ compliant_count }}</p>
+      <p class="text-xs mt-1" style="color:var(--cosv)">Compliant</p>
+    </div>
+    <div class="stat-card">
+      <div class="w-9 h-9 rounded-lg flex items-center justify-center mb-3" style="background:rgba(251,191,36,0.12)">
+        <span class="material-symbols-outlined text-[20px]" style="color:#fbbf24">warning</span>
+      </div>
+      <p class="text-2xl font-bold font-headline" style="color:#fbbf24">{{ needs_review_count }}</p>
+      <p class="text-xs mt-1" style="color:var(--cosv)">Needs Review</p>
+    </div>
+    <div class="stat-card">
+      <div class="w-9 h-9 rounded-lg flex items-center justify-center mb-3" style="background:rgba(248,113,113,0.12)">
+        <span class="material-symbols-outlined text-[20px]" style="color:#f87171">error</span>
+      </div>
+      <p class="text-2xl font-bold font-headline" style="color:#f87171">{{ non_compliant_count }}</p>
+      <p class="text-xs mt-1" style="color:var(--cosv)">Non-Compliant</p>
+    </div>
+  </div>
+
+  <!-- Compliance Rules Status -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div class="rounded-xl p-6" style="background:var(--csf);border:1px solid color-mix(in srgb,var(--col) 50%,transparent)">
+      <h3 class="font-semibold font-headline mb-4" style="color:var(--cos)">IPEC Rule Coverage</h3>
+      <div class="space-y-4">
+        {% for rule, pct, color in [('Clause Completeness',94,'#4ade80'),('Premium Adequacy',88,'#4ade80'),('Grace Period Compliance',72,'#fbbf24'),('Reinsurance Ratios',95,'#4ade80'),('Capital Requirements',61,'#f87171')] %}
+        <div>
+          <div class="flex justify-between text-sm mb-1.5">
+            <span style="color:var(--cos)">{{ rule }}</span>
+            <span class="font-bold" style="color:{{ color }}">{{ pct }}%</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" style="width:{{ pct }}%;background:{{ color }}"></div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="rounded-xl p-6" style="background:var(--csf);border:1px solid color-mix(in srgb,var(--col) 50%,transparent)">
+      <h3 class="font-semibold font-headline mb-4" style="color:var(--cos)">Common Violations</h3>
+      {% if common_violations %}
+      <div class="space-y-3">
+        {% for v in common_violations %}
+        <div class="flex items-center justify-between p-3 rounded-lg" style="background:var(--csfc)">
+          <span class="text-sm" style="color:var(--cos)">{{ v.term | truncate(35) }}</span>
+          <span class="badge badge-red">{{ v.count }}x</span>
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <div class="flex flex-col items-center justify-center py-8 text-center">
+        <span class="material-symbols-outlined text-[36px] mb-2" style="color:var(--cosv)">verified</span>
+        <p class="text-sm" style="color:var(--cosv)">No violations recorded yet.</p>
+        <p class="text-xs mt-1" style="color:var(--cosv)">Process documents to see results.</p>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Documents Summary -->
+  <div class="rounded-xl overflow-hidden" style="background:var(--csf);border:1px solid color-mix(in srgb,var(--col) 50%,transparent)">
+    <div class="px-5 py-4 flex items-center justify-between" style="border-bottom:1px solid color-mix(in srgb,var(--col) 40%,transparent)">
+      <h3 class="font-semibold font-headline" style="color:var(--cos)">Documents Checked</h3>
+      <span class="badge badge-blue">{{ total_documents_checked }} total</span>
+    </div>
+    <div class="p-6">
+      {% if total_documents_checked == 0 %}
+      <div class="flex flex-col items-center justify-center py-8 text-center">
+        <span class="material-symbols-outlined text-[40px] mb-3" style="color:var(--cosv)">policy</span>
+        <p class="font-semibold" style="color:var(--cos)">No documents checked yet</p>
+        <p class="text-sm mt-1 mb-4" style="color:var(--cosv)">
+          Upload and process insurance documents to see compliance results here.
+        </p>
+        <a href="/documents/vault" class="btn btn-primary btn-sm">Go to Documents</a>
+      </div>
+      {% else %}
+      <div class="grid grid-cols-3 gap-6 text-center">
+        <div>
+          <div class="text-3xl font-bold font-headline mb-1" style="color:#4ade80">{{ compliant_count }}</div>
+          <div class="text-xs" style="color:var(--cosv)">Compliant</div>
+          <div class="progress-track mt-2">
+            <div class="progress-fill" style="width:{{ (compliant_count / total_documents_checked * 100) | round(0) | int }}%;background:#4ade80"></div>
+          </div>
+        </div>
+        <div>
+          <div class="text-3xl font-bold font-headline mb-1" style="color:#fbbf24">{{ needs_review_count }}</div>
+          <div class="text-xs" style="color:var(--cosv)">Needs Review</div>
+          <div class="progress-track mt-2">
+            <div class="progress-fill" style="width:{{ (needs_review_count / total_documents_checked * 100) | round(0) | int }}%;background:#fbbf24"></div>
+          </div>
+        </div>
+        <div>
+          <div class="text-3xl font-bold font-headline mb-1" style="color:#f87171">{{ non_compliant_count }}</div>
+          <div class="text-xs" style="color:var(--cosv)">Non-Compliant</div>
+          <div class="progress-track mt-2">
+            <div class="progress-fill" style="width:{{ (non_compliant_count / total_documents_checked * 100) | round(0) | int }}%;background:#f87171"></div>
+          </div>
+        </div>
+      </div>
+      <div class="mt-5 text-center">
+        <a href="/documents/vault" class="btn btn-ghost btn-sm">View All Documents →</a>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

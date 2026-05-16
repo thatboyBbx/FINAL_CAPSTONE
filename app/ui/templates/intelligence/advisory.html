@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+{# intelligence/advisory.html — Advisory Engine: ranked insurer recommendations #}
+{% block title %}Advisory Engine — InsureIntel Zimbabwe{% endblock %}
+
+{% block content %}
+<div class="px-8 py-7" style="max-width:900px">
+
+  <nav style="display:flex;align-items:center;gap:0.5rem;font-size:0.75rem;color:var(--cosv);margin-bottom:1.5rem">
+    <a href="/home" style="color:var(--cosv);text-decoration:none">Home</a>
+    <span>/</span>
+    <a href="/intelligence" style="color:var(--cosv);text-decoration:none">Intelligence</a>
+    <span>/</span>
+    <span style="color:var(--cp);font-weight:600">Advisory Engine</span>
+  </nav>
+
+  <h1 class="font-headline" style="font-size:1.5rem;font-weight:800;color:var(--cos);margin:0 0 1.75rem">
+    💡 Advisory Engine
+  </h1>
+
+  <!-- Config card -->
+  <div class="glass-card" style="padding:1.75rem;margin-bottom:1.5rem">
+    <p style="color:var(--cosv);font-size:0.875rem;margin:0 0 1.25rem;line-height:1.6">
+      Upload a policy document or select one from the vault to receive ranked insurer
+      recommendations based on WCS scores, coverage match, gap analysis, and CSP ratings.
+    </p>
+
+    <label class="form-label">Select from vault</label>
+    <select id="adv-doc-select" class="form-input" style="margin-bottom:0.75rem" onchange="checkReady()">
+      <option value="">— Select a document —</option>
+    </select>
+    <p style="color:var(--cosv);font-size:0.75rem;text-align:center;margin:0.5rem 0">— or upload —</p>
+    <div class="drop-zone" style="padding:1.25rem" onclick="document.getElementById('adv-file').click()">
+      <span class="material-symbols-outlined" style="font-size:24px;color:var(--cp);opacity:0.6;
+            font-variation-settings:'FILL' 1">upload_file</span>
+      <p style="color:var(--cosv);font-size:0.8rem;margin:0.25rem 0 0">Upload policy PDF</p>
+      <input id="adv-file" type="file" accept=".pdf" style="display:none"
+             onchange="uploadAndSet(this.files[0])">
+    </div>
+    <p id="adv-file-status" style="display:none;color:var(--cp);font-size:0.8rem;margin:0.5rem 0 0"></p>
+
+    <div style="display:flex;justify-content:flex-end;margin-top:1.5rem">
+      <button id="adv-btn" onclick="runAdvisory()" class="btn-glass-gold"
+              style="font-size:0.9375rem;padding:0.625rem 2rem" disabled>
+        <span class="material-symbols-outlined" style="font-size:18px">tips_and_updates</span>
+        Generate Advisory
+      </button>
+    </div>
+  </div>
+
+  <!-- Results -->
+  <div id="results-area"></div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+"use strict";
+let uploadedDocId = null;
+
+document.addEventListener("DOMContentLoaded", async () => {
+  try {
+    const docs = await apiFetch("/api/documents");
+    const sel  = document.getElementById("adv-doc-select");
+    docs.forEach(d => {
+      const o = document.createElement("option");
+      o.value = d.id; o.textContent = d.title || d.original_filename || `Doc #${d.id}`;
+      sel.appendChild(o);
+    });
+  } catch (_) {}
+});
+
+document.getElementById("adv-doc-select").addEventListener("change", function() {
+  uploadedDocId = null; checkReady();
+});
+
+function checkReady() {
+  document.getElementById("adv-btn").disabled =
+    !(document.getElementById("adv-doc-select").value || uploadedDocId);
+}
+
+async function uploadAndSet(file) {
+  if (!file) return;
+  const st = document.getElementById("adv-file-status");
+  st.textContent = "Uploading…"; st.style.display = "block";
+  const fd = new FormData();
+  fd.append("file", file);
+  fd.append("title", file.name.replace(/\.pdf$/i,""));
+  const match = document.cookie.match(/(?:^|;\s*)access_token=([^;]+)/);
+  const resp  = await fetch("/documents/upload", {
+    method:"POST", headers: match ? {Authorization:`Bearer ${decodeURIComponent(match[1])}`} : {}, body:fd
+  });
+  const data = await resp.json();
+  if (!resp.ok) { showErrorModal(data.detail || "Upload failed"); st.textContent = `✗ Upload failed`; return; }
+  uploadedDocId = data.id;
+  st.textContent = `✓ ${file.name}`; checkReady();
+}
+
+async function runAdvisory() {
+  const docId = parseInt(document.getElementById("adv-doc-select").value || uploadedDocId);
+  if (!docId) return;
+  const btn = document.getElementById("adv-btn");
+  btn.disabled = true;
+  showProgress(30, "Generating advisory…");
+  document.getElementById("results-area").innerHTML = "";
+
+  try {
+    const result = await apiFetch("/api/advisory/analyse", { method: "POST", body: JSON.stringify({ document_id: docId }) });
+    showProgress(0);
+    renderAdvisory(result);
+    showSuccessModal("Advisory generated successfully.");
+  } catch (err) {
+    showProgress(0);
+    showErrorModal("Advisory failed: " + err.message);
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+function renderAdvisory(data) {
+  const area     = document.getElementById("results-area");
+  const insurers = data.recommended_insurers || data.insurers || [];
+  const gaps     = data.gap_analysis || [];
+  const summary  = data.summary || "";
+
+  area.innerHTML = `
+    <h2 style="color:var(--cos);font-size:1.125rem;font-weight:700;margin:0 0 1.25rem">
+      Advisory Results</h2>
+    ${summary ? `<div class="alert alert-info" style="margin-bottom:1.5rem">${_esc(summary)}</div>` : ""}
+
+    ${insurers.length > 0 ? `
+    <div class="glass-card" style="padding:1.5rem;margin-bottom:1.5rem">
+      <h3 style="color:var(--cos);font-weight:700;margin:0 0 1rem">Ranked Insurer Recommendations</h3>
+      <table class="data-table">
+        <thead><tr><th>#</th><th>Insurer</th><th>Match Score</th><th>CSP</th><th>Gap Analysis</th></tr></thead>
+        <tbody>${insurers.map((i, idx) => `
+          <tr>
+            <td style="color:var(--cp);font-weight:700">${idx+1}</td>
+            <td style="color:var(--cos);font-weight:600">${_esc(i.name||'—')}</td>
+            <td style="color:var(--cp);font-weight:700">${i.match_score !== undefined ? Math.round(i.match_score*100)+'%' : '—'}</td>
+            <td style="color:var(--cp);font-weight:700">${i.csp_score !== undefined ? i.csp_score.toFixed(1) : '—'}</td>
+            <td style="color:var(--cosv);font-size:0.8125rem">${_esc(i.gap_summary||'—')}</td>
+          </tr>`).join("")}
+        </tbody>
+      </table>
+    </div>` : ""}
+
+    ${gaps.length > 0 ? `
+    <div class="glass-card" style="padding:1.5rem">
+      <h3 style="color:var(--cos);font-weight:700;margin:0 0 1rem">Coverage Gap Analysis</h3>
+      <ul style="margin:0;padding-left:1.25rem;color:var(--cosv)">
+        ${gaps.map(g => `<li style="font-size:0.875rem;padding:0.25rem 0">${_esc(typeof g==='string'?g:g.description||JSON.stringify(g))}</li>`).join("")}
+      </ul>
+    </div>` : ""}
+
+    ${insurers.length === 0 && gaps.length === 0 ? `
+    <div class="glass-card" style="padding:1.5rem">
+      <pre style="color:var(--cosv);font-size:0.75rem;overflow-x:auto;white-space:pre-wrap">
+${_esc(JSON.stringify(data, null, 2))}</pre>
+    </div>` : ""}`;
+}
+
+function _esc(s) { return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+</script>
+{% endblock %}

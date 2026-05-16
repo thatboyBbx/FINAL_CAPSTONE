@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}Financial Position — InsureIntel{% endblock %}
+
+{% block content %}
+<div class="p-8 space-y-6">
+
+  <div>
+    <h1 class="text-2xl font-extrabold font-headline" style="color:var(--cos)">Financial Position</h1>
+    <p class="text-sm mt-0.5" style="color:var(--cosv)">Solvency, liquidity, and financial health across Zimbabwe's insurance market.</p>
+  </div>
+
+  <!-- KPI summary -->
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+    {% for label, value, sub in [
+      ('Total Market GWP','$422.4M','+8.3% YoY'),
+      ('Avg Solvency Ratio','142%','Industry target ≥ 100%'),
+      ('Claim Settlement Rate','78.2%','Q3 2023'),
+      ('Insurers Monitored', insurers|length if insurers else '28','Active registrations'),
+    ] %}
+    <div class="glass-card gold-accent-glow stat-card rounded-xl">
+      <p class="text-[10px] font-bold uppercase tracking-[0.1em] mb-1" style="color:var(--cosv)">{{ label }}</p>
+      <h3 class="text-2xl font-extrabold mt-1" style="color:var(--cos)">{{ value }}</h3>
+      <p class="text-[10px] mt-1" style="color:var(--cp)">{{ sub }}</p>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Insurer table -->
+  <div class="glass-card rounded-xl overflow-hidden">
+    <div class="px-6 py-4 flex items-center justify-between" style="border-bottom:1px solid rgba(255,255,255,0.05)">
+      <h2 class="font-headline font-bold text-base" style="color:var(--cos)">Insurer Financial Profiles</h2>
+      <a href="/intelligence/insurers" class="btn btn-ghost btn-sm" style="color:var(--cp)">
+        Full Intel <span class="material-symbols-outlined text-[15px]">chevron_right</span>
+      </a>
+    </div>
+    {% if insurers %}
+    <table class="data-table">
+      <thead><tr>
+        <th>Insurer</th><th>GWP</th><th>Solvency</th><th>Risk Score</th><th>Trend</th>
+      </tr></thead>
+      <tbody>
+        {% for ins in insurers[:15] %}
+        {% set solvency = ins.solvency_ratio or ins.get('solvency_ratio', 130) %}
+        {% set risk = ins.risk_score or ins.get('risk_score', 45) %}
+        <tr>
+          <td>
+            <p class="font-semibold text-sm" style="color:var(--cos)">{{ ins.name }}</p>
+            <p class="text-[10px]" style="color:var(--cosv)">{{ ins.license_number or ins.get('license_number','—') }}</p>
+          </td>
+          <td><span class="text-sm font-bold" style="color:var(--cos)">${{ ins.gross_written_premium or ins.get('gross_written_premium','—') }}</span></td>
+          <td>
+            <div class="flex items-center gap-2">
+              <div class="progress-track w-16">
+                <div class="progress-fill" style="width:{{ [solvency,100]|min }}%"></div>
+              </div>
+              <span class="text-xs font-bold" style="color:{% if solvency >= 120 %}var(--cp){% elif solvency >= 100 %}#4ade80{% else %}var(--cerr){% endif %}">{{ solvency }}%</span>
+            </div>
+          </td>
+          <td>
+            <span class="badge {% if risk < 30 %}badge-green{% elif risk < 60 %}badge-amber{% else %}badge-red{% endif %} text-[9px]">
+              {{ risk }}/100
+            </span>
+          </td>
+          <td>
+            <span class="material-symbols-outlined text-[18px]" style="color:{% if risk < 40 %}#4ade80{% else %}var(--cerr){% endif %}">
+              {% if risk < 40 %}trending_up{% else %}trending_down{% endif %}
+            </span>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <div class="p-12 text-center">
+      <span class="material-symbols-outlined text-4xl mb-3 block" style="color:var(--col)">account_balance</span>
+      <p class="font-semibold" style="color:var(--cos)">No financial data available</p>
+      <p class="text-sm mt-1" style="color:var(--cosv)">Run the insurer scraper to populate financial position data.</p>
+    </div>
+    {% endif %}
+  </div>
+
+
+</div>
+{% endblock %}

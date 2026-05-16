@@ -1,0 +1,363 @@
+{% extends "base.html" %}
+{#
+  analysis/ml.html — ML Analytics runner
+  Multi-select docs → POST /api/analysis/ml → accordion results.
+  NO auto-run on page load.
+#}
+{% block title %}ML Analytics — InsureIntel Zimbabwe{% endblock %}
+
+{% block content %}
+<div class="px-8 py-7" style="max-width:900px">
+
+  <!-- Breadcrumb -->
+  <nav style="display:flex;align-items:center;gap:0.5rem;font-size:0.75rem;color:var(--cosv);margin-bottom:1.5rem">
+    <a href="/home" style="color:var(--cosv);text-decoration:none">Home</a>
+    <span>/</span>
+    <a href="/analysis" style="color:var(--cosv);text-decoration:none">Analysis</a>
+    <span>/</span>
+    <span style="color:var(--cp);font-weight:600">ML Analytics</span>
+  </nav>
+
+  <h1 class="font-headline" style="font-size:1.5rem;font-weight:800;color:var(--cos);margin:0 0 1.75rem">
+    📊 ML Analytics
+  </h1>
+
+  <!-- Config card -->
+  <div class="glass-card" style="padding:1.75rem;margin-bottom:1.5rem">
+
+    <!-- Document checklist -->
+    <h3 style="color:var(--cos);font-weight:700;font-size:0.9375rem;margin:0 0 0.75rem;
+               display:flex;align-items:center;gap:0.5rem">
+      <span class="material-symbols-outlined" style="font-size:18px;color:var(--cp)">checklist</span>
+      Select Documents
+    </h3>
+    <div style="margin-bottom:0.5rem;display:flex;align-items:center;gap:0.5rem">
+      <button onclick="selectAll()" class="btn btn-sm btn-ghost">Select all</button>
+      <button onclick="clearAll()" class="btn btn-sm btn-ghost">Clear</button>
+      <span id="selected-count" style="color:var(--cosv);font-size:0.8rem">0 selected</span>
+    </div>
+    <div id="doc-checklist"
+         style="max-height:200px;overflow-y:auto;padding:0.5rem;
+                background:rgba(255,255,255,0.03);border-radius:8px;
+                border:1px solid rgba(255,255,255,0.06)">
+      <p style="color:var(--cosv);font-size:0.875rem;text-align:center;padding:1rem">
+        Loading documents…
+      </p>
+    </div>
+
+    <!-- Analysis types -->
+    <h3 style="color:var(--cos);font-weight:700;font-size:0.9375rem;margin:1.25rem 0 0.75rem;
+               display:flex;align-items:center;gap:0.5rem">
+      <span class="material-symbols-outlined" style="font-size:18px;color:var(--cp)">tune</span>
+      Analysis Types
+    </h3>
+    <div style="display:flex;flex-wrap:wrap;gap:0.75rem">
+      <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;
+                    color:var(--cosv);font-size:0.875rem">
+        <input type="checkbox" id="chk-risk" checked style="accent-color:var(--cp)">
+        Risk Scoring
+      </label>
+      <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;
+                    color:var(--cosv);font-size:0.875rem">
+        <input type="checkbox" id="chk-ner" checked style="accent-color:var(--cp)">
+        NER Extraction
+      </label>
+      <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;
+                    color:var(--cosv);font-size:0.875rem">
+        <input type="checkbox" id="chk-clause" checked style="accent-color:var(--cp)">
+        Clause Classification
+      </label>
+    </div>
+
+    <div style="margin-top:1.5rem;display:flex;justify-content:flex-end">
+      <button id="run-btn" onclick="runAnalysis()" class="btn-glass-gold"
+              style="font-size:0.9375rem;padding:0.625rem 2rem" disabled>
+        <span class="material-symbols-outlined" style="font-size:18px">play_arrow</span>
+        Run Analysis
+      </button>
+    </div>
+  </div>
+
+  <!-- Results accordion -->
+  <div id="results-area"></div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+"use strict";
+let docs = [];
+
+document.addEventListener("DOMContentLoaded", async () => {
+  try {
+    docs = await apiGet("/api/documents");
+    renderChecklist();
+  } catch (err) {
+    showToast("Failed to load documents: " + err.message, "error");
+  }
+});
+
+function renderChecklist() {
+  const el = document.getElementById("doc-checklist");
+  if (docs.length === 0) {
+    el.innerHTML = `<p style="color:var(--cosv);font-size:0.875rem;text-align:center;padding:1rem">
+      No documents uploaded yet. <a href="/documents/upload" style="color:var(--cp)">Upload →</a></p>`;
+    return;
+  }
+  el.innerHTML = docs.map(d => `
+    <label style="display:flex;align-items:center;gap:0.625rem;padding:0.4rem 0.5rem;
+                  cursor:pointer;border-radius:6px;transition:background 0.1s"
+           onmouseover="this.style.background='rgba(255,255,255,0.04)'"
+           onmouseout="this.style.background=''">
+      <input type="checkbox" class="doc-cb" value="${d.id}"
+             style="accent-color:var(--cp)" onchange="updateCount()">
+      <span style="flex:1;color:var(--cos);font-size:0.8125rem;white-space:nowrap;
+                   overflow:hidden;text-overflow:ellipsis">
+        ${_esc(d.title || d.original_filename || 'Doc #' + d.id)}
+      </span>
+      <span style="color:var(--cosv);font-size:0.7rem;flex-shrink:0">${_esc(d.document_category||'—')}</span>
+    </label>`).join("");
+  updateCount();
+}
+
+function updateCount() {
+  const n = document.querySelectorAll(".doc-cb:checked").length;
+  document.getElementById("selected-count").textContent = n + " selected";
+  document.getElementById("run-btn").disabled = n === 0;
+}
+function selectAll() { document.querySelectorAll(".doc-cb").forEach(c => c.checked=true); updateCount(); }
+function clearAll()   { document.querySelectorAll(".doc-cb").forEach(c => c.checked=false); updateCount(); }
+
+async function runAnalysis() {
+  const ids = [...document.querySelectorAll(".doc-cb:checked")].map(c => parseInt(c.value));
+  const types = [];
+  if (document.getElementById("chk-risk").checked)   types.push("risk");
+  if (document.getElementById("chk-ner").checked)    types.push("ner");
+  if (document.getElementById("chk-clause").checked) types.push("clause");
+  if (types.length === 0) { showToast("Select at least one analysis type.", "warning"); return; }
+
+  const btn = document.getElementById("run-btn");
+  btn.disabled = true;
+  btn.innerHTML = `<span style="animation:spin 1s linear infinite;display:inline-block">⏳</span> Running…`;
+  showProgress(20, "Running ML analysis…");
+  document.getElementById("results-area").innerHTML = "";
+
+  try {
+    const result = await apiPost("/api/analysis/ml", { document_ids: ids, analysis_types: types });
+    showProgress(100);
+    setTimeout(() => showProgress(0), 600);
+    renderResults(result, ids);
+    showToast("Analysis complete.", "success");
+  } catch (err) {
+    showProgress(0);
+    showToast("Analysis failed: " + err.message, "error");
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = `<span class="material-symbols-outlined" style="font-size:18px">play_arrow</span> Run Analysis`;
+  }
+}
+
+function renderResults(data, ids) {
+  const area = document.getElementById("results-area");
+  area.innerHTML = `<h2 style="color:var(--cos);font-size:1.125rem;font-weight:700;
+    margin:0 0 1.25rem;display:flex;align-items:center;gap:0.5rem">
+    <span class="material-symbols-outlined" style="font-size:20px;color:var(--cp)">assessment</span>
+    Results (${ids.length} document${ids.length !== 1 ? "s" : ""})
+  </h2>`;
+
+  const results = Array.isArray(data) ? data : (data.results || [data]);
+  if (results.length === 0) {
+    area.innerHTML += `<div class="alert alert-warn">No results returned.</div>`;
+    return;
+  }
+
+  results.forEach((r, i) => {
+    const docTitle = (docs.find(d => d.id === (r.document_id || ids[i])) || {}).title || `Document #${i+1}`;
+    const card = document.createElement("div");
+    card.className = "glass-card";
+    card.style.marginBottom = "1rem";
+    card.innerHTML = `
+      <button onclick="toggleAccordion(this)" style="width:100%;background:none;border:none;
+        cursor:pointer;padding:1rem 1.25rem;display:flex;align-items:center;gap:0.75rem;
+        text-align:left">
+        <span class="material-symbols-outlined"
+              style="color:var(--cp);font-size:20px;font-variation-settings:'FILL' 1">
+          description</span>
+        <span style="flex:1;color:var(--cos);font-weight:600;font-size:0.9375rem">
+          ${_esc(docTitle)}</span>
+        <span class="chevron material-symbols-outlined"
+              style="font-size:18px;color:var(--cosv)">chevron_right</span>
+      </button>
+      <div class="accordion-body" style="display:none;padding:0 1.25rem 1.25rem">
+        ${renderResultBody(r)}
+      </div>`;
+    area.appendChild(card);
+  });
+}
+
+function renderResultBody(result) {
+  const requestTypes = Array.isArray(result.requested_analysis_types) ? result.requested_analysis_types : [];
+  const risk = result.risk || null;
+  const classification = result.classification || null;
+  const clause = result.clause_analysis || null;
+  const hasError = !!result.error;
+
+  return `
+    <div style="display:grid;gap:1rem">
+      <div style="display:flex;flex-wrap:wrap;gap:0.5rem;padding-top:0.25rem">
+        ${requestTypes.map(type => renderBadge(labelForType(type), "rgba(212,175,55,0.12)", "#d4af37")).join("")}
+        ${classification ? renderBadge(_esc(classification.document_category || "Classified"), "rgba(96,165,250,0.12)", "#60a5fa") : ""}
+        ${hasError ? renderBadge("Needs attention", "rgba(248,113,113,0.12)", "#f87171") : renderBadge("Completed", "rgba(74,222,128,0.12)", "#4ade80")}
+      </div>
+
+      ${risk ? renderRiskSummary(risk) : ""}
+      ${classification ? renderClassificationSummary(classification) : ""}
+      ${clause ? renderClauseSummary(clause) : ""}
+      ${hasError ? renderErrorSummary(result.error) : ""}
+      ${renderRawBlock(result)}
+    </div>
+  `;
+}
+
+function renderRiskSummary(risk) {
+  const score = Math.round(Number(risk.risk_score || 0));
+  const level = risk.risk_level || "Unknown";
+  const levelColor = level === "High" ? "#f87171" : level === "Medium" ? "#fbbf24" : "#4ade80";
+  const factors = Array.isArray(risk.risk_factors) ? risk.risk_factors : [];
+  const recommendations = Array.isArray(risk.recommendations) ? risk.recommendations : [];
+
+  return `
+    <section style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);
+                    border-radius:10px;padding:1rem">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap">
+        <div>
+          <p style="margin:0 0 0.25rem;color:var(--cos);font-size:0.875rem;font-weight:700">Risk Summary</p>
+          <p style="margin:0;color:var(--cosv);font-size:0.78rem">Compliance-based risk snapshot</p>
+        </div>
+        <div style="display:flex;align-items:center;gap:0.75rem">
+          <div style="font-size:1.5rem;font-weight:800;color:${levelColor}">${score}</div>
+          ${renderBadge(`${_esc(level)} Risk`, `${levelColor}22`, levelColor)}
+        </div>
+      </div>
+      ${factors.length ? `
+        <div style="margin-top:0.9rem;display:grid;gap:0.5rem">
+          ${factors.map(f => `
+            <div style="padding:0.75rem;border-radius:8px;background:rgba(255,255,255,0.03)">
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:0.75rem">
+                <span style="color:var(--cos);font-size:0.82rem;font-weight:600">${_esc(f.name || f.factor || "Risk factor")}</span>
+                <span style="color:var(--cosv);font-size:0.72rem">${_esc(f.severity || "")}${f.score !== undefined ? ` • ${_esc(f.score)}/10` : ""}</span>
+              </div>
+              ${f.description ? `<p style="margin:0.35rem 0 0;color:var(--cosv);font-size:0.75rem;line-height:1.5">${_esc(f.description)}</p>` : ""}
+            </div>
+          `).join("")}
+        </div>
+      ` : ""}
+      ${recommendations.length ? `
+        <div style="margin-top:0.9rem">
+          <p style="margin:0 0 0.45rem;color:var(--cos);font-size:0.8rem;font-weight:700">Recommendations</p>
+          <ul style="margin:0;padding-left:1rem;color:var(--cosv);font-size:0.75rem;line-height:1.6">
+            ${recommendations.map(item => `<li>${_esc(typeof item === "string" ? item : item.text || JSON.stringify(item))}</li>`).join("")}
+          </ul>
+        </div>
+      ` : ""}
+    </section>
+  `;
+}
+
+function renderClassificationSummary(classification) {
+  const confidence = classification.confidence !== undefined && classification.confidence !== null
+    ? `${Math.round(Number(classification.confidence) * 100)}%`
+    : "n/a";
+
+  return `
+    <section style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);
+                    border-radius:10px;padding:1rem">
+      <p style="margin:0 0 0.6rem;color:var(--cos);font-size:0.875rem;font-weight:700">Classification</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:0.75rem">
+        <div><p style="margin:0 0 0.2rem;color:var(--cosv);font-size:0.7rem;text-transform:uppercase">Category</p><p style="margin:0;color:var(--cos);font-size:0.82rem;font-weight:600">${_esc(classification.document_category || "Unknown")}</p></div>
+        <div><p style="margin:0 0 0.2rem;color:var(--cosv);font-size:0.7rem;text-transform:uppercase">Confidence</p><p style="margin:0;color:var(--cos);font-size:0.82rem;font-weight:600">${confidence}</p></div>
+        <div><p style="margin:0 0 0.2rem;color:var(--cosv);font-size:0.7rem;text-transform:uppercase">Method</p><p style="margin:0;color:var(--cos);font-size:0.82rem;font-weight:600">${_esc(classification.method || "n/a")}</p></div>
+      </div>
+    </section>
+  `;
+}
+
+function renderClauseSummary(clause) {
+  const clauseCount = clause.total_clauses ?? clause.clauses_scored ?? clause.summary?.total_clauses_a ?? "n/a";
+  const issues = clause.high_risk_changes || clause.issues || [];
+  const summary = clause.summary || null;
+
+  return `
+    <section style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);
+                    border-radius:10px;padding:1rem">
+      <p style="margin:0 0 0.6rem;color:var(--cos);font-size:0.875rem;font-weight:700">Clause Analysis</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:0.75rem">
+        <div><p style="margin:0 0 0.2rem;color:var(--cosv);font-size:0.7rem;text-transform:uppercase">Clauses</p><p style="margin:0;color:var(--cos);font-size:0.82rem;font-weight:600">${_esc(clauseCount)}</p></div>
+        ${summary ? `<div><p style="margin:0 0 0.2rem;color:var(--cosv);font-size:0.7rem;text-transform:uppercase">Similarity</p><p style="margin:0;color:var(--cos);font-size:0.82rem;font-weight:600">${_esc(summary.similarity_score_overall ?? "n/a")}</p></div>` : ""}
+        ${summary ? `<div><p style="margin:0 0 0.2rem;color:var(--cosv);font-size:0.7rem;text-transform:uppercase">Modified</p><p style="margin:0;color:var(--cos);font-size:0.82rem;font-weight:600">${_esc(summary.modified ?? 0)}</p></div>` : ""}
+      </div>
+      ${issues.length ? `
+        <div style="margin-top:0.9rem">
+          <p style="margin:0 0 0.45rem;color:var(--cos);font-size:0.8rem;font-weight:700">High-risk changes</p>
+          <div style="display:grid;gap:0.45rem">
+            ${issues.slice(0, 4).map(issue => `
+              <div style="padding:0.7rem;border-radius:8px;background:rgba(248,113,113,0.08);color:var(--cosv);font-size:0.75rem;line-height:1.5">
+                ${_esc(issue.risk_reason || issue.change_summary || "Risk change detected")}
+              </div>
+            `).join("")}
+          </div>
+        </div>
+      ` : ""}
+    </section>
+  `;
+}
+
+function renderErrorSummary(error) {
+  return `
+    <section style="background:rgba(248,113,113,0.08);border:1px solid rgba(248,113,113,0.22);
+                    border-radius:10px;padding:1rem">
+      <p style="margin:0 0 0.35rem;color:#f87171;font-size:0.82rem;font-weight:700">Analysis issue</p>
+      <p style="margin:0;color:var(--cosv);font-size:0.76rem;line-height:1.55">${_esc(error)}</p>
+    </section>
+  `;
+}
+
+function renderRawBlock(result) {
+  return `
+    <details style="background:rgba(255,255,255,0.03);border-radius:8px;padding:0.75rem 0.9rem">
+      <summary style="cursor:pointer;color:var(--cos);font-size:0.78rem;font-weight:600">Raw data</summary>
+      <pre style="margin:0.75rem 0 0;background:rgba(255,255,255,0.04);border-radius:8px;padding:0.9rem;
+                  font-size:0.72rem;color:var(--cosv);overflow-x:auto;white-space:pre-wrap">${_esc(JSON.stringify(result, null, 2))}</pre>
+    </details>
+  `;
+}
+
+function renderBadge(label, bg, color) {
+  return `<span style="display:inline-flex;align-items:center;border-radius:9999px;padding:0.22rem 0.55rem;
+                       background:${bg};color:${color};font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.04em">
+    ${label}
+  </span>`;
+}
+
+function labelForType(type) {
+  if (type === "risk") return "Risk";
+  if (type === "ner") return "NER";
+  if (type === "clause") return "Clause";
+  return type;
+}
+
+function toggleAccordion(btn) {
+  const body = btn.parentElement.querySelector(".accordion-body");
+  const chevron = btn.querySelector(".chevron");
+  const open = body.style.display !== "none";
+  body.style.display = open ? "none" : "block";
+  chevron.style.transform = open ? "rotate(0deg)" : "rotate(90deg)";
+}
+
+function _esc(s) {
+  return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+</script>
+<style>@keyframes spin { from{transform:rotate(0)} to{transform:rotate(360deg)} }</style>
+{% endblock %}

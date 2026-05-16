@@ -1,0 +1,62 @@
+InsureIntel Zimbabwe — Test Results
+====================================
+Date: 2026-04-13
+Agent: AGENT 3 — TESTER
+
+DEPENDENCY CHECK
+----------------
+- Python 3.11.9
+- pytest 9.0.3
+- httpx (installed via requirements)
+- FastAPI TestClient (synchronous)
+- SQLAlchemy StaticPool used for in-memory SQLite test database
+- app.main import: OK
+
+ROOT CAUSE FIXES APPLIED
+-------------------------
+1. conftest.py — Used SQLAlchemy StaticPool to ensure all SQLite connections
+   share a single in-memory database. Without this, each new connection created
+   a fresh empty database, causing "no such table" errors during INSERT.
+
+2. conftest.py — Import app.main BEFORE Base.metadata.create_all() to ensure
+   all model imports (triggered in main.py) register their tables with
+   Base.metadata before table creation.
+
+3. app/services/csp_service.py — _fuzzy_match() changed from token_sort_ratio
+   to partial_ratio (rapidfuzz). token_sort_ratio scored "Old Mutual" vs
+   "Old Mutual Zimbabwe Limited" at 54 (below threshold=75). partial_ratio
+   correctly scores substring containment at 100.
+
+TEST SUITE RESULTS
+------------------
+Total: 68 passed, 0 failed, 2 warnings
+
+Test files:
+  tests/conftest.py           — fixtures: setup_db (session), db, client
+  tests/test_documents.py     — 5 tests  (upload, list, folder, compare)
+  tests/test_compliance.py    — 3 tests  (statistics, invalid ID, missing doc)
+  tests/test_settlement_power.py — 6 tests (WCS formula, class scorer, HTTP)
+  tests/test_clients.py       — 6 tests  (CRUD, expiry, renewals)
+  tests/test_chatbot.py       — 2 tests  (mock Anthropic, no-key guard)
+  tests/test_reports.py       — 3 tests  (missing body, invalid doc, bad type)
+  tests/test_insurers.py      — 4 tests  (CSV import, list, not found)
+  tests/test_ui_routes.py     — 26 tests (all category/sub-page routes)
+  tests/test_csp_module.py    — 13 tests (pre-existing, CSP unit tests)
+
+SMOKE TEST RESULTS (live server on port 8000)
+----------------------------------------------
+[OK] GET /                       → 200
+[OK] GET /home                   → 303 (redirect to login, expected)
+[OK] GET /documents              → 303 (redirect to login, expected)
+[OK] GET /reports                → 303 (redirect to login, expected)
+[OK] GET /intelligence/settlement-power → 303 (redirect to login, expected)
+[OK] GET /clients                → 303 (redirect to login, expected)
+[OK] GET /documents (API)        → 303 (redirect to login, expected)
+[OK] GET /health                 → 200 {"status": "ok", "env": "dev"}
+
+Smoke tests: 8/8 PASSED
+
+WARNINGS (non-blocking)
+-----------------------
+- FastAPI on_event("startup") is deprecated — should use lifespan handlers.
+  Not a test issue; the app still works correctly.

@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, i-scale=1.0" name="viewport"/>
+<title>InsureIntel Admin | Active Learning Feedback</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Manrope:wght@500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, .font-headline { font-family: 'Manrope', sans-serif; }
+        .glass-panel {
+            backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.7);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "on-primary-fixed-variant": "#003ea8",
+                "on-tertiary": "#ffffff",
+                "surface-dim": "#d9dadc",
+                "on-primary-container": "#eeefff",
+                "primary-container": "#2563eb",
+                "surface-tint": "#0053db",
+                "surface-container-lowest": "#ffffff",
+                "surface-bright": "#f8f9fb",
+                "secondary-container": "#dadefd",
+                "on-tertiary-fixed": "#360f00",
+                "on-secondary-fixed-variant": "#41455f",
+                "surface-variant": "#e1e2e4",
+                "on-error": "#ffffff",
+                "on-surface": "#191c1e",
+                "inverse-surface": "#2e3132",
+                "on-primary": "#ffffff",
+                "background": "#f8f9fb",
+                "primary-fixed": "#dbe1ff",
+                "secondary-fixed-dim": "#c1c5e3",
+                "tertiary-fixed": "#ffdbcd",
+                "primary-fixed-dim": "#b4c5ff",
+                "inverse-primary": "#b4c5ff",
+                "tertiary-container": "#bc4800",
+                "surface-container-high": "#e7e8ea",
+                "surface-container": "#edeef0",
+                "secondary-fixed": "#dde1ff",
+                "on-primary-fixed": "#00174b",
+                "on-error-container": "#93000a",
+                "surface": "#f8f9fb",
+                "error-container": "#ffdad6",
+                "on-secondary": "#ffffff",
+                "surface-container-low": "#f3f4f6",
+                "outline-variant": "#c3c6d7",
+                "error": "#ba1a1a",
+                "on-tertiary-container": "#ffede6",
+                "on-background": "#191c1e",
+                "on-secondary-fixed": "#151a31",
+                "inverse-on-surface": "#f0f1f3",
+                "tertiary-fixed-dim": "#ffb596",
+                "tertiary": "#943700",
+                "surface-container-highest": "#e1e2e4",
+                "on-surface-variant": "#434655",
+                "on-secondary-container": "#5c617c",
+                "secondary": "#585d77",
+                "outline": "#737686",
+                "on-tertiary-fixed-variant": "#7d2d00",
+                "primary": "#004ac6"
+              },
+              fontFamily: {
+                "headline": ["Manrope"],
+                "body": ["Inter"],
+                "label": ["Inter"]
+              },
+              borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+            },
+          },
+        }
+      </script>
+</head>
+<body class="bg-background text-on-surface min-h-screen">
+<!-- SideNavBar -->
+<aside class="h-screen w-64 fixed left-0 top-0 overflow-y-auto bg-[#1a1f36] dark:bg-slate-950 flex flex-col py-6 shadow-xl z-50">
+<div class="px-6 mb-8 flex items-center gap-3">
+<div class="w-10 h-10 bg-primary-container rounded-xl flex items-center justify-center">
+<span class="material-symbols-outlined text-white" style="font-variation-settings: 'FILL' 1;">shield</span>
+</div>
+<div>
+<h1 class="text-xl font-bold text-white tracking-tight leading-tight">InsureIntel</h1>
+<p class="text-[10px] text-slate-400 font-medium tracking-[0.2em] uppercase">Zimbabwe</p>
+</div>
+</div>
+<nav class="flex-1 px-4 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 opacity-80 hover:bg-slate-800/50 hover:text-white transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-manrope text-sm font-medium tracking-wide">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 opacity-80 hover:bg-slate-800/50 hover:text-white transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+<span class="font-manrope text-sm font-medium tracking-wide">Documents</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 bg-blue-600/20 text-blue-400 border-r-4 border-blue-500 rounded-r-lg" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-manrope text-sm font-medium tracking-wide">Analysis Results</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 opacity-80 hover:bg-slate-800/50 hover:text-white transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="contract">contract</span>
+<span class="font-manrope text-sm font-medium tracking-wide">Circulars Analysis</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 opacity-80 hover:bg-slate-800/50 hover:text-white transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="gavel">gavel</span>
+<span class="font-manrope text-sm font-medium tracking-wide">Compliance Center</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 opacity-80 hover:bg-slate-800/50 hover:text-white transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="psychology">psychology</span>
+<span class="font-manrope text-sm font-medium tracking-wide">ML Predictions</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 opacity-80 hover:bg-slate-800/50 hover:text-white transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span class="font-manrope text-sm font-medium tracking-wide">Audit Trail</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 opacity-80 hover:bg-slate-800/50 hover:text-white transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="terminal">terminal</span>
+<span class="font-manrope text-sm font-medium tracking-wide">Scraper Status</span>
+</a>
+</nav>
+<div class="px-4 mt-auto pt-6 space-y-1">
+<button class="w-full mb-4 bg-primary text-white py-3 rounded-xl flex items-center justify-center gap-2 font-semibold shadow-lg shadow-blue-900/20 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-sm">add</span>
+                New Analysis
+            </button>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 opacity-80 hover:bg-slate-800/50 hover:text-white transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-manrope text-sm font-medium tracking-wide">Settings</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-400 opacity-80 hover:bg-slate-800/50 hover:text-white transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span class="font-manrope text-sm font-medium tracking-wide">Support</span>
+</a>
+</div>
+</aside>
+<!-- TopNavBar -->
+<header class="fixed top-0 right-0 w-[calc(100%-16rem)] h-16 bg-slate-50/80 dark:bg-slate-900/80 backdrop-blur-md flex items-center justify-between px-8 z-40 border-b border-slate-200/50 dark:border-slate-800/50">
+<div class="flex items-center gap-4 flex-1">
+<div class="relative w-full max-w-md focus-within:ring-2 focus-within:ring-blue-500 rounded-full transition-all">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
+<input class="w-full bg-slate-100 dark:bg-slate-800 border-none rounded-full pl-10 pr-4 py-2 text-sm focus:ring-0" placeholder="Search feedback records..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-1">
+<button class="hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full p-2 transition-all">
+<span class="material-symbols-outlined text-slate-500" data-icon="notifications">notifications</span>
+</button>
+<button class="hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full p-2 transition-all">
+<span class="material-symbols-outlined text-slate-500" data-icon="help">help</span>
+</button>
+<button class="hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full p-2 transition-all">
+<span class="material-symbols-outlined text-slate-500" data-icon="apps">apps</span>
+</button>
+</div>
+<div class="h-8 w-px bg-slate-200 dark:bg-slate-700 mx-2"></div>
+<div class="flex items-center gap-3">
+<div class="text-right">
+<p class="text-xs font-bold text-on-surface">Admin Zimbabwe</p>
+<p class="text-[10px] text-slate-500 uppercase tracking-tighter">Superuser</p>
+</div>
+<img alt="Administrator Profile" class="w-10 h-10 rounded-full object-cover ring-2 ring-white shadow-sm" data-alt="professional headshot of a middle-aged male administrator with a confident expression in a clean studio setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBK9a-xRvzd-d5mGpUEwibK4qzeRchRkjpIYYG5TFqnpR0gE_vZLJy1BiJ6dUP8iNP1QmQ-4sN87m2bR0xFk6IJysB5hsb6_mUCgFaHrnJ6us7rK6KaoU3sBhx6bFjGn1ScXnDFBModzrdXEndyfEH0bfukYsF_t4oF9uZLt5Lotfvs7PWvSCeVD0oUC2lawWvV1cd4i62YctLg5ns0117OBxOgo7iNhJROox1WOCTQZ0vLnMqBuHe6nHZu8RBvAaR3FS5UUW8fCteK"/>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-64 pt-24 px-8 pb-12">
+<!-- Breadcrumbs -->
+<nav class="flex items-center gap-2 mb-6 text-sm">
+<span class="text-slate-400">Dashboard</span>
+<span class="material-symbols-outlined text-xs text-slate-300">chevron_right</span>
+<span class="text-primary font-medium">Feedback &amp; Active Learning</span>
+</nav>
+<!-- Page Header -->
+<div class="mb-10">
+<h2 class="text-3xl font-extrabold text-on-surface tracking-tight mb-2">Model Performance Feedback</h2>
+<p class="text-on-surface-variant max-w-2xl">Human-in-the-loop interface for auditing AI extraction results and preparing model retraining cycles for Zimbabwe's insurance regulatory framework.</p>
+</div>
+<!-- Summary Cards (Asymmetric Bento Grid) -->
+<div class="grid grid-cols-12 gap-6 mb-12">
+<div class="col-span-3 bg-surface-container-lowest p-6 rounded-xl shadow-sm border border-slate-100/50">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-blue-50 rounded-lg">
+<span class="material-symbols-outlined text-primary">data_object</span>
+</div>
+<span class="text-[10px] font-bold text-slate-400 tracking-widest uppercase">Volume</span>
+</div>
+<p class="text-3xl font-extrabold text-on-surface mb-1">1,248</p>
+<p class="text-sm text-slate-500">Entity Corrections Submitted</p>
+</div>
+<div class="col-span-3 bg-surface-container-lowest p-6 rounded-xl shadow-sm border border-slate-100/50">
+<div class="flex justify-between items-start mb-4">
+<div class="p-2 bg-amber-50 rounded-lg">
+<span class="material-symbols-outlined text-amber-600">report_problem</span>
+</div>
+<span class="text-[10px] font-bold text-slate-400 tracking-widest uppercase">Flags</span>
+</div>
+<p class="text-3xl font-extrabold text-on-surface mb-1">412</p>
+<p class="text-sm text-slate-500">Risk Flag Corrections</p>
+</div>
+<div class="col-span-4 bg-surface-container-lowest p-6 rounded-xl shadow-sm border border-slate-100/50">
+<div class="flex justify-between items-start mb-6">
+<div>
+<p class="text-[10px] font-bold text-slate-400 tracking-widest uppercase mb-1">Retraining Readiness</p>
+<p class="text-xl font-bold text-on-surface">94% of Threshold</p>
+</div>
+<div class="text-right">
+<span class="text-sm font-bold text-primary">47/50</span>
+<p class="text-[10px] text-slate-400 uppercase">Samples</p>
+</div>
+</div>
+<div class="w-full bg-surface-container rounded-full h-2 mb-2 overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 94%"></div>
+</div>
+<p class="text-[11px] text-slate-500 italic">3 more verified corrections needed to trigger auto-train</p>
+</div>
+<div class="col-span-2 bg-[#1a1f36] p-6 rounded-xl shadow-lg flex flex-col justify-center text-center">
+<p class="text-[10px] font-bold text-slate-500 tracking-widest uppercase mb-2">Last Retrained</p>
+<p class="text-white font-headline text-lg font-bold">Oct 14, 2023</p>
+<div class="mt-4 flex items-center justify-center gap-1 text-emerald-400">
+<span class="material-symbols-outlined text-xs">check_circle</span>
+<span class="text-[10px] font-bold">STABLE</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-12 gap-8">
+<!-- Main Tabs Section -->
+<div class="col-span-8">
+<div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden border border-slate-100/50">
+<div class="flex items-center px-6 pt-6 border-b border-slate-100">
+<button class="px-6 py-4 text-sm font-bold text-primary border-b-2 border-primary transition-all">Entity Feedback</button>
+<button class="px-6 py-4 text-sm font-medium text-slate-500 hover:text-slate-800 transition-all">Risk Flag Feedback</button>
+</div>
+<div class="p-0">
+<table class="w-full text-left">
+<thead class="bg-surface-container-low">
+<tr>
+<th class="px-6 py-4 text-[11px] font-bold text-slate-400 uppercase tracking-wider">Document Name</th>
+<th class="px-6 py-4 text-[11px] font-bold text-slate-400 uppercase tracking-wider">Entity Type</th>
+<th class="px-6 py-4 text-[11px] font-bold text-slate-400 uppercase tracking-wider">Original / Corrected</th>
+<th class="px-6 py-4 text-[11px] font-bold text-slate-400 uppercase tracking-wider">Status</th>
+<th class="px-6 py-4"></th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100">
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-slate-300 text-lg">article</span>
+<span class="text-sm font-semibold text-on-surface">ZIM_Policy_8812.pdf</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-surface-container-high rounded text-[10px] font-bold text-slate-600">PREMIUM_AMT</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex flex-col gap-1">
+<span class="text-[11px] text-slate-400 line-through">$4,500.00</span>
+<span class="text-sm font-bold text-primary">$450.00</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-700">Pending</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">edit_square</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-slate-300 text-lg">article</span>
+<span class="text-sm font-semibold text-on-surface">RE_Harare_Claim_X.pdf</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-surface-container-high rounded text-[10px] font-bold text-slate-600">EFFECTIVE_DATE</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex flex-col gap-1">
+<span class="text-[11px] text-slate-400 line-through">01/01/2023</span>
+<span class="text-sm font-bold text-primary">10/01/2023</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700">Applied</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-slate-300 text-lg">article</span>
+<span class="text-sm font-semibold text-on-surface">AutoCover_Schedule.pdf</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-surface-container-high rounded text-[10px] font-bold text-slate-600">ID_REG</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex flex-col gap-1">
+<span class="text-[11px] text-slate-400 line-through">AA 1234 B</span>
+<span class="text-sm font-bold text-primary">AA 1234 BY</span>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-700">Pending</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">edit_square</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="px-6 py-4 border-t border-slate-100 bg-slate-50 flex justify-between items-center">
+<p class="text-xs text-slate-500 font-medium">Showing 3 of 1,248 corrections</p>
+<div class="flex gap-2">
+<button class="p-1 text-slate-400 hover:text-slate-600"><span class="material-symbols-outlined">chevron_left</span></button>
+<button class="p-1 text-slate-400 hover:text-slate-600"><span class="material-symbols-outlined">chevron_right</span></button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Retraining Sidebar Control Panel -->
+<div class="col-span-4 space-y-6">
+<!-- Training Progress (Glassmorphism inspired) -->
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-slate-100 shadow-sm">
+<h3 class="font-headline font-bold text-on-surface mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">model_training</span>
+                        Model Retraining
+                    </h3>
+<div class="mb-6">
+<label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Target Model</label>
+<select class="w-full bg-surface-container-low border-none rounded-lg text-sm font-medium py-3 px-4 focus:ring-2 focus:ring-primary/20">
+<option>spaCy NER (Policy Entities)</option>
+<option>XGBoost (Risk Scoring v2.1)</option>
+<option>Tesseract OCR Custom Fine-tune</option>
+</select>
+</div>
+<div class="space-y-4 mb-8">
+<div class="flex justify-between items-end mb-1">
+<span class="text-xs font-semibold text-on-surface">Validation Set Performance</span>
+<span class="text-xs font-bold text-emerald-600">+1.2% Gain</span>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-slate-50 p-3 rounded-lg border border-slate-100">
+<p class="text-[9px] text-slate-400 font-bold uppercase">Current F1</p>
+<p class="text-lg font-bold">0.912</p>
+</div>
+<div class="bg-emerald-50 p-3 rounded-lg border border-emerald-100">
+<p class="text-[9px] text-emerald-600 font-bold uppercase">Predicted</p>
+<p class="text-lg font-bold text-emerald-700">0.923</p>
+</div>
+</div>
+</div>
+<button class="w-full bg-primary text-white py-4 rounded-xl font-bold flex items-center justify-center gap-3 shadow-lg shadow-blue-500/20 active:scale-95 transition-all">
+<span class="material-symbols-outlined">rocket_launch</span>
+                        Trigger Retraining Cycle
+                    </button>
+</div>
+<!-- Feedback Distribution -->
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-slate-100 shadow-sm">
+<h3 class="font-headline font-bold text-on-surface mb-4">Correction Types</h3>
+<div class="flex items-center gap-4 mb-6">
+<div class="relative w-24 h-24">
+<svg class="w-full h-full" viewbox="0 0 36 36">
+<circle class="stroke-slate-100" cx="18" cy="18" fill="none" r="16" stroke-width="4"></circle>
+<circle class="stroke-primary" cx="18" cy="18" fill="none" r="16" stroke-dasharray="60, 100" stroke-linecap="round" stroke-width="4"></circle>
+<circle class="stroke-amber-500" cx="18" cy="18" fill="none" r="16" stroke-dasharray="25, 100" stroke-dashoffset="-60" stroke-linecap="round" stroke-width="4"></circle>
+<circle class="stroke-error" cx="18" cy="18" fill="none" r="16" stroke-dasharray="15, 100" stroke-dashoffset="-85" stroke-linecap="round" stroke-width="4"></circle>
+</svg>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="text-xs font-bold text-slate-400">Total</span>
+</div>
+</div>
+<div class="space-y-2 flex-1">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span class="text-[10px] text-slate-500 flex-1">NER Extraction</span>
+<span class="text-[10px] font-bold">60%</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-amber-500"></span>
+<span class="text-[10px] text-slate-500 flex-1">Risk Severity</span>
+<span class="text-[10px] font-bold">25%</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-error"></span>
+<span class="text-[10px] text-slate-500 flex-1">False Positives</span>
+<span class="text-[10px] font-bold">15%</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Feedback Volume Chart Section -->
+<section class="mt-12 bg-surface-container-lowest p-8 rounded-xl border border-slate-100 shadow-sm overflow-hidden relative">
+<div class="flex justify-between items-center mb-10">
+<div>
+<h3 class="text-xl font-bold text-on-surface tracking-tight">Feedback Volume Analytics</h3>
+<p class="text-sm text-slate-500">Correction submission trends over the last 30 business days</p>
+</div>
+<div class="flex gap-2">
+<button class="px-4 py-2 text-xs font-bold bg-surface-container-low rounded-lg text-slate-600">Day</button>
+<button class="px-4 py-2 text-xs font-bold bg-primary text-white rounded-lg">Week</button>
+<button class="px-4 py-2 text-xs font-bold bg-surface-container-low rounded-lg text-slate-600">Month</button>
+</div>
+</div>
+<!-- Fake Chart Graphic -->
+<div class="h-64 flex items-end gap-1.5 px-4 mb-4">
+<div class="flex-1 bg-slate-100 rounded-t-sm h-[30%] hover:bg-primary/20 transition-all cursor-pointer"></div>
+<div class="flex-1 bg-slate-100 rounded-t-sm h-[45%] hover:bg-primary/20 transition-all cursor-pointer"></div>
+<div class="flex-1 bg-slate-100 rounded-t-sm h-[20%] hover:bg-primary/20 transition-all cursor-pointer"></div>
+<div class="flex-1 bg-slate-100 rounded-t-sm h-[60%] hover:bg-primary/20 transition-all cursor-pointer"></div>
+<div class="flex-1 bg-slate-100 rounded-t-sm h-[75%] hover:bg-primary/20 transition-all cursor-pointer"></div>
+<div class="flex-1 bg-slate-100 rounded-t-sm h-[40%] hover:bg-primary/20 transition-all cursor-pointer"></div>
+<div class="flex-1 bg-slate-100 rounded-t-sm h-[55%] hover:bg-primary/20 transition-all cursor-pointer"></div>
+<div class="flex-1 bg-primary/40 rounded-t-sm h-[90%] hover:bg-primary transition-all cursor-pointer relative group">
+<div class="absolute -top-10 left-1/2 -translate-x-1/2 bg-[#1a1f36] text-white text-[10px] px-2 py-1 rounded hidden group-hover:block">142 items</div>
+</div>
+<div class="flex-1 bg-slate-100 rounded-t-sm h-[35%] hover:bg-primary/20 transition-all cursor-pointer"></div>
+<div class="flex-1 bg-slate-100 rounded-t-sm h-[50%] hover:bg-primary/20 transition-all cursor-pointer"></div>
+<div class="flex-1 bg-slate-100 rounded-t-sm h-[65%] hover:bg-primary/20 transition-all cursor-pointer"></div>
+<div class="flex-1 bg-slate-100 rounded-t-sm h-[45%] hover:bg-primary/20 transition-all cursor-pointer"></div>
+<div class="flex-1 bg-slate-100 rounded-t-sm h-[80%] hover:bg-primary/20 transition-all cursor-pointer"></div>
+<div class="flex-1 bg-slate-100 rounded-t-sm h-[60%] hover:bg-primary/20 transition-all cursor-pointer"></div>
+</div>
+<div class="flex justify-between text-[10px] font-bold text-slate-400 uppercase tracking-tighter pt-4 border-t border-slate-100">
+<span>01 Sep</span>
+<span>07 Sep</span>
+<span>14 Sep</span>
+<span>21 Sep</span>
+<span>Today</span>
+</div>
+</section>
+</main>
+<!-- Contextual FAB (Only visible on main task pages) -->
+<button class="fixed bottom-8 right-8 w-16 h-16 bg-primary text-white rounded-full shadow-2xl flex items-center justify-center active:scale-90 transition-transform z-50 group">
+<span class="material-symbols-outlined text-3xl group-hover:rotate-12 transition-transform">add_task</span>
+<span class="absolute right-20 bg-[#1a1f36] text-white px-4 py-2 rounded-lg text-xs font-bold whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">Add Feedback Entry</span>
+</button>
+</body></html>

@@ -1,0 +1,176 @@
+{% extends "base.html" %}
+{# clients/renewals.html — Renewal Tracker Kanban Board #}
+{% block title %}Renewal Tracker — InsureIntel Zimbabwe{% endblock %}
+
+{% block head_styles %}
+.kanban-col { flex: 1; min-width: 260px; max-width: 420px; }
+.kanban-column.drag-over { border-color: rgba(212,175,55,0.40); background: rgba(212,175,55,0.04); }
+html:not(.dark) .kanban-column.drag-over { border-color: rgba(0,74,198,0.30); }
+{% endblock %}
+
+{% block content %}
+<div class="p-4 md:p-6 lg:p-8">
+
+  <nav class="flex items-center gap-2 text-xs mb-6" style="color:var(--cosv)">
+    <a href="/home" class="hover:underline" style="color:var(--cosv);text-decoration:none">Home</a>
+    <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+    <a href="/clients" class="hover:underline" style="color:var(--cosv);text-decoration:none">Clients</a>
+    <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+    <span class="font-semibold" style="color:var(--cp)">Renewal Tracker</span>
+  </nav>
+
+  <h1 class="font-headline text-3xl font-bold mb-6" style="color:var(--cos)">
+    Renewal Tracker
+  </h1>
+
+  <!-- Kanban Board -->
+  <div style="display:flex;gap:1.25rem;align-items:flex-start;overflow-x:auto;padding-bottom:1.5rem">
+
+    <!-- Pending column -->
+    <div class="kanban-column kanban-col" id="col-pending"
+         ondragover="allowDrop(event)" ondrop="drop(event,'pending')"
+         ondragenter="this.classList.add('drag-over')"
+         ondragleave="this.classList.remove('drag-over')">
+      <div class="flex items-center gap-2 mb-4">
+        <div style="width:10px;height:10px;border-radius:50%;background:#fbbf24;flex-shrink:0"></div>
+        <h3 class="font-headline font-bold" style="color:var(--cos);font-size:0.9375rem;margin:0">Pending</h3>
+        <span id="count-pending" class="badge badge-amber ml-auto">0</span>
+      </div>
+      <div id="cards-pending"></div>
+    </div>
+
+    <!-- In Progress column -->
+    <div class="kanban-column kanban-col" id="col-in_progress"
+         ondragover="allowDrop(event)" ondrop="drop(event,'in_progress')"
+         ondragenter="this.classList.add('drag-over')"
+         ondragleave="this.classList.remove('drag-over')">
+      <div class="flex items-center gap-2 mb-4">
+        <div style="width:10px;height:10px;border-radius:50%;background:#60a5fa;flex-shrink:0"></div>
+        <h3 class="font-headline font-bold" style="color:var(--cos);font-size:0.9375rem;margin:0">In Progress</h3>
+        <span id="count-in_progress" class="badge badge-blue ml-auto">0</span>
+      </div>
+      <div id="cards-in_progress"></div>
+    </div>
+
+    <!-- Renewed column -->
+    <div class="kanban-column kanban-col" id="col-renewed"
+         ondragover="allowDrop(event)" ondrop="drop(event,'renewed')"
+         ondragenter="this.classList.add('drag-over')"
+         ondragleave="this.classList.remove('drag-over')">
+      <div class="flex items-center gap-2 mb-4">
+        <div style="width:10px;height:10px;border-radius:50%;background:#4ade80;flex-shrink:0"></div>
+        <h3 class="font-headline font-bold" style="color:var(--cos);font-size:0.9375rem;margin:0">Renewed</h3>
+        <span id="count-renewed" class="badge badge-green ml-auto">0</span>
+      </div>
+      <div id="cards-renewed"></div>
+    </div>
+
+  </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+"use strict";
+let pipeline    = {};
+let draggedCard = null;
+
+document.addEventListener("DOMContentLoaded", async () => {
+  try {
+    pipeline = await apiGet("/api/clients/renewals");
+    renderBoard();
+  } catch (err) {
+    showToast("Could not load renewals: " + err.message, "error");
+  }
+});
+
+function renderBoard() {
+  ["pending","in_progress","renewed"].forEach(stage => {
+    const cards = pipeline[stage] || [];
+    document.getElementById(`count-${stage}`).textContent = cards.length;
+    const container = document.getElementById(`cards-${stage}`);
+    container.innerHTML = cards.map(c => buildCard(c, stage)).join("");
+    // Wire drag events
+    container.querySelectorAll(".kanban-card").forEach(el => {
+      el.draggable = true;
+      el.addEventListener("dragstart", onDragStart);
+      el.addEventListener("dragend",   onDragEnd);
+    });
+  });
+}
+
+function _expiryBadge(daysLeft) {
+  if (daysLeft === null) return "";
+  let cls, label;
+  if (daysLeft > 90) {
+    cls = "background:rgba(74,222,128,0.12);color:#4ade80;border:1px solid rgba(74,222,128,0.30)";
+    label = `${daysLeft}d`;
+  } else if (daysLeft > 30) {
+    cls = "background:rgba(251,191,36,0.12);color:#fbbf24;border:1px solid rgba(251,191,36,0.30)";
+    label = `${daysLeft}d`;
+  } else if (daysLeft > 0) {
+    // <30d — red pulsing
+    cls = "background:rgba(248,113,113,0.12);color:#f87171;border:1px solid rgba(248,113,113,0.30);animation:statusPulse 1.5s ease-in-out infinite";
+    label = `${daysLeft}d`;
+  } else {
+    cls = "background:rgba(248,113,113,0.20);color:#f87171;border:1px solid rgba(248,113,113,0.50);animation:statusPulse 1.5s ease-in-out infinite";
+    label = "EXPIRED";
+  }
+  return `<span style="${cls};border-radius:9999px;padding:0.1rem 0.5rem;font-size:0.65rem;font-weight:700;white-space:nowrap">${label}</span>`;
+}
+
+function buildCard(c, stage) {
+  const daysLeft = c.end_date
+    ? Math.round((new Date(c.end_date) - Date.now()) / 86400000)
+    : null;
+
+  return `<div class="glass-card kanban-card" data-id="${c.policy_id}" data-stage="${stage}"
+               draggable="true"
+               style="margin-bottom:0.625rem;padding:0.875rem">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:0.375rem">
+      <a href="/clients/${c.client_id}" style="color:var(--cp);font-weight:700;
+         font-size:0.8125rem;text-decoration:none;flex:1;min-width:0;overflow:hidden;
+         text-overflow:ellipsis;white-space:nowrap">${_esc(c.client_name||'—')}</a>
+      <div style="flex-shrink:0;margin-left:0.5rem">
+        ${_expiryBadge(daysLeft)}
+      </div>
+    </div>
+    <p style="color:var(--cosv);font-size:0.75rem;margin:0">${_esc(c.policy_type||'—')}</p>
+    <p style="color:var(--cosv);font-size:0.75rem;margin:0.2rem 0 0">${_esc(c.insurer_name||'—')}</p>
+    ${c.premium_usd ? `<p style="color:var(--cos);font-size:0.8rem;font-weight:600;margin:0.5rem 0 0">
+      $${Number(c.premium_usd).toLocaleString()}</p>` : ""}
+  </div>`;
+}
+
+/* ── Drag-and-drop ────────────────────────────────────────────────────────── */
+function onDragStart(e) {
+  draggedCard = e.currentTarget;
+  draggedCard.classList.add("dragging");
+  e.dataTransfer.effectAllowed = "move";
+  e.dataTransfer.setData("text/plain", draggedCard.dataset.id + "|" + draggedCard.dataset.stage);
+}
+function onDragEnd() {
+  if (draggedCard) draggedCard.classList.remove("dragging");
+  draggedCard = null;
+}
+function allowDrop(e) { e.preventDefault(); }
+function drop(e, targetStage) {
+  e.preventDefault();
+  if (!draggedCard) return;
+  const [policyId, fromStage] = e.dataTransfer.getData("text/plain").split("|");
+  if (fromStage === targetStage) return;
+
+  // Move card in data model
+  const idx = (pipeline[fromStage] || []).findIndex(c => String(c.policy_id) === policyId);
+  if (idx === -1) return;
+  const [card] = pipeline[fromStage].splice(idx, 1);
+  pipeline[targetStage] = pipeline[targetStage] || [];
+  pipeline[targetStage].push(card);
+  renderBoard();
+  showToast(`Policy moved to ${targetStage.replace("_"," ")}.`, "info", 2000);
+}
+
+function _esc(s) { return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+</script>
+{% endblock %}

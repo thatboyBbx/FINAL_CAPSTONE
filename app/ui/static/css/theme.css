@@ -1,0 +1,47 @@
+/* theme.css — Design tokens for InsureIntel Zimbabwe */
+/* All --cp, --cbg, etc. are defined in base.html <style> block for FOUC prevention */
+/* This file provides ADDITIONAL semantic tokens and dark/light overrides */
+
+:root {
+  /* Spacing scale */
+  --spacing-1: 0.25rem;
+  --spacing-2: 0.5rem;
+  --spacing-3: 0.75rem;
+  --spacing-4: 1rem;
+  --spacing-6: 1.5rem;
+  --spacing-8: 2rem;
+
+  /* Layout */
+  --content-max-width: 1200px;
+  --sidebar-width: 250px;
+  --sidebar-collapsed: 64px;
+  --topbar-height: 64px;
+
+  /* Border radius — consistent 8px across all interactive elements */
+  --radius-sm:   4px;
+  --radius-md:   8px;
+  --radius-lg:   12px;
+  --radius-xl:   16px;
+  --radius-full: 9999px;
+
+  /* Card / form element tokens */
+  --card-padding:       2rem;
+  --card-gap:           1.5rem;
+  --form-group-gap:     1.5rem;
+  --input-height:       44px;
+  --input-radius:       8px;
+  --btn-height:         40px;
+  --btn-padding:        0.625rem 1.25rem;
+  --btn-radius:         8px;
+  --btn-group-gap:      1rem;
+  --grid-col-gap:       2rem;
+  --grid-row-gap:       1.5rem;
+
+  /* Transitions */
+  --transition-base: 0.15s ease;
+  --transition-slow: 0.25s ease;
+
+  /* Fonts */
+  --font-headline: 'Manrope', sans-serif;
+  --font-body:     'Inter', sans-serif;
+}

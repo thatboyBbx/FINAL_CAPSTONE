@@ -1,0 +1,206 @@
+{% extends "base.html" %}
+{# clients/list.html — Client List with search, filter, add client #}
+{% block title %}Client List — InsureIntel Zimbabwe{% endblock %}
+
+{% block content %}
+<div class="px-8 py-7">
+
+  <nav style="display:flex;align-items:center;gap:0.5rem;font-size:0.75rem;color:var(--cosv);margin-bottom:1.5rem">
+    <a href="/home" style="color:var(--cosv);text-decoration:none">Home</a>
+    <span>/</span>
+    <a href="/clients" style="color:var(--cosv);text-decoration:none">Clients</a>
+    <span>/</span>
+    <span style="color:var(--cp);font-weight:600">Client List</span>
+  </nav>
+
+  <div style="display:flex;align-items:center;justify-content:space-between;
+              flex-wrap:wrap;gap:1rem;margin-bottom:1.75rem">
+    <h1 class="font-headline" style="font-size:1.5rem;font-weight:800;color:var(--cos);margin:0">
+      👤 Clients
+    </h1>
+    <button onclick="openAddModal()" class="btn-glass-gold">
+      <span class="material-symbols-outlined" style="font-size:18px">person_add</span>
+      Add Client
+    </button>
+  </div>
+
+  <!-- Filters -->
+  <div style="display:flex;gap:0.75rem;margin-bottom:1.25rem;flex-wrap:wrap">
+    <div style="position:relative;flex:1;min-width:200px">
+      <span class="material-symbols-outlined" style="position:absolute;left:0.625rem;top:50%;
+            transform:translateY(-50%);font-size:16px;color:var(--cosv)">search</span>
+      <input id="search-input" type="text" placeholder="Search clients…"
+             style="background:var(--csfc);border:1px solid var(--col);color:var(--cos);
+                    border-radius:6px;padding:0.4rem 0.625rem 0.4rem 2rem;
+                    font-size:0.8rem;outline:none;width:100%"
+             oninput="renderTable()">
+    </div>
+    <select id="seg-filter" class="form-input" style="max-width:180px" onchange="renderTable()">
+      <option value="">All Segments</option>
+      <option value="retail">Retail</option>
+      <option value="corporate">Corporate</option>
+      <option value="smb">SMB</option>
+    </select>
+  </div>
+
+  <!-- Table -->
+  <div class="glass-card" style="overflow:hidden">
+    <table class="data-table" id="clients-table">
+      <thead>
+        <tr>
+          <th>Name / Company</th>
+          <th>Segment</th>
+          <th>Linked</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Added</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="clients-tbody">
+        <tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--cosv)">
+          Loading…</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<!-- Add Client Modal -->
+<div id="add-modal" style="display:none;position:fixed;inset:0;z-index:5000;
+     background:rgba(0,0,0,0.65);backdrop-filter:blur(4px);
+     align-items:center;justify-content:center">
+  <div class="glass-card" style="width:480px;padding:1.75rem">
+    <h3 style="color:var(--cos);font-weight:700;margin:0 0 1.25rem">Add New Client</h3>
+    <div style="display:flex;flex-direction:column;gap:0.875rem">
+      <div><label class="form-label">Full Name *</label>
+        <input id="new-name" class="form-input" type="text" placeholder="John Moyo"></div>
+      <div><label class="form-label">Company</label>
+        <input id="new-company" class="form-input" type="text" placeholder="Moyo Enterprises (Pvt) Ltd"></div>
+      <div><label class="form-label">Email</label>
+        <input id="new-email" class="form-input" type="email"></div>
+      <div><label class="form-label">Phone</label>
+        <input id="new-phone" class="form-input" type="text" placeholder="+263 77…"></div>
+      <div><label class="form-label">Segment</label>
+        <select id="new-segment" class="form-input">
+          <option value="retail">Retail</option>
+          <option value="corporate">Corporate</option>
+          <option value="smb">SMB</option>
+        </select>
+      </div>
+    </div>
+    <div id="add-error" style="display:none;margin-top:0.75rem" class="alert alert-error"></div>
+    <div style="display:flex;gap:0.625rem;justify-content:flex-end;margin-top:1.25rem">
+      <button onclick="closeAddModal()" class="btn-glass">Cancel</button>
+      <button onclick="submitAddClient()" class="btn-glass-gold">Save Client</button>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+"use strict";
+let allClients = [];
+
+document.addEventListener("DOMContentLoaded", async () => {
+  try {
+    allClients = await apiFetch("/api/clients");
+    renderTable();
+  } catch (err) {
+    showErrorModal("Failed to load clients: " + err.message);
+  }
+});
+
+function renderTable() {
+  const q   = (document.getElementById("search-input").value || "").toLowerCase();
+  const seg = document.getElementById("seg-filter").value;
+  let cs    = allClients.filter(c => {
+    if (seg && c.segment !== seg) return false;
+    if (!q) return true;
+    return (c.name||"").toLowerCase().includes(q) || (c.company||"").toLowerCase().includes(q);
+  });
+  const tbody = document.getElementById("clients-tbody");
+  if (cs.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--cosv)">
+      No clients found.</td></tr>`;
+    return;
+  }
+  const segColors = { retail:"#60a5fa", corporate:"#d4af37", smb:"#4ade80" };
+  tbody.innerHTML = cs.map(c => `
+    <tr>
+      <td>
+        <p style="color:var(--cos);font-weight:600;font-size:0.8125rem;margin:0">${_esc(c.name||'—')}</p>
+        ${c.company ? `<p style="color:var(--cosv);font-size:0.7rem;margin:0">${_esc(c.company)}</p>` : ""}
+      </td>
+      <td><span style="color:${segColors[c.segment]||'var(--cosv)'};font-size:0.8rem;font-weight:600">
+        ${_esc((c.segment||"retail").toUpperCase())}
+      </span></td>
+      <td>
+        <div style="display:flex;flex-direction:column;gap:0.15rem">
+          <span style="color:var(--cos);font-size:0.78rem;font-weight:600">${c.policy_count || 0} policies</span>
+          <span style="color:var(--cosv);font-size:0.72rem">${c.document_count || 0} linked docs</span>
+        </div>
+      </td>
+      <td style="color:var(--cosv);font-size:0.8rem">${_esc(c.email||'—')}</td>
+      <td style="color:var(--cosv);font-size:0.8rem">${_esc(c.phone||'—')}</td>
+      <td style="color:var(--cosv);font-size:0.8rem">
+        ${c.created_at ? new Date(c.created_at).toLocaleDateString("en-GB") : '—'}
+      </td>
+      <td>
+        <a href="/clients/${c.id}" class="btn btn-sm btn-ghost">
+          <span class="material-symbols-outlined" style="font-size:16px">open_in_new</span>
+          View
+        </a>
+        <a href="/documents-ui?client_id=${c.id}" class="btn btn-sm btn-ghost" title="View linked policy documents">
+          <span class="material-symbols-outlined" style="font-size:16px">description</span>
+          Policies
+        </a>
+        <button onclick="deleteClient(${c.id})" class="btn btn-sm btn-danger">
+          <span class="material-symbols-outlined" style="font-size:16px">delete</span>
+        </button>
+      </td>
+    </tr>`).join("");
+}
+
+function openAddModal()  { document.getElementById("add-modal").style.display = "flex"; }
+function closeAddModal() { document.getElementById("add-modal").style.display = "none"; }
+
+async function submitAddClient() {
+  const name = document.getElementById("new-name").value.trim();
+  if (!name) { showToast("Name is required.", "warning"); return; }
+  const payload = {
+    name:    name,
+    company: document.getElementById("new-company").value.trim() || null,
+    email:   document.getElementById("new-email").value.trim()   || null,
+    phone:   document.getElementById("new-phone").value.trim()   || null,
+    segment: document.getElementById("new-segment").value,
+  };
+  try {
+    const c = await apiFetch("/api/clients", { method: "POST", body: JSON.stringify(payload) });
+    allClients.unshift(c);
+    renderTable();
+    closeAddModal();
+    showSuccessModal("Client added successfully.");
+  } catch (err) {
+    document.getElementById("add-error").textContent = err.message;
+    document.getElementById("add-error").style.display = "block";
+  }
+}
+
+async function deleteClient(id) {
+  const ok = await confirmDialog("Delete this client? All related records will be removed.");
+  if (!ok) return;
+  try {
+    await apiFetch(`/api/clients/${id}`, { method: "DELETE" });
+    allClients = allClients.filter(c => c.id !== id);
+    renderTable();
+    showSuccessModal("Client deleted.");
+  } catch (err) {
+    showErrorModal("Delete failed: " + err.message);
+  }
+}
+
+function _esc(s) { return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+</script>
+{% endblock %}

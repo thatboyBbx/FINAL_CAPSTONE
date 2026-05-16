@@ -1,0 +1,754 @@
+{% extends "base.html" %}
+{% block title %}{{ document.title if document else 'Document' }} — InsureIntel{% endblock %}
+
+{% block head_styles %}
+<style>
+  /* ═══════════════════════════════════════════════
+     ENTITY HIGHLIGHTING — colour-coded by type
+     Each span has class  ner-<ENTITY_TYPE>
+  ═══════════════════════════════════════════════ */
+
+  /* Shared base for all entity spans */
+  .ner-span {
+    border-radius: 3px;
+    padding: 1px 3px;
+    cursor: pointer;
+    transition: opacity 0.15s, box-shadow 0.15s;
+    border-bottom: 2px solid transparent;
+    font-weight: 500;
+  }
+  .ner-span:hover { opacity: 0.82; box-shadow: 0 2px 8px rgba(0,0,0,0.25); }
+
+  /* Per-type colours — dark theme first, light theme override below */
+  .ner-COVERAGE_AMOUNT  { background: rgba(59,130,246,0.18); border-bottom-color:#3b82f6; }
+  .ner-PREMIUM          { background: rgba(34,197,94,0.18);  border-bottom-color:#22c55e; }
+  .ner-DEDUCTIBLE       { background: rgba(245,158,11,0.18); border-bottom-color:#f59e0b; }
+  .ner-POLICY_PERIOD    { background: rgba(99,102,241,0.18); border-bottom-color:#6366f1; }
+  .ner-POLICY_NUMBER    { background: rgba(236,72,153,0.18); border-bottom-color:#ec4899; }
+  .ner-INSURER          { background: rgba(168,85,247,0.18); border-bottom-color:#a855f7; }
+  .ner-INSURED          { background: rgba(20,184,166,0.18); border-bottom-color:#14b8a6; }
+  .ner-EXCLUSION        { background: rgba(239,68,68,0.18);  border-bottom-color:#ef4444; }
+
+  /* Low-confidence override: dashed amber underline */
+  .ner-low-confidence {
+    border-bottom: 2px dashed #f59e0b !important;
+    background: rgba(245,158,11,0.12) !important;
+  }
+
+  /* Light-mode adjustments */
+  html:not(.dark) .ner-COVERAGE_AMOUNT  { background:#dbeafe; }
+  html:not(.dark) .ner-PREMIUM          { background:#dcfce7; }
+  html:not(.dark) .ner-DEDUCTIBLE       { background:#fef3c7; }
+  html:not(.dark) .ner-POLICY_PERIOD    { background:#e0e7ff; }
+  html:not(.dark) .ner-POLICY_NUMBER    { background:#fce7f3; }
+  html:not(.dark) .ner-INSURER          { background:#f3e8ff; }
+  html:not(.dark) .ner-INSURED          { background:#f0fdfa; }
+  html:not(.dark) .ner-EXCLUSION        { background:#fee2e2; }
+
+  /* Entity list pills */
+  .entity-pill {
+    display: inline-flex; align-items: center;
+    padding: 2px 8px; border-radius: 9999px;
+    font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+  .pill-COVERAGE_AMOUNT  { background:rgba(59,130,246,0.15); color:#3b82f6; }
+  .pill-PREMIUM          { background:rgba(34,197,94,0.15);  color:#22c55e; }
+  .pill-DEDUCTIBLE       { background:rgba(245,158,11,0.15); color:#f59e0b; }
+  .pill-POLICY_PERIOD    { background:rgba(99,102,241,0.15); color:#6366f1; }
+  .pill-POLICY_NUMBER    { background:rgba(236,72,153,0.15); color:#ec4899; }
+  .pill-INSURER          { background:rgba(168,85,247,0.15); color:#a855f7; }
+  .pill-INSURED          { background:rgba(20,184,166,0.15); color:#14b8a6; }
+  .pill-EXCLUSION        { background:rgba(239,68,68,0.15);  color:#ef4444; }
+
+  /* Document text pane */
+  #ner-text-pane {
+    font-family: 'Inter', monospace;
+    font-size: 0.8125rem;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  /* Correction modal backdrop */
+  #correction-modal { display:none; }
+  #correction-modal.open { display:flex; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="p-6 space-y-6">
+
+  <!-- Breadcrumb -->
+  <nav class="flex items-center gap-2 text-xs font-medium" style="color:var(--cosv)">
+    <a href="/home" class="hover:underline" style="color:var(--cp)">Dashboard</a>
+    <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+    <a href="/documents/vault" class="hover:underline" style="color:var(--cp)">Documents</a>
+    <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+    <span>{{ document.title if document else 'Detail' }}</span>
+  </nav>
+
+  {% if error %}
+  <div class="alert alert-error">
+    <span class="material-symbols-outlined text-lg flex-shrink-0">error</span>
+    <span>{{ error }}</span>
+  </div>
+  {% endif %}
+
+  {% if document %}
+
+  <!-- ══════════════════════════════════════════════════════════
+       DOCUMENT HEADER
+  ══════════════════════════════════════════════════════════ -->
+  <div class="rounded-xl p-6 flex flex-wrap items-center justify-between gap-6"
+       style="background:var(--csf);border:1px solid rgba(255,255,255,0.07);border-left:4px solid var(--cp)">
+    <div class="flex items-center gap-4">
+      <div class="w-14 h-14 rounded-xl flex items-center justify-center"
+           style="background:color-mix(in srgb,var(--cp) 12%,transparent)">
+        <span class="material-symbols-outlined text-3xl" style="color:var(--cp);font-variation-settings:'FILL' 1">history_edu</span>
+      </div>
+      <div>
+        <h2 class="text-xl font-bold font-headline" style="color:var(--cos)">{{ document.title }}</h2>
+        <div class="flex flex-wrap items-center gap-3 mt-1">
+          <span class="badge badge-gold">{{ document.document_category or 'Uncategorized' }}</span>
+          <span class="text-xs" style="color:var(--cosv)">Uploaded: {{ document.created_at[:10] if document.created_at else '—' }}</span>
+          <span class="text-xs" style="color:var(--cosv)">ID #{{ document.id }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="flex items-center gap-3">
+      {% set s = (document.status or '')|lower %}
+      {% if s in ['reviewed','compliant','processed'] %}<span class="badge badge-green px-3 py-1 text-sm">{{ document.status }}</span>
+      {% elif s in ['pending_review','pending'] %}<span class="badge badge-amber px-3 py-1 text-sm">Pending Review</span>
+      {% elif s == 'archived' %}<span class="badge badge-blue px-3 py-1 text-sm">Archived</span>
+      {% elif s == 'failed' or s == 'extraction_failed' %}<span class="badge badge-red px-3 py-1 text-sm">Failed</span>
+      {% else %}<span class="badge badge-gold px-3 py-1 text-sm">{{ document.status or 'Uploaded' }}</span>{% endif %}
+      <a href="/reports/generate?doc={{ document.id }}"
+         class="btn btn-sm btn-secondary flex items-center gap-1">
+        <span class="material-symbols-outlined text-[15px]">picture_as_pdf</span>
+        Generate Report
+      </a>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       NER EXTRACTION PANEL
+  ══════════════════════════════════════════════════════════ -->
+  <div class="rounded-xl overflow-hidden"
+       style="background:var(--csf);border:1px solid rgba(255,255,255,0.07)">
+
+    <!-- Panel header -->
+    <div class="px-6 py-4 flex flex-wrap items-center justify-between gap-4"
+         style="border-bottom:1px solid rgba(255,255,255,0.07)">
+      <div class="flex items-center gap-3">
+        <span class="material-symbols-outlined" style="color:var(--cp);font-variation-settings:'FILL' 1">account_tree</span>
+        <div>
+          <h3 class="font-bold font-headline text-base" style="color:var(--cos)">
+            Named Entity Recognition
+          </h3>
+          <p class="text-xs mt-0.5" style="color:var(--cosv)">
+            Insurance-specific entities extracted from document text
+          </p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <!-- Entity type filter -->
+        <select id="entity-filter"
+                class="form-input text-xs"
+                style="width:auto;padding:0.35rem 0.6rem">
+          <option value="">All Types</option>
+          <option value="COVERAGE_AMOUNT">Coverage Amount</option>
+          <option value="PREMIUM">Premium</option>
+          <option value="DEDUCTIBLE">Deductible</option>
+          <option value="POLICY_PERIOD">Policy Period</option>
+          <option value="POLICY_NUMBER">Policy Number</option>
+          <option value="INSURER">Insurer</option>
+          <option value="INSURED">Insured</option>
+          <option value="EXCLUSION">Exclusion</option>
+        </select>
+
+        <!-- Extract / re-extract button -->
+        <button id="btn-extract"
+                onclick="triggerExtraction()"
+                class="btn btn-primary btn-sm">
+          <span class="material-symbols-outlined text-[16px]">
+            {% if entities %}refresh{% else %}play_arrow{% endif %}
+          </span>
+          {% if entities %}Re-Extract{% else %}Extract Entities{% endif %}
+        </button>
+      </div>
+    </div>
+
+    <!-- Summary chips -->
+    {% if entities %}
+    <div class="px-6 py-3 flex flex-wrap gap-2"
+         style="border-bottom:1px solid rgba(255,255,255,0.05)">
+      {% for etype, count in entities_by_type.items() %}
+      <button class="entity-pill pill-{{ etype }} filter-chip"
+              data-type="{{ etype }}"
+              onclick="setFilter('{{ etype }}')">
+        {{ etype.replace('_',' ').title() }}: {{ count }}
+      </button>
+      {% endfor %}
+      <span class="text-xs self-center" style="color:var(--cosv)">
+        {{ entities|length }} total entities
+      </span>
+    </div>
+    {% endif %}
+
+    {% if entities %}
+    <!-- Split view: highlighted text + entity list -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 divide-y lg:divide-y-0 lg:divide-x"
+         style="border-color:rgba(255,255,255,0.06)">
+
+      <!-- LEFT: Highlighted document text -->
+      <div class="p-5">
+        <h4 class="text-xs font-bold uppercase tracking-wider mb-3"
+            style="color:var(--cosv)">Document Text</h4>
+        <div id="ner-text-pane"
+             class="max-h-[520px] overflow-y-auto rounded-lg p-4"
+             style="background:var(--csfc);color:var(--cos)">
+          <!-- Populated by renderHighlightedText() -->
+          <span style="color:var(--cosv);font-style:italic">Loading highlighted text…</span>
+        </div>
+      </div>
+
+      <!-- RIGHT: Entity list -->
+      <div class="p-5">
+        <h4 class="text-xs font-bold uppercase tracking-wider mb-3"
+            style="color:var(--cosv)">
+          Extracted Entities
+          <span id="entity-count-label" class="ml-2 normal-case font-normal">({{ entities|length }})</span>
+        </h4>
+        <div id="entity-list"
+             class="space-y-2 max-h-[520px] overflow-y-auto pr-1">
+          <!-- Populated by renderEntityList() -->
+        </div>
+      </div>
+    </div>
+
+    {% else %}
+    <!-- Empty state when no entities extracted yet -->
+    <div class="flex flex-col items-center justify-center py-16 text-center px-6">
+      <div class="w-16 h-16 rounded-2xl flex items-center justify-center mb-4"
+           style="background:color-mix(in srgb,var(--cp) 10%,transparent)">
+        <span class="material-symbols-outlined text-3xl" style="color:var(--cp)">biotech</span>
+      </div>
+      <h4 class="font-bold font-headline mb-2" style="color:var(--cos)">
+        No Entities Extracted Yet
+      </h4>
+      <p class="text-sm mb-6 max-w-sm" style="color:var(--cosv)">
+        Click <strong>Extract Entities</strong> to run the NER pipeline and identify
+        coverage amounts, premiums, deductibles, policy numbers and more.
+      </p>
+      <button onclick="triggerExtraction()" class="btn btn-primary">
+        <span class="material-symbols-outlined text-[18px]">play_arrow</span>
+        Extract Entities Now
+      </button>
+    </div>
+    {% endif %}
+
+  </div><!-- /NER panel -->
+
+
+  <!-- ══════════════════════════════════════════════════════════
+       EXISTING CONTENT: edit form + metadata
+  ══════════════════════════════════════════════════════════ -->
+  <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
+
+    <!-- Left: Notes + Edit form (3/5) -->
+    <div class="lg:col-span-3 space-y-5">
+      {% if document.notes %}
+      <div class="rounded-xl p-5"
+           style="background:var(--csf);border:1px solid rgba(255,255,255,0.07)">
+        <h3 class="text-xs font-bold uppercase tracking-wider mb-3" style="color:var(--cosv)">Notes</h3>
+        <p class="text-sm leading-relaxed" style="color:var(--cos)">{{ document.notes }}</p>
+      </div>
+      {% endif %}
+
+      {% if document.analysis_result %}
+      <div class="rounded-xl p-5"
+           style="background:var(--csf);border:1px solid rgba(255,255,255,0.07)">
+        <h3 class="text-xs font-bold uppercase tracking-wider mb-3" style="color:var(--cosv)">Analysis Result</h3>
+        {% if document.analysis_result is mapping %}
+          <dl class="space-y-2">
+          {% for k, v in document.analysis_result.items() %}
+            <div class="flex gap-3 py-2" style="border-bottom:1px solid rgba(255,255,255,0.05)">
+              <dt class="text-xs font-semibold capitalize flex-shrink-0" style="color:var(--cp);min-width:140px">{{ k.replace('_',' ') }}</dt>
+              <dd class="text-sm" style="color:var(--cos)">{{ v }}</dd>
+            </div>
+          {% endfor %}
+          </dl>
+        {% else %}
+          <p class="text-sm" style="color:var(--cos)">{{ document.analysis_result }}</p>
+        {% endif %}
+      </div>
+      {% endif %}
+
+      <!-- Edit form -->
+      <div class="rounded-xl p-5"
+           style="background:var(--csf);border:1px solid rgba(255,255,255,0.07)">
+        <h3 class="text-xs font-bold uppercase tracking-wider mb-4" style="color:var(--cosv)">Edit Document</h3>
+        <form method="POST" action="/documents-ui/{{ document.id }}/update" class="space-y-4">
+          <div>
+            <label class="form-label">Title</label>
+            <input type="text" name="title" class="form-input" value="{{ document.title }}" required>
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="form-label">Status</label>
+              <select name="status_value" class="form-input">
+                {% for opt in ['uploaded','pending_review','reviewed','failed'] %}
+                <option value="{{ opt }}" {% if document.status == opt %}selected{% endif %}>{{ opt.replace('_',' ').title() }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div>
+              <label class="form-label">Category</label>
+              <select name="document_category" class="form-input">
+                <option value="">None</option>
+                {% for cat in ['Fire & Hazard','Motor Fleet','Life / Reinsurance','Medical','Liability','Marine','Engineering','Miscellaneous'] %}
+                <option value="{{ cat }}" {% if document.document_category == cat %}selected{% endif %}>{{ cat }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+          <div>
+            <label class="form-label">Notes</label>
+            <textarea name="notes" class="form-input" rows="3" style="resize:vertical">{{ document.notes or '' }}</textarea>
+          </div>
+          <div class="flex gap-3">
+            <button type="submit" class="btn btn-primary">
+              <span class="material-symbols-outlined text-[16px]">save</span>Save Changes
+            </button>
+            <a href="/documents/vault" class="btn btn-ghost">Cancel</a>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Right: Metadata & Actions (2/5) -->
+    <div class="lg:col-span-2 space-y-5">
+      <div class="rounded-xl p-5"
+           style="background:var(--csf);border:1px solid rgba(255,255,255,0.07)">
+        <h3 class="text-xs font-bold uppercase tracking-wider mb-4" style="color:var(--cosv)">Metadata</h3>
+        <dl class="space-y-3">
+          {% for label, value in [
+            ('Document ID','#'~document.id),
+            ('Uploaded By','User #'~(document.uploaded_by_user_id or '—')),
+            ('Created', document.created_at[:10] if document.created_at else '—'),
+            ('File', (document.file_path.split('/')[-1] if document.file_path else '—')),
+            ('Entities Found', entities|length),
+          ] %}
+          <div class="flex justify-between items-start gap-2">
+            <dt class="text-xs font-medium flex-shrink-0" style="color:var(--cosv)">{{ label }}</dt>
+            <dd class="text-xs font-bold text-right truncate max-w-[160px]" style="color:var(--cos)">{{ value }}</dd>
+          </div>
+          {% endfor %}
+        </dl>
+      </div>
+
+      <div class="rounded-xl p-5"
+           style="background:var(--csf);border:1px solid rgba(255,255,255,0.07)">
+        <h3 class="text-xs font-bold uppercase tracking-wider mb-4" style="color:var(--cosv)">Actions</h3>
+        <div class="space-y-2">
+          <a href="/api/documents/{{ document.id }}/download" class="btn btn-ghost w-full justify-start">
+            <span class="material-symbols-outlined text-[16px]">download</span>Download PDF
+          </a>
+          <a href="/documents/compare?doc_id={{ document.id }}" class="btn btn-ghost w-full justify-start">
+            <span class="material-symbols-outlined text-[16px]">compare_arrows</span>Compare Document
+          </a>
+          <a href="/document-qa?doc_id={{ document.id }}" class="btn btn-ghost w-full justify-start">
+            <span class="material-symbols-outlined text-[16px]">psychology</span>Ask Questions (Q&amp;A)
+          </a>
+          {% if document.status != 'archived' %}
+          <form method="POST" action="/documents-ui/{{ document.id }}/archive">
+            <button type="submit" class="btn btn-ghost w-full justify-start">
+              <span class="material-symbols-outlined text-[16px]">archive</span>Archive Document
+            </button>
+          </form>
+          {% else %}
+          <form method="POST" action="/documents-ui/{{ document.id }}/restore">
+            <button type="submit" class="btn btn-ghost w-full justify-start">
+              <span class="material-symbols-outlined text-[16px]">unarchive</span>Restore Document
+            </button>
+          </form>
+          {% endif %}
+          <a href="/documents/vault" class="btn btn-ghost w-full justify-start">
+            <span class="material-symbols-outlined text-[16px]">arrow_back</span>Back to Vault
+          </a>
+        </div>
+      </div>
+
+      {% if entities_by_type %}
+      <!-- Entity breakdown summary card -->
+      <div class="rounded-xl p-5"
+           style="background:var(--csf);border:1px solid rgba(255,255,255,0.07)">
+        <h3 class="text-xs font-bold uppercase tracking-wider mb-4" style="color:var(--cosv)">Entity Breakdown</h3>
+        <div class="space-y-2">
+          {% for etype, count in entities_by_type.items() %}
+          <div class="flex items-center justify-between">
+            <span class="entity-pill pill-{{ etype }}">{{ etype.replace('_',' ').title() }}</span>
+            <span class="text-sm font-bold" style="color:var(--cos)">{{ count }}</span>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+    </div>
+
+  </div><!-- /existing grid -->
+
+  {% else %}
+  <!-- Document not found state -->
+  <div class="flex flex-col items-center justify-center py-24 text-center">
+    <div class="w-16 h-16 rounded-2xl flex items-center justify-center mb-4"
+         style="background:color-mix(in srgb,var(--cp) 8%,transparent)">
+      <span class="material-symbols-outlined text-3xl" style="color:var(--cp)">search_off</span>
+    </div>
+    <h3 class="text-lg font-bold font-headline mb-2" style="color:var(--cos)">Document Not Found</h3>
+    <p class="text-sm mb-6" style="color:var(--cosv)">The document doesn't exist or you don't have access.</p>
+    <a href="/documents/vault" class="btn btn-primary">Back to Vault</a>
+  </div>
+  {% endif %}
+
+</div><!-- /p-6 -->
+
+<!-- ═══════════════════════════════════════════════════════════════
+     ENTITY CORRECTION MODAL
+═══════════════════════════════════════════════════════════════ -->
+<div id="correction-modal"
+     class="fixed inset-0 z-50 flex items-center justify-center"
+     style="background:rgba(0,0,0,0.65);backdrop-filter:blur(4px)">
+  <div class="rounded-xl p-6 w-full max-w-md shadow-2xl"
+       style="background:var(--csf);border:1px solid rgba(255,255,255,0.1)">
+    <h3 class="font-bold font-headline text-base mb-1" style="color:var(--cos)">
+      Correct Entity
+    </h3>
+    <p class="text-xs mb-5" style="color:var(--cosv)">
+      Corrections feed the active-learning loop and improve future extractions.
+    </p>
+
+    <div class="space-y-4">
+      <!-- Original value (read-only) -->
+      <div>
+        <label class="form-label">Extracted Value</label>
+        <input id="modal-original"
+               type="text"
+               readonly
+               class="form-input"
+               style="background:var(--csfc);cursor:default">
+      </div>
+
+      <!-- Correct entity type -->
+      <div>
+        <label class="form-label">Correct Type</label>
+        <select id="modal-type" class="form-input">
+          <option value="COVERAGE_AMOUNT">Coverage Amount</option>
+          <option value="PREMIUM">Premium</option>
+          <option value="DEDUCTIBLE">Deductible</option>
+          <option value="POLICY_PERIOD">Policy Period</option>
+          <option value="POLICY_NUMBER">Policy Number</option>
+          <option value="INSURER">Insurer</option>
+          <option value="INSURED">Insured</option>
+          <option value="EXCLUSION">Exclusion</option>
+        </select>
+      </div>
+
+      <!-- Correct value -->
+      <div>
+        <label class="form-label">Correct Value</label>
+        <input id="modal-value"
+               type="text"
+               class="form-input"
+               placeholder="Leave unchanged if only the type was wrong">
+      </div>
+
+      <!-- Action buttons -->
+      <div class="flex gap-3 pt-1">
+        <button id="modal-confirm"
+                class="btn btn-primary flex-1">
+          <span class="material-symbols-outlined text-[16px]">check</span>
+          Submit Correction
+        </button>
+        <button id="modal-cancel"
+                class="btn btn-ghost flex-1">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  // ── Data injected from Python ─────────────────────────────────────────────
+  const DOCUMENT_ID   = {{ document.id if document else 'null' }};
+  const DOCUMENT_TEXT = {{ document_text | tojson }};
+  const ALL_ENTITIES  = {{ entities | tojson }};
+  const USER_ID       = parseInt(document.cookie.split(';').map(c=>c.trim())
+                          .find(c=>c.startsWith('user_id='))?.split('=')[1] || '0', 10);
+
+  // ── Entity type → colour key ──────────────────────────────────────────────
+  const COLOR_MAP = {
+    COVERAGE_AMOUNT: 'blue',
+    PREMIUM:         'green',
+    DEDUCTIBLE:      'amber',
+    POLICY_PERIOD:   'indigo',
+    POLICY_NUMBER:   'pink',
+    INSURER:         'purple',
+    INSURED:         'teal',
+    EXCLUSION:       'red',
+  };
+
+  function formatType(t) {
+    return t.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+  }
+
+  // Escape HTML to prevent XSS when injecting raw text into innerHTML
+  function escHtml(str) {
+    return str
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;').replace(/"/g,'&quot;')
+      .replace(/'/g,'&#39;');
+  }
+
+  // ── Highlight text with entity spans ─────────────────────────────────────
+  function renderHighlightedText(filter) {
+    const pane = document.getElementById('ner-text-pane');
+    if (!pane) return;
+
+    if (!DOCUMENT_TEXT) {
+      pane.innerHTML = '<span style="color:var(--cosv);font-style:italic">'
+        + 'Document text not available. Run extraction first.</span>';
+      return;
+    }
+
+    // When filtering, highlight all but dim those not matching
+    const sorted = [...ALL_ENTITIES].sort((a,b) => a.start_char - b.start_char);
+    let html = '';
+    let cursor = 0;
+
+    sorted.forEach(ent => {
+      // Add plain text before this entity
+      html += escHtml(DOCUMENT_TEXT.slice(cursor, ent.start_char));
+
+      // Determine classes
+      const dimmed  = filter && ent.entity_type !== filter ? ' opacity-30' : '';
+      const lowConf = ent.confidence < 0.7 ? ' ner-low-confidence' : '';
+      const title   = `${formatType(ent.entity_type)} · ${Math.round(ent.confidence * 100)}% confidence`
+                    + (ent.confidence < 0.7 ? ' · Low confidence' : '');
+
+      html += `<span
+        class="ner-span ner-${ent.entity_type}${lowConf}${dimmed}"
+        data-id="${ent.id}"
+        data-type="${ent.entity_type}"
+        data-value="${escHtml(ent.entity_value)}"
+        title="${escHtml(title)}"
+        onclick="openModal(${ent.id}, '${escHtml(ent.entity_value)}', '${ent.entity_type}')"
+      >${escHtml(ent.entity_value)}</span>`;
+
+      cursor = ent.end_char;
+    });
+
+    // Remaining plain text
+    html += escHtml(DOCUMENT_TEXT.slice(cursor));
+
+    pane.innerHTML = html;
+  }
+
+  // ── Render entity list panel ──────────────────────────────────────────────
+  function renderEntityList(filter) {
+    const list = document.getElementById('entity-list');
+    const label = document.getElementById('entity-count-label');
+    if (!list) return;
+
+    const visible = filter
+      ? ALL_ENTITIES.filter(e => e.entity_type === filter)
+      : ALL_ENTITIES;
+
+    if (label) label.textContent = `(${visible.length})`;
+
+    if (!visible.length) {
+      list.innerHTML = `<div class="text-center py-10" style="color:var(--cosv)">
+        <span class="material-symbols-outlined text-2xl mb-2 block">search_off</span>
+        No entities of this type found.
+      </div>`;
+      return;
+    }
+
+    list.innerHTML = visible.map(ent => {
+      const pct = Math.round(ent.confidence * 100);
+      const barColor = pct >= 85 ? '#22c55e' : pct >= 70 ? '#f59e0b' : '#ef4444';
+      const isCorrect = ent.is_correct;
+      const feedbackBadge = isCorrect === true
+        ? '<span class="badge badge-green ml-1" title="Verified correct">✓</span>'
+        : isCorrect === false
+          ? '<span class="badge badge-red ml-1" title="Marked incorrect">✗</span>'
+          : '';
+
+      return `<div class="rounded-lg p-3 transition-colors"
+                   style="background:var(--csfc);border:1px solid rgba(255,255,255,0.05)"
+                   id="entity-card-${ent.id}">
+        <div class="flex items-start justify-between gap-2">
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center flex-wrap gap-1.5 mb-1.5">
+              <span class="entity-pill pill-${ent.entity_type}">${formatType(ent.entity_type)}</span>
+              ${feedbackBadge}
+              <span class="text-[10px]" style="color:var(--cosv)">${pct}%</span>
+            </div>
+            <p class="text-sm font-medium truncate" style="color:var(--cos)"
+               title="${escHtml(ent.entity_value)}">${escHtml(ent.entity_value)}</p>
+            <div class="mt-1.5 progress-track">
+              <div class="progress-fill" style="width:${pct}%;background:${barColor}"></div>
+            </div>
+          </div>
+          <button
+            onclick="openModal(${ent.id}, '${escHtml(ent.entity_value)}', '${ent.entity_type}')"
+            class="btn btn-ghost btn-sm flex-shrink-0"
+            title="Correct this entity"
+            style="padding:0.25rem">
+            <span class="material-symbols-outlined text-[16px]">edit</span>
+          </button>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  // ── Filter chips & select ─────────────────────────────────────────────────
+  let activeFilter = '';
+
+  function setFilter(type) {
+    activeFilter = activeFilter === type ? '' : type;
+    document.getElementById('entity-filter').value = activeFilter;
+    renderHighlightedText(activeFilter);
+    renderEntityList(activeFilter);
+  }
+
+  document.getElementById('entity-filter')?.addEventListener('change', e => {
+    activeFilter = e.target.value;
+    renderHighlightedText(activeFilter);
+    renderEntityList(activeFilter);
+  });
+
+  // ── Trigger NER extraction ────────────────────────────────────────────────
+  async function triggerExtraction() {
+    const btn = document.getElementById('btn-extract');
+    if (!btn || !DOCUMENT_ID) return;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="material-symbols-outlined text-[16px] animate-spin">progress_activity</span> Processing…';
+
+    try {
+      const resp = await apiFetch(`/api/documents/${DOCUMENT_ID}/process`, {
+        method: 'POST',
+      });
+
+      // Poll until status becomes 'processed' (max 60 s)
+      let attempts = 0;
+      const poll = setInterval(async () => {
+        attempts++;
+        try {
+          const d = await apiFetch(`/api/documents/${DOCUMENT_ID}`);
+          if (d.status === 'processed' || d.status === 'extraction_failed' || attempts > 30) {
+            clearInterval(poll);
+            location.reload();  // reload page to show fresh entities
+          }
+        } catch (_) {
+          clearInterval(poll);
+          location.reload();
+        }
+      }, 2000);
+    } catch (err) {
+      showErrorModal('Extraction failed: ' + err.message);
+      btn.disabled = false;
+      btn.innerHTML = '<span class="material-symbols-outlined text-[16px]">play_arrow</span> Extract Entities';
+    }
+  }
+
+  // ── Correction modal ──────────────────────────────────────────────────────
+  let _modalEntityId = null;
+
+  function openModal(entityId, originalValue, entityType) {
+    _modalEntityId = entityId;
+    document.getElementById('modal-original').value = originalValue;
+    document.getElementById('modal-type').value     = entityType;
+    document.getElementById('modal-value').value    = originalValue;
+    document.getElementById('correction-modal').classList.add('open');
+  }
+
+  document.getElementById('modal-cancel')?.addEventListener('click', () => {
+    document.getElementById('correction-modal').classList.remove('open');
+    _modalEntityId = null;
+  });
+
+  // Close modal on backdrop click
+  document.getElementById('correction-modal')?.addEventListener('click', e => {
+    if (e.target === e.currentTarget) {
+      document.getElementById('correction-modal').classList.remove('open');
+      _modalEntityId = null;
+    }
+  });
+
+  document.getElementById('modal-confirm')?.addEventListener('click', async () => {
+    if (!_modalEntityId) return;
+
+    const correctedType  = document.getElementById('modal-type').value;
+    const correctedValue = document.getElementById('modal-value').value.trim();
+    const btn = document.getElementById('modal-confirm');
+
+    btn.disabled = true;
+    btn.textContent = 'Saving…';
+
+    try {
+      const params = new URLSearchParams({
+        is_correct:           'false',
+        feedback_by_user_id:  String(USER_ID || 1),
+        corrected_type:       correctedType,
+        corrected_value:      correctedValue,
+      });
+      await apiFetch(
+        `/api/documents/entities/${_modalEntityId}/feedback?${params}`,
+        { method: 'POST' }
+      );
+
+      document.getElementById('correction-modal').classList.remove('open');
+      // Update the card without a full reload
+      const card = document.getElementById(`entity-card-${_modalEntityId}`);
+      if (card) {
+        card.style.borderColor = 'rgba(239,68,68,0.4)';
+        // Show small ✗ badge to indicate it was flagged
+        const firstPill = card.querySelector('.entity-pill');
+        if (firstPill && !card.querySelector('.badge-red')) {
+          firstPill.insertAdjacentHTML('afterend',
+            '<span class="badge badge-red ml-1" title="Marked incorrect">✗</span>');
+        }
+      }
+      _modalEntityId = null;
+    } catch (err) {
+      showErrorModal('Failed to submit correction: ' + err.message);
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = '<span class="material-symbols-outlined text-[16px]">check</span> Submit Correction';
+    }
+  });
+
+  // ── Helper: read JWT from httponly cookie via API token cookie ────────────
+  function _getToken() {
+    // access_token is httponly — pass it via fetch only when the browser
+    // automatically includes cookies.  For same-origin requests this works
+    // transparently.  We return an empty string here; the browser will send
+    // the cookie header automatically on same-origin requests.
+    return '';
+  }
+
+  // ── Initialise ────────────────────────────────────────────────────────────
+  (function init() {
+    if (ALL_ENTITIES.length > 0) {
+      renderHighlightedText('');
+      renderEntityList('');
+    }
+  })();
+</script>
+{% endblock %}

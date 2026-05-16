@@ -1,0 +1,176 @@
+{% extends "base.html" %}
+{% block title %}Settings — InsureIntel{% endblock %}
+
+{% block content %}
+<div class="p-8 space-y-6">
+
+  <div>
+    <h1 class="text-2xl font-extrabold font-headline" style="color:var(--cos)">Settings</h1>
+    <p class="text-sm mt-0.5" style="color:var(--cosv)">Manage your profile, preferences, and system configuration.</p>
+  </div>
+
+  <!-- Tab bar -->
+  <div class="flex gap-1 p-1 rounded-xl w-fit" style="background:var(--csfc)">
+    {% for tid, tlabel in [('profile','Profile'),('notifications','Notifications'),('api','API Keys'),('system','System')] %}
+    <button onclick="showTab('{{ tid }}')" id="tab-{{ tid }}"
+            class="px-4 py-2 rounded-lg text-sm font-semibold transition-all tab-btn {% if loop.first %}tab-active{% endif %}">
+      {{ tlabel }}
+    </button>
+    {% endfor %}
+  </div>
+
+  <!-- Profile -->
+  <div id="panel-profile" class="tab-panel space-y-5">
+    <div class="glass-card rounded-xl p-6 max-w-2xl">
+      <h2 class="font-headline font-bold text-base mb-5" style="color:var(--cos)">Profile Information</h2>
+      <form class="space-y-4">
+        <div class="grid grid-cols-2 gap-4">
+          <div><label class="form-label">Full Name</label>
+            <input class="form-input" value="{{ full_name or '' }}" type="text"></div>
+          <div><label class="form-label">Role</label>
+            <input class="form-input" value="{{ role or '' }}" type="text" readonly style="opacity:0.6"></div>
+        </div>
+        <div><label class="form-label">Email Address</label>
+          <input class="form-input" placeholder="your.email@company.co.zw" type="email"></div>
+        <div><label class="form-label">Company / Organisation</label>
+          <input class="form-input" placeholder="InsureIntel Zimbabwe" type="text"></div>
+        <div class="pt-2 flex gap-3">
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+          <button type="button" class="btn btn-ghost">Cancel</button>
+        </div>
+      </form>
+    </div>
+    <div class="glass-card rounded-xl p-6 max-w-2xl">
+      <h2 class="font-headline font-bold text-base mb-5" style="color:var(--cos)">Change Password</h2>
+      <form class="space-y-4">
+        <div><label class="form-label">Current Password</label>
+          <input class="form-input" type="password" placeholder="••••••••"></div>
+        <div class="grid grid-cols-2 gap-4">
+          <div><label class="form-label">New Password</label>
+            <input class="form-input" type="password" placeholder="••••••••"></div>
+          <div><label class="form-label">Confirm New Password</label>
+            <input class="form-input" type="password" placeholder="••••••••"></div>
+        </div>
+        <button type="submit" class="btn btn-secondary">Update Password</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Notifications -->
+  <div id="panel-notifications" class="tab-panel hidden">
+    <div class="glass-card rounded-xl p-6 max-w-2xl">
+      <h2 class="font-headline font-bold text-base mb-5" style="color:var(--cos)">Email Alerts</h2>
+      {% for label, desc, checked in [
+        ('Risk Alerts','Receive email when a high-risk document is detected', true),
+        ('Compliance Violations','Notify on IPEC compliance failures', true),
+        ('Policy Expiry','7-day and 1-day expiry reminders', false),
+        ('Batch Completion','Email when a batch analysis job finishes', false),
+        ('Scraper Failures','Alert when a data scraper fails', true),
+      ] %}
+      <div class="flex items-center justify-between py-3" style="border-bottom:1px solid rgba(255,255,255,0.05)">
+        <div>
+          <p class="text-sm font-semibold" style="color:var(--cos)">{{ label }}</p>
+          <p class="text-xs mt-0.5" style="color:var(--cosv)">{{ desc }}</p>
+        </div>
+        <label class="relative inline-flex cursor-pointer ml-4 flex-shrink-0">
+          <input type="checkbox" class="sr-only tog" {% if checked %}checked{% endif %}>
+          <div class="tog-track w-11 h-6 rounded-full relative transition-all"
+               style="background:{% if checked %}var(--cp){% else %}var(--col){% endif %}">
+            <div class="tog-thumb absolute top-1 left-1 w-4 h-4 rounded-full bg-white transition-transform"
+                 style="transform:{% if checked %}translateX(20px){% else %}translateX(0){% endif %}"></div>
+          </div>
+        </label>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- API Keys -->
+  <div id="panel-api" class="tab-panel hidden">
+    <div class="glass-card rounded-xl p-6 max-w-2xl">
+      <h2 class="font-headline font-bold text-base mb-5" style="color:var(--cos)">API Configuration</h2>
+      <div class="space-y-4">
+        <div><label class="form-label">API Key</label>
+          <div class="flex gap-2">
+            <input class="form-input font-mono text-xs" value="sk-ii-••••••••••••••••••••••••••••••" type="text" readonly>
+            <button class="btn btn-secondary btn-sm flex-shrink-0">
+              <span class="material-symbols-outlined text-[15px]">content_copy</span>Copy
+            </button>
+            <button class="btn btn-danger btn-sm flex-shrink-0">
+              <span class="material-symbols-outlined text-[15px]">refresh</span>Rotate
+            </button>
+          </div>
+        </div>
+        <div><label class="form-label">Webhook URL</label>
+          <input class="form-input" placeholder="https://your-endpoint.co.zw/webhook" type="url"></div>
+        <div class="grid grid-cols-2 gap-4">
+          <div><label class="form-label">SMTP Host</label>
+            <input class="form-input" placeholder="smtp.gmail.com" type="text"></div>
+          <div><label class="form-label">SMTP Port</label>
+            <input class="form-input" placeholder="587" type="number"></div>
+        </div>
+        <button class="btn btn-primary">Save API Settings</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- System -->
+  <div id="panel-system" class="tab-panel hidden">
+    <div class="glass-card rounded-xl p-6 max-w-2xl">
+      <h2 class="font-headline font-bold text-base mb-5" style="color:var(--cos)">System Configuration</h2>
+      <div class="space-y-4">
+        <div class="grid grid-cols-2 gap-4">
+          <div><label class="form-label">Environment</label>
+            <input class="form-input" value="Live Production" type="text" readonly style="opacity:0.6"></div>
+          <div><label class="form-label">Scraper Schedule</label>
+            <select class="form-input">
+              <option>Every 6 hours</option><option>Every 12 hours</option><option>Daily</option>
+            </select>
+          </div>
+        </div>
+        <div><label class="form-label">Data Retention (days)</label>
+          <input class="form-input" value="365" type="number"></div>
+        <div class="flex items-center justify-between py-3" style="border-bottom:1px solid rgba(255,255,255,0.05)">
+          <div>
+            <p class="text-sm font-semibold" style="color:var(--cos)">UI Theme</p>
+            <p class="text-xs mt-0.5" style="color:var(--cosv)">Toggle between Royal Gold and Victoria Falls Slate</p>
+          </div>
+          <button onclick="toggleTheme()" class="btn btn-secondary btn-sm">
+            <span class="material-symbols-outlined icon-light-mode text-[15px]">light_mode</span>
+            <span class="material-symbols-outlined icon-dark-mode text-[15px]">dark_mode</span>
+            Toggle Theme
+          </button>
+        </div>
+        <div class="flex items-center gap-3 pt-2">
+          <button class="btn btn-primary">Save System Settings</button>
+          <span class="text-xs" style="color:var(--cosv)">v2.4.1 · IPEC Reg. #8849-ZIM</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<style>
+  .tab-btn { color:var(--cosv); }
+  .tab-btn.tab-active { background:var(--cp); color:var(--cop); }
+  .tab-btn:not(.tab-active):hover { color:var(--cos); background:rgba(255,255,255,0.05); }
+  html:not(.dark) .tab-btn:not(.tab-active):hover { background:rgba(0,0,0,0.05); }
+  .tab-panel.hidden { display:none; }
+</style>
+<script>
+  function showTab(id) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.add('hidden'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('tab-active'));
+    document.getElementById('panel-' + id).classList.remove('hidden');
+    document.getElementById('tab-' + id).classList.add('tab-active');
+  }
+  document.querySelectorAll('.tog').forEach(inp => {
+    inp.addEventListener('change', function () {
+      const track = this.nextElementSibling;
+      const thumb = track.querySelector('.tog-thumb');
+      track.style.background = this.checked ? 'var(--cp)' : 'var(--col)';
+      thumb.style.transform = this.checked ? 'translateX(20px)' : 'translateX(0)';
+    });
+  });
+</script>
+{% endblock %}

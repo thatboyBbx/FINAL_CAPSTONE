@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{# analysis/index.html — Analysis category landing page #}
+{% block title %}Analysis — InsureIntel Zimbabwe{% endblock %}
+
+{% block content %}
+<div class="p-4 md:p-6 lg:p-8">
+
+  <!-- Breadcrumb -->
+  <nav class="flex items-center gap-2 text-xs mb-6" style="color:var(--cosv)">
+    <a href="/home" class="hover:underline" style="color:var(--cosv);text-decoration:none">Home</a>
+    <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+    <span class="font-semibold" style="color:var(--cp)">Analysis</span>
+  </nav>
+
+  <!-- Header -->
+  <div class="mb-8">
+    <h1 class="font-headline text-3xl font-bold mb-1" style="color:var(--cos)">
+      Analysis
+    </h1>
+    <p class="text-sm md:text-base" style="color:var(--cosv)">
+      ML-powered document analysis — NER, clause deviation, risk scoring, and more.
+    </p>
+  </div>
+
+  <!-- Tile Grid -->
+  <div class="tile-grid">
+
+    <!-- ML Analytics -->
+    <div class="glass-card tile-card p-6 flex flex-col">
+      <div class="text-5xl mb-4" aria-hidden="true">📊</div>
+      <h2 class="font-headline text-lg font-semibold mb-2" style="color:var(--cos)">ML Analytics</h2>
+      <p class="text-sm mb-6 flex-1" style="color:var(--cosv);line-height:1.6">
+        Run multi-document machine learning analysis covering risk scoring,
+        NER extraction, and clause classification simultaneously.
+      </p>
+      <a href="/analysis/ml" class="btn-glass btn-glass-gold flex items-center justify-center gap-1 w-full">
+        Open
+        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+      </a>
+    </div>
+
+    <!-- Clause Deviation -->
+    <div class="glass-card tile-card p-6 flex flex-col">
+      <div class="text-5xl mb-4" aria-hidden="true">📐</div>
+      <h2 class="font-headline text-lg font-semibold mb-2" style="color:var(--cos)">Clause Deviation</h2>
+      <p class="text-sm mb-6 flex-1" style="color:var(--cosv);line-height:1.6">
+        Compare policy documents against a master template to detect
+        missing, modified, or non-compliant clauses.
+      </p>
+      <a href="/analysis/deviation" class="btn-glass btn-glass-gold flex items-center justify-center gap-1 w-full">
+        Open
+        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+      </a>
+    </div>
+
+    <!-- NER Extraction -->
+    <div class="glass-card tile-card p-6 flex flex-col">
+      <div class="text-5xl mb-4" aria-hidden="true">🏷️</div>
+      <h2 class="font-headline text-lg font-semibold mb-2" style="color:var(--cos)">NER Extraction</h2>
+      <p class="text-sm mb-6 flex-1" style="color:var(--cosv);line-height:1.6">
+        Named Entity Recognition — extract organisations, dates, monetary
+        values, and key parties from insurance documents.
+      </p>
+      <a href="/analysis/ner" class="btn-glass btn-glass-gold flex items-center justify-center gap-1 w-full">
+        Open
+        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+      </a>
+    </div>
+
+    <!-- Risk Analysis -->
+    <div class="glass-card tile-card p-6 flex flex-col">
+      <div class="text-5xl mb-4" aria-hidden="true">⚠️</div>
+      <h2 class="font-headline text-lg font-semibold mb-2" style="color:var(--cos)">Risk Analysis</h2>
+      <p class="text-sm mb-6 flex-1" style="color:var(--cosv);line-height:1.6">
+        Comprehensive risk factor scoring for individual policy documents —
+        coverage gaps, exclusion clauses, and broker recommendations.
+      </p>
+      <a href="/analysis/risk" class="btn-glass btn-glass-gold flex items-center justify-center gap-1 w-full">
+        Open
+        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+      </a>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

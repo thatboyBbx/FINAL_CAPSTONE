@@ -1,0 +1,147 @@
+﻿{% extends "base.html" %}
+{% block title %}Batch & Portfolio Analysis — InsureIntel{% endblock %}
+
+{% block content %}
+<div class="p-6 space-y-6">
+  <div class="flex items-center justify-between">
+    <div style="display:flex;align-items:center;gap:0.75rem">
+      <a href="/home" class="btn btn-ghost btn-sm">
+        <span class="material-symbols-outlined text-[16px]">arrow_back</span>Back
+      </a>
+      <div>
+        <h2 class="text-2xl font-bold font-headline" style="color:var(--cos)">Batch Portfolio Engine</h2>
+        <p class="text-sm mt-0.5" style="color:var(--cosv)">Process multiple documents and portfolios at scale.</p>
+      </div>
+    </div>
+    <button onclick="showErrorModal('This feature is coming soon.'); return false;" class="btn btn-primary"><span class="material-symbols-outlined text-[18px]">add</span>New Batch</button>
+  </div>
+
+  <!-- Create Batch -->
+  <div class="rounded-xl p-6" style="background:var(--csf);border:1px solid color-mix(in srgb,var(--col) 50%,transparent)">
+    <h3 class="font-semibold font-headline mb-4" style="color:var(--cos)">Create New Batch</h3>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
+      <div>
+        <label class="form-label">Batch Name</label>
+        <input type="text" class="form-input" placeholder="e.g. Q1 2024 Portfolio Review">
+      </div>
+      <div>
+        <label class="form-label">Analysis Type</label>
+        <select class="form-input">
+          <option>Compliance Scan</option>
+          <option>Risk Assessment</option>
+          <option>Clause Deviation</option>
+          <option>Full Analysis</option>
+        </select>
+      </div>
+      <div>
+        <label class="form-label">Portfolio</label>
+        <select class="form-input">
+          <option>All Documents</option>
+          <option>Fire & Hazard</option>
+          <option>Motor Fleet</option>
+          <option>Life / Reinsurance</option>
+        </select>
+      </div>
+    </div>
+    <div class="border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-all"
+         style="border-color:color-mix(in srgb,var(--cp) 30%,transparent);background:color-mix(in srgb,var(--cp) 3%,transparent)">
+      <span class="material-symbols-outlined text-4xl mb-2 block" style="color:var(--cp)">folder_open</span>
+      <p class="font-semibold" style="color:var(--cos)">Drop documents or click to select</p>
+      <p class="text-sm mt-1" style="color:var(--cosv)">Supports multiple PDF, DOCX files — batch upload up to 500 MB</p>
+    </div>
+    <div class="mt-4 flex gap-3">
+      <button onclick="startBatch(); return false;" class="btn btn-primary"><span class="material-symbols-outlined text-[18px]">play_arrow</span>Start Batch</button>
+      <button onclick="clearBatchForm(); return false;" class="btn btn-ghost">Clear</button>
+    </div>
+  </div>
+
+  <!-- Active Batches -->
+  <div class="rounded-xl overflow-hidden" style="background:var(--csf);border:1px solid color-mix(in srgb,var(--col) 50%,transparent)">
+    <div class="px-5 py-4" style="border-bottom:1px solid color-mix(in srgb,var(--col) 40%,transparent)">
+      <h3 class="font-semibold font-headline" style="color:var(--cos)">Active Batches</h3>
+    </div>
+    <div class="divide-y" style="border-color:color-mix(in srgb,var(--col) 30%,transparent)">
+      {% for name, docs, prog, eta in [
+        ('Q1 2024 Full Portfolio Scan',42,72,'~4 min remaining'),
+        ('Motor Fleet Compliance Review',18,28,'~12 min remaining'),
+        ('Reinsurance Treaty Analysis',8,91,'~1 min remaining'),
+      ] %}
+      <div class="p-5">
+        <div class="flex items-center justify-between mb-3">
+          <div>
+            <p class="font-semibold text-sm" style="color:var(--cos)">{{ name }}</p>
+            <p class="text-xs mt-0.5" style="color:var(--cosv)">{{ docs }} documents • {{ eta }}</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="badge badge-amber">Processing</span>
+            <span class="text-sm font-bold" style="color:var(--cp)">{{ prog }}%</span>
+            <button class="btn btn-ghost btn-sm"><span class="material-symbols-outlined text-[16px]">stop</span></button>
+          </div>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" style="width:{{ prog }}%"></div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Batch History -->
+  <div class="rounded-xl overflow-hidden" style="background:var(--csf);border:1px solid color-mix(in srgb,var(--col) 50%,transparent)">
+    <div class="px-5 py-4" style="border-bottom:1px solid color-mix(in srgb,var(--col) 40%,transparent)">
+      <h3 class="font-semibold font-headline" style="color:var(--cos)">Batch History</h3>
+    </div>
+    <table class="data-table">
+      <thead><tr><th>Batch Name</th><th>Documents</th><th>Type</th><th>Status</th><th>Completed</th><th>Results</th></tr></thead>
+      <tbody>
+        {% for name, docs, typ, status, date in [
+          ('FY2023 Annual Audit','156','Full Analysis','completed','01 Mar 2024'),
+          ('Q4 2023 Compliance Scan','89','Compliance Scan','completed','15 Jan 2024'),
+          ('Life Portfolio Risk Review','34','Risk Assessment','completed','20 Dec 2023'),
+          ('Motor Fleet Deviation Check','27','Clause Deviation','failed','05 Dec 2023'),
+        ] %}
+        <tr>
+          <td class="font-medium" style="color:var(--cos)">{{ name }}</td>
+          <td style="color:var(--cosv)">{{ docs }}</td>
+          <td style="color:var(--cosv)">{{ typ }}</td>
+          <td>
+            {% if status=='completed' %}<span class="badge badge-green">Completed</span>
+            {% elif status=='failed' %}<span class="badge badge-red">Failed</span>
+            {% else %}<span class="badge badge-amber">{{ status }}</span>{% endif %}
+          </td>
+          <td class="text-xs" style="color:var(--cosv)">{{ date }}</td>
+          <td>
+            {% if status=='completed' %}<button onclick="showErrorModal('This feature is coming soon.'); return false;" class="btn btn-ghost btn-sm"><span class="material-symbols-outlined text-[14px]">download</span>Report</button>{% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% block scripts %}
+<script>
+"use strict";
+async function startBatch() {
+  const name    = document.querySelector('input[placeholder="e.g. Q1 2024 Portfolio Review"]')?.value?.trim();
+  const type    = document.querySelectorAll('.form-input')[1]?.value;
+  const portfolio = document.querySelectorAll('.form-input')[2]?.value;
+  if (!name) { showErrorModal('Please enter a batch name before starting.'); return; }
+  try {
+    const data = await apiFetch('/api/batch/start', {
+      method: 'POST',
+      body: JSON.stringify({ name, analysis_type: type, portfolio })
+    });
+    showSuccessModal('Batch started successfully. Batch ID: ' + (data.id || data.batch_id || 'N/A'));
+  } catch (e) {
+    showErrorModal('Failed to start batch: ' + e.message);
+  }
+}
+
+function clearBatchForm() {
+  const nameInput = document.querySelector('input[placeholder="e.g. Q1 2024 Portfolio Review"]');
+  if (nameInput) nameInput.value = '';
+}
+</script>
+{% endblock %}

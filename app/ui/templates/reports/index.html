@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{# reports/index.html — Reports category landing page #}
+{% block title %}Reports — InsureIntel Zimbabwe{% endblock %}
+
+{% block content %}
+<div class="p-4 md:p-6 lg:p-8">
+
+  <!-- Breadcrumb -->
+  <nav class="flex items-center gap-2 text-xs mb-6" style="color:var(--cosv)">
+    <a href="/home" class="hover:underline" style="color:var(--cosv);text-decoration:none">Home</a>
+    <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+    <span class="font-semibold" style="color:var(--cp)">Reports</span>
+  </nav>
+
+  <!-- Back button -->
+  <div style="margin-bottom:1rem">
+    <a href="/home" class="btn-glass" style="display:inline-flex;align-items:center;gap:0.4rem;font-size:0.8rem">
+      <span class="material-symbols-outlined" style="font-size:17px">arrow_back</span>
+      Back
+    </a>
+  </div>
+
+  <!-- Header -->
+  <div class="mb-8">
+    <h1 class="font-headline text-3xl font-bold mb-1" style="color:var(--cos)">
+      Reports
+    </h1>
+    <p class="text-sm md:text-base" style="color:var(--cosv)">
+      Compliance checking, report generation, and market news intelligence.
+    </p>
+  </div>
+
+  <!-- Tile Grid -->
+  <div class="tile-grid">
+
+    <!-- Compliance Engine -->
+    <div class="glass-card tile-card p-6 flex flex-col">
+      <div class="text-5xl mb-4" aria-hidden="true">✅</div>
+      <h2 class="font-headline text-lg font-semibold mb-2" style="color:var(--cos)">Compliance Engine</h2>
+      <p class="text-sm mb-6 flex-1" style="color:var(--cosv);line-height:1.6">
+        Check policy documents against IPEC regulatory requirements.
+        Score 0–100, pass/fail checklist, and violation breakdown.
+      </p>
+      <a href="/reports/compliance" class="btn-glass btn-glass-gold flex items-center justify-center gap-1 w-full">
+        Open
+        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+      </a>
+    </div>
+
+    <!-- Generate Report -->
+    <div class="glass-card tile-card p-6 flex flex-col">
+      <div class="text-5xl mb-4" aria-hidden="true">📄</div>
+      <h2 class="font-headline text-lg font-semibold mb-2" style="color:var(--cos)">Generate Report</h2>
+      <p class="text-sm mb-6 flex-1" style="color:var(--cosv);line-height:1.6">
+        Generate executive, detailed, or compliance PDF reports for any
+        uploaded policy document on demand.
+      </p>
+      <a href="/reports/generate" class="btn-glass btn-glass-gold flex items-center justify-center gap-1 w-full">
+        Open
+        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+      </a>
+    </div>
+
+    <!-- News Feed -->
+    <div class="glass-card tile-card p-6 flex flex-col">
+      <div class="text-5xl mb-4" aria-hidden="true">📰</div>
+      <h2 class="font-headline text-lg font-semibold mb-2" style="color:var(--cos)">News Feed</h2>
+      <p class="text-sm mb-6 flex-1" style="color:var(--cosv);line-height:1.6">
+        Scrape and classify Zimbabwe insurance market news. Sentiment
+        analysis, insurer mentions, and regulatory announcements.
+      </p>
+      <a href="/reports/news" class="btn-glass btn-glass-gold flex items-center justify-center gap-1 w-full">
+        Open
+        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+      </a>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

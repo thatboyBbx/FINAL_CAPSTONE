@@ -1,0 +1,9 @@
+{
+  "_comment": "Exchange rates to USD. Update periodically. ZWG = Zimbabwe Gold (introduced 2024).",
+  "ZWG": 0.00377,
+  "ZWL": 0.00083,
+  "ZAR": 0.0545,
+  "GBP": 1.27,
+  "EUR": 1.09,
+  "USD": 1.0
+}

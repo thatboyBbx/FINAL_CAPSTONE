@@ -1,0 +1,270 @@
+{% extends "base.html" %}
+{#
+  documents/compare.html — Compare two documents side-by-side
+  POST /api/documents/compare body: {"doc_a_id":…, "doc_b_id":…}
+  Results shown as diff-style view below panels.
+#}
+{% block title %}Compare Documents — InsureIntel Zimbabwe{% endblock %}
+
+{% block content %}
+<div class="px-8 py-7">
+
+  <!-- Breadcrumb -->
+  <nav style="display:flex;align-items:center;gap:0.5rem;font-size:0.75rem;
+              color:var(--cosv);margin-bottom:1.5rem">
+    <a href="/home" style="color:var(--cosv);text-decoration:none">Home</a>
+    <span>/</span>
+    <a href="/documents" style="color:var(--cosv);text-decoration:none">Documents</a>
+    <span>/</span>
+    <span style="color:var(--cp);font-weight:600">Compare</span>
+  </nav>
+
+  <h1 class="font-headline"
+      style="font-size:1.5rem;font-weight:800;color:var(--cos);margin:0 0 1.75rem">
+    🔀 Compare Documents
+  </h1>
+
+  <!-- Two Selection Panels -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1.5rem">
+
+    <!-- Document A -->
+    <div class="glass-card" style="padding:1.5rem">
+      <h3 style="color:var(--cos);font-weight:700;font-size:0.9375rem;margin:0 0 1rem;
+                 display:flex;align-items:center;gap:0.5rem">
+        <span style="background:rgba(212,175,55,0.15);border:1px solid rgba(212,175,55,0.30);
+                     color:#d4af37;border-radius:6px;padding:0.1rem 0.5rem;font-size:0.7rem;
+                     font-weight:700">A</span>
+        Base Document
+      </h3>
+      <label class="form-label">Select from vault</label>
+      <select id="doc-a-select" class="form-input" onchange="checkReady()"
+              style="margin-bottom:0.875rem">
+        <option value="">— Select document —</option>
+      </select>
+      <p style="color:var(--cosv);font-size:0.75rem;text-align:center;margin:0.25rem 0">— or —</p>
+      <div id="drop-a" class="drop-zone" style="margin-top:0.625rem;padding:1.25rem"
+           onclick="document.getElementById('file-a').click()">
+        <span class="material-symbols-outlined"
+              style="font-size:28px;color:var(--cp);opacity:0.6;font-variation-settings:'FILL' 1">
+          upload_file</span>
+        <p style="color:var(--cosv);font-size:0.8rem;margin:0.375rem 0 0">
+          Drop PDF or click to browse
+        </p>
+        <input id="file-a" type="file" accept=".pdf" style="display:none"
+               onchange="handleDrop('a', this.files[0])">
+      </div>
+      <p id="doc-a-name" style="color:var(--cp);font-size:0.8rem;margin:0.5rem 0 0;
+                                  display:none;font-weight:600"></p>
+    </div>
+
+    <!-- Document B -->
+    <div class="glass-card" style="padding:1.5rem">
+      <h3 style="color:var(--cos);font-weight:700;font-size:0.9375rem;margin:0 0 1rem;
+                 display:flex;align-items:center;gap:0.5rem">
+        <span style="background:rgba(96,165,250,0.15);border:1px solid rgba(96,165,250,0.30);
+                     color:#60a5fa;border-radius:6px;padding:0.1rem 0.5rem;font-size:0.7rem;
+                     font-weight:700">B</span>
+        Comparison Document
+      </h3>
+      <label class="form-label">Select from vault</label>
+      <select id="doc-b-select" class="form-input" onchange="checkReady()"
+              style="margin-bottom:0.875rem">
+        <option value="">— Select document —</option>
+      </select>
+      <p style="color:var(--cosv);font-size:0.75rem;text-align:center;margin:0.25rem 0">— or —</p>
+      <div id="drop-b" class="drop-zone" style="margin-top:0.625rem;padding:1.25rem"
+           onclick="document.getElementById('file-b').click()">
+        <span class="material-symbols-outlined"
+              style="font-size:28px;color:#60a5fa;opacity:0.6;font-variation-settings:'FILL' 1">
+          upload_file</span>
+        <p style="color:var(--cosv);font-size:0.8rem;margin:0.375rem 0 0">
+          Drop PDF or click to browse
+        </p>
+        <input id="file-b" type="file" accept=".pdf" style="display:none"
+               onchange="handleDrop('b', this.files[0])">
+      </div>
+      <p id="doc-b-name" style="color:#60a5fa;font-size:0.8rem;margin:0.5rem 0 0;
+                                  display:none;font-weight:600"></p>
+    </div>
+
+  </div>
+
+  <!-- Compare Button -->
+  <div style="text-align:center;margin-bottom:2rem">
+    <button id="compare-btn" onclick="runComparison()" class="btn-glass-gold"
+            style="font-size:1rem;padding:0.75rem 2.5rem" disabled>
+      <span class="material-symbols-outlined" style="font-size:20px">compare_arrows</span>
+      Compare Documents
+    </button>
+  </div>
+
+  <!-- Results Area -->
+  <div id="results-area" style="display:none">
+    <h2 style="color:var(--cos);font-size:1.125rem;font-weight:700;margin:0 0 1.25rem;
+               display:flex;align-items:center;gap:0.5rem">
+      <span class="material-symbols-outlined" style="font-size:20px;color:var(--cp)">
+        difference</span>
+      Comparison Results
+    </h2>
+    <div class="glass-card" style="padding:1.5rem">
+      <!-- Summary stats -->
+      <div id="compare-stats"
+           style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+                  gap:1rem;margin-bottom:1.5rem">
+      </div>
+      <!-- Diff view -->
+      <div id="diff-view"
+           style="font-family:monospace;font-size:0.8125rem;line-height:1.7;
+                  max-height:500px;overflow-y:auto">
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+"use strict";
+
+let docAId = null, docBId = null;
+let uploadedAId = null, uploadedBId = null;
+
+/* ── Load vault docs ────────────────────────────────────────────────────── */
+document.addEventListener("DOMContentLoaded", async () => {
+  try {
+    const docs = await apiGet("/api/documents");
+    ["a","b"].forEach(side => {
+      const sel = document.getElementById(`doc-${side}-select`);
+      docs.forEach(d => {
+        const o = document.createElement("option");
+        o.value = d.id;
+        o.textContent = d.title || d.original_filename || `Doc #${d.id}`;
+        sel.appendChild(o);
+      });
+    });
+  } catch (err) {
+    showToast("Could not load vault documents.", "warning");
+  }
+});
+
+document.getElementById("doc-a-select").addEventListener("change", function () {
+  docAId = this.value ? parseInt(this.value) : null;
+  checkReady();
+});
+document.getElementById("doc-b-select").addEventListener("change", function () {
+  docBId = this.value ? parseInt(this.value) : null;
+  checkReady();
+});
+
+function checkReady() {
+  const aReady = docAId || uploadedAId;
+  const bReady = docBId || uploadedBId;
+  document.getElementById("compare-btn").disabled = !(aReady && bReady);
+}
+
+/* ── File drop upload ────────────────────────────────────────────────────── */
+async function handleDrop(side, file) {
+  if (!file || !file.name.endsWith(".pdf")) {
+    showToast("Only PDF files are accepted.", "warning"); return;
+  }
+  const nameEl = document.getElementById(`doc-${side}-name`);
+  nameEl.textContent = `Uploading "${file.name}"…`;
+  nameEl.style.display = "block";
+
+  const fd = new FormData();
+  fd.append("file",  file);
+  fd.append("title", file.name.replace(/\.pdf$/i,""));
+
+  try {
+    const match = document.cookie.match(/(?:^|;\s*)access_token=([^;]+)/);
+    const resp  = await fetch("/documents/upload", {
+      method: "POST",
+      headers: match ? { Authorization: `Bearer ${decodeURIComponent(match[1])}` } : {},
+      body: fd,
+    });
+    const data = await resp.json();
+    if (!resp.ok) throw new Error(data.detail || "Upload failed");
+    if (side === "a") uploadedAId = data.id;
+    else              uploadedBId = data.id;
+    nameEl.textContent = `✓ ${file.name}`;
+    checkReady();
+  } catch (err) {
+    nameEl.textContent = `✗ ${err.message}`;
+    showToast("Upload failed: " + err.message, "error");
+  }
+}
+
+/* ── Run comparison ──────────────────────────────────────────────────────── */
+async function runComparison() {
+  const aId = docAId || uploadedAId;
+  const bId = docBId || uploadedBId;
+  if (!aId || !bId) { showToast("Select both documents first.", "warning"); return; }
+
+  const btn = document.getElementById("compare-btn");
+  btn.disabled = true;
+  btn.innerHTML = `<span class="material-symbols-outlined" style="font-size:20px;
+    animation:spin 1s linear infinite">progress_activity</span> Comparing…`;
+  showProgress(40, "Comparing documents…");
+
+  try {
+    const result = await apiPost("/api/documents/compare", { doc_a_id: aId, doc_b_id: bId });
+    showProgress(0);
+    renderResults(result);
+  } catch (err) {
+    showProgress(0);
+    showToast("Comparison failed: " + err.message, "error");
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = `<span class="material-symbols-outlined" style="font-size:20px">compare_arrows</span>
+      Compare Documents`;
+  }
+}
+
+function renderResults(data) {
+  document.getElementById("results-area").style.display = "block";
+
+  // Stats
+  const stats = document.getElementById("compare-stats");
+  const items = [
+    { label: "Added",    val: data.added_count    || 0, color: "#4ade80" },
+    { label: "Removed",  val: data.removed_count  || 0, color: "#f87171" },
+    { label: "Changed",  val: data.changed_count  || 0, color: "#fbbf24" },
+    { label: "Unchanged",val: data.unchanged_count|| 0, color: "#a1a1a1" },
+  ];
+  stats.innerHTML = items.map(i => `
+    <div style="text-align:center;padding:1rem;background:rgba(255,255,255,0.03);
+                border-radius:10px;border:1px solid rgba(255,255,255,0.06)">
+      <p style="font-size:1.75rem;font-weight:800;color:${i.color};margin:0;line-height:1">${i.val}</p>
+      <p style="color:var(--cosv);font-size:0.75rem;margin:0.25rem 0 0">${i.label}</p>
+    </div>`).join("");
+
+  // Diff view
+  const diffEl = document.getElementById("diff-view");
+  if (data.diff_lines && data.diff_lines.length > 0) {
+    diffEl.innerHTML = data.diff_lines.map(line => {
+      if (line.startsWith("+"))
+        return `<div class="diff-added">${_esc(line)}</div>`;
+      if (line.startsWith("-"))
+        return `<div class="diff-removed">${_esc(line)}</div>`;
+      if (line.startsWith("?"))
+        return `<div class="diff-changed">${_esc(line)}</div>`;
+      return `<div style="color:var(--cosv)">${_esc(line)}</div>`;
+    }).join("");
+  } else if (data.summary) {
+    diffEl.innerHTML = `<p style="color:var(--cosv)">${_esc(data.summary)}</p>`;
+  } else {
+    diffEl.innerHTML = `<p style="color:var(--cosv)">Comparison complete. No diff data returned.</p>`;
+  }
+
+  document.getElementById("results-area").scrollIntoView({ behavior: "smooth" });
+}
+
+function _esc(s) {
+  return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+</script>
+<style>
+@keyframes spin { from { transform:rotate(0deg); } to { transform:rotate(360deg); } }
+</style>
+{% endblock %}

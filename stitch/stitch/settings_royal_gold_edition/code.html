@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Settings | InsureIntel Zimbabwe</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Manrope', sans-serif;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(212, 175, 55, 0.1);
+        }
+        .glass-input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(4px);
+        }
+        .glass-input:focus {
+            border-color: #D4AF37;
+            box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
+        }
+        .royal-gold-active {
+            color: #D4AF37;
+            border-bottom: 2px solid #D4AF37;
+        }
+        .gold-glow {
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "primary": "#D4AF37", // Royal Gold
+                "surface": "#0a0a0b",
+                "surface-container": "#161618",
+                "surface-container-low": "#111112",
+                "surface-container-high": "#1c1c1f",
+                "on-surface": "#e5e7eb",
+                "outline": "#4b5563",
+                "error": "#ef4444"
+              },
+              fontFamily: {
+                "headline": ["Manrope"],
+                "body": ["Manrope"],
+              },
+              borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-surface text-on-surface antialiased overflow-hidden">
+<!-- Sidebar Shell -->
+<aside class="h-screen w-64 fixed left-0 top-0 overflow-y-auto bg-black border-r border-white/5 z-50 flex flex-col py-6">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-primary/10 flex items-center justify-center rounded-lg border border-primary/30">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">security</span>
+</div>
+<div>
+<h2 class="text-xl font-bold text-white tracking-tight leading-tight">InsureIntel</h2>
+<p class="text-[10px] font-bold uppercase tracking-widest text-primary/70">Zimbabwe</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined">upload_file</span>
+<span class="text-sm font-medium">Upload Documents</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined">description</span>
+<span class="text-sm font-medium">Documents</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="text-sm font-medium">Analysis Results</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined">contract</span>
+<span class="text-sm font-medium">Circulars Analysis</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined">library_books</span>
+<span class="text-sm font-medium">Knowledge Base</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined">gavel</span>
+<span class="text-sm font-medium">Compliance Center</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined">psychology</span>
+<span class="text-sm font-medium">Insurer Intelligence</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined">insights</span>
+<span class="text-sm font-medium">ML Predictions</span>
+</a>
+<div class="px-4 pt-4 pb-2 text-[10px] font-bold text-slate-600 uppercase tracking-widest">Tools</div>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined">forum</span>
+<span class="text-sm font-medium">Document Q&amp;A</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined">compare_arrows</span>
+<span class="text-sm font-medium">Document Comparison</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined">rule</span>
+<span class="text-sm font-medium">Clause Deviations</span>
+</a>
+<div class="px-4 pt-4 pb-2 text-[10px] font-bold text-slate-600 uppercase tracking-widest">System</div>
+<a class="flex items-center gap-3 px-4 py-3 text-primary bg-primary/10 border-r-2 border-primary transition-all" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">settings</span>
+<span class="text-sm font-semibold">Settings</span>
+</a>
+</nav>
+</aside>
+<!-- Main Content Shell -->
+<main class="ml-64 min-h-screen bg-surface transition-all duration-300">
+<!-- TopAppBar -->
+<header class="fixed top-0 right-0 left-64 h-16 z-40 bg-black/40 backdrop-blur-xl flex justify-between items-center px-8 border-b border-white/5">
+<div class="flex-1 max-w-xl">
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline group-focus-within:text-primary transition-colors">search</span>
+<input class="w-full pl-10 pr-4 py-2 glass-input rounded-lg border-none text-sm font-medium placeholder:text-outline/70" placeholder="Search system settings..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<button class="relative p-2 text-outline hover:text-primary transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-4 h-4 bg-primary text-[10px] text-black flex items-center justify-center rounded-full font-bold leading-none border border-black">3</span>
+</button>
+<div class="h-8 w-px bg-white/10"></div>
+<div class="flex items-center gap-3 group cursor-pointer">
+<div class="text-right">
+<p class="text-xs font-bold text-white">Tendai Makoni</p>
+<p class="text-[10px] font-medium text-primary/70">Compliance Lead</p>
+</div>
+<div class="w-10 h-10 rounded-full border-2 border-primary/20 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Professional headshot of an African businessman" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBA3lHJmIp7Dr8dyL4oqE244FCLRLAz0zsjZMHkJST0UHyjVDbExyTypTmR1m5ZoOGdSD6Bf3j6Te_u360qib9ewfwtU2E8LAXIOkuK0gkc2NKNkEiiUWWvA7LDDJbkTUUiihh6-mG5D-RZKhpaI1XacTMUFJ1jcsdzOnhAWq4Xls-yB_edxr8WnFvLOiuCBZwe25nxgeenvMgBw2_GEhFyGuG--M66lSFmcHeB4PKweuEShoSQM8D8SAOy5vVP7a5LOdhzwUYIYzRx"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Content Canvas -->
+<div class="pt-24 pb-12 px-8 max-w-6xl mx-auto">
+<div class="mb-8">
+<h1 class="text-3xl font-extrabold text-white tracking-tight mb-2">System Settings</h1>
+<p class="text-slate-400 font-medium">Configure your personal profile, notification triggers, and core engine parameters.</p>
+</div>
+<!-- Tabbed Interface -->
+<div class="glass-card rounded-xl overflow-hidden shadow-2xl">
+<div class="flex border-b border-white/5 bg-white/5 px-6">
+<button class="px-6 py-4 text-sm font-bold royal-gold-active -mb-px flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">person</span>
+                    Profile
+                </button>
+<button class="px-6 py-4 text-sm font-semibold text-slate-400 hover:text-primary transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">notifications_active</span>
+                    Notifications
+                </button>
+<button class="px-6 py-4 text-sm font-semibold text-slate-400 hover:text-primary transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">vpn_key</span>
+                    API Keys
+                </button>
+<button class="px-6 py-4 text-sm font-semibold text-slate-400 hover:text-primary transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">settings_input_component</span>
+                    System
+                </button>
+</div>
+<div class="p-10">
+<!-- Profile Tab View -->
+<div class="grid grid-cols-12 gap-12">
+<div class="col-span-4 flex flex-col items-center">
+<div class="relative group cursor-pointer">
+<div class="w-40 h-40 rounded-full border-4 border-primary/20 overflow-hidden shadow-2xl relative">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="African businessman portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDaXU1JfMWsZ6gwVY0wCS0qD2GmSE4B3ClfAo8GV_4omtB3qhQNx7uHNO1dZVk22I1h0MNC7IAqB-zcSuR0vMkTmZRtv_DgG1JeP6Vs_MzynL3PyUIwJ8spHL7Ki_wMiahFDD8-ahOk9orH6Wl7wMI6xFNomNqCGGizF0ouks-rwtYoLVjOjfiKZ0t_OdD2jyF5dfeNXixdBHno5ltzRmEtDbVE51Q5irZQRtRt1gnQciTQC6DeqUwQT1czdbxuwEi3yF0EjXwiJxBY"/>
+<div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
+</div>
+<div class="absolute bottom-1 right-1 bg-primary text-black p-2 rounded-full shadow-lg border-2 border-surface gold-glow">
+<span class="material-symbols-outlined text-sm">photo_camera</span>
+</div>
+</div>
+<h3 class="mt-4 font-bold text-white">Tendai Makoni</h3>
+<p class="text-[10px] text-primary font-bold mb-6 uppercase tracking-widest">Compliance Lead</p>
+<button class="text-xs font-bold text-primary hover:text-primary/80 uppercase tracking-wider underline">Change Avatar</button>
+</div>
+<div class="col-span-8">
+<form class="space-y-6">
+<div class="grid grid-cols-2 gap-6">
+<div class="space-y-1.5">
+<label class="text-[10px] font-bold text-primary uppercase tracking-widest">Full Name</label>
+<input class="w-full glass-input text-sm font-semibold p-3 text-white rounded-lg" type="text" value="Tendai Makoni"/>
+</div>
+<div class="space-y-1.5">
+<label class="text-[10px] font-bold text-primary uppercase tracking-widest">Email Address</label>
+<input class="w-full glass-input text-sm font-semibold p-3 text-white rounded-lg" type="email" value="tendai.m@insureintel.co.zw"/>
+</div>
+<div class="space-y-1.5">
+<label class="text-[10px] font-bold text-primary uppercase tracking-widest">User Role</label>
+<select class="w-full glass-input text-sm font-semibold p-3 text-white rounded-lg">
+<option selected="">Compliance Lead</option>
+<option>Underwriting Manager</option>
+<option>System Admin</option>
+<option>Claims Officer</option>
+</select>
+</div>
+<div class="space-y-1.5">
+<label class="text-[10px] font-bold text-primary uppercase tracking-widest">Company</label>
+<input class="w-full glass-input text-sm font-semibold p-3 text-white rounded-lg" type="text" value="Old Mutual Zimbabwe"/>
+</div>
+</div>
+<div class="pt-6 border-t border-white/5 flex justify-end gap-4">
+<button class="px-6 py-2.5 text-xs font-bold text-slate-400 hover:text-white uppercase tracking-widest" type="button">Discard Changes</button>
+<button class="px-8 py-2.5 bg-primary text-black text-xs font-bold rounded-lg gold-glow hover:bg-primary/90 transition-all uppercase tracking-widest" type="submit">Save Profile</button>
+</div>
+</form>
+</div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-8 mt-8">
+<!-- Notifications Card -->
+<div class="glass-card p-8 rounded-xl">
+<div class="flex items-center gap-3 mb-6">
+<div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">notifications_active</span>
+</div>
+<h2 class="text-lg font-bold text-white">Email Alerts</h2>
+</div>
+<div class="space-y-4">
+<div class="flex items-center justify-between py-3 border-b border-white/5">
+<div>
+<p class="text-sm font-bold text-white">Expiry Warnings</p>
+<p class="text-[11px] text-slate-500 font-medium">Policy expiration 30-day alerts</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-white/10 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:bg-black after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-slate-400 after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<div class="flex items-center justify-between py-3 border-b border-white/5">
+<div>
+<p class="text-sm font-bold text-white">Compliance Failures</p>
+<p class="text-[11px] text-slate-500 font-medium">Instant alerts on IPEC regulation mismatches</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-white/10 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:bg-black after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-slate-400 after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<div class="flex items-center justify-between py-3">
+<div>
+<p class="text-sm font-bold text-white">Batch Completion</p>
+<p class="text-[11px] text-slate-500 font-medium">When large PDF portfolio analyses finish</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-white/10 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:bg-black after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-slate-400 after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+</div>
+</div>
+<!-- System Config -->
+<div class="bg-black p-8 rounded-xl border border-primary/20 shadow-2xl relative overflow-hidden">
+<div class="absolute top-0 right-0 p-8 opacity-5">
+<span class="material-symbols-outlined text-8xl text-primary" style="font-variation-settings: 'opsz' 48;">rocket_launch</span>
+</div>
+<div class="relative z-10">
+<div class="flex items-center gap-3 mb-6">
+<div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">settings_input_component</span>
+</div>
+<h2 class="text-lg font-bold text-white">System Configuration</h2>
+</div>
+<div class="space-y-6">
+<div class="p-4 bg-white/5 rounded-lg border border-white/5">
+<div class="flex justify-between items-center mb-2">
+<span class="text-[10px] font-bold uppercase tracking-widest text-primary">Environment</span>
+<span class="px-2 py-0.5 bg-primary/20 text-primary text-[10px] font-extrabold rounded border border-primary/30 uppercase">Live</span>
+</div>
+<p class="text-sm font-semibold text-white mb-1">Production Instance</p>
+<p class="text-[11px] text-slate-500">System is currently in Live mode processing real-world insurance data.</p>
+</div>
+<div class="space-y-4">
+<div>
+<label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">Scraper Schedule</label>
+<div class="font-mono text-sm glass-input p-3 rounded-lg border border-white/5 text-primary flex justify-between items-center">
+<span>0 0 * * *</span>
+<span class="text-[10px] text-slate-600 italic">Every midnight</span>
+</div>
+</div>
+<div>
+<label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest block mb-2">Data Retention (Days)</label>
+<input class="w-full glass-input rounded-lg text-sm font-bold text-white focus:ring-1 focus:ring-primary" type="number" value="730"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-8 glass-card p-8 rounded-xl">
+<div class="flex items-center justify-between mb-8">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">vpn_key</span>
+</div>
+<div>
+<h2 class="text-lg font-bold text-white">Integrations &amp; API</h2>
+<p class="text-xs text-slate-500 font-medium">Manage connectivity to external LLMs and SMTP servers</p>
+</div>
+</div>
+<button class="flex items-center gap-2 px-4 py-2 border border-primary/50 text-primary text-[10px] font-bold rounded-lg hover:bg-primary/10 transition-colors uppercase tracking-widest">
+<span class="material-symbols-outlined text-[16px]">add</span>
+                    Generate Key
+                </button>
+</div>
+<div class="space-y-6">
+<div class="p-6 bg-white/5 rounded-lg border border-white/5">
+<div class="flex items-start justify-between">
+<div class="space-y-2 flex-1 max-w-2xl">
+<label class="text-[10px] font-bold text-primary uppercase tracking-widest">Anthropic Claude API Key</label>
+<div class="relative">
+<input class="w-full glass-input rounded-lg text-sm font-mono p-3 text-slate-300" readonly="" type="password" value="sk-ant-api03-abcdefg1234567890-qwerty"/>
+<button class="absolute right-3 top-1/2 -translate-y-1/2 text-primary">
+<span class="material-symbols-outlined">visibility_off</span>
+</button>
+</div>
+<p class="text-[11px] text-slate-600 italic">Used for high-fidelity document reasoning and clause deviation analysis.</p>
+</div>
+<div class="text-right">
+<span class="px-2 py-1 bg-primary/10 text-primary text-[10px] font-bold rounded border border-primary/20">Active</span>
+<p class="text-[10px] text-slate-600 mt-2 uppercase tracking-tighter">Last used: 4 mins ago</p>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-6">
+<div class="p-6 bg-white/5 rounded-lg border border-white/5">
+<label class="text-[10px] font-bold text-primary uppercase tracking-widest block mb-4">SMTP Settings</label>
+<div class="space-y-3">
+<div class="flex justify-between items-center py-2 border-b border-white/5">
+<span class="text-xs font-semibold text-slate-500">Host</span>
+<span class="text-xs font-bold text-white">smtp.insureintel.co.zw</span>
+</div>
+<div class="flex justify-between items-center py-2 border-b border-white/5">
+<span class="text-xs font-semibold text-slate-500">Port</span>
+<span class="text-xs font-bold text-white">587 (TLS)</span>
+</div>
+<div class="flex justify-between items-center py-2">
+<span class="text-xs font-semibold text-slate-500">User</span>
+<span class="text-xs font-bold text-white">notifications@system</span>
+</div>
+</div>
+</div>
+<div class="p-6 bg-primary/5 rounded-lg border border-primary/20 flex flex-col justify-center items-center text-center">
+<span class="material-symbols-outlined text-primary mb-3 text-4xl">security_update_good</span>
+<h4 class="text-sm font-bold text-white mb-2 uppercase tracking-wide">Audit Logs Active</h4>
+<p class="text-[11px] text-slate-500 mb-4 px-6">System activities tracked in the Sovereign Ledger.</p>
+<button class="text-[10px] font-bold text-primary hover:underline uppercase tracking-widest">View Audit Trail</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Accent -->
+<footer class="mt-12 mb-8 px-8 text-center">
+<p class="text-[10px] font-bold text-slate-700 uppercase tracking-[0.3em]">InsureIntel Platform v4.2.0 • Licensed to Old Mutual Zimbabwe • IPEC Reg #8841-Z</p>
+</footer>
+</main>
+</body></html>

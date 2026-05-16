@@ -1,0 +1,120 @@
+﻿{% extends "base.html" %}
+{% block title %}Clause Deviations — InsureIntel{% endblock %}
+
+{% block content %}
+<div class="p-6 space-y-6">
+  <div class="flex items-center justify-between">
+    <div>
+      <a href="/analysis" class="text-xs hover:underline mb-1 block" style="color:var(--cp)">← Back to Analytics</a>
+      <h2 class="text-2xl font-bold font-headline" style="color:var(--cos)">Clause Deviation Scoring</h2>
+      <p class="text-sm mt-0.5" style="color:var(--cosv)">Compare policy clauses against IPEC standard templates and score deviations.</p>
+    </div>
+  </div>
+
+  <!-- Summary Metrics -->
+  <div class="grid grid-cols-2 lg:grid-cols-5 gap-4">
+    {% for icon, label, value, color in [
+      ('difference','Total Deviations','24','var(--cp)'),
+      ('error','Critical','3','#f87171'),
+      ('warning','Major','8','#fbbf24'),
+      ('info','Minor','13','#60a5fa'),
+      ('check_circle','Compliant Clauses','87','#4ade80'),
+    ] %}
+    <div class="stat-card text-center">
+      <span class="material-symbols-outlined text-2xl mb-2 block" style="color:{{ color }}">{{ icon }}</span>
+      <p class="text-xl font-bold font-headline" style="color:var(--cos)">{{ value }}</p>
+      <p class="text-xs mt-0.5" style="color:var(--cosv)">{{ label }}</p>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Document selector -->
+  <div class="rounded-xl p-5 flex flex-wrap items-center gap-4" style="background:var(--csf);border:1px solid color-mix(in srgb,var(--col) 50%,transparent)">
+    <div class="flex-1 min-w-64">
+      <label class="form-label">Select Document to Analyse</label>
+      <select class="form-input">
+        <option>Zimplats-Fire-Policy-2024.pdf</option>
+        <option>Delta-Corp-Motor-Fleet.pdf</option>
+        <option>Innscor-Liability-Q1.pdf</option>
+        <option>NSSA-Medical-Plan-2024.pdf</option>
+      </select>
+    </div>
+    <div style="width:200px">
+      <label class="form-label">Standard Template</label>
+      <select class="form-input">
+        <option>IPEC Fire Standard 2023</option>
+        <option>IPEC Motor Standard 2023</option>
+        <option>IPEC Life Standard 2023</option>
+        <option>IPEC Medical Standard 2023</option>
+      </select>
+    </div>
+    <div class="flex-shrink-0 mt-5">
+      <button class="btn btn-primary" onclick="runDeviationAnalysis()"><span class="material-symbols-outlined text-[18px]">compare</span>Run Analysis</button>
+    </div>
+  </div>
+
+  <!-- Deviation Table -->
+  <div class="rounded-xl overflow-hidden" style="background:var(--csf);border:1px solid color-mix(in srgb,var(--col) 50%,transparent)">
+    <div class="px-5 py-4" style="border-bottom:1px solid color-mix(in srgb,var(--col) 40%,transparent)">
+      <h3 class="font-semibold font-headline" style="color:var(--cos)">Clause Analysis Results — Zimplats Fire Policy 2024</h3>
+    </div>
+    <table class="data-table">
+      <thead><tr><th>Clause</th><th>Standard Text</th><th>Policy Text (Summary)</th><th>Deviation Type</th><th>Similarity</th><th>Action</th></tr></thead>
+      <tbody>
+        {% for clause, std_summary, pol_summary, dev_type, sim in [
+          ('Clause 4.2 — Grace Period','30 days grace period after premium due date','Immediate suspension upon non-payment','Critical','12%'),
+          ('Clause 7.1 — Arbitration','Zimbabwe Arbitration Act [Chapter 7:15]','International arbitration in London','Major','45%'),
+          ('Clause 3.4 — Sum Insured','Replacement value basis','Market value basis (no depreciation cap)','Major','62%'),
+          ('Clause 6.2 — Disclosure','Full material facts disclosure required','Partial disclosure clause','Minor','78%'),
+          ('Clause 9.1 — Cancellation','30 days written notice','14 days notice accepted','Minor','83%'),
+          ('Clause 2.1 — Definitions','Standard IPEC definitions apply','Customised definitions — 3 variations','Minor','91%'),
+          ('Clause 1.1 — Insured Parties','Named insured and employees','Named insured only','Major','55%'),
+          ('Clause 8.3 — Subrogation','Standard subrogation rights','Extended waiver of subrogation','Minor','85%'),
+        ] %}
+        <tr>
+          <td class="font-medium text-sm" style="color:var(--cos)">{{ clause }}</td>
+          <td class="text-xs" style="color:var(--cosv)">{{ std_summary }}</td>
+          <td class="text-xs" style="color:var(--cos)">{{ pol_summary }}</td>
+          <td>
+            {% if dev_type=='Critical' %}<span class="badge badge-red">Critical</span>
+            {% elif dev_type=='Major' %}<span class="badge badge-amber">Major</span>
+            {% else %}<span class="badge badge-blue">Minor</span>{% endif %}
+          </td>
+          <td>
+            <div class="flex items-center gap-2">
+              <div class="w-14 progress-track">
+                <div class="progress-fill" style="width:{{ sim }};background:{% if sim|int < 50 %}#f87171{% elif sim|int < 75 %}#fbbf24{% else %}#4ade80{% endif %}"></div>
+              </div>
+              <span class="text-xs font-bold" style="color:var(--cos)">{{ sim }}</span>
+            </div>
+          </td>
+          <td><button class="btn btn-ghost btn-sm"><span class="material-symbols-outlined text-[14px]">edit_note</span>Review</button></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Standard Clause Library -->
+  <div class="rounded-xl p-6" style="background:var(--csf);border:1px solid color-mix(in srgb,var(--col) 50%,transparent)">
+    <h3 class="font-semibold font-headline mb-4" style="color:var(--cos)">Standard Clause Library</h3>
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+      {% for template in ['IPEC Fire Standard 2023','IPEC Motor Standard 2023','IPEC Life Standard 2023','IPEC Medical Standard 2023','IPEC Marine Standard 2023','IPEC Engineering Standard 2023','IPEC Liability Standard 2023','IPEC Reinsurance Standard 2023'] %}
+      <div class="p-3 rounded-lg flex items-center gap-2.5 cursor-pointer transition-all hover:border-primary/40"
+           style="background:var(--csfc);border:1px solid color-mix(in srgb,var(--col) 40%,transparent)">
+        <span class="material-symbols-outlined text-[18px]" style="color:var(--cp)">article</span>
+        <span class="text-xs font-medium" style="color:var(--cos)">{{ template }}</span>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+async function runDeviationAnalysis() {
+  showErrorModal('Deviation analysis requires a real document. Open a document from the vault and use the Analyse button there.');
+}
+</script>
+{% endblock %}
