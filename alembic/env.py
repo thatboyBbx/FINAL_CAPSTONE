@@ -42,10 +42,9 @@ import app.modules.documents.model         # noqa: F401
 import app.modules.users.model             # noqa: F401
 import app.modules.circulars.model         # noqa: F401
 import app.modules.intel.model             # noqa: F401
-import app.models.insurer                  # noqa: F401
-import app.models.insurer_financials       # noqa: F401
-import app.models.csp_score                # noqa: F401
-import app.models.client                   # noqa: F401
+import app.modules.csp.model               # noqa: F401
+import app.modules.clients.model           # noqa: F401
+import app.modules.compliance.model        # noqa: F401
 
 target_metadata = Base.metadata
 

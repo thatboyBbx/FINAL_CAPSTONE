@@ -73,6 +73,9 @@ app.db
 seed_financials.csv
 generate_seed_financials.py
 
+# ── Knowledge base PDFs (place files here manually — do NOT commit) ──────────
+knowledge_pdfs/*.pdf
+
 # ── UV/pip lock files (optional — add if using uv) ──────────────────────────
 uv.lock
 

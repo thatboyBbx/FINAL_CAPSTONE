@@ -3,10 +3,10 @@ Tests for document API endpoints.
 
 Notes on routing:
 - GET /documents is served by the UI router (returns HTML or 303 redirect).
-- The document list JSON API lives at GET /documents (documents router) but the
-  UI route is registered first, so it wins. Tests use the Accept: application/json
-  header to force the JSON response, or test the upload/folder endpoints directly.
-- Documents router uses prefix /documents (not /api/documents).
+- The document JSON API lives under the /api/documents prefix — documents_router
+  is included with prefix="/api" in main.py, so all API paths start with /api/documents.
+- The UI router also has /documents routes (HTML) registered first, so bare
+  /documents requests go to the UI layer, not the API.
 """
 import io
 import pytest
@@ -19,10 +19,10 @@ _uploaded_doc_id = None
 
 
 def test_upload_document(authenticated_client: TestClient):
-    """POST /documents/upload — upload a small dummy PDF."""
+    """POST /api/documents/upload — upload a small dummy PDF."""
     global _uploaded_doc_id
     resp = authenticated_client.post(
-        "/documents/upload",
+        "/api/documents/upload",
         data={
             "title": "Test Policy Document",
             "uploaded_by_user_id": "1",
@@ -58,17 +58,17 @@ def test_get_document_list(authenticated_client: TestClient):
 
 
 def test_get_document_by_id_not_found(authenticated_client: TestClient):
-    """GET /documents/99999 — document not found, expect 404."""
-    resp = authenticated_client.get("/documents/99999")
+    """GET /api/documents/99999 — document not found, expect 404."""
+    resp = authenticated_client.get("/api/documents/99999")
     assert resp.status_code == 404
 
 
 def test_change_folder(authenticated_client: TestClient):
-    """PATCH /documents/1/folder — move a document to a Test folder."""
+    """PATCH /api/documents/{id}/folder — move a document to a Test folder."""
     global _uploaded_doc_id
     doc_id = _uploaded_doc_id if _uploaded_doc_id else 1
     resp = authenticated_client.patch(
-        f"/documents/{doc_id}/folder",
+        f"/api/documents/{doc_id}/folder",
         json={"folder": "Test"},
     )
     # 200 = success, 404 = doc doesn't exist in test DB (both valid outcomes)

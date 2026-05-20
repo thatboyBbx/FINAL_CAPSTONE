@@ -1,0 +1,220 @@
+You are working on InsureIntel Zimbabwe — an AI-powered insurance document intelligence platform built with FastAPI, SQLAlchemy 2.0, Pydantic v2, and Jinja2 templates. This is a BSc Honours capstone project at the University of Zimbabwe.
+
+Your task is to execute Phase 2 of the project rebuild plan: data pipeline scaffolding, ML component fixes, ChromaDB seeder, IPEC scraper depth bug, MarianMT graceful fallback, and Alembic incremental migrations. The UI does not change in this phase.
+
+==============================================================
+WORKING DIRECTORY
+==============================================================
+All work happens inside:
+  CAPSTONE_ARCHIVE/PRIMARY/EXPERIMENT/
+
+The spec file for this phase is at:
+  CAPSTONE_ARCHIVE/PRIMARY/EXPERIMENT/PHASE_2_SPEC.md
+
+Read it with:
+  Read("CAPSTONE_ARCHIVE/PRIMARY/EXPERIMENT/PHASE_2_SPEC.md")
+
+Read the spec FIRST before writing a single line. This prompt is the execution order. The spec is the detail.
+
+==============================================================
+PREREQUISITE CHECK
+==============================================================
+Before starting any work, verify Phase 1 is complete:
+
+  python -c "from app.main import app; print('App OK')"
+  python -m pytest tests/ -q
+  grep -rn "from app\.ml\.\|from app\.rag\.\|from app\.scrapers\." app/ --include="*.py" | grep -v __pycache__
+
+If the app fails to import, tests are failing, or the grep returns results (stale imports from deleted dirs), STOP and report. Do not proceed with Phase 2 on a broken Phase 1 base.
+
+==============================================================
+EXECUTION RULES (NON-NEGOTIABLE)
+==============================================================
+1. Full code only — no placeholders, no "# TODO", no stubs
+2. Python 3.11+ only — type hints everywhere, str | None not Optional[str]
+3. SQLAlchemy 2.0 Mapped[] / mapped_column() syntax in all models
+4. Pydantic v2 model_config = ConfigDict(...) in all schemas
+5. After EVERY major step, run: python -c "from app.main import app; print('OK')"
+6. After ALL steps, run: python -m pytest tests/ -q --tb=short
+7. Never touch app/ui/templates/ or app/ui/static/ — this phase is backend and data only
+8. Never delete a file without first checking what imports it
+9. Read the spec section fully before implementing it — the spec has detail this prompt omits
+10. Clear inline comments and type hints required on every function you write
+
+==============================================================
+EXECUTION ORDER
+==============================================================
+
+STEP 1 — Prerequisite check (as above)
+  If any check fails, STOP and report before proceeding.
+
+STEP 2 — Fix IPEC FSR-1 scraper (BUG 4)
+  Read spec section 1 fully first.
+  2a. Open app/infrastructure/scrapers/ipec_fsr1_scraper.py — understand current crawl logic
+  2b. Add IPECScraperConfig dataclass with max_depth=2, dry_run, timeout, max_retries fields
+  2c. Add _is_fsr1_pdf_url(url) filter function
+  2d. Add _fetch_with_retry(url, session, max_retries) function
+  2e. Apply max_depth guard to the recursive crawl function
+  2f. Apply _is_fsr1_pdf_url filter to every URL before adding to results
+  2g. Create tests/test_ipec_scraper.py with TestFSR1URLFilter and TestScraperMaxDepth classes
+  2h. Run: python -m pytest tests/test_ipec_scraper.py -v
+  2i. Run: python -c "from app.main import app; print('OK')"
+
+STEP 3 — Create knowledge base seeder (BUG 7)
+  Read spec section 2 fully first.
+  3a. Read app/modules/deviation/knowledge_base_seeder.py — understand existing seeder structure
+  3b. Create scripts/ directory if it does not exist
+  3c. Create scripts/seed_knowledge_base.py with full CLI implementation:
+      - argparse: --source-dir, --collection, --dry-run
+      - PDF text extraction via pdfplumber
+      - chunk_text(text, chunk_size, overlap) function
+      - ChromaDB upsert with source_file + chunk_index + doc_type metadata
+      - Completion summary printout
+  3d. Create knowledge_pdfs/ directory
+  3e. Create knowledge_pdfs/README.md documenting required PDFs
+  3f. Add knowledge_pdfs/*.pdf to .gitignore
+  3g. Create tests/test_knowledge_base_seeder.py with TestSeederChunking class
+  3h. Run: python -m pytest tests/test_knowledge_base_seeder.py -v
+  3i. Verify dry run works: python scripts/seed_knowledge_base.py --source-dir ./knowledge_pdfs/ --dry-run
+
+STEP 4 — MarianMT model download script + graceful fallback
+  Read spec section 3 fully first.
+  4a. Read app/ai/multilingual/multilingual_pipeline.py — understand current translation implementation
+  4b. Create TranslationResult dataclass if it does not exist (fields: text, source_lang, target_lang, success, error, model_available)
+  4c. Wrap translate_text() so it catches OSError / model-not-found exceptions and returns TranslationResult(success=False, model_available=False)
+  4d. Update app/modules/multilingual/router.py: return HTTP 503 (not 500) when TranslationResult.success is False
+  4e. Create scripts/download_ml_models.py with:
+      - SentenceTransformer all-MiniLM-L6-v2 download + verification
+      - MarianMT Helsinki-NLP/opus-mt-en-sn download + test translate
+      - spaCy en_core_web_sm download via subprocess
+      - --skip-marian and --verify-only flags
+      - Clear size warnings before large downloads
+      - Pass/fail summary at end
+  4f. Create tests/test_multilingual_pipeline.py with TestTranslationPipeline class
+  4g. Run: python -m pytest tests/test_multilingual_pipeline.py -v
+  4h. Run: python -c "from app.main import app; print('OK')"
+
+STEP 5 — Alembic incremental migrations (BUG 5)
+  Read spec section 4 fully first.
+  5a. Run: alembic history — document current state
+  5b. Run: alembic current — confirm current head
+  5c. Check whether app/modules/compliance/model.py has a proper SQLAlchemy model:
+      - If it only has a service (no model), create ComplianceResult model per spec section 4.3
+      - If a model already exists, skip 5c
+  5d. Run: alembic revision --autogenerate -m "feat: add clients module — client table"
+      Open the generated file, verify it is correct, then: alembic upgrade head
+  5e. Run: alembic revision --autogenerate -m "feat: add csp module — csp_score table"
+      Open the generated file, verify it is correct, then: alembic upgrade head
+  5f. Run: alembic revision --autogenerate -m "feat: add compliance module — compliance_result table"
+      Open the generated file, verify it is correct, then: alembic upgrade head
+  5g. Run: alembic history --verbose — verify 4+ revisions now exist
+  5h. Create tests/test_alembic_migrations.py with TestAlembicMigrationState class
+  5i. Run: python -m pytest tests/test_alembic_migrations.py -v
+  5j. Run: python -c "from app.main import app; print('OK')"
+
+STEP 6 — NER pipeline wiring
+  Read spec section 5 fully first.
+  6a. Run the find commands in spec section 5.1 to locate the current NER pipeline
+  6b. If app/ai/nlp/ does not exist, create it with __init__.py
+  6c. If ner_pipeline.py does not exist in app/ai/nlp/, create it per spec section 5.2:
+      - ExtractedEntity dataclass
+      - InsuranceEntityRuler with custom patterns for INSURER, POLICY_NUMBER, COVERAGE_LIMIT, PREMIUM, DEDUCTIBLE, POLICY_PERIOD, EXCLUSION, CLAUSE_REF
+      - run_ner_pipeline(text) → list[ExtractedEntity]
+      - Graceful OSError handling if spaCy model not installed
+  6d. Verify app/modules/documents/service.py calls run_ner_pipeline after text extraction
+      If the call is missing, add it and wire entity persistence to the extracted_entities table
+  6e. Run: python -c "from app.ai.nlp.ner_pipeline import run_ner_pipeline; print('NER OK')"
+  6f. Run: python -c "from app.main import app; print('OK')"
+
+STEP 7 — Full verification
+  Run the complete checklist from spec section 6:
+  7a. python -c "from app.main import app; print('✅ App imports OK')"
+  7b. python -m pytest tests/ -q --tb=short
+  7c. ls tests/test_ipec_scraper.py tests/test_knowledge_base_seeder.py tests/test_multilingual_pipeline.py tests/test_alembic_migrations.py
+  7d. ls scripts/seed_knowledge_base.py scripts/download_ml_models.py
+  7e. ls knowledge_pdfs/README.md
+  7f. alembic history --verbose
+  7g. alembic current
+  7h. grep -n "max_depth\|_is_fsr1_pdf_url\|IPECScraperConfig" app/infrastructure/scrapers/ipec_fsr1_scraper.py
+  7i. python scripts/seed_knowledge_base.py --source-dir ./knowledge_pdfs/ --dry-run
+  7j. python scripts/download_ml_models.py --verify-only
+  7k. grep -rn "from app\.ml\.\|from app\.rag\.\|from app\.scrapers\." app/ --include="*.py" | grep -v __pycache__
+
+STEP 8 — Git commit
+  git add .
+  git commit -m "feat: Phase 2 — data pipeline + ML scaffolding + migrations
+
+  - Fixed IPEC FSR-1 scraper: max_depth=2, PDF-only URL filter, retry backoff
+  - Added IPECScraperConfig dataclass with dry_run support
+  - Created scripts/seed_knowledge_base.py — seeds ChromaDB from PDF directory
+  - Created knowledge_pdfs/README.md — documents required source PDFs
+  - Created scripts/download_ml_models.py — downloads all 3 ML models
+  - Fixed MarianMT pipeline: graceful TranslationResult on model-absent
+  - Multilingual router now returns HTTP 503 (not 500) when model missing
+  - Created ComplianceResult SQLAlchemy model in app/modules/compliance/
+  - Added 3 Alembic feature migrations: clients, csp, compliance modules
+  - Created app/ai/nlp/ner_pipeline.py with InsuranceEntityRuler patterns
+  - Wired NER pipeline to documents/service.py entity persistence
+  - Added 4 new test modules: scraper, seeder, multilingual, alembic
+  - All tests passing"
+
+==============================================================
+IF SOMETHING BREAKS
+==============================================================
+If app import fails after any step:
+  python -c "import traceback; from app.main import app" 2>&1 | head -30
+  Fix the import or syntax error shown, then re-verify before proceeding.
+
+If a test breaks that was passing before:
+  Read the error — it's almost always a broken import caused by a file you just moved or created
+  Find the file with the broken import using the traceback
+  Fix the import to point to the correct new location
+  Re-run pytest until green. Do NOT move to the next step while tests are red.
+
+If alembic autogenerate produces an empty migration (no op.create_table in upgrade()):
+  The model is not imported in alembic/env.py — open env.py and add:
+    import app.modules.clients.model
+    import app.modules.csp.model
+    import app.modules.compliance.model
+  Then regenerate the migration.
+
+If alembic upgrade fails with "table already exists":
+  The table was created by the original baseline migration.
+  Open the new migration file and remove the op.create_table() for that table.
+  Only include columns or constraints that are genuinely new.
+
+If MarianMT download fails due to network restrictions:
+  The model download script must still be created — just log a clear message:
+    "MarianMT model unavailable in this environment. Download manually from:
+     https://huggingface.co/Helsinki-NLP/opus-mt-en-sn
+     Place in ~/.cache/huggingface/transformers/"
+  The graceful fallback in the pipeline (TranslationResult.model_available=False) handles
+  the runtime case — the script failure does not block Phase 2 completion.
+
+If scripts/seed_knowledge_base.py --dry-run fails because ChromaDB is not running:
+  In dry-run mode, the script must NOT attempt to connect to ChromaDB at all.
+  Add a check: if dry_run is True, skip the ChromaDB client initialisation entirely
+  and just print what would be ingested.
+
+==============================================================
+WHAT THIS PHASE DOES NOT DO
+==============================================================
+These items are explicitly out of scope for Phase 2. Do not attempt them:
+- Actually downloading the Insurance Act PDF or IPEC documents (human task)
+- Actually running the seeder against real PDFs (human task — needs the PDFs first)
+- Actually running the IPEC scraper live against ipec.co.zw (human task)
+- Actually downloading the MarianMT model if network is unavailable (human task)
+- Any UI template changes — that is Phase 3
+- Annotating NER training data (human task — requires Label Studio)
+- Running the ablation study for CSP weights (human + data task)
+
+==============================================================
+FINAL DELIVERABLE
+==============================================================
+When complete, report:
+  - ✅ or ❌ for each of the 8 steps
+  - pytest result: X passed, Y failed (should be 72+ tests, up from 68)
+  - alembic history output showing 4+ revisions
+  - Git commit hash
+  - List of any items that COULD NOT be completed and exactly why
+  - List of any manual follow-up actions the human must do (e.g. "Place Insurance Act PDF in knowledge_pdfs/ then run seed_knowledge_base.py")

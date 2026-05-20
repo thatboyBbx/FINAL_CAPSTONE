@@ -32,7 +32,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 # ─── Test 1: Strong insurer produces Adequate or Strong band ──────────────────
 
 def test_wcs_strong_insurer():
-    from app.ml.csp_wcs_scorer import WCSScorer
+    from app.ai.inference.csp_wcs_scorer import WCSScorer
 
     scorer = WCSScorer()
     scores = scorer.score(
@@ -54,7 +54,7 @@ def test_wcs_strong_insurer():
 # ─── Test 2: Critical insurer produces Critical band ─────────────────────────
 
 def test_wcs_critical_insurer():
-    from app.ml.csp_wcs_scorer import WCSScorer
+    from app.ai.inference.csp_wcs_scorer import WCSScorer
 
     scorer = WCSScorer()
     scores = scorer.score(
@@ -76,7 +76,7 @@ def test_wcs_critical_insurer():
 # ─── Test 3: Solvency at IPEC minimum → score = 50 ───────────────────────────
 
 def test_normalizer_solvency_at_minimum():
-    from app.ml.csp_normalizer import score_solvency
+    from app.ai.inference.csp_normalizer import score_solvency
 
     result = score_solvency(150.0)
     assert result == pytest.approx(50.0, abs=0.01), (
@@ -87,7 +87,7 @@ def test_normalizer_solvency_at_minimum():
 # ─── Test 4: Solvency below 100% → score = 0 ─────────────────────────────────
 
 def test_normalizer_solvency_breach():
-    from app.ml.csp_normalizer import score_solvency
+    from app.ai.inference.csp_normalizer import score_solvency
 
     result = score_solvency(90.0)
     assert result == pytest.approx(0.0, abs=0.01), (
@@ -98,7 +98,7 @@ def test_normalizer_solvency_breach():
 # ─── Test 5: Solvency at 175% → score between 50 and 75 ──────────────────────
 
 def test_normalizer_interpolation():
-    from app.ml.csp_normalizer import score_solvency
+    from app.ai.inference.csp_normalizer import score_solvency
 
     result = score_solvency(175.0)
     assert 50.0 < result < 75.0, (
@@ -111,8 +111,8 @@ def test_normalizer_interpolation():
 FORBIDDEN_WORDS = ["risky", "dangerous", "failing", "avoid", "do not use"]
 
 def test_nlg_no_forbidden_words():
-    from app.ml.csp_wcs_scorer import WCSScorer
-    from app.ml.csp_nlg import CSPNaturalLanguageGenerator
+    from app.ai.inference.csp_wcs_scorer import WCSScorer
+    from app.ai.inference.csp_nlg import CSPNaturalLanguageGenerator
 
     scorer = WCSScorer()
     nlg = CSPNaturalLanguageGenerator()
@@ -139,8 +139,8 @@ def test_nlg_no_forbidden_words():
 # ─── Test 7: Critical insurer NLG closes with escalation ─────────────────────
 
 def test_nlg_critical_closes_with_escalation():
-    from app.ml.csp_wcs_scorer import WCSScorer
-    from app.ml.csp_nlg import CSPNaturalLanguageGenerator
+    from app.ai.inference.csp_wcs_scorer import WCSScorer
+    from app.ai.inference.csp_nlg import CSPNaturalLanguageGenerator
 
     scorer = WCSScorer()
     nlg = CSPNaturalLanguageGenerator()
@@ -169,7 +169,7 @@ def test_fuzzy_lookup_matches_variant():
     except ImportError:
         pytest.skip("rapidfuzz not installed")
 
-    from app.services.csp_service import _fuzzy_match
+    from app.modules.csp.service import _fuzzy_match
 
     candidates = [
         "Old Mutual Zimbabwe Limited",
@@ -229,7 +229,7 @@ def test_chart_data_arrays_equal_length():
 def test_csp_injected_into_report():
     """CSPService.inject_csp_into_report returns True when CSP data exists."""
     from unittest.mock import MagicMock, patch
-    from app.services.csp_service import CSPService
+    from app.modules.csp.service import CSPService
 
     svc = CSPService()
     mock_db = MagicMock()
@@ -249,7 +249,7 @@ def test_csp_injected_into_report():
 def test_no_csp_renders_graceful_notice():
     """CSPService.inject_csp_into_report returns False (not exception) when no data."""
     from unittest.mock import MagicMock, patch
-    from app.services.csp_service import CSPService
+    from app.modules.csp.service import CSPService
 
     svc = CSPService()
     mock_db = MagicMock()
@@ -263,7 +263,7 @@ def test_no_csp_renders_graceful_notice():
 # ─── Test 12: IPEC column alias map handles variant headers ──────────────────
 
 def test_ipec_column_alias_map():
-    from app.scrapers.ipec_fsr1_scraper import COLUMN_ALIAS_MAP
+    from app.infrastructure.scrapers.ipec_fsr1_scraper import COLUMN_ALIAS_MAP
 
     # Test variant column headers
     assert COLUMN_ALIAS_MAP.get("total assets") == "total_assets_usd"
@@ -279,7 +279,7 @@ def test_ipec_column_alias_map():
 # ─── Test 13: SHAP sentence highlights dominant feature ──────────────────────
 
 def test_shap_sentence_dominant_feature():
-    from app.ml.csp_xgboost_model import CSPXGBoostModel
+    from app.ai.inference.csp_xgboost_model import CSPXGBoostModel
 
     model = CSPXGBoostModel()  # No model file loaded — testing shap_to_sentence only
 

@@ -40,7 +40,7 @@ def test_wcs_scorer_import():
 
 def test_wcs_class_scorer():
     """WCSScorer.score() computes a valid WCS for typical financial inputs."""
-    from app.ml.csp_wcs_scorer import WCSScorer
+    from app.ai.inference.csp_wcs_scorer import WCSScorer
     scorer = WCSScorer()
     result = scorer.score(
         solvency_ratio_pct=187.5,

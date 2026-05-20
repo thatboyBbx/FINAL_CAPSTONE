@@ -75,3 +75,45 @@ def detect_language(payload: DetectRequest) -> Dict[str, Any]:
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=str(exc),
         )
+
+
+class TranslateRequest(BaseModel):
+    text: str
+    source_lang: str = "en"
+    target_lang: str = "sn"
+
+
+@router.post("/translate")
+def translate_text_endpoint(payload: TranslateRequest) -> Dict[str, Any]:
+    """
+    Translate text between languages using MarianMT.
+    Returns HTTP 503 when the model is not downloaded yet — not 500.
+    """
+    from app.ai.multilingual.multilingual_pipeline import translate_text, TranslationResult
+
+    result: TranslationResult = translate_text(
+        payload.text,
+        source_lang=payload.source_lang,
+        target_lang=payload.target_lang,
+    )
+
+    if not result.success:
+        if not result.model_available:
+            raise HTTPException(
+                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+                detail=(
+                    "Translation service unavailable — model not downloaded. "
+                    "Run scripts/download_ml_models.py"
+                ),
+            )
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=result.error or "Translation failed.",
+        )
+
+    return {
+        "translated_text": result.text,
+        "source_lang": result.source_lang,
+        "target_lang": result.target_lang,
+        "success": result.success,
+    }
