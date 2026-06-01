@@ -1,10 +1,12 @@
 import asyncio
 import httpx
-from fastapi import APIRouter, Depends, File, Form, Request, UploadFile
+from fastapi import APIRouter, Depends, File, Form, Query, Request, UploadFile
 from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
+from sqlalchemy.orm import Session
 from app.modules.auth.ui_dependencies import require_ui_login
 from app.core.config import settings
+from app.core.db import get_db
 
 templates = Jinja2Templates(directory="app/ui/templates")
 router = APIRouter(tags=["extra_ui"])
@@ -20,6 +22,108 @@ def _auth_headers_from_cookie(request: Request) -> dict:
     token = request.cookies.get("access_token")
     return {"Authorization": f"Bearer {token}"} if token else {}
 
+
+# ─── Shared data-loading helpers ─────────────────────────────────────────────
+
+_AUDIT_PAGE_SIZE = 25
+_AUDIT_ERROR_TYPES = {"LOGIN_FAILED", "PERMISSION_DENIED"}
+
+
+def _load_audit_events(
+    db,
+    action: str | None = None,
+    user_filter: str | None = None,
+    current_actor: str | None = None,
+    date_from: str | None = None,
+    date_to: str | None = None,
+    page: int = 1,
+) -> tuple[list, int]:
+    from app.modules.audit.model import AuditLog
+    from datetime import datetime as _dt
+
+    q = db.query(AuditLog)
+    if action:
+        q = q.filter(AuditLog.event_type.ilike(f"%{action.upper().replace(' ', '_')}%"))
+    if user_filter == "current" and current_actor:
+        q = q.filter(AuditLog.actor == current_actor)
+    elif user_filter and user_filter != "current":
+        q = q.filter(AuditLog.actor.ilike(f"%{user_filter}%"))
+    if date_from:
+        try:
+            q = q.filter(AuditLog.created_at >= _dt.strptime(date_from, "%Y-%m-%d"))
+        except ValueError:
+            pass
+    if date_to:
+        try:
+            dt_end = _dt.strptime(date_to, "%Y-%m-%d").replace(hour=23, minute=59, second=59)
+            q = q.filter(AuditLog.created_at <= dt_end)
+        except ValueError:
+            pass
+
+    total = q.count()
+    rows = (
+        q.order_by(AuditLog.created_at.desc())
+        .offset((page - 1) * _AUDIT_PAGE_SIZE)
+        .limit(_AUDIT_PAGE_SIZE)
+        .all()
+    )
+
+    events = []
+    for r in rows:
+        et = r.event_type or ""
+        res = "—"
+        if r.document_id:
+            res = f"doc#{r.document_id}"
+        elif r.analysis_id:
+            res = f"analysis#{r.analysis_id}"
+        elif r.details and isinstance(r.details, dict):
+            res = str(r.details.get("resource", "—"))[:60]
+        events.append({
+            "ts":         r.created_at.strftime("%Y-%m-%d %H:%M:%S") if r.created_at else "—",
+            "action":     et.replace("_", " ").title(),
+            "event_type": et,
+            "user":       r.actor or "System",
+            "resource":   res,
+            "status":     "error" if et in _AUDIT_ERROR_TYPES else "success",
+            "ip":         r.ip_address or "—",
+        })
+    return events, total
+
+
+def _load_feedback_context(db) -> dict:
+    from app.modules.feedback.model import EntityFeedback, RiskFlagFeedback
+
+    entity_count = db.query(EntityFeedback).count() or 0
+    risk_count   = db.query(RiskFlagFeedback).count() or 0
+    MIN_RETRAIN  = 50
+    pending = db.query(EntityFeedback).filter(EntityFeedback.used_in_training == False).count() or 0  # noqa: E712
+    readiness_pct = min(100, round((pending / MIN_RETRAIN) * 100)) if pending else 0
+
+    recent = (
+        db.query(EntityFeedback)
+        .order_by(EntityFeedback.created_at.desc())
+        .limit(20)
+        .all()
+    )
+    feedback_rows = [
+        {
+            "doc":       f"doc#{f.document_id}",
+            "etype":     f.original_type or "—",
+            "original":  (f.original_value or "—")[:40],
+            "corrected": (f.corrected_value or "—")[:40],
+            "reviewer":  f.corrected_by or "—",
+            "status":    "used" if f.used_in_training else "pending",
+            "date":      f.created_at.strftime("%d %b %Y") if f.created_at else "—",
+        }
+        for f in recent
+    ]
+    return {
+        "entity_count":    entity_count,
+        "risk_count":      risk_count,
+        "readiness_pct":   readiness_pct,
+        "pending_training": pending,
+        "feedback_rows":   feedback_rows,
+    }
 
 
 # ────────────────────────────────────────────────────────────────────────────
@@ -387,24 +491,67 @@ async def system_settings(request: Request, current_user=Depends(require_ui_logi
 
 
 @router.get("/system/audit", response_class=HTMLResponse)
-async def system_audit(request: Request, current_user=Depends(require_ui_login)):
-    """System audit log page."""
+async def system_audit(
+    request: Request,
+    current_user=Depends(require_ui_login),
+    action: str | None = Query(None),
+    user: str | None = Query(None),
+    date_from: str | None = Query(None),
+    date_to: str | None = Query(None),
+    page: int = Query(1, ge=1),
+    db: Session = Depends(get_db),
+):
+    """System audit log page — real data from AuditLog table."""
     if isinstance(current_user, RedirectResponse):
         return current_user
+    try:
+        events, total_count = _load_audit_events(
+            db,
+            action=action,
+            user_filter=user,
+            current_actor=current_user.full_name,
+            date_from=date_from,
+            date_to=date_to,
+            page=page,
+        )
+    except Exception:
+        events, total_count = [], 0
     return templates.TemplateResponse(request, "system/audit_trail.html", {
-        "request": request, "active_page": "audit-trail",
-        "user": current_user,
+        "request":       request,
+        "active_page":   "audit-trail",
+        "user":          current_user,
+        "full_name":     current_user.full_name,
+        "role":          current_user.role,
+        "events":        events,
+        "total_count":   total_count,
+        "page":          page,
+        "page_size":     _AUDIT_PAGE_SIZE,
+        "action_filter": action or "",
+        "user_filter":   user or "",
+        "date_from":     date_from or "",
+        "date_to":       date_to or "",
     })
 
 
 @router.get("/system/active-learning", response_class=HTMLResponse)
-async def system_active_learning(request: Request, current_user=Depends(require_ui_login)):
-    """Active learning / feedback panel."""
+async def system_active_learning(
+    request: Request,
+    current_user=Depends(require_ui_login),
+    db: Session = Depends(get_db),
+):
+    """Active learning / feedback panel — real data from EntityFeedback table."""
     if isinstance(current_user, RedirectResponse):
         return current_user
+    try:
+        ctx = _load_feedback_context(db)
+    except Exception:
+        ctx = {"entity_count": 0, "risk_count": 0, "readiness_pct": 0, "pending_training": 0, "feedback_rows": []}
     return templates.TemplateResponse(request, "system/feedback_panel.html", {
-        "request": request, "active_page": "feedback-panel",
-        "user": current_user,
+        "request":     request,
+        "active_page": "feedback-panel",
+        "user":        current_user,
+        "full_name":   current_user.full_name,
+        **ctx,
     })
 
 
@@ -416,15 +563,8 @@ async def system_active_learning(request: Request, current_user=Depends(require_
 async def audit_trail_page(request: Request, current_user=Depends(require_ui_login)):
     if isinstance(current_user, RedirectResponse):
         return current_user
-    return templates.TemplateResponse(
-        request,
-        "system/audit_trail.html",
-        {
-            "request": request,
-            "active_page": "audit-trail",
-            "user": current_user,
-        },
-    )
+    qs = f"?{request.url.query}" if request.url.query else ""
+    return RedirectResponse(url=f"/system/audit{qs}", status_code=301)
 
 @router.get("/batch-portfolio", response_class=HTMLResponse)
 async def batch_portfolio_page(request: Request, current_user=Depends(require_ui_login)):
@@ -546,16 +686,26 @@ async def document_comparison_page(request: Request, current_user=Depends(requir
     return RedirectResponse(url="/documents/compare", status_code=301)
 
 @router.get("/feedback-panel", response_class=HTMLResponse)
-async def feedback_panel_page(request: Request, current_user=Depends(require_ui_login)):
+async def feedback_panel_page(
+    request: Request,
+    current_user=Depends(require_ui_login),
+    db: Session = Depends(get_db),
+):
     if isinstance(current_user, RedirectResponse):
         return current_user
+    try:
+        ctx = _load_feedback_context(db)
+    except Exception:
+        ctx = {"entity_count": 0, "risk_count": 0, "readiness_pct": 0, "pending_training": 0, "feedback_rows": []}
     return templates.TemplateResponse(
         request,
         "system/feedback_panel.html",
         {
-            "request": request,
+            "request":     request,
             "active_page": "feedback-panel",
-            "user": current_user,
+            "user":        current_user,
+            "full_name":   current_user.full_name,
+            **ctx,
         },
     )
 
@@ -588,16 +738,63 @@ async def multilingual_analysis_page(request: Request, current_user=Depends(requ
     )
 
 @router.get("/policy-tracker", response_class=HTMLResponse)
-async def policy_tracker_page(request: Request, current_user=Depends(require_ui_login)):
+async def policy_tracker_page(
+    request: Request,
+    current_user=Depends(require_ui_login),
+    db: Session = Depends(get_db),
+):
     if isinstance(current_user, RedirectResponse):
         return current_user
+    from app.modules.tracker.model import PolicyTracker
+    from datetime import date as _date
+
+    today = _date.today()
+    try:
+        policies_orm = (
+            db.query(PolicyTracker)
+            .order_by(PolicyTracker.expiry_date.asc())
+            .limit(200)
+            .all()
+        )
+    except Exception:
+        policies_orm = []
+
+    policies = []
+    for p in policies_orm:
+        days = p.days_until_expiry
+        if days is None and p.expiry_date:
+            days = (p.expiry_date - today).days
+        policies.append({
+            "policy_number": p.policy_number or "—",
+            "insured_name":  p.insured_name  or "—",
+            "insurer_name":  p.insurer_name  or "—",
+            "expiry_date":   p.expiry_date.strftime("%d %b %Y") if p.expiry_date else "—",
+            "days":          days,
+            "alert_status":  p.alert_status or "active",
+            "document_id":   p.document_id,
+        })
+
+    active_count    = sum(1 for p in policies if p["alert_status"] == "active")
+    expiring_7      = sum(1 for p in policies if isinstance(p["days"], int) and 0 <= p["days"] <= 7)
+    expiring_30     = sum(1 for p in policies if isinstance(p["days"], int) and 0 <= p["days"] <= 30)
+    pending_renewal = sum(1 for p in policies if p["alert_status"] == "expiring_soon")
+    urgent          = [p for p in policies if isinstance(p["days"], int) and 0 <= p["days"] <= 7]
+
     return templates.TemplateResponse(
         request,
         "clients/policy_tracker.html",
         {
-            "request": request,
-            "active_page": "policy-tracker",
-            "user": current_user,
+            "request":         request,
+            "active_page":     "policy-tracker",
+            "user":            current_user,
+            "full_name":       current_user.full_name,
+            "policies":        policies,
+            "expiring_7":      expiring_7,
+            "expiring_30":     expiring_30,
+            "pending_renewal": pending_renewal,
+            "active_count":    active_count,
+            "total_policies":  len(policies),
+            "urgent_policies": urgent,
         },
     )
 

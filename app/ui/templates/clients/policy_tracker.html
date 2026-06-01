@@ -21,30 +21,34 @@
 
   <!-- Summary -->
   <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-    {% for icon, label, value, badge in [
-      ('event_upcoming','Expiring in 7 Days','3','badge-red'),
-      ('schedule','Expiring in 30 Days','7','badge-amber'),
-      ('autorenew','Renewals Pending','12','badge-gold'),
-      ('check_circle','Active Policies','156','badge-green'),
+    {% for icon, label, value, color in [
+      ('event_upcoming', 'Expiring in 7 Days',  expiring_7,      '#f87171'),
+      ('schedule',       'Expiring in 30 Days', expiring_30,     '#fbbf24'),
+      ('autorenew',      'Renewals Pending',    pending_renewal, 'var(--cp)'),
+      ('check_circle',   'Active Policies',     active_count,    '#4ade80'),
     ] %}
     <div class="stat-card">
       <div class="w-9 h-9 rounded-lg flex items-center justify-center mb-3" style="background:color-mix(in srgb,var(--cp) 10%,transparent)">
         <span class="material-symbols-outlined text-[20px]" style="color:var(--cp)">{{ icon }}</span>
       </div>
-      <p class="text-2xl font-bold font-headline" style="color:var(--cos)">{{ value }}</p>
+      <p class="text-2xl font-bold font-headline" style="color:{{ color }}">{{ value }}</p>
       <p class="text-xs mt-1" style="color:var(--cosv)">{{ label }}</p>
     </div>
     {% endfor %}
   </div>
 
   <!-- Urgent Expiry Alert -->
+  {% if urgent_policies %}
   <div class="alert alert-error">
     <span class="material-symbols-outlined text-xl flex-shrink-0" style="font-variation-settings:'FILL' 1">notification_important</span>
     <div>
-      <p class="font-semibold">3 policies expiring within 7 days — immediate renewal action required.</p>
-      <p class="text-xs mt-0.5 opacity-80">Zimplats Fire (3d), Delta Corp Fleet (5d), NSSA Medical (7d)</p>
+      <p class="font-semibold">{{ urgent_policies|length }} polic{{ 'y' if urgent_policies|length == 1 else 'ies' }} expiring within 7 days — immediate renewal action required.</p>
+      <p class="text-xs mt-0.5 opacity-80">
+        {% for p in urgent_policies[:5] %}{{ p.insured_name }} ({{ p.days }}d){% if not loop.last %}, {% endif %}{% endfor %}
+      </p>
     </div>
   </div>
+  {% endif %}
 
   <!-- Tabs -->
   <div class="flex gap-1 p-1 rounded-lg w-fit" style="background:var(--csfc)">
@@ -59,47 +63,56 @@
     <table class="data-table">
       <thead><tr><th>Policy</th><th>Insured Entity</th><th>Class</th><th>Expiry Date</th><th>Days Remaining</th><th>Renewal Status</th><th>Actions</th></tr></thead>
       <tbody>
-        {% for policy, entity, cls, expiry, days, status in [
-          ('ZIM-FIRE-2024-001','Zimplats Holdings Ltd','Fire & Hazard','17 Mar 2024',3,'Pending'),
-          ('ZIM-MOTOR-2024-002','Delta Corp Zimbabwe','Motor Fleet','19 Mar 2024',5,'Initiated'),
-          ('ZIM-MED-2024-003','NSSA Zimbabwe','Medical Liability','21 Mar 2024',7,'Pending'),
-          ('ZIM-LIFE-2024-004','Econet Wireless','Life / Reinsurance','08 Apr 2024',25,'Not Started'),
-          ('ZIM-LIAB-2024-005','Innscor Africa','Public Liability','15 Apr 2024',32,'Not Started'),
-          ('ZIM-MAR-2024-006','Sable Chemicals','Marine Cargo','22 Apr 2024',39,'Initiated'),
-          ('ZIM-ENG-2024-007','CBZ Bank','Engineering','01 May 2024',48,'Not Started'),
-          ('ZIM-FIRE-2024-008','Old Mutual Zimbabwe','Fire & Hazard','14 May 2024',61,'Renewed'),
-          ('ZIM-MOTOR-2023-009','Seed Co Zimbabwe','Motor Fleet','01 Jun 2024',79,'Not Started'),
-          ('ZIM-LIFE-2023-010','FML Zimbabwe','Life Insurance','15 Jun 2024',93,'Renewed'),
-        ] %}
+        {% if policies %}
+        {% for p in policies %}
         <tr>
-          <td class="font-mono text-xs font-bold" style="color:var(--cp)">{{ policy }}</td>
-          <td class="font-medium text-sm" style="color:var(--cos)">{{ entity }}</td>
-          <td class="text-xs" style="color:var(--cosv)">{{ cls }}</td>
-          <td class="text-sm" style="color:var(--cos)">{{ expiry }}</td>
+          <td class="font-mono text-xs font-bold" style="color:var(--cp)">{{ p.policy_number }}</td>
+          <td class="font-medium text-sm" style="color:var(--cos)">{{ p.insured_name }}</td>
+          <td class="text-xs" style="color:var(--cosv)">{{ p.insurer_name }}</td>
+          <td class="text-sm" style="color:var(--cos)">{{ p.expiry_date }}</td>
           <td>
-            <span class="font-bold text-sm {% if days <= 7 %}text-red-500{% elif days <= 30 %}text-amber-500{% else %}text-green-500{% endif %}"
-                  style="{% if days <= 7 %}color:#f87171{% elif days <= 30 %}color:#fbbf24{% else %}color:#4ade80{% endif %}">
-              {{ days }}d
+            {% if p.days is not none %}
+            <span class="font-bold text-sm"
+                  style="color:{% if p.days <= 7 %}#f87171{% elif p.days <= 30 %}#fbbf24{% else %}#4ade80{% endif %}">
+              {{ p.days }}d
             </span>
+            {% else %}—{% endif %}
           </td>
           <td>
-            {% if status=='Renewed' %}<span class="badge badge-green">Renewed</span>
-            {% elif status=='Initiated' %}<span class="badge badge-blue">Initiated</span>
-            {% elif status=='Pending' %}<span class="badge badge-amber">Pending</span>
-            {% else %}<span class="badge badge-gold">Not Started</span>{% endif %}
+            {% if p.alert_status == 'renewed' or p.alert_status == 'active' and p.days is not none and p.days < 0 %}
+              <span class="badge badge-green">Renewed</span>
+            {% elif p.alert_status == 'expiring_soon' %}
+              <span class="badge badge-amber">Expiring Soon</span>
+            {% elif p.alert_status == 'expired' %}
+              <span class="badge badge-red">Expired</span>
+            {% else %}
+              <span class="badge badge-gold">Active</span>
+            {% endif %}
           </td>
           <td>
             <div class="flex gap-1">
-              <button onclick="renewPolicy('{{ policy }}'); return false;" class="btn btn-ghost btn-sm"><span class="material-symbols-outlined text-[14px]">autorenew</span>Renew</button>
-              <button onclick="showErrorModal('This feature is coming soon.'); return false;" class="btn btn-ghost btn-sm"><span class="material-symbols-outlined text-[14px]">notifications</span></button>
+              <button onclick="renewPolicy('{{ p.policy_number|e }}'); return false;" class="btn btn-ghost btn-sm">
+                <span class="material-symbols-outlined text-[14px]">autorenew</span>Renew
+              </button>
+              <a href="/documents-ui/{{ p.document_id }}" class="btn btn-ghost btn-sm" title="View source document">
+                <span class="material-symbols-outlined text-[14px]">description</span>
+              </a>
             </div>
           </td>
         </tr>
         {% endfor %}
+        {% else %}
+        <tr>
+          <td colspan="7" style="padding:3rem;text-align:center;color:var(--cosv)">
+            <span class="material-symbols-outlined" style="font-size:32px;display:block;margin-bottom:.5rem;opacity:.4">event_upcoming</span>
+            No policies tracked yet. Upload and process policy documents to populate this view.
+          </td>
+        </tr>
+        {% endif %}
       </tbody>
     </table>
     <div class="px-5 py-3 text-xs" style="color:var(--cosv);border-top:1px solid color-mix(in srgb,var(--col) 40%,transparent)">
-      Showing 1–10 of 156 active policies
+      {% if policies %}Showing {{ policies|length }} of {{ total_policies }} tracked policies{% else %}No policies{% endif %}
     </div>
   </div>
 </div>
