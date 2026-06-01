@@ -14,10 +14,14 @@ from typing import AsyncGenerator
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
+from slowapi import _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
 
 from app.core.config import settings
-from app.core.db import Base, engine
+from app.core.db import Base, engine, validate_db_connection
 from app.core.logging import setup_logging
+from app.core.rate_limit import limiter
 
 # ── API routers ────────────────────────────────────────────────────────────
 from app.modules.auth.router import router as auth_router
@@ -41,10 +45,14 @@ from app.modules.reports.router import router as reports_router
 from app.modules.intel.settlement_router import router as settlement_router
 from app.modules.chatbot.router import router as chatbot_router
 from app.modules.compat_router import router as compat_router
+from app.modules.jobs.router import router as jobs_router
+from app.modules.embeddings.router import router as embeddings_router
+from app.modules.rag_governance.router import router as rag_governance_router
 
 # ── UI routers ─────────────────────────────────────────────────────────────
 from app.ui.router import router as ui_router
 from app.ui.extra_router import router as extra_ui_router
+from app.ui.analytics_router import router as analytics_ui_router
 
 # ── Model imports — required for Base.metadata.create_all() ───────────────
 import app.modules.insurers.model          # noqa: F401
@@ -63,6 +71,11 @@ import app.modules.multilingual.model      # noqa: F401
 import app.modules.documents.model         # noqa: F401
 import app.modules.csp.model               # noqa: F401
 import app.modules.clients.model           # noqa: F401
+import app.modules.compliance.model        # noqa: F401
+import app.modules.jobs.model              # noqa: F401
+import app.modules.embeddings.model        # noqa: F401
+import app.modules.rag_governance.model   # noqa: F401  — registers RetrievalAuditLog
+import app.modules.auth.token_store        # noqa: F401  — registers RefreshToken, AccessTokenBlacklist, UserRevocationFence
 
 logger = logging.getLogger(__name__)
 
@@ -72,6 +85,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     """Startup and shutdown logic using the modern lifespan context manager."""
     # ── Startup ──────────────────────────────────────────────────────────
     setup_logging()
+    validate_db_connection()
     Base.metadata.create_all(bind=engine)
 
     try:
@@ -87,6 +101,17 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     logger.info("InsureIntel Zimbabwe shutting down.")
 
 
+_error_templates = Jinja2Templates(directory="app/ui/templates")
+
+
+def _wants_html(request: Request) -> bool:
+    """True when the client expects an HTML response (browser, not API call)."""
+    if request.url.path.startswith("/api"):
+        return False
+    accept = request.headers.get("accept", "")
+    return "text/html" in accept or "application/xhtml" in accept
+
+
 def create_app() -> FastAPI:
     """Build and return the configured FastAPI application."""
     app = FastAPI(
@@ -94,12 +119,17 @@ def create_app() -> FastAPI:
         lifespan=lifespan,
     )
 
+    # Rate limiter
+    app.state.limiter = limiter
+    app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
     # Static files (CSS, JS, images)
     app.mount("/static", StaticFiles(directory="app/ui/static"), name="static")
 
     # UI routes (HTML pages — served first)
     app.include_router(ui_router)
     app.include_router(extra_ui_router)
+    app.include_router(analytics_ui_router)
 
     # Auth (public — no JWT dependency on these)
     app.include_router(auth_router)
@@ -125,6 +155,9 @@ def create_app() -> FastAPI:
     app.include_router(reports_router)
     app.include_router(chatbot_router)
     app.include_router(compat_router)
+    app.include_router(jobs_router)
+    app.include_router(embeddings_router)
+    app.include_router(rag_governance_router)
 
     # Audit trail middleware
     from app.modules.audit.audit_middleware import AuditMiddleware
@@ -136,33 +169,53 @@ def create_app() -> FastAPI:
 
     @app.exception_handler(404)
     async def not_found_handler(request: Request, exc):
-        if (
-            request.url.path.startswith("/api")
-            or request.url.path.startswith("/intel")
-            or request.url.path.startswith("/analytics")
-            or request.url.path.startswith("/ml")
-        ):
+        if not _wants_html(request):
             return JSONResponse(
                 {"error": "Not found", "path": str(request.url.path)},
                 status_code=404,
             )
-        return JSONResponse(
-            {"error": "Page not found", "path": str(request.url.path)},
+        return _error_templates.TemplateResponse(
+            "errors/404.html",
+            {"request": request, "detail": None},
             status_code=404,
+        )
+
+    @app.exception_handler(403)
+    async def forbidden_handler(request: Request, exc):
+        if not _wants_html(request):
+            return JSONResponse({"error": "Forbidden"}, status_code=403)
+        detail = getattr(exc, "detail", None)
+        required_role = getattr(exc, "required_role", None)
+        return _error_templates.TemplateResponse(
+            "errors/403.html",
+            {"request": request, "detail": detail, "required_role": required_role},
+            status_code=403,
         )
 
     @app.exception_handler(500)
     async def server_error_handler(request: Request, exc):
         logger.error("500 on %s: %s", request.url.path, exc)
-        return JSONResponse(
-            {"error": "Internal server error. Please try again."},
+        if not _wants_html(request):
+            return JSONResponse(
+                {"error": "Internal server error. Please try again."},
+                status_code=500,
+            )
+        return _error_templates.TemplateResponse(
+            "errors/500.html",
+            {"request": request, "detail": None},
             status_code=500,
         )
 
     @app.exception_handler(Exception)
     async def unhandled_exception_handler(request: Request, exc: Exception):
         logger.error("Unhandled on %s: %s", request.url.path, exc, exc_info=True)
-        return JSONResponse({"error": "An unexpected error occurred."}, status_code=500)
+        if not _wants_html(request):
+            return JSONResponse({"error": "An unexpected error occurred."}, status_code=500)
+        return _error_templates.TemplateResponse(
+            "errors/500.html",
+            {"request": request, "detail": None},
+            status_code=500,
+        )
 
     return app
 

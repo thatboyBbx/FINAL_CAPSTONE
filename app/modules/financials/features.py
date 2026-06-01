@@ -1,4 +1,3 @@
-from datetime import date
 from statistics import mean
 
 from app.modules.financials.model import FinancialSnapshot

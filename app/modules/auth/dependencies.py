@@ -3,8 +3,8 @@ app/modules/auth/dependencies.py
 ==================================
 JWT authentication dependency for FastAPI API routes.
 
-This is for JSON API endpoints — it returns HTTP 401 on failure.
-For HTML page routes (browser redirects), see ui_dependencies.py (Job B).
+This is for JSON API endpoints — it returns HTTP 401/403 on failure.
+For HTML page routes (browser redirects), see ui_dependencies.py.
 
 Usage:
     from app.modules.auth.dependencies import get_current_user, require_role
@@ -32,7 +32,8 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy.orm import Session
 
 from app.core.db import get_db
-from app.modules.auth.service import decode_access_token
+from app.modules.audit.audit_logger import AuditLogger, get_audit_logger
+from app.modules.auth.service import verify_access_token
 from app.modules.users.model import User
 
 logger = logging.getLogger(__name__)
@@ -41,14 +42,10 @@ logger = logging.getLogger(__name__)
 _bearer = HTTPBearer(auto_error=False)
 
 
-def _extract_token(
+def _extract_raw_token(
     credentials: HTTPAuthorizationCredentials | None,
     access_token: str | None,
 ) -> str | None:
-    """
-    Extract token from Authorization header first, cookie second.
-    Returns the raw token string or None if neither source has one.
-    """
     if credentials and credentials.scheme.lower() == "bearer":
         return credentials.credentials
     if access_token:
@@ -63,14 +60,17 @@ def get_current_user(
     db: Session = Depends(get_db),
 ) -> User:
     """
-    Validate the JWT and return the authenticated User.
+    Validate the JWT (including blacklist and revocation-fence checks) and
+    return the authenticated User.
+
     Sources checked in order: Authorization header, then access_token cookie.
 
     Raises:
-        HTTP 401 — missing token, expired token, invalid token, user not found
+        HTTP 401 — missing token, expired token, invalid or revoked token,
+                   user not found
         HTTP 403 — user account is deactivated
     """
-    token = _extract_token(credentials, access_token)
+    token = _extract_raw_token(credentials, access_token)
 
     if not token:
         raise HTTPException(
@@ -79,8 +79,16 @@ def get_current_user(
             headers={"WWW-Authenticate": "Bearer"},
         )
 
-    payload = decode_access_token(token)
+    payload, reason = verify_access_token(db, token)
+
     if payload is None:
+        # Log security-relevant failure reasons internally; return generic message to caller
+        if reason in ("token_invalid", "token_missing_claims"):
+            logger.warning(
+                "Rejected token from %s — reason: %s",
+                request.client.host if request.client else "?",
+                reason,
+            )
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid or expired session. Please log in again.",
@@ -114,18 +122,42 @@ def require_role(*allowed_roles: str) -> Callable[..., User]:
     """
     Return a dependency that enforces role membership.
 
+    Logs a PERMISSION_DENIED audit event when access is denied so that
+    privilege-escalation attempts are visible in the audit trail.
+
     Example:
         @router.post("/approve")
         def approve(user: User = Depends(require_role("admin", "manager"))):
             ...
     """
-    def _check(current_user: User = Depends(get_current_user)) -> User:
+    def _check(
+        request: Request,
+        current_user: User = Depends(get_current_user),
+        db: Session = Depends(get_db),
+    ) -> User:
         if current_user.role not in allowed_roles:
+            # Audit the denied access attempt
+            try:
+                get_audit_logger().log(
+                    db,
+                    event_type=AuditLogger.PERMISSION_DENIED,
+                    actor=current_user.staff_id,
+                    ip_address=(
+                        request.client.host if request.client else None
+                    ),
+                    details={
+                        "required_roles": list(allowed_roles),
+                        "user_role": current_user.role,
+                        "path": request.url.path,
+                    },
+                )
+            except Exception:
+                pass
+
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail=(
-                    f"Access denied. Required: {', '.join(allowed_roles)}. "
-                    f"Your role: {current_user.role}."
+                    f"Access denied. Required role: {' or '.join(allowed_roles)}."
                 ),
             )
         return current_user

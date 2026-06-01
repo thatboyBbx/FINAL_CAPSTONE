@@ -1,9 +1,11 @@
 {# macros/forms.html — Form input macros for InsureIntel Zimbabwe #}
 
 {% macro text_input(name, label=None, placeholder='', value='', type='text', required=False, autofocus=False, help=None, error=None) %}
-<div style="margin-bottom:1rem">
+<div class="form-group">
   {% if label %}
-  <label class="form-label" for="field-{{ name }}">{{ label }}{% if required %}<span style="color:var(--cerr);margin-left:0.25rem">*</span>{% endif %}</label>
+  <label class="form-label" for="field-{{ name }}">
+    {{ label }}{% if required %}<span style="color:var(--cerr);margin-left:0.25rem" aria-hidden="true">*</span>{% endif %}
+  </label>
   {% endif %}
   <input
     type="{{ type }}"
@@ -12,41 +14,68 @@
     class="form-input{% if error %} border-red-500{% endif %}"
     placeholder="{{ placeholder }}"
     value="{{ value }}"
-    {{ 'required' if required else '' }}
+    {{ 'required aria-required="true"' if required else '' }}
     {{ 'autofocus' if autofocus else '' }}
+    {% if error %}aria-invalid="true" aria-describedby="field-{{ name }}-error"{% elif help %}aria-describedby="field-{{ name }}-help"{% endif %}
   />
-  {% if error %}<p style="color:var(--cerr);font-size:0.75rem;margin:0.25rem 0 0">{{ error }}</p>{% endif %}
-  {% if help %}<p style="color:var(--cosv);font-size:0.75rem;margin:0.25rem 0 0">{{ help }}</p>{% endif %}
+  {% if error %}
+  <p id="field-{{ name }}-error" class="form-error-text" style="color:var(--cerr);font-size:0.75rem;margin:0.25rem 0 0" aria-live="polite" role="alert">{{ error }}</p>
+  {% endif %}
+  {% if help %}
+  <p id="field-{{ name }}-help" style="color:var(--cosv);font-size:0.75rem;margin:0.25rem 0 0">{{ help }}</p>
+  {% endif %}
 </div>
 {% endmacro %}
 
-{% macro password_input(name, label='Password', placeholder='', required=False, help=None) %}
-<div style="margin-bottom:1rem">
-  <label class="form-label" for="field-{{ name }}">{{ label }}{% if required %}<span style="color:var(--cerr);margin-left:0.25rem">*</span>{% endif %}</label>
+{% macro password_input(name, label='Password', placeholder='', required=False, help=None, error=None) %}
+<div class="form-group">
+  <label class="form-label" for="field-{{ name }}">
+    {{ label }}{% if required %}<span style="color:var(--cerr);margin-left:0.25rem" aria-hidden="true">*</span>{% endif %}
+  </label>
   <div style="position:relative">
     <input
       type="password"
       id="field-{{ name }}"
       name="{{ name }}"
-      class="form-input"
+      class="form-input{% if error %} border-red-500{% endif %}"
       placeholder="{{ placeholder }}"
-      {{ 'required' if required else '' }}
+      {{ 'required aria-required="true"' if required else '' }}
+      {% if error %}aria-invalid="true" aria-describedby="field-{{ name }}-error"{% elif help %}aria-describedby="field-{{ name }}-help"{% endif %}
       style="padding-right:2.75rem"
     />
-    <button type="button" onclick="(function(b){var i=b.previousElementSibling;i.type=i.type==='password'?'text':'password';b.querySelector('span').textContent=i.type==='password'?'visibility':'visibility_off';})(this)" style="position:absolute;right:0.625rem;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--cosv);display:flex">
-      <span class="material-symbols-outlined" style="font-size:20px">visibility</span>
+    <button
+      type="button"
+      aria-label="Toggle password visibility"
+      onclick="(function(b){var i=b.previousElementSibling;i.type=i.type==='password'?'text':'password';b.querySelector('span').textContent=i.type==='password'?'visibility':'visibility_off';b.setAttribute('aria-pressed',i.type!=='password');})(this)"
+      aria-pressed="false"
+      style="position:absolute;right:0.625rem;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--cosv);display:flex"
+    >
+      <span class="material-symbols-outlined icon-md" aria-hidden="true">visibility</span>
     </button>
   </div>
-  {% if help %}<p style="color:var(--cosv);font-size:0.75rem;margin:0.25rem 0 0">{{ help }}</p>{% endif %}
+  {% if error %}
+  <p id="field-{{ name }}-error" style="color:var(--cerr);font-size:0.75rem;margin:0.25rem 0 0" aria-live="polite" role="alert">{{ error }}</p>
+  {% endif %}
+  {% if help %}
+  <p id="field-{{ name }}-help" style="color:var(--cosv);font-size:0.75rem;margin:0.25rem 0 0">{{ help }}</p>
+  {% endif %}
 </div>
 {% endmacro %}
 
-{% macro select_input(name, label=None, options=[], value='', required=False, help=None) %}
-<div style="margin-bottom:1rem">
+{% macro select_input(name, label=None, options=[], value='', required=False, help=None, error=None) %}
+<div class="form-group">
   {% if label %}
-  <label class="form-label" for="field-{{ name }}">{{ label }}{% if required %}<span style="color:var(--cerr);margin-left:0.25rem">*</span>{% endif %}</label>
+  <label class="form-label" for="field-{{ name }}">
+    {{ label }}{% if required %}<span style="color:var(--cerr);margin-left:0.25rem" aria-hidden="true">*</span>{% endif %}
+  </label>
   {% endif %}
-  <select id="field-{{ name }}" name="{{ name }}" class="form-input" {{ 'required' if required else '' }}>
+  <select
+    id="field-{{ name }}"
+    name="{{ name }}"
+    class="form-input{% if error %} border-red-500{% endif %}"
+    {{ 'required aria-required="true"' if required else '' }}
+    {% if error %}aria-invalid="true" aria-describedby="field-{{ name }}-error"{% elif help %}aria-describedby="field-{{ name }}-help"{% endif %}
+  >
     {% for opt in options %}
     {% if opt is mapping %}
     <option value="{{ opt.value }}" {% if opt.value == value %}selected{% endif %}>{{ opt.label }}</option>
@@ -55,24 +84,37 @@
     {% endif %}
     {% endfor %}
   </select>
-  {% if help %}<p style="color:var(--cosv);font-size:0.75rem;margin:0.25rem 0 0">{{ help }}</p>{% endif %}
+  {% if error %}
+  <p id="field-{{ name }}-error" style="color:var(--cerr);font-size:0.75rem;margin:0.25rem 0 0" aria-live="polite" role="alert">{{ error }}</p>
+  {% endif %}
+  {% if help %}
+  <p id="field-{{ name }}-help" style="color:var(--cosv);font-size:0.75rem;margin:0.25rem 0 0">{{ help }}</p>
+  {% endif %}
 </div>
 {% endmacro %}
 
-{% macro textarea_input(name, label=None, placeholder='', value='', rows=4, required=False, help=None) %}
-<div style="margin-bottom:1rem">
+{% macro textarea_input(name, label=None, placeholder='', value='', rows=4, required=False, help=None, error=None) %}
+<div class="form-group">
   {% if label %}
-  <label class="form-label" for="field-{{ name }}">{{ label }}{% if required %}<span style="color:var(--cerr);margin-left:0.25rem">*</span>{% endif %}</label>
+  <label class="form-label" for="field-{{ name }}">
+    {{ label }}{% if required %}<span style="color:var(--cerr);margin-left:0.25rem" aria-hidden="true">*</span>{% endif %}
+  </label>
   {% endif %}
   <textarea
     id="field-{{ name }}"
     name="{{ name }}"
-    class="form-input"
+    class="form-input{% if error %} border-red-500{% endif %}"
     rows="{{ rows }}"
     placeholder="{{ placeholder }}"
-    {{ 'required' if required else '' }}
+    {{ 'required aria-required="true"' if required else '' }}
+    {% if error %}aria-invalid="true" aria-describedby="field-{{ name }}-error"{% elif help %}aria-describedby="field-{{ name }}-help"{% endif %}
   >{{ value }}</textarea>
-  {% if help %}<p style="color:var(--cosv);font-size:0.75rem;margin:0.25rem 0 0">{{ help }}</p>{% endif %}
+  {% if error %}
+  <p id="field-{{ name }}-error" style="color:var(--cerr);font-size:0.75rem;margin:0.25rem 0 0" aria-live="polite" role="alert">{{ error }}</p>
+  {% endif %}
+  {% if help %}
+  <p id="field-{{ name }}-help" style="color:var(--cosv);font-size:0.75rem;margin:0.25rem 0 0">{{ help }}</p>
+  {% endif %}
 </div>
 {% endmacro %}
 
@@ -86,9 +128,9 @@
 
 {% macro form_error(message) %}
 {% if message %}
-<div class="alert alert-error" style="margin-bottom:1rem">
+<div class="alert alert-error" role="alert" aria-live="assertive" aria-atomic="true" style="margin-bottom:1rem">
   <div style="display:flex;align-items:center;gap:0.5rem">
-    <span class="material-symbols-outlined" style="font-size:18px;flex-shrink:0">error</span>
+    <span class="material-symbols-outlined icon-md" aria-hidden="true" style="flex-shrink:0">error</span>
     {{ message }}
   </div>
 </div>
@@ -97,9 +139,9 @@
 
 {% macro form_success(message) %}
 {% if message %}
-<div class="alert alert-success" style="margin-bottom:1rem">
+<div class="alert alert-success" role="status" aria-live="polite" aria-atomic="true" style="margin-bottom:1rem">
   <div style="display:flex;align-items:center;gap:0.5rem">
-    <span class="material-symbols-outlined" style="font-size:18px;flex-shrink:0">check_circle</span>
+    <span class="material-symbols-outlined icon-md" aria-hidden="true" style="flex-shrink:0">check_circle</span>
     {{ message }}
   </div>
 </div>

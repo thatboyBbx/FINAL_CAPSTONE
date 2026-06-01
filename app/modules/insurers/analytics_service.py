@@ -173,15 +173,30 @@ class InsurerAnalytics:
     ) -> dict:
         """Keyed by insurer name — financial snapshot for each insurer for the period."""
         result: dict[str, Any] = {}
+        if not insurer_ids:
+            return result
+
+        insurer_rows = db.query(Insurer).filter(Insurer.id.in_(insurer_ids)).all()
+        insurers = {ins.id: ins for ins in insurer_rows}
+
+        snapshot_query = db.query(FinancialSnapshot).filter(
+            FinancialSnapshot.insurer_id.in_(insurer_ids)
+        )
+        if period_label:
+            snapshot_query = snapshot_query.filter(FinancialSnapshot.period_label == period_label)
+        snapshots = snapshot_query.order_by(
+            FinancialSnapshot.insurer_id,
+            FinancialSnapshot.period_label.desc(),
+        ).all()
+        latest_by_insurer: dict[int, FinancialSnapshot] = {}
+        for snap in snapshots:
+            latest_by_insurer.setdefault(snap.insurer_id, snap)
+
         for ins_id in insurer_ids:
-            insurer = db.query(Insurer).filter(Insurer.id == ins_id).first()
+            insurer = insurers.get(ins_id)
             if not insurer:
                 continue
-            q = db.query(FinancialSnapshot).filter(FinancialSnapshot.insurer_id == ins_id)
-            if period_label:
-                q = q.filter(FinancialSnapshot.period_label == period_label)
-            snap = q.order_by(FinancialSnapshot.period_label.desc()).first()
-            result[insurer.name] = self._snapshot_to_dict(snap)
+            result[insurer.name] = self._snapshot_to_dict(latest_by_insurer.get(ins_id))
         return result
 
     # ── Market Position Chart Data ─────────────────────────────────────────────

@@ -1,9 +1,11 @@
 """
 Scan source directories, extract text from every supported document,
-build a labelled JSON corpus, and save it to disk.
+build a labelled JSON corpus, and save it to disk using parallel processing.
 """
 import json
 import logging
+import os
+from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
 from typing import Any
 
@@ -40,6 +42,26 @@ def _collect_files(directory: Path) -> list[Path]:
     return files
 
 
+def _process_single_file_worker(args: tuple[Path, str]) -> dict[str, Any] | None:
+    """Worker function that runs in a separate process."""
+    file_path, label = args
+    try:
+        suffix = file_path.suffix.lower()
+        if suffix == ".pdf":
+            text = extract_text_from_pdf(file_path, max_pages=5)
+        elif suffix in {".xlsx", ".xls"}:
+            text = _extract_xlsx_text(file_path)
+        else:
+            text = ""
+
+        return extract_features(file_path, text, source_label=label)
+    except Exception as e:
+        # We print to stderr to ensure visibility in case logging isn't fully set up in child process
+        import sys
+        print(f"Failed to process {file_path.name}: {e}", file=sys.stderr)
+        return None
+
+
 def build_corpus(
     source_paths: list[dict],
     output_path: Path | None = None,
@@ -47,7 +69,7 @@ def build_corpus(
     progress_cb=None,
 ) -> list[dict[str, Any]]:
     """
-    Ingest all documents from source_paths.
+    Ingest all documents from source_paths in parallel.
 
     Args:
         source_paths: [{"path": "/some/dir", "label": "circulars"}, ...]
@@ -73,29 +95,22 @@ def build_corpus(
         all_files.extend((f, label) for f in files)
 
     total = min(len(all_files), max_docs)
+    files_to_process = all_files[:max_docs]
 
-    for idx, (file_path, label) in enumerate(all_files[:max_docs]):
-        if progress_cb:
-            progress_cb(idx + 1, total, file_path.name)
+    num_workers = min(os.cpu_count() or 4, 6)
+    logger.info("Starting ProcessPoolExecutor with %d workers", num_workers)
 
-        try:
-            suffix = file_path.suffix.lower()
-            if suffix == ".pdf":
-                text = extract_text_from_pdf(file_path)
-            elif suffix in {".xlsx", ".xls"}:
-                text = _extract_xlsx_text(file_path)
-            else:
-                text = ""
-
-            record = extract_features(file_path, text, source_label=label)
-            corpus.append(record)
-            logger.debug(
-                "[%d/%d] %s → category=%s words=%d",
-                idx + 1, total, file_path.name,
-                record["category"], record["word_count"],
-            )
-        except Exception as e:
-            logger.warning("Failed to process %s: %s", file_path.name, e)
+    with ProcessPoolExecutor(max_workers=num_workers) as executor:
+        # Use executor.map to map worker function over files, which preserves order
+        results = executor.map(_process_single_file_worker, files_to_process)
+        
+        for idx, record in enumerate(results):
+            file_path, _ = files_to_process[idx]
+            if progress_cb:
+                progress_cb(idx + 1, total, file_path.name)
+            
+            if record is not None:
+                corpus.append(record)
 
     logger.info("Corpus complete: %d documents", len(corpus))
 

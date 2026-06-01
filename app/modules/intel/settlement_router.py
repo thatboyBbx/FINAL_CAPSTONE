@@ -69,7 +69,7 @@ def _score_insurer(insurer_id: int, db: Session) -> dict:
     # ── Try cached CSP score ──────────────────────────────────────────────────
     cached = (
         db.query(CSPScore)
-        .filter(CSPScore.insurer_id == str(insurer_id))
+        .filter(CSPScore.insurer_id == insurer_id)
         .order_by(CSPScore.scored_at.desc())
         .first()
     )
@@ -94,8 +94,11 @@ def _score_insurer(insurer_id: int, db: Session) -> dict:
     # ── Compute on-the-fly from financials ────────────────────────────────────
     financials = (
         db.query(InsurerFinancials)
-        .filter(InsurerFinancials.insurer_id == str(insurer_id))
-        .order_by(InsurerFinancials.period_label.desc())
+        .filter(InsurerFinancials.insurer_id == insurer_id)
+        .order_by(
+            InsurerFinancials.period_year.desc(),
+            InsurerFinancials.period_quarter.desc(),
+        )
         .first()
     )
     if not financials:
@@ -120,7 +123,9 @@ def _score_insurer(insurer_id: int, db: Session) -> dict:
     try:
         from app.modules.csp.service import CSPService           # noqa: PLC0415
         svc    = CSPService()
-        result = svc.compute_score(db=db, insurer_id=insurer_id)
+        result = svc.score_insurer(insurer_id=insurer_id, db=db)
+        if result is None:
+            raise ValueError("CSP score could not be computed")
         return {
             "insurer_id":    insurer_id,
             "insurer_name":  insurer.name,
@@ -183,14 +188,11 @@ def settlement_power_all(db: Session = Depends(get_db)) -> dict:
     from app.modules.insurers.model import Insurer  # noqa: PLC0415
     from app.modules.csp.model import CSPScore            # noqa: PLC0415
 
-    # Gather all insurer IDs that have at least one CSP score cached
-    insurer_ids_with_scores: set[int] = set()
-    cached_scores = db.query(CSPScore).all()
-    for cs in cached_scores:
-        try:
-            insurer_ids_with_scores.add(int(cs.insurer_id))
-        except (ValueError, TypeError):
-            pass
+    insurer_ids_with_scores: set[int] = {
+        row[0]
+        for row in db.query(CSPScore.insurer_id).distinct().all()
+        if row[0] is not None
+    }
 
     results = []
     for iid in insurer_ids_with_scores:

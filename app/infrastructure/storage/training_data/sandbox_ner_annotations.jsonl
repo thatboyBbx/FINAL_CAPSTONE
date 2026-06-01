@@ -1,0 +1,197 @@
+{"text": "IPEC Regulatory REGULATORY SANDBOX GUIDELINES FOR THE INSURANCE AND PENSIONS INDUSTRY REGULATORY SANDBOX GUIDELINES FOR THE INSURANCE AND PENSIONS INDUSTRY IPEC Regulatory 1 REGULATORY SANDBOX GUIDELINES FOR THE INSURANCE AND PENSIONS INDUSTRY IPEC Regulatory Table of Contents 1.", "entities": []}
+{"text": "Introduction 3 2.", "entities": []}
+{"text": "Background 3 3.", "entities": []}
+{"text": "Interpretation 4 4.", "entities": []}
+{"text": "Objectives of The Regulatory Sandbox 4 5.", "entities": []}
+{"text": "Scope of Regulatory Sandbox Guidelines 5 6.", "entities": []}
+{"text": "Sandbox Model and Structure 5 7.", "entities": []}
+{"text": "Application, Preparation, Testing & Graduation Phases 6 8.", "entities": []}
+{"text": "Application Phase 6 9.", "entities": []}
+{"text": "Preparation Phase 7 10.", "entities": []}
+{"text": "Testing Phase 7 11.", "entities": []}
+{"text": "Revocation of Approval 8 12.", "entities": []}
+{"text": "Test Outcome 8 13.", "entities": []}
+{"text": "Graduation Phase 9 14.", "entities": [[0, 16, "EXIT_CONDITION"]]}
+{"text": "Safeguards 10 15.", "entities": []}
+{"text": "Confidentiality 10 16.", "entities": []}
+{"text": "Review of Guideline 11 17.", "entities": []}
+{"text": "Effective date 11 18.", "entities": []}
+{"text": "Contact Details 11 Annexures 12 19.", "entities": []}
+{"text": "Annexure 1: Eligibility Criteria 12 20.", "entities": []}
+{"text": "Annexure 2: Application Requirements 14 21.", "entities": []}
+{"text": "Annexure 3: Reporting Requirements 25 2 IPEC Regulatory REGULATORY SANDBOX GUIDELINES FOR THE INSURANCE AND PENSIONS INDUSTRY 1.", "entities": []}
+{"text": "Introduction 1.1.", "entities": []}
+{"text": "This Guideline on Regulatory Sandbox for the Insurance and Pensions Industry (hereafter referred to as the \u201cGuideline\u201d) is issued under section 3(1) of the Insurance and Pensions Commission (Issuance of General Guidelines and Standards) Regulations, 2020, published in Statutory Instrument 69 of 2020 as read with section 6(c) of the Insurance Act [Chapter 24:07] and section 5 (f) and (g) of the Pensions and Provident Funds Act [Chapter 24:32].", "entities": []}
+{"text": "This section empowers the Commission, whenever it considers it necessary, convenient, and in the best interest of policyholders, pensions and provident fund members, to issue general guidelines and standards that must be observed by the insurance and pensions industry.", "entities": []}
+{"text": "Background 2.1.", "entities": []}
+{"text": "The Insurance and Pensions Commission (the Commission) aims to cultivate a safe, vibrant, and sustainable insurance and pensions industry.", "entities": []}
+{"text": "This commitment drives the Commission\u2019s ongoing efforts in market development, including initiatives like the Microinsurance and Micropension Regulatory Frameworks.", "entities": []}
+{"text": "To unlock innovation and address existing market barriers, the Commission recognises the need for additional tools that promote experimentation and adaptation.", "entities": []}
+{"text": "Zimbabwe\u2019s financial services sector has recently seen a rise in innovative financial technology (fintech) startups.", "entities": []}
+{"text": "Like in many jurisdictions globally, these institutions require a supportive environment for research and development.", "entities": []}
+{"text": "A regulatory sandbox is a key tool to catalyse this innovation.", "entities": []}
+{"text": "It provides a controlled, time- bound environment for live-testing new financial technologies or business models.", "entities": []}
+{"text": "This enables innovators to validate their products or services in a real-world setting under regulatory oversight, potentially with temporary regulatory waivers.", "entities": []}
+{"text": "Establishing this regulatory sandbox directly contributes to the Commission\u2019s vision by: \u2022 Enabling market innovation through the safe testing of new ideas.", "entities": []}
+{"text": "\u2022 Enhancing competition and market development by creating more pathways for market entry.", "entities": []}
+{"text": "\u2022 Informing regulatory evolution by identifying new areas for supervisory support based on testing insights.", "entities": []}
+{"text": "This initiative also aligns with Zimbabwe\u2019s national objectives, including deepening financial inclusion through digital technology and modernising the economy, as outlined in Vision 2030.", "entities": []}
+{"text": "These Guidelines outline the principles, eligibility criteria, application process, and operational framework for the Commission\u2019s regulatory sandbox, which provides a conducive environment for fintech deployment in the insurance and pensions industry.", "entities": []}
+{"text": "3 REGULATORY SANDBOX GUIDELINES FOR THE INSURANCE AND PENSIONS INDUSTRY IPEC Regulatory 3.", "entities": []}
+{"text": "Interpretation For the purpose of this Guideline, the following definitions are provided - Applicant \u2013 the party interested in being a Participant in the Sandbox as indicated through the submission of an application form.", "entities": []}
+{"text": "The Applicant could be an individual or an entity (whether licenced with the Commission or not), either on its own or in collaboration with a potential Fintech entity or entity already licensed by IPEC.", "entities": []}
+{"text": "Commission \u2013 Insurance and Pensions Commission (IPEC).", "entities": []}
+{"text": "Fintech \u2013 technology-driven innovation in financial services that aims to improve efficiency, inclusivity and consumer experience within financial ecosystems.", "entities": []}
+{"text": "Fintech Entity \u2013 an entity other than a regulated entity that utilises or plans to utilise fintech to provide financial services.", "entities": []}
+{"text": "Participant or Participating entity \u2013 any individual or entity authorised by the Commission to participate in the Sandbox.", "entities": []}
+{"text": "The term \u201cParticipants\u201d shall be construed accordingly.", "entities": []}
+{"text": "Product or service - a tool or offering which can be offered or used by the insurance and pensions industry.", "entities": []}
+{"text": "Regulated Entity \u2013 a registered and licenced entity which is subject to regulation and supervision by the Insurance Act [Chapter 24:07] and the Pensions and Provident Funds Act [Chapter 24:32].", "entities": []}
+{"text": "Regulatory Sandbox or Sandbox \u2013 a controlled environment in which participating individuals or entities may test their products, services or solutions subject to the requirements under these Guidelines.", "entities": []}
+{"text": "Objectives of The Regulatory Sandbox 4.1.", "entities": []}
+{"text": "The Regulatory Sandbox guideline seeks to: a) provide a controlled environment to test and refine innovations in the insurance and pensions industry; b) promote financial inclusion, consumer protection and the development of a robust and competitive, yet secure and stable insurance and pensions market; c) promote the use of technology to improve the penetration rate in the insurance and pensions industry; d) stimulate innovation to create and sustain a vibrant and safe insurance and pensions market in Zimbabwe; e) to foster dialogue between financial services innovators and regulators, enabling better alignment of innovation with regulatory requirements and policy goals; and f) provide regulatory clarity and flexibility by helping regulators better understand emerging technologies and business models to determine how existing laws and regulations apply or need to evolve, providing clarity to innovators on compliance.", "entities": []}
+{"text": "4 IPEC Regulatory REGULATORY SANDBOX GUIDELINES FOR THE INSURANCE AND PENSIONS INDUSTRY 5.", "entities": []}
+{"text": "Scope of Regulatory Sandbox Guidelines 5.1.", "entities": []}
+{"text": "This Guideline applies to all activities that fall under the purview of the Commission.", "entities": []}
+{"text": "As such, it applies to fintech entities, regulated entities and other stakeholders seeking to test innovative solutions in a controlled environment.", "entities": []}
+{"text": "The regulatory sandbox is open to innovations across insurance and pensions activities, if they meet the eligibility requirements set forth in this Guideline.", "entities": []}
+{"text": "The Commission may tailor the scope of the regulatory sandbox based on national priorities, risk considerations and evolving market needs.", "entities": []}
+{"text": "The sandbox guideline will be reviewed periodically to ensure alignment with international best practice and emerging regulatory trends.", "entities": []}
+{"text": "The Guideline operates alongside other regulatory supervisory and engagement tools to create an enabling ecosystem for innovation.", "entities": []}
+{"text": "Sandbox Model and Structure 6.1.", "entities": []}
+{"text": "Model and Target Audience 6.1.1 There are several regulatory sandbox models.", "entities": []}
+{"text": "However, the Commission\u2019s regulatory sandbox will initially be run as a cohort model.", "entities": []}
+{"text": "The cohort sandbox model has a defined application window in which applications to the sandbox can be submitted.", "entities": []}
+{"text": "6.1.2 After the cohort window closes, the Commission will publish the next application window.", "entities": []}
+{"text": "6.1.3 Accepted participants therefore enter the cohort at the same time and progress through predefined stages of the sandbox.", "entities": []}
+{"text": "6.1.4 The cohort structure allows for regulatory efficiency by dealing with applications in batches and for enhanced learning and refinement of the sandbox, as multiple applicants are taken through the process in parallel.", "entities": []}
+{"text": "As the Commission gains experience through the initial sandbox cohorts, it may consider switching to any other model, where applications are accepted and processed individually on an ongoing basis.", "entities": []}
+{"text": "6.1.5 The regulatory sandbox will target the following groups: a) entities or individuals already licenced by the Commission seeking to test product innovations that are not covered under the existing regulatory framework; and b) entities and individuals, whether local or foreign, pursuing innovative solutions, projects and partnerships that fall under the mandate of the Commission, who are not currently licenced by the Commission.", "entities": []}
+{"text": "6.1.6 The regulatory sandbox does not cater for existing players wanting to test product innovations that are already accommodated in the existing regulatory framework.", "entities": []}
+{"text": "6.1.7 Applicants should demonstrate a need for a live testing environment, readiness to test their 5 REGULATORY SANDBOX GUIDELINES FOR THE INSURANCE AND PENSIONS INDUSTRY IPEC Regulatory solution and unconditional commitment to deploy the tested solution in Zimbabwe.", "entities": []}
+{"text": "6.1.8 The Commission will communicate on its website the details of the participants of the sandbox test which include the name, start date, end date and any other such relevant information.", "entities": [[10, 37, "COMPLIANCE_STATUS"]]}
+{"text": "Application, Preparation, Testing & Graduation Phases 7.1.", "entities": []}
+{"text": "This section provides an overview of the core phases in the Sandbox.", "entities": []}
+{"text": "The Sandbox will have four distinct phases: namely the application phase, the preparation phase, the testing phase and the graduation phase.", "entities": [[123, 139, "EXIT_CONDITION"]]}
+{"text": "Each phase will have key milestones and the movement through the phases will be communicated to the Applicant by the Commission.", "entities": []}
+{"text": "Each of these phases is described briefly below: a) Application phase: Participants submit their applications to participate in the sandbox.", "entities": []}
+{"text": "The Commission selects eligible participants based on the eligibility criteria.", "entities": []}
+{"text": "This phase could take approximately two months.", "entities": []}
+{"text": "b) Preparation phase: During this phase, the Commission sets a transparent and structured foundation for successful testing.", "entities": []}
+{"text": "This includes defining various stakeholders\u2019 roles and responsibilities, securing the necessary resources for conducting the test and developing the appropriate safeguards and risk mitigation strategies.", "entities": []}
+{"text": "c) Testing phase: The innovative solution is then tested under controlled conditions, to validate its level of innovation, monitor risk and compliance, evaluate consumer impact and build evidence for decision-making.", "entities": []}
+{"text": "The timeline for this phase is as per the approved testing plan of the sandbox participant.", "entities": [[42, 50, "COMPLIANCE_STATUS"]]}
+{"text": "d) Graduation phase: In the final phase, the successfully tested innovation transitions out of the controlled environment and into a broader application for commercialisation.", "entities": [[3, 19, "EXIT_CONDITION"]]}
+{"text": "Application Phase 8.1.", "entities": []}
+{"text": "Before submitting an application for operating in the Sandbox the Applicant must ensure that it has met the eligibility criteria set out in Annex 1(Eligibility criteria) of these Guidelines.", "entities": []}
+{"text": "The checklist must be submitted for review by the Commission.", "entities": []}
+{"text": "The Commission will assess the application against the requirements outlined in Annex 2 (Application requirements) and communicate the decision in writing within a period of 21 working days after closure of the application window.", "entities": [[119, 154, "COMPLIANCE_STATUS"]]}
+{"text": "During the assessment period, the Applicant may adjust the application.", "entities": []}
+{"text": "This may include changes to the parameters of the intended tests to be conducted in the Sandbox.", "entities": []}
+{"text": "Upon approval, the Applicant becomes responsible for deploying, operating and meeting the costs of the test to be conducted in the Sandbox, with the Commission providing the appropriate regulatory support for the duration of the test.", "entities": [[213, 233, "TESTING_PERIOD"]]}
+{"text": "6 IPEC Regulatory REGULATORY SANDBOX GUIDELINES FOR THE INSURANCE AND PENSIONS INDUSTRY 8.5.", "entities": []}
+{"text": "The application phase comprises six (6) key action steps, which are as follows: a) enquiry and initial guidance.", "entities": []}
+{"text": "b) submission and preliminary screening.", "entities": []}
+{"text": "c) initial review by the Commission.", "entities": []}
+{"text": "d) request for additional information.", "entities": []}
+{"text": "e) comprehensive benefit and risk assessment.", "entities": []}
+{"text": "f) communication of the decision to the applicant.", "entities": []}
+{"text": "Preparation Phase 9.1.", "entities": []}
+{"text": "The Commission will engage the respective applicants to: a) define the roles and responsibilities for the test; b) establish clear communication protocols between innovators, regulators and other stakeholders.", "entities": []}
+{"text": "c) ensure the availability of technical, financial and human resources necessary for conducting the test; and d) discuss the requirements for the development of a detailed testing plan, including the safeguards and controls to be built into the test.", "entities": []}
+{"text": "After successful engagements, written notice is given to the applicant on the requirements to be met to move into the testing phase.", "entities": []}
+{"text": "Testing Phase 10.1.", "entities": []}
+{"text": "On entering the testing phase, the Applicant will be referred to as a Participant.", "entities": []}
+{"text": "The Participant should be prepared to begin the tests outlined in the approved application.", "entities": [[70, 78, "COMPLIANCE_STATUS"]]}
+{"text": "The period for testing is limited to a maximum of 24 months, after which the regulatory approval and relaxation received by the Participant will expire.", "entities": [[50, 59, "TESTING_PERIOD"], [101, 111, "REGULATORY_WAIVER"]]}
+{"text": "Each Participant will be bound to the agreed testing dates.", "entities": []}
+{"text": "If the Participant, for whatever reason requires an extension to the agreed testing period, this should be communicated in writing to the Commission at least three months before the end of the agreed testing period.", "entities": [[76, 90, "TESTING_PERIOD"], [107, 130, "COMPLIANCE_STATUS"]]}
+{"text": "The Commission will consider the application for extension and reserves the right to reject any extension request.", "entities": []}
+{"text": "A sandbox participant is required to submit quarterly reports that cover: a) reports based on testing plan KPIs; b) any relevant statistical information and data related to the tests; c) any risk indicators and mitigatory measures; d) operational challenges, if any, and the procedures to correct them 7 REGULATORY SANDBOX GUIDELINES FOR THE INSURANCE AND PENSIONS INDUSTRY IPEC Regulatory e) customer satisfaction feedback and customer complaints; and f) any emerging benefits/risks that were not included in the application and testing plan.", "entities": [[437, 447, "TCF_CLAUSE"]]}
+{"text": "Revocation of Approval 11.1.", "entities": []}
+{"text": "The Commission reserves the right to revoke any approval for the testing of a service or product in the Regulatory Sandbox where a Participant: a) has failed to develop or implement safeguards; b) breaches data security requirements; c) is noted to have submitted misleading information; d) has made some misrepresentation; e) goes into liquidation or has its primary licence cancelled; f) fails to address any technical defects; g) fails to submit the quarterly progress reports; and h) any other ground that the Commission may deem necessary.", "entities": []}
+{"text": "Test Outcome 12.1.", "entities": []}
+{"text": "At the conclusion of the live testing phase, the Participant must assess and produce an exit report about their innovation\u2019s viability based on the outcomes defined in their testing plan.", "entities": [[88, 99, "EXIT_CONDITION"]]}
+{"text": "An exit report will cover: a) Performance review: The final KPI assessment, along with an overview of the means of verification; b) Operational challenges: Full details of any challenge and the procedures conducted to solve them; c) Risk management review: The main risks that were managed and how they were mitigated; d) Customer satisfaction: The consolidated customer feedback and complaints analysis; e) Lessons learned: Insights gained during testing and recommendations; f) Implementation readiness: Confirmation of operational stability, scalability potential, and market fit; and g) The report shall be certified by an independent consultant or auditor, approved by IPEC, who shall confirm that: i.", "entities": [[60, 63, "KPI_TARGET"], [3, 14, "EXIT_CONDITION"], [662, 670, "COMPLIANCE_STATUS"], [384, 394, "TCF_CLAUSE"]]}
+{"text": "the testing process was conducted in accordance with the terms and conditions approved by IPEC; ii.", "entities": [[78, 86, "COMPLIANCE_STATUS"]]}
+{"text": "the data and outcomes presented are complete, accurate, and free from material misrepresentation; and iii.", "entities": []}
+{"text": "appropriate consumer protection, data privacy, and risk management controls were observed throughout the testing period.", "entities": [[105, 119, "TESTING_PERIOD"]]}
+{"text": "8 IPEC Regulatory REGULATORY SANDBOX GUIDELINES FOR THE INSURANCE AND PENSIONS INDUSTRY 12.2.", "entities": []}
+{"text": "The Commission will evaluate the exit report.", "entities": [[33, 44, "EXIT_CONDITION"]]}
+{"text": "It may call in the sandbox Participant to explain the findings and/or request the underlying supporting data.", "entities": []}
+{"text": "In case of test failure, the sandbox Participant will be required to stipulate the reasons for the failure and any lessons learned for future reference.", "entities": [[11, 23, "COMPLIANCE_STATUS"]]}
+{"text": "Graduation Phase 13.1.", "entities": [[0, 16, "EXIT_CONDITION"]]}
+{"text": "On the completion of the testing period, the Participant will exit the Sandbox guided by their exit plan, which shall guarantee an orderly exit without prejudicing the customers.", "entities": [[25, 39, "TESTING_PERIOD"], [95, 104, "EXIT_CONDITION"]]}
+{"text": "While the standard testing period shall be limited to 12 months, the Insurance and Pensions Commission (IPEC) may, at its sole discretion, grant an extension where it deems such an extension to be in the public interest or necessary to allow for a comprehensive evaluation of the innovation.", "entities": [[54, 63, "TESTING_PERIOD"]]}
+{"text": "Extensions may be granted based on factors including, but not limited to: a) The need for additional data or performance evidence to inform regulatory decisions; b) Unforeseen external factors that materially affect the test; or c) IPEC\u2019s ongoing process to amend or develop relevant regulatory frameworks.", "entities": []}
+{"text": "IPEC shall communicate any extension decision in writing, specifying the duration and any revised conditions applicable during the extended period.", "entities": [[11, 56, "COMPLIANCE_STATUS"]]}
+{"text": "Individuals and entities not licensed by the Commission are required to either obtain a licence or partner with a licensed entity for full-scale deployment of a successfully tested product or service.", "entities": []}
+{"text": "The participating individual or entity will be responsible for submitting the relevant reports to the Commission within the specified time.", "entities": []}
+{"text": "Refer to Annexe 3 (reporting requirements) for details.", "entities": []}
+{"text": "A review of the required reports will be conducted to determine the success or failure of the test.", "entities": []}
+{"text": "The Commission will communicate in writing whether the test has been successful or not and may propose an extension to the testing period if there is insufficient information to make a determination.", "entities": [[123, 137, "TESTING_PERIOD"], [20, 42, "COMPLIANCE_STATUS"]]}
+{"text": "The Commission will also assess the readiness of the product or service for full-scale deployment in Zimbabwe and will communicate this in writing.", "entities": [[119, 146, "COMPLIANCE_STATUS"]]}
+{"text": "Successful Participants will be expected to follow the transition to full deployment of the tested product or service in the Zimbabwean market as outlined in the exit plan.", "entities": [[162, 171, "EXIT_CONDITION"]]}
+{"text": "The Commission reserves the right to conduct post-exit impact and evaluation monitoring.", "entities": [[45, 54, "EXIT_CONDITION"]]}
+{"text": "9 REGULATORY SANDBOX GUIDELINES FOR THE INSURANCE AND PENSIONS INDUSTRY IPEC Regulatory 14.", "entities": []}
+{"text": "Safeguards 14.1.", "entities": []}
+{"text": "The Sandbox aims to provide a safe testing environment for innovations in the insurance and pensions sector.", "entities": []}
+{"text": "An authorised Regulatory Sandbox Participant must adhere to the relevant regulations on confidentiality of customer information, Treating Customers Fairly (TCF), Cyber Security and Data Protection, Know Your Customer (KYC), Anti Money Laundering (AML) and Countering Financing of Terrorism (CFT) requirements at all times.", "entities": [[129, 154, "TCF_CLAUSE"], [198, 216, "KYC_AML_CLAUSE"]]}
+{"text": "Testing will be limited to customers who have consented to be part of the tests and have been educated on the risks involved by the Applicant.", "entities": []}
+{"text": "Given the live nature of the Sandbox, the Applicant will be required to implement sufficient safeguards to ensure the protection of the volunteer customers, including resources or measures to compensate for any losses to the customers.", "entities": []}
+{"text": "Applicants must demonstrate capacity and availability of resources, including those necessary to mitigate and control potential risks and losses.", "entities": []}
+{"text": "Confidentiality 15.1.", "entities": []}
+{"text": "The Commission shall treat all information availed or submitted by any applicant seeking to participate in the Sandbox as confidential, unless the same is already in the public domain.", "entities": []}
+{"text": "The Commission shall not disclose such information relating to innovations to third parties without the Applicant\u2019s or Participant\u2019s written consent unless required to do so under any law or court order.", "entities": []}
+{"text": "For the protection of innovators, the intellectual property laws of Zimbabwe shall apply.", "entities": []}
+{"text": "To provide stakeholders with information on emerging risks and regulation of insurance and pensions business models, the Commission may produce reports on anonymised data, regulatory insights and any lessons learnt from the Sandbox.", "entities": []}
+{"text": "10 IPEC Regulatory REGULATORY SANDBOX GUIDELINES FOR THE INSURANCE AND PENSIONS INDUSTRY 16.", "entities": []}
+{"text": "Review of Guideline This guideline is subject to be reviewed every two years.", "entities": []}
+{"text": "Effective date These Guidelines are effective from Fourth Quarter (Q4) of 2025.", "entities": []}
+{"text": "Contact Details For interested parties, enquiries can be directed to the Commission at sandbox@ipec.co.zw 11 REGULATORY SANDBOX GUIDELINES FOR THE INSURANCE AND PENSIONS INDUSTRY IPEC Regulatory Annexures 19.", "entities": []}
+{"text": "Annexure 1: Eligibility Criteria Eligibility assessment criteria Yes No Is the application within the supervisor\u2019s mandate 1 and scope?", "entities": []}
+{"text": "(Applicable to both individuals and entities) (a) Is the applicant\u2019s innovation within the supervisor\u2019s purview?", "entities": []}
+{"text": "(b) Will the applicant\u2019s customers be within Zimbabwe?", "entities": []}
+{"text": "Has the applicant submitted information on its 2 Governance structure?", "entities": []}
+{"text": "(Applicable to entities only) (a) Did the applicant submit its organogram?", "entities": []}
+{"text": "(b) Did the applicant submit its shareholders information including beneficial owners and directors information?", "entities": []}
+{"text": "(c) Did the applicant submit information on financial standing, technical and business domain expertise; and authorised regulatory status if any under the Commission or any other regulator?", "entities": []}
+{"text": "Does the application require regulatory approval to 3 operate?", "entities": []}
+{"text": "(Applicable to both individuals and entities) (a) D oes the innovation require approval from the Commission to operate within the market?", "entities": []}
+{"text": "Regulatory approval is required if: (1) The application will engage directly with customers.", "entities": []}
+{"text": "(2) The application will have direct customer liability, such as holding customer deposits or underwriting insurance policies 3) The application is specified as a regulated activity within any existing regulation.", "entities": []}
+{"text": "12 IPEC Regulatory REGULATORY SANDBOX GUIDELINES FOR THE INSURANCE AND PENSIONS INDUSTRY Does the applicant have capacity to participate in 4 the sandbox?", "entities": []}
+{"text": "(Applicable to both individuals and entities) a) Does the applicant have a clear, well thoughtthrough business model, and does the application clearly set out how it interacts with existing regulations?", "entities": []}
+{"text": "b) Does the applicant have a well-developed testing plan with clear objectives, timelines, milestones and success criteria?", "entities": [[106, 122, "KPI_TARGET"]]}
+{"text": "c) Is the applicant ready to test the innovation in the real market with real customers, including the ability to demonstrate it can mobilise the required resources shortly after receiving approval to the sandbox?", "entities": []}
+{"text": "Is the application unable to be approved under an 5 existing regulatory dispensation?", "entities": [[32, 40, "COMPLIANCE_STATUS"]]}
+{"text": "(Applicable to both individuals and entities) (a) T he application does not fit the existing regulatory framework (either under an existing license category or subject to existing product requirements) or has no alternative means for engaging with the regulator.", "entities": []}
+{"text": "That is, the applicant cannot operate within an existing license category or under existing product regulations.", "entities": [[23, 44, "REGULATORY_WAIVER"]]}
+{"text": "(b) The applicant will benefit from using the sandbox to test their concept in a live environment.", "entities": []}
+{"text": "Does the applicant meet Fit and Proper requirements 6 (a) The applicant has provided a police clearance certificate; (b) The applicant should not be linked to negative information such as money laundering or any other crimes; (c) Tax Clearance; (d) Not an unrehabilitated insolvent in the last 5 years; and (e) any other which the Commission may deem material.", "entities": [[188, 204, "KYC_AML_CLAUSE"]]}
+{"text": "13 REGULATORY SANDBOX GUIDELINES FOR THE INSURANCE AND PENSIONS INDUSTRY IPEC Regulatory 20.", "entities": []}
+{"text": "Annexure 2: Application Requirements 20.1.", "entities": []}
+{"text": "The Sandbox Application requirements include the following: 20.2.", "entities": []}
+{"text": "Full details of the Applicant\u2019s organization, including its governance arrangements, financial standing, technical and business domain expertise; and authorised regulatory status if any under the Commission or any other regulator.", "entities": []}
+{"text": "Full details of the service or product to be experimented on, in the Sandbox covering the following: a) Problem statement that the proposed product or service it intends to address; b) Benefits of the proposed product or service; c) Business model(s), including the target customers and specific use cases.", "entities": []}
+{"text": "For each use case, provide an end-to-end illustration on how the proposed product or service will be made available; and d) Technical architecture of solution, detailing the specific technology and innovative ways in which the technology will be applied.", "entities": []}
+{"text": "Provide full details of the proposed sandbox design, including a description of the tests to be conducted in the sandbox, specific testing of the application of technology in the proposed service/product and the preferred length of the testing period not exceeding 24 months 20.5.", "entities": [[265, 274, "TESTING_PERIOD"]]}
+{"text": "For each test, describe the targets and key performance indicators, which will be used to determine the success of the test.", "entities": [[28, 43, "KPI_TARGET"]]}
+{"text": "State and justify the mandatory boundary conditions for the Sandbox such as start and end dates, target customer types and geographical location, number of customers and their consent to participate, transaction limits, transaction flows, and any other related conditions.", "entities": [[146, 165, "BOUNDARY_CONDITION"]]}
+{"text": "Provide full details of the applicable legal/regulatory requirements and the relaxation being sought to deliver the proposed product or service in the sandbox: A description of how the Applicant has met the Eligibility Criteria described in Annexure 1 with supporting evidence.", "entities": [[77, 87, "REGULATORY_WAIVER"]]}
+{"text": "An assessment of the Applicant\u2019s readiness for testing which shall include target customer safeguards and test scenarios which must include impact analysis of the pilot.", "entities": [[75, 90, "BOUNDARY_CONDITION"]]}
+{"text": "A description of the target customer communications plan, which must include risk disclosures and material information about the entity and its participation in the Sandbox.", "entities": [[21, 36, "BOUNDARY_CONDITION"]]}
+{"text": "Disclosure of information on cyber security and data protection, money laundering and terrorism financing, treating customers fairly and other relevant controls taken by the Applicant to ensure safety of the solution.", "entities": [[107, 132, "TCF_CLAUSE"], [65, 81, "KYC_AML_CLAUSE"]]}
+{"text": "A description of any third-party outsourcing arrangement including the due diligence conducted by the Applicant on the third party.", "entities": []}
+{"text": "An assessment of the exit and transition plans for customers, scale-up and deployment strategy, along with an assessment of the timeline and gaps if any in meeting any heightened legal and regulatory requirements after exiting and transitioning from the Sandbox; and 14 IPEC Regulatory REGULATORY SANDBOX GUIDELINES FOR THE INSURANCE AND PENSIONS INDUSTRY 20.13.", "entities": [[30, 85, "EXIT_CONDITION"]]}
+{"text": "The Curriculum Vitae (CV), police and tax clearance of all the shareholders or senior management.", "entities": []}
+{"text": "Annexure 3: Reporting Requirements 21.1.", "entities": []}
+{"text": "The Sandbox Reporting Requirement include the following: 21.2.", "entities": []}
+{"text": "The authorised Sandbox Participant must submit a quarterly progress report to the Commission.", "entities": []}
+{"text": "The report must be signed by senior management and emailed to sandbox@ipec.co.zw.", "entities": []}
+{"text": "The reports must include the following minimum requirements: a) Progress on the defined Key Performance Indicators (\u201cKPIs\u201d) b) Number of customers.", "entities": [[127, 146, "BOUNDARY_CONDITION"]]}
+{"text": "c) Value and volume of transactions recorded.", "entities": []}
+{"text": "d) An updated risk register including trigger events, treatment and the possibility of any risks materialising.", "entities": []}
+{"text": "e) Detailed log of operational challenges, including any cybersecurity and data protection issues or breaches (if any) and steps taken to address the same; f) Details on any audits conducted (and, where applicable, submission of signed audit reports); and g) Details of any customer complaints and resolutions.", "entities": [[283, 293, "TCF_CLAUSE"]]}
+{"text": "The Commission may at any time request the authorised Sandbox Participant to submit additional information.", "entities": []}
+{"text": "15 REGULATORY SANDBOX GUIDELINES FOR THE INSURANCE AND PENSIONS INDUSTRY IPEC Regulatory IPEC Regulatory 16", "entities": []}

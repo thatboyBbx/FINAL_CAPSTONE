@@ -20,19 +20,11 @@ References:
 from __future__ import annotations
 
 import logging
-import re
 from typing import Any
 
-logger = logging.getLogger(__name__)
+from app.ai.nlp.text_utils import extract_keywords, score_sentences
 
-_STOP_WORDS: frozenset[str] = frozenset({
-    "what", "is", "are", "the", "a", "an", "in", "of", "to", "for",
-    "and", "or", "how", "does", "do", "this", "that", "it", "its",
-    "with", "on", "at", "by", "from", "was", "be", "been", "has",
-    "have", "had", "will", "would", "could", "should", "may", "might",
-    "which", "who", "when", "where", "why", "about", "clause",
-    "tell", "show", "find", "give", "please", "me",
-})
+logger = logging.getLogger(__name__)
 
 _FALLBACK_EMPTY: dict[str, Any] = {
     "answer": "No relevant documents found in the knowledge base for this query.",
@@ -176,31 +168,7 @@ class QAEngine:
             raise
 
     def _extract_keywords(self, text: str) -> list[str]:
-        """Extract meaningful keywords from a question."""
-        tokens = re.findall(r'\b[a-zA-Z]{3,}\b', text.lower())
-        return [t for t in tokens if t not in _STOP_WORDS]
+        return extract_keywords(text)
 
-    def _score_sentences(
-        self,
-        text: str,
-        keywords: list[str],
-    ) -> list[tuple[float, str, int]]:
-        """
-        Score sentences by keyword overlap.
-        Returns (score, sentence, original_index) sorted descending.
-        """
-        sentences = re.split(r'(?<=[.!?])\s+', text)
-        scored: list[tuple[float, str, int]] = []
-
-        for idx, sentence in enumerate(sentences):
-            stripped = sentence.strip()
-            if len(stripped) < 15:
-                continue
-            lower = stripped.lower()
-            score = sum(1.0 for kw in keywords if kw in lower)
-            if score > 0:
-                score += len(stripped) / 2000.0
-                scored.append((score, stripped, idx))
-
-        scored.sort(key=lambda x: x[0], reverse=True)
-        return scored
+    def _score_sentences(self, text: str, keywords: list[str]) -> list[tuple[float, str, int]]:
+        return score_sentences(text, keywords)

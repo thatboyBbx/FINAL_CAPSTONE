@@ -8,7 +8,6 @@ import json
 import logging
 import os
 import re
-from typing import Optional
 
 import requests
 from requests.adapters import HTTPAdapter
@@ -67,20 +66,9 @@ def get_http_client() -> requests.Session:
 # ── PDF extraction ────────────────────────────────────────────────────────────
 
 def extract_text_from_pdf(pdf_bytes: bytes) -> str:
-    """Extract all text from a PDF byte string using pdfplumber."""
-    try:
-        import io
-        import pdfplumber
-        with pdfplumber.open(io.BytesIO(pdf_bytes)) as pdf:
-            parts = []
-            for page in pdf.pages:
-                text = page.extract_text()
-                if text:
-                    parts.append(text)
-        return "\n".join(parts)
-    except Exception as exc:
-        logger.warning("PDF text extraction failed: %s", exc)
-        return ""
+    """Extract all text from a PDF byte string."""
+    from app.modules.documents.ingestion.pdf_extractor import extract_text_from_pdf_bytes
+    return extract_text_from_pdf_bytes(pdf_bytes)
 
 
 def extract_tables_from_pdf(pdf_bytes: bytes) -> list[list[list[str]]]:

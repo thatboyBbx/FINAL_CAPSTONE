@@ -1,0 +1,230 @@
+{% extends "base.html" %}
+{#
+  analytics/rag_retrieval.html — RAG retrieval audit log & quality metrics
+  Route: GET /analytics/rag-audit
+  Context: logs[], total_queries, avg_confidence, answered_count, rag_config{}
+#}
+{% block title %}RAG Retrieval Audit — InsureIntel Zimbabwe{% endblock %}
+
+{% block content %}
+<div class="px-6 py-7 lg:px-8">
+
+  <!-- Breadcrumb -->
+  <nav style="display:flex;align-items:center;gap:.375rem;font-size:.75rem;color:var(--cosv);margin-bottom:1.5rem">
+    <a href="/home" style="color:var(--cosv);text-decoration:none">Home</a>
+    <span class="material-symbols-outlined" style="font-size:14px">chevron_right</span>
+    <a href="/system" style="color:var(--cosv);text-decoration:none">System</a>
+    <span class="material-symbols-outlined" style="font-size:14px">chevron_right</span>
+    <span style="color:var(--cp);font-weight:600">RAG Retrieval Audit</span>
+  </nav>
+
+  <!-- Header -->
+  <div style="margin-bottom:2rem;display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:1rem">
+    <div>
+      <h1 class="font-headline" style="font-size:1.75rem;font-weight:800;color:var(--cos);margin:0 0 .375rem">
+        RAG Retrieval Audit
+      </h1>
+      <p style="color:var(--cosv);font-size:.9rem;margin:0">
+        Retrieval-augmented generation query log, confidence distribution, and answer coverage.
+      </p>
+    </div>
+    <button onclick="location.reload()" class="btn btn-secondary btn-sm">
+      <span class="material-symbols-outlined" style="font-size:16px">refresh</span>
+      Refresh
+    </button>
+  </div>
+
+  <!-- Stat cards -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1.25rem;margin-bottom:2rem">
+
+    <div class="glass-card stat-card">
+      <p style="color:var(--cosv);font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin:0 0 .5rem">Total Queries</p>
+      <p class="font-headline" style="font-size:1.875rem;font-weight:800;color:var(--cos);margin:0">{{ total_queries }}</p>
+      <p style="color:var(--cosv);font-size:.72rem;margin:.25rem 0 0">all time</p>
+    </div>
+
+    <div class="glass-card stat-card">
+      <p style="color:var(--cosv);font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin:0 0 .5rem">Avg Confidence</p>
+      <p class="font-headline" style="font-size:1.875rem;font-weight:800;color:{% if avg_confidence and avg_confidence >= 0.7 %}#4ade80{% elif avg_confidence and avg_confidence >= 0.5 %}#fbbf24{% else %}#f87171{% endif %};margin:0">
+        {% if avg_confidence %}{{ "%.2f"|format(avg_confidence) }}{% else %}—{% endif %}
+      </p>
+      <p style="color:var(--cosv);font-size:.72rem;margin:.25rem 0 0">mean answer confidence</p>
+    </div>
+
+    <div class="glass-card stat-card">
+      <p style="color:var(--cosv);font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin:0 0 .5rem">Answered</p>
+      <p class="font-headline" style="font-size:1.875rem;font-weight:800;color:#4ade80;margin:0">{{ answered_count }}</p>
+      <p style="color:var(--cosv);font-size:.72rem;margin:.25rem 0 0">
+        {% if total_queries > 0 %}{{ ((answered_count / total_queries) * 100)|round(1) }}% answer rate{% else %}—{% endif %}
+      </p>
+    </div>
+
+    <div class="glass-card stat-card">
+      <p style="color:var(--cosv);font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin:0 0 .5rem">No-Answer</p>
+      <p class="font-headline" style="font-size:1.875rem;font-weight:800;color:{% if (total_queries - answered_count) > 0 %}#fbbf24{% else %}#4ade80{% endif %};margin:0">
+        {{ total_queries - answered_count }}
+      </p>
+      <p style="color:var(--cosv);font-size:.72rem;margin:.25rem 0 0">below threshold</p>
+    </div>
+
+  </div>
+
+  <!-- RAG config + confidence distribution -->
+  <div style="display:grid;grid-template-columns:1fr 2fr;gap:1.5rem;margin-bottom:1.75rem;align-items:start" class="home-grid">
+
+    <!-- Config panel -->
+    <div class="glass-card" style="padding:1.5rem;border-radius:.75rem">
+      <h2 style="font-size:.9375rem;font-weight:700;color:var(--cos);margin:0 0 1.25rem;display:flex;align-items:center;gap:.5rem">
+        <span class="material-symbols-outlined" style="font-size:18px;color:var(--cp)">settings_suggest</span>
+        Active RAG Config
+      </h2>
+      <div style="display:flex;flex-direction:column;gap:.75rem">
+        {% set cfg = rag_config %}
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:.5rem 0;border-bottom:1px solid rgba(255,255,255,.04)">
+          <span style="font-size:.78rem;color:var(--cosv)">Embedding Model</span>
+          <span style="font-size:.78rem;font-weight:700;color:var(--cos)">{{ cfg.embedding_model or '—' }}</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:.5rem 0;border-bottom:1px solid rgba(255,255,255,.04)">
+          <span style="font-size:.78rem;color:var(--cosv)">Version</span>
+          <span style="font-size:.78rem;font-weight:700;color:var(--cos)">{{ cfg.embedding_version or '—' }}</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:.5rem 0;border-bottom:1px solid rgba(255,255,255,.04)">
+          <span style="font-size:.78rem;color:var(--cosv)">Min Confidence</span>
+          <span style="font-size:.78rem;font-weight:700;color:var(--cp)">{{ cfg.min_confidence or '—' }}</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:.5rem 0">
+          <span style="font-size:.78rem;color:var(--cosv)">Top-K Chunks</span>
+          <span style="font-size:.78rem;font-weight:700;color:var(--cos)">{{ cfg.top_k or '—' }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Confidence distribution chart (CSS bars from log data) -->
+    <div class="glass-card" style="padding:1.5rem;border-radius:.75rem">
+      <h2 style="font-size:.9375rem;font-weight:700;color:var(--cos);margin:0 0 1.25rem;display:flex;align-items:center;gap:.5rem">
+        <span class="material-symbols-outlined" style="font-size:18px;color:var(--cp)">bar_chart</span>
+        Confidence Distribution (last {{ logs|length }} queries)
+      </h2>
+      {% if logs %}
+      {% set buckets = {'≥0.8': 0, '0.6–0.8': 0, '0.4–0.6': 0, '<0.4': 0} %}
+      {% for log in logs %}
+        {% set c = log.answer_confidence %}
+        {% if c is not none %}
+          {% if c >= 0.8 %}{% set _ = buckets.update({'≥0.8': buckets['≥0.8'] + 1}) %}
+          {% elif c >= 0.6 %}{% set _ = buckets.update({'0.6–0.8': buckets['0.6–0.8'] + 1}) %}
+          {% elif c >= 0.4 %}{% set _ = buckets.update({'0.4–0.6': buckets['0.4–0.6'] + 1}) %}
+          {% else %}{% set _ = buckets.update({'<0.4': buckets['<0.4'] + 1}) %}
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+      {% set b_colors = {'≥0.8': '#4ade80', '0.6–0.8': '#86efac', '0.4–0.6': '#fbbf24', '<0.4': '#f87171'} %}
+      {% set total_conf = buckets.values()|sum %}
+      <div style="display:flex;flex-direction:column;gap:.625rem">
+        {% for label, cnt in buckets.items() %}
+        {% set color = b_colors[label] %}
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:3px">
+            <span style="font-size:.78rem;font-weight:600;color:var(--cosv)">{{ label }}</span>
+            <span style="font-size:.78rem;font-weight:700;color:{{ color }}">{{ cnt }}{% if total_conf > 0 %} <span style="color:var(--col)">({{ ((cnt / total_conf) * 100)|round(0)|int }}%)</span>{% endif %}</span>
+          </div>
+          <div style="background:rgba(255,255,255,.06);border-radius:4px;height:10px;overflow:hidden">
+            <div style="height:100%;border-radius:4px;background:{{ color }};width:{{ ((cnt / [total_conf, 1]|max) * 100)|round(1) }}%"></div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <p style="font-size:.875rem;color:var(--cosv)">No query data yet.</p>
+      {% endif %}
+    </div>
+
+  </div>
+
+  <!-- Retrieval audit log table -->
+  <div class="glass-card" style="border-radius:.75rem;overflow:hidden">
+    <div style="padding:1.25rem 1.5rem;border-bottom:1px solid var(--glass-bdr);display:flex;align-items:center;justify-content:space-between">
+      <h2 style="font-size:.9375rem;font-weight:700;color:var(--cos);margin:0;display:flex;align-items:center;gap:.5rem">
+        <span class="material-symbols-outlined" style="font-size:18px;color:var(--cp)">manage_search</span>
+        Query Log
+      </h2>
+      <span style="font-size:.72rem;font-weight:600;color:var(--cosv)">{{ logs|length }} recent entries</span>
+    </div>
+
+    {% if logs %}
+    <div style="overflow-x:auto">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Time</th>
+            <th>Query</th>
+            <th>Method</th>
+            <th>Chunks</th>
+            <th>Above Threshold</th>
+            <th>Top Conf</th>
+            <th>Ans Conf</th>
+            <th>Answered</th>
+            <th>Flags</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for log in logs %}
+          {% set ans_conf = log.answer_confidence %}
+          {% set top_conf = log.top_confidence %}
+          <tr>
+            <td style="font-size:.72rem;color:var(--cosv);white-space:nowrap">{{ log.queried_at or '—' }}</td>
+            <td style="max-width:260px">
+              <span style="font-size:.78rem;color:var(--cos);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="{{ log.query_text }}">
+                {{ log.query_text or '—' }}
+              </span>
+              {% if log.document_id %}
+              <a href="/documents-ui/{{ log.document_id }}" style="font-size:.68rem;color:var(--cp);text-decoration:none">doc #{{ log.document_id }}</a>
+              {% endif %}
+            </td>
+            <td>
+              <span class="badge badge-blue" style="font-size:.65rem;text-transform:uppercase">{{ log.retrieval_method or '—' }}</span>
+            </td>
+            <td style="font-size:.78rem;color:var(--cosv);text-align:center">{{ log.chunks_retrieved }}</td>
+            <td style="font-size:.78rem;text-align:center">
+              {% if log.chunks_retrieved and log.chunks_retrieved > 0 %}
+              <span style="color:{% if log.chunks_above_threshold == log.chunks_retrieved %}#4ade80{% elif log.chunks_above_threshold > 0 %}#fbbf24{% else %}#f87171{% endif %};font-weight:600">
+                {{ log.chunks_above_threshold }}/{{ log.chunks_retrieved }}
+              </span>
+              {% else %}—{% endif %}
+            </td>
+            <td style="font-size:.78rem;font-weight:600;color:{% if top_conf is not none %}{% if top_conf >= 0.7 %}#4ade80{% elif top_conf >= 0.5 %}#fbbf24{% else %}#f87171{% endif %}{% else %}var(--cosv){% endif %}">
+              {% if top_conf is not none %}{{ "%.2f"|format(top_conf) }}{% else %}—{% endif %}
+            </td>
+            <td style="font-size:.78rem;font-weight:600;color:{% if ans_conf is not none %}{% if ans_conf >= 0.7 %}#4ade80{% elif ans_conf >= 0.5 %}#fbbf24{% else %}#f87171{% endif %}{% else %}var(--cosv){% endif %}">
+              {% if ans_conf is not none %}{{ "%.2f"|format(ans_conf) }}{% else %}—{% endif %}
+            </td>
+            <td>
+              {% if log.answer_returned %}
+              <span class="badge badge-green" style="font-size:.65rem">Yes</span>
+              {% else %}
+              <span class="badge" style="font-size:.65rem;background:rgba(255,255,255,.05);color:var(--col)">No</span>
+              {% endif %}
+            </td>
+            <td style="font-size:.72rem;max-width:120px">
+              {% if log.hallucination_flags %}
+              <span style="color:#f87171;font-weight:600" title="{{ log.hallucination_flags }}">
+                ⚠ {{ (log.hallucination_flags|string)[:40] }}
+              </span>
+              {% else %}
+              <span style="color:var(--col)">—</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <div style="padding:3rem 2rem;text-align:center;color:var(--cosv)">
+      <span class="material-symbols-outlined" style="font-size:36px;display:block;margin-bottom:.5rem;opacity:.4">manage_search</span>
+      No retrieval queries logged yet.
+    </div>
+    {% endif %}
+  </div>
+
+</div>
+{% endblock %}

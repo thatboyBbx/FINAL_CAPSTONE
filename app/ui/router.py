@@ -90,32 +90,41 @@ def login_submit(
 ):
     """
     Process login form submission.
-    On success: set HttpOnly session cookie, redirect to next_url.
-    On failure: re-render login page with error message (no window.alert).
+    On success: set HttpOnly session + refresh cookies, redirect to next_url.
+    On failure: re-render login page with error message.
     """
+    from urllib.parse import urlparse
+    from app.modules.auth.token_store import create_refresh_token
+
     db = SessionLocal()
     try:
         user = auth_service.authenticate_user(db, staff_id, password)
+
+        if not user:
+            return templates.TemplateResponse(
+                request,
+                "login.html",
+                {
+                    "request": request,
+                    "next_url": next_url,
+                    "error": "Invalid Staff ID or password. Please try again.",
+                },
+                status_code=401,
+            )
+
+        token = auth_service.create_access_token(user)
+        refresh_raw = create_refresh_token(db, user.id, settings.refresh_token_expire_days)
     finally:
         db.close()
 
-    if not user:
-        return templates.TemplateResponse(
-            request,
-            "login.html",
-            {
-                "request": request,
-                "next_url": next_url,
-                "error": "Invalid Staff ID or password. Please try again.",
-            },
-            status_code=401,
-        )
+    # Reject protocol-relative URLs (//evil.com passes startswith("/") naively)
+    def _safe_redirect(url: str) -> bool:
+        if not url or not url.startswith("/") or url.startswith("//"):
+            return False
+        parsed = urlparse(url)
+        return not parsed.netloc and not parsed.scheme
 
-    token = auth_service.create_access_token(user)
-
-    # Validate redirect target to prevent open redirect attacks
-    safe_next = next_url if (next_url and next_url.startswith("/")) else "/home"
-    # Exclude the login page itself to prevent a loop
+    safe_next = next_url if _safe_redirect(next_url) else "/home"
     if safe_next in ("/login", "/register"):
         safe_next = "/home"
 
@@ -125,8 +134,17 @@ def login_submit(
         value=token,
         httponly=True,
         samesite="lax",
-        secure=False,
-        max_age=3600,
+        secure=settings.cookie_secure,
+        max_age=settings.access_token_expire_minutes * 60,
+    )
+    response.set_cookie(
+        key="refresh_token",
+        value=refresh_raw,
+        httponly=True,
+        samesite="lax",
+        secure=settings.cookie_secure,
+        max_age=settings.refresh_token_expire_days * 86400,
+        path="/auth/refresh",
     )
     return response
 
@@ -237,13 +255,21 @@ async def login_ui(
 
             body = response.json()
             access_token = body["access_token"]
+            refresh_token = body.get("refresh_token", "")
 
             redirect = RedirectResponse(url="/home", status_code=303)
-            redirect.set_cookie(key="access_token", value=access_token, httponly=True, samesite="lax")
-            redirect.set_cookie(key="staff_id",     value=body["staff_id"],       httponly=False, samesite="lax")
-            redirect.set_cookie(key="full_name",    value=body["full_name"],      httponly=False, samesite="lax")
-            redirect.set_cookie(key="role",         value=body["role"],           httponly=False, samesite="lax")
-            redirect.set_cookie(key="user_id",      value=str(body["user_id"]),   httponly=False, samesite="lax")
+            redirect.set_cookie(
+                key="access_token", value=access_token,
+                httponly=True, samesite="lax", secure=settings.cookie_secure,
+                max_age=body.get("expires_in", settings.access_token_expire_minutes * 60),
+            )
+            if refresh_token:
+                redirect.set_cookie(
+                    key="refresh_token", value=refresh_token,
+                    httponly=True, samesite="lax", secure=settings.cookie_secure,
+                    max_age=settings.refresh_token_expire_days * 86400,
+                    path="/auth/refresh",
+                )
             return redirect
 
         except Exception:
@@ -257,9 +283,41 @@ async def login_ui(
 
 @router.get("/logout")
 def logout(request: Request):
-    """Clear the session cookie and return the user to the login page."""
+    """
+    Revoke the current session (blacklist access token JTI, revoke refresh
+    token) then redirect to the login page.
+    """
+    from datetime import timezone as _tz
+    from app.modules.auth.service import decode_access_token
+    from app.modules.auth.token_store import blacklist_jti, revoke_refresh_token
+    from app.core.db import session_scope
+
+    access_raw = request.cookies.get("access_token")
+    refresh_raw = request.cookies.get("refresh_token")
+
+    try:
+        with session_scope() as db:
+            if access_raw:
+                payload = decode_access_token(access_raw)
+                if payload:
+                    jti = payload.get("jti")
+                    user_id = payload.get("user_id")
+                    exp_raw = payload.get("exp")
+                    if jti and user_id and exp_raw:
+                        from datetime import datetime
+                        exp_dt = datetime.fromtimestamp(
+                            exp_raw if isinstance(exp_raw, (int, float)) else exp_raw.timestamp(),
+                            tz=_tz.utc,
+                        )
+                        blacklist_jti(db, jti, user_id, exp_dt)
+            if refresh_raw:
+                revoke_refresh_token(db, refresh_raw)
+    except Exception:
+        pass  # revocation is best-effort; never block logout
+
     response = RedirectResponse(url="/login", status_code=302)
     response.delete_cookie("access_token")
+    response.delete_cookie("refresh_token", path="/auth/refresh")
     return response
 
 
@@ -281,8 +339,8 @@ async def home_page(request: Request, current_user=Depends(require_ui_login)):
         {
             "request":   request,
             "user":      current_user,
-            "full_name": request.cookies.get("full_name"),
-            "role":      request.cookies.get("role"),
+            "full_name": current_user.full_name,
+            "role":      current_user.role,
         },
     )
 
@@ -352,7 +410,7 @@ async def document_detail_page(request: Request, document_id: int, current_user=
 
     return templates.TemplateResponse(
         request,
-        "document_detail.html",
+        "documents/detail.html",
         {
             "request":          request,
             "user":             current_user,
@@ -361,8 +419,8 @@ async def document_detail_page(request: Request, document_id: int, current_user=
             "document_text":    document_text,
             "entities":         entities,
             "entities_by_type": entities_by_type,
-            "full_name":        request.cookies.get("full_name"),
-            "role":             request.cookies.get("role"),
+            "full_name":        current_user.full_name,
+            "role":             current_user.role,
         },
     )
 
@@ -422,7 +480,7 @@ async def update_document_ui(
 
     return templates.TemplateResponse(
         request,
-        "document_detail.html",
+        "documents/detail.html",
         {
             "request": request,
             "document": document,
@@ -524,8 +582,8 @@ async def upload_ui(
                         "request": request,
                         "error": None,
                         "success": "Document uploaded successfully.",
-                        "user_id": request.cookies.get("user_id"),
-                        "full_name": request.cookies.get("full_name"),
+                        "user_id": current_user.id,
+                        "full_name": current_user.full_name,
                     },
                 )
 
@@ -543,8 +601,8 @@ async def upload_ui(
                     "request": request,
                     "error": detail,
                     "success": None,
-                    "user_id": request.cookies.get("user_id"),
-                    "full_name": request.cookies.get("full_name"),
+                    "user_id": current_user.id,
+                    "full_name": current_user.full_name,
                 },
                 status_code=response.status_code,
             )
@@ -557,8 +615,8 @@ async def upload_ui(
                     "request": request,
                     "error": str(exc),
                     "success": None,
-                    "user_id": request.cookies.get("user_id"),
-                    "full_name": request.cookies.get("full_name"),
+                    "user_id": current_user.id,
+                    "full_name": current_user.full_name,
                 },
                 status_code=500,
             )
@@ -621,12 +679,12 @@ async def financial_position_page(request: Request, current_user=Depends(require
 
     return templates.TemplateResponse(
         request,
-        "financial_position.html",
+        "intelligence/financial_position.html",
         {
             "request":          request,
             "user":             current_user,
-            "full_name":        request.cookies.get("full_name"),
-            "role":             request.cookies.get("role"),
+            "full_name":        current_user.full_name,
+            "role":             current_user.role,
             "insurers":         insurers,
             "risk_scores":      risk_scores,
             "circular_analyses": circular_analyses,
@@ -723,12 +781,12 @@ async def report_page(request: Request, current_user=Depends(require_ui_login)):
 
     return templates.TemplateResponse(
         request,
-        "report.html",
+        "reports/legacy.html",
         {
             "request":           request,
             "user":              current_user,
-            "full_name":         request.cookies.get("full_name"),
-            "role":              request.cookies.get("role"),
+            "full_name":         current_user.full_name,
+            "role":              current_user.role,
             "insurers":          insurers,
             "risk_scores":       risk_scores,
             "circular_analyses": circular_analyses,
@@ -771,7 +829,6 @@ async def alerts_ui_page(request: Request, current_user=Depends(require_ui_login
 
     import json as _json
     from app.modules.intel.repo import query_articles, count_by_risk
-    from app.core.db import SessionLocal
 
     articles   = []
     risk_counts = {}
@@ -807,13 +864,13 @@ async def alerts_ui_page(request: Request, current_user=Depends(require_ui_login
 
     return templates.TemplateResponse(
         request,
-        "alerts_ui.html",
+        "intelligence/alerts.html",
         {
             "request":      request,
             "user":         current_user,
             "active_page":  "alerts-ui",
-            "full_name":    request.cookies.get("full_name"),
-            "role":         request.cookies.get("role"),
+            "full_name":    current_user.full_name,
+            "role":         current_user.role,
             "articles":     article_dicts,
             "risk_filter":  risk_label or "",
             "risk_counts":  risk_counts,
@@ -860,7 +917,7 @@ async def insurer_profile_partial(request: Request, insurer_id: int, current_use
 
     return templates.TemplateResponse(
         request,
-        "insurer_profile_panel.html",
+        "partials/insurer_profile_panel.html",
         {
             "request": request,
             "user": current_user,

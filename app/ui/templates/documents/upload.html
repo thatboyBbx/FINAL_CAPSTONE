@@ -27,10 +27,14 @@
   <div class="glass-card" style="padding:2rem">
 
     <!-- Drop Zone -->
-    <div id="drop-zone" class="drop-zone" onclick="document.getElementById('file-input').click()">
+    <div id="drop-zone" class="drop-zone"
+         role="button" tabindex="0"
+         aria-label="Drop a PDF file here or press Enter to browse"
+         onclick="document.getElementById('file-input').click()"
+         onkeydown="if(event.key==='Enter'||event.key===' '){document.getElementById('file-input').click();event.preventDefault();}">
       <span class="material-symbols-outlined"
             style="font-size:48px;color:var(--cp);display:block;margin-bottom:0.75rem;
-                   opacity:0.6;font-variation-settings:'FILL' 1">upload_file</span>
+                   opacity:0.6;font-variation-settings:'FILL' 1" aria-hidden="true">upload_file</span>
       <p style="color:var(--cos);font-weight:600;margin:0 0 0.375rem">
         Drag & drop your PDF here
       </p>
@@ -38,27 +42,29 @@
         or click to browse — PDF files only, max 50 MB
       </p>
       <input id="file-input" type="file" accept=".pdf,application/pdf"
-             style="display:none" onchange="onFileSelect(event)">
+             style="display:none" aria-label="Choose PDF file"
+             onchange="onFileSelect(event)">
     </div>
+    <p id="file-type-error" role="alert" aria-live="assertive"
+       style="display:none;color:var(--cerr);font-size:0.75rem;margin:0.375rem 0 0"></p>
 
     <!-- File Preview Badge -->
     <div id="file-preview" style="display:none;margin-top:1.25rem;
          padding:0.875rem 1rem;background:rgba(212,175,55,0.06);
          border:1px solid rgba(212,175,55,0.15);border-radius:10px;
-         display:none;align-items:center;gap:0.75rem">
+         align-items:center;gap:0.75rem" aria-live="polite">
       <span class="material-symbols-outlined"
             style="font-size:28px;color:var(--cp);flex-shrink:0;
-                   font-variation-settings:'FILL' 1">picture_as_pdf</span>
+                   font-variation-settings:'FILL' 1" aria-hidden="true">picture_as_pdf</span>
       <div style="flex:1;min-width:0">
         <p id="file-name" style="color:var(--cos);font-weight:600;font-size:0.875rem;
                                   margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></p>
         <p id="file-size" style="color:var(--cosv);font-size:0.75rem;margin:0"></p>
       </div>
-      <span style="background:rgba(248,113,113,0.12);border:1px solid rgba(248,113,113,0.30);
-                   color:#f87171;border-radius:9999px;padding:0.1rem 0.5rem;font-size:0.65rem;
-                   font-weight:700;text-transform:uppercase;flex-shrink:0">PDF</span>
-      <button onclick="clearFile()"
-              style="background:none;border:none;color:var(--cosv);cursor:pointer;font-size:1.1rem">×</button>
+      <span class="badge badge-type-pdf" style="flex-shrink:0">PDF</span>
+      <button onclick="clearFile()" aria-label="Remove selected file"
+              style="background:none;border:none;color:var(--cosv);cursor:pointer;font-size:1.1rem"
+              title="Remove file">×</button>
     </div>
 
     <!-- Upload Form Fields -->
@@ -100,35 +106,44 @@
     </div>
 
     <!-- Upload Progress -->
-    <div id="upload-progress" style="display:none;margin-top:1.25rem">
+    <div id="upload-progress" style="display:none;margin-top:1.25rem"
+         role="status" aria-live="polite" aria-label="Upload in progress">
       <div style="display:flex;justify-content:space-between;margin-bottom:0.375rem">
-        <span style="color:var(--cosv);font-size:0.8rem">Uploading…</span>
-        <span id="upload-pct" style="color:var(--cp);font-weight:700;font-size:0.8rem">0%</span>
+        <span id="upload-status-text" style="color:var(--cosv);font-size:0.8rem">Uploading…</span>
+        <span id="upload-pct" style="color:var(--cp);font-weight:700;font-size:0.8rem"
+              aria-live="polite" aria-atomic="true">0%</span>
       </div>
-      <div class="progress-track">
+      <div class="progress-track" role="progressbar"
+           aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
+           aria-labelledby="upload-status-text" id="upload-progress-bar">
         <div id="upload-fill" class="progress-fill" style="width:0%"></div>
       </div>
     </div>
 
     <!-- Success message -->
-    <div id="upload-success" style="display:none;margin-top:1.25rem" class="alert alert-success">
-      Document uploaded successfully!
-      <a id="upload-vault-link" href="/documents/vault"
-         style="color:#4ade80;font-weight:700;text-decoration:none"> View in vault →</a>
+    <div id="upload-success" style="display:none;margin-top:1.25rem"
+         class="alert alert-success" role="status" aria-live="polite" aria-atomic="true">
+      <span class="material-symbols-outlined icon-md" aria-hidden="true" style="flex-shrink:0">check_circle</span>
+      <span>Document uploaded successfully!
+        <a id="upload-vault-link" href="/documents/vault"
+           style="color:inherit;font-weight:700;text-decoration:underline"> View in vault →</a>
+      </span>
     </div>
 
     <!-- Error message -->
-    <div id="upload-error" style="display:none;margin-top:1.25rem" class="alert alert-error"></div>
+    <div id="upload-error" style="display:none;margin-top:1.25rem"
+         class="alert alert-error" role="alert" aria-live="assertive" aria-atomic="true"></div>
 
     <!-- Submit -->
     <div style="display:flex;gap:0.75rem;margin-top:1.75rem;justify-content:flex-end">
       <a href="/documents/vault" class="btn-glass" style="font-size:0.875rem">
         Cancel
       </a>
-      <button id="upload-btn" onclick="doUpload()" class="btn-glass-gold"
-              style="font-size:0.875rem" disabled>
-        <span class="material-symbols-outlined" style="font-size:17px">upload</span>
-        Upload Document
+      <button id="upload-btn" onclick="doUpload()" class="btn-glass btn-glass-gold"
+              style="font-size:0.875rem" disabled aria-disabled="true">
+        <span class="material-symbols-outlined icon-sm" aria-hidden="true">upload</span>
+        <span id="upload-btn-text">Upload Document</span>
+        <span id="upload-btn-spinner" class="btn-spinner" aria-hidden="true"></span>
       </button>
     </div>
 
@@ -170,17 +185,25 @@ dz.addEventListener("drop", e => {
 function onFileSelect(evt) { const f = evt.target.files[0]; if (f) applyFile(f); }
 
 function applyFile(f) {
+  const typeErrEl = document.getElementById("file-type-error");
+  typeErrEl.style.display = "none";
   if (!f.type.includes("pdf") && !f.name.endsWith(".pdf")) {
-    showErrorModal("Only PDF files are accepted."); return;
+    typeErrEl.textContent = "Only PDF files are accepted. Please choose a .pdf file.";
+    typeErrEl.style.display = "block";
+    return;
   }
   if (f.size > 50 * 1024 * 1024) {
-    showErrorModal("File exceeds 50 MB limit."); return;
+    typeErrEl.textContent = "File exceeds the 50 MB limit. Please choose a smaller file.";
+    typeErrEl.style.display = "block";
+    return;
   }
   selectedFile = f;
   document.getElementById("file-name").textContent = f.name;
   document.getElementById("file-size").textContent = (f.size / 1024 / 1024).toFixed(2) + " MB";
   document.getElementById("file-preview").style.display = "flex";
-  document.getElementById("upload-btn").disabled = false;
+  const btn = document.getElementById("upload-btn");
+  btn.disabled = false;
+  btn.removeAttribute("aria-disabled");
   if (!document.getElementById("doc-title").value.trim()) {
     document.getElementById("doc-title").value = f.name.replace(/\.pdf$/i, "");
   }
@@ -203,6 +226,9 @@ async function doUpload() {
 
   const btn = document.getElementById("upload-btn");
   btn.disabled = true;
+  btn.setAttribute("aria-disabled", "true");
+  document.getElementById("upload-btn-text").textContent = "Uploading…";
+  document.getElementById("upload-btn-spinner").style.display = "inline-block";
   document.getElementById("upload-error").style.display   = "none";
   document.getElementById("upload-success").style.display = "none";
   document.getElementById("upload-progress").style.display = "block";
@@ -229,40 +255,49 @@ async function doUpload() {
         const pct = Math.round((e.loaded / e.total) * 100);
         document.getElementById("upload-fill").style.width = pct + "%";
         document.getElementById("upload-pct").textContent  = pct + "%";
+        document.getElementById("upload-progress-bar").setAttribute("aria-valuenow", pct);
         showProgress(pct, "Uploading document…");
       }
     };
 
+    function _resetBtn() {
+      btn.disabled = false;
+      btn.removeAttribute("aria-disabled");
+      document.getElementById("upload-btn-text").textContent = "Upload Document";
+      document.getElementById("upload-btn-spinner").style.display = "none";
+    }
+
     xhr.onload = () => {
       showProgress(0);
       document.getElementById("upload-progress").style.display = "none";
+      document.getElementById("upload-progress-bar").setAttribute("aria-valuenow", 0);
       if (xhr.status >= 200 && xhr.status < 300) {
         const successLink = document.getElementById("upload-vault-link");
         if (clientId) {
           successLink.href = `/clients/${clientId}`;
-          successLink.textContent = " View client â†’";
+          successLink.textContent = " View client →";
         } else {
           successLink.href = "/documents/vault";
-          successLink.textContent = " View in vault â†’";
+          successLink.textContent = " View in vault →";
         }
-        document.getElementById("upload-success").style.display = "block";
-        showSuccessModal("Document uploaded successfully!");
+        document.getElementById("upload-success").style.display = "flex";
+        showToast("Document uploaded successfully!", "success");
         clearFile();
-        btn.disabled = false;
+        _resetBtn();
       } else {
-        let detail = "Upload failed.";
-        try { detail = JSON.parse(xhr.responseText).detail || detail; } catch (_) {}
+        let detail = "Upload failed. Please try again or contact support if the problem persists.";
+        try { const d = JSON.parse(xhr.responseText); detail = d.detail || detail; } catch (_) {}
         document.getElementById("upload-error").textContent = detail;
         document.getElementById("upload-error").style.display = "block";
-        btn.disabled = false;
+        _resetBtn();
       }
     };
     xhr.onerror = () => {
       showProgress(0);
       document.getElementById("upload-progress").style.display = "none";
-      document.getElementById("upload-error").textContent = "Network error during upload.";
+      document.getElementById("upload-error").textContent = "A network error occurred. Check your connection and try again.";
       document.getElementById("upload-error").style.display = "block";
-      btn.disabled = false;
+      _resetBtn();
     };
     xhr.send(formData);
   } catch (err) {

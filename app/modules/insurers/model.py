@@ -82,11 +82,11 @@ class Insurer(Base):
 
     # ── Relationships ──
     financial_snapshots = relationship(
-        "FinancialSnapshot", back_populates="insurer", cascade="all, delete-orphan"
+        "FinancialSnapshot", back_populates="insurer", cascade="all, delete-orphan", lazy="selectin"
     )
     claims_metrics = relationship(
-        "ClaimsMetrics", back_populates="insurer", cascade="all, delete-orphan"
+        "ClaimsMetrics", back_populates="insurer", cascade="all, delete-orphan", lazy="selectin"
     )
     news_articles = relationship(
-        "NewsArticle", back_populates="insurer", cascade="all, delete-orphan"
+        "NewsArticle", back_populates="insurer", cascade="all, delete-orphan", lazy="selectin"
     )

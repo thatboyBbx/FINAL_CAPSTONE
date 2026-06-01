@@ -5,7 +5,7 @@ Named Entity Recognition pipeline for insurance documents.
 Uses spaCy as the base NLP engine with custom EntityRuler patterns
 for insurance-specific entities that the base model does not recognise.
 
-Entity types extracted:
+Entity types extracted (insurance core):
     INSURER         — name of an insurance company
     POLICY_NUMBER   — alphanumeric policy reference
     COVERAGE_LIMIT  — monetary coverage amounts (e.g. "USD 500,000")
@@ -14,11 +14,21 @@ Entity types extracted:
     POLICY_PERIOD   — policy start/end dates
     EXCLUSION       — flagged exclusionary phrases
     CLAUSE_REF      — clause numbers (e.g. "Clause 4.1", "Section 7")
+
+Entity types added (regulatory sandbox — IPEC 2025):
+    TESTING_PERIOD, BOUNDARY_CONDITION, REGULATORY_WAIVER,
+    KPI_TARGET, EXIT_CONDITION, COMPLIANCE_STATUS,
+    TCF_CLAUSE, KYC_AML_CLAUSE
+
+See entity_registry.py for the canonical label list.
 """
 from __future__ import annotations
 
 import logging
 from dataclasses import dataclass
+
+# Import the canonical label registry — never hardcode label strings below
+from app.ai.nlp.entity_registry import NEW_SANDBOX_LABELS  # noqa: E402
 
 logger = logging.getLogger(__name__)
 
@@ -221,3 +231,159 @@ _SPACY_LABEL_MAP: dict[str, str] = {
 def _map_spacy_label(spacy_label: str) -> str | None:
     """Map a spaCy entity label to an insurance domain label, or None to discard."""
     return _SPACY_LABEL_MAP.get(spacy_label)
+
+
+# ---------------------------------------------------------------------------
+# Deliverable 2 — Sandbox entity registration
+# ---------------------------------------------------------------------------
+
+def register_sandbox_entities(nlp_model: object) -> object:
+    """
+    Register the 8 new regulatory sandbox NER labels on an existing spaCy model.
+
+    Calls ner.add_label() for each label in NEW_SANDBOX_LABELS that is not
+    already present in the pipeline.  Does NOT retrain — label registration
+    only (retraining is a separate job).  Returns the mutated model.
+
+    Dissertation Methodology Note (Chapter 3):
+    Labels must be registered before spaCy will accept them in training
+    annotations.  This function enables the annotated JSONL from
+    sandbox_annotator.py to flow directly into spacy train without
+    schema validation errors.
+
+    References:
+        IPEC (2025). Regulatory Sandbox Guidelines for the Insurance and
+        Pensions Industry. Insurance and Pensions Commission of Zimbabwe.
+        Effective Q4 2025. Retrieved from ipec.co.zw.
+    """
+    try:
+        # Retrieve the NER component from the pipeline
+        ner = nlp_model.get_pipe("ner")  # type: ignore[attr-defined]
+    except Exception as exc:
+        logger.warning(
+            "register_sandbox_entities: could not get 'ner' pipe — %s", exc
+        )
+        return nlp_model
+
+    # Add each new label if not already registered
+    for label in NEW_SANDBOX_LABELS:
+        if label not in ner.labels:
+            ner.add_label(label)
+            logger.info("register_sandbox_entities: added label '%s'", label)
+        else:
+            logger.debug(
+                "register_sandbox_entities: label '%s' already present — skipped",
+                label,
+            )
+
+    return nlp_model
+
+
+# ---------------------------------------------------------------------------
+# Deliverable 5 — Clause classifier (rule-based, deterministic)
+# ---------------------------------------------------------------------------
+
+# All clause type definitions: (label, [trigger_phrases]).
+# Existing insurance clause types share the same dispatch table as new ones,
+# so all clause classification goes through a single function.
+_CLAUSE_DEFINITIONS: list[tuple[str, list[str]]] = [
+    # ── Pre-existing insurance clause types ─────────────────────────────────
+    ("EXCLUSION_CLAUSE", [
+        "this policy does not cover",
+        "not covered under this policy",
+        "excluding",
+        "is excluded",
+        "excluded from coverage",
+    ]),
+    ("PREMIUM_CLAUSE", [
+        "premium payable",
+        "premium shall be",
+        "annual premium",
+        "monthly premium",
+        "payment of premium",
+    ]),
+    ("COVERAGE_CLAUSE", [
+        "the insurer shall indemnify",
+        "coverage is provided",
+        "shall be covered",
+        "sum insured",
+        "limit of indemnity",
+    ]),
+    ("TERMINATION_CLAUSE", [
+        "either party may terminate",
+        "this agreement may be terminated",
+        "notice of termination",
+        "cancellation of this policy",
+        "terminate this agreement",
+    ]),
+    # ── New regulatory sandbox clause types (IPEC 2025) ─────────────────────
+    ("TCF_CLAUSE", [
+        "dispute resolution",
+        "treating customers fairly",
+        "fair treatment",
+        "customer complaint",
+        "complaints procedure",
+        "ombudsman",
+        "right to complain",
+        "redress mechanism",
+    ]),
+    ("KYC_AML_CLAUSE", [
+        "know your customer",
+        "identity verification",
+        "suspicious transaction",
+        "anti-money laundering",
+        "beneficial owner",
+        "politically exposed person",
+        "pep",
+        "fatf",
+        "financial intelligence",
+        "counter terrorism financing",
+    ]),
+    ("REGULATORY_WAIVER_CLAUSE", [
+        "regulatory relief",
+        "temporary exemption",
+        "waiver",
+        "relaxation of",
+        "notwithstanding",
+        "without prejudice to",
+        "derogation",
+        "pilot basis",
+        "subject to commission approval",
+        "conditional approval",
+    ]),
+]
+
+
+def classify_clause_type(clause_text: str) -> str:
+    """
+    Rule-based clause classifier. Returns the clause type label for the given text.
+
+    Checks all clause types (existing + new) using lower-cased trigger phrase
+    matching.  Returns "UNKNOWN_CLAUSE" if no phrase matches.
+    Deterministic — no model call.  Designed for bulk processing speed.
+
+    Dissertation Methodology Note (Chapter 3):
+    A rule-based approach was chosen over a learned clause classifier because:
+    (a) the trigger phrases are directly specified in IPEC (2025) and can be
+    maintained without retraining; (b) deterministic outputs are mandatory for
+    regulatory compliance tooling where explainability is required; and
+    (c) the clause set is closed and stable within the sandbox framework.
+
+    References:
+        IPEC (2025). Regulatory Sandbox Guidelines for the Insurance and
+        Pensions Industry. Insurance and Pensions Commission of Zimbabwe.
+        Effective Q4 2025. Retrieved from ipec.co.zw.
+    """
+    if not clause_text:
+        return "UNKNOWN_CLAUSE"
+
+    text_lower = clause_text.lower()
+
+    # Iterate clause definitions in priority order — first match wins
+    for label, triggers in _CLAUSE_DEFINITIONS:
+        for phrase in triggers:
+            # Simple substring match — fast and transparent
+            if phrase in text_lower:
+                return label
+
+    return "UNKNOWN_CLAUSE"

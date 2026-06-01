@@ -70,3 +70,59 @@ html:not(.dark) .gold-glow { box-shadow: 0 0 18px rgba(0,74,198,0.10); }
   flex-wrap: wrap;
 }
 .input-row > * { flex: 1 1 200px; }
+
+/* Form group — standard bottom spacing for each field */
+.form-group { margin-bottom: 1rem; }
+
+/* Icon sizing class — replaces inline style="font-size:18px" on Material Symbols */
+.icon-md { font-size: 18px !important; vertical-align: middle; }
+.icon-sm { font-size: 15px !important; vertical-align: middle; }
+.icon-lg { font-size: 24px !important; vertical-align: middle; }
+
+/* Modal backdrop — replaces inline style on modal overlays */
+.modal-backdrop {
+  background: rgba(0,0,0,0.65);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+/* Button loading state */
+.btn-loading {
+  opacity: 0.7;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+.btn-loading .btn-spinner {
+  display: inline-flex !important;
+}
+.btn-spinner {
+  display: none;
+  width: 14px;
+  height: 14px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: btnSpin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+@keyframes btnSpin { to { transform: rotate(360deg); } }
+
+/* Screen reader only — accessible hiding */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  border: 0;
+}
+.sr-only.focusable:focus {
+  position: static;
+  width: auto;
+  height: auto;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+}

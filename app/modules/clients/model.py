@@ -14,7 +14,7 @@ from __future__ import annotations
 
 from datetime import date, datetime
 
-from sqlalchemy import Boolean, Date, DateTime, Float, ForeignKey, Integer, String, Text
+from sqlalchemy import Boolean, Date, DateTime, Float, ForeignKey, Index, Integer, String, Text
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.sql import func
 
@@ -45,6 +45,10 @@ class Client(Base):
         DateTime, nullable=False, default=func.now(), onupdate=func.now()
     )
 
+    __table_args__ = (
+        Index("ix_clients_email", "email"),
+    )
+
 
 class ClientPolicy(Base):
     """Insurance policy linked to a client."""
@@ -67,6 +71,10 @@ class ClientPolicy(Base):
 
     status:     Mapped[str]  = mapped_column(String(50), default="active",  nullable=False, index=True)
     auto_renew: Mapped[bool] = mapped_column(Boolean,    default=False,     nullable=False)
+
+    __table_args__ = (
+        Index("ix_client_policies_expiry", "client_id", "end_date", "status"),
+    )
 
 
 class ClientNote(Base):

@@ -67,7 +67,6 @@ def client(db):
 def test_user(db):
     """Create a test user for authentication tests."""
     import uuid
-    from app.modules.users.model import User
 
     unique_id = str(uuid.uuid4())[:8]
     user_create = UserCreate(

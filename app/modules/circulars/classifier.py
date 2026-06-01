@@ -29,9 +29,8 @@ import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.neural_network import MLPClassifier
 from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import LabelEncoder
 
-from app.modules.circulars.nlp import CircularNLPAnalyser, RISK_KEYWORDS
+from app.modules.circulars.nlp import CircularNLPAnalyser
 
 # ---------------------------------------------------------------------------
 # Storage path

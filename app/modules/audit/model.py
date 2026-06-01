@@ -7,7 +7,7 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 
-from sqlalchemy import Index, Integer, JSON, String, Text, DateTime
+from sqlalchemy import Index, Integer, JSON, String, DateTime
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.core.db import Base

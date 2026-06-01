@@ -5,29 +5,30 @@ from pathlib import Path
 from typing import Any
 
 from fastapi import UploadFile
+from fastapi.concurrency import run_in_threadpool
 from sqlalchemy.orm import Session
 
-from app.modules.documents import repo, storage
-from app.modules.documents.model import ComplianceCheck, Document, ExtractedEntity
+from app.core.pagination import normalize_pagination
+from app.modules.compliance.model import ComplianceResult
+from app.modules.documents import file_store, repo
+from app.modules.documents.file_store import DuplicateFileError
+from app.modules.documents.model import Document, ExtractedEntity
 from app.modules.documents.schemas import DocumentCreate, DocumentUpdate
 
 logger = logging.getLogger(__name__)
 
 
-def _build_compliance_check(document_id: int, result: dict) -> ComplianceCheck:
-    """Construct a ComplianceCheck ORM row from a checker result dict."""
-    return ComplianceCheck(
+def _build_compliance_result(document_id: int, result: dict) -> ComplianceResult:
+    """Construct the canonical compliance result row from a checker result dict."""
+    return ComplianceResult(
         document_id=document_id,
         compliance_score=result["compliance_score"],
-        status=result["status"],
-        mandatory_required=result["mandatory_clauses"]["total_required"],
-        mandatory_found=result["mandatory_clauses"]["found"],
-        mandatory_missing=json.dumps(result["mandatory_clauses"]["missing"]),
-        prohibited_found=result["prohibited_terms"]["found"],
-        prohibited_violations=json.dumps(result["prohibited_terms"]["violations"]),
-        recommendations=json.dumps(result["recommendations"]),
+        clause_results=json.dumps(result["mandatory_clauses"]),
+        missing_mandatory_clauses=json.dumps(result["mandatory_clauses"]["missing"]),
+        prohibited_terms_found=json.dumps(result["prohibited_terms"]["violations"]),
+        passes_minimum=result["compliance_score"] >= 70,
+        summary=json.dumps(result["recommendations"]),
         checked_at=datetime.now(timezone.utc),
-        checker_version="1.0",
     )
 
 
@@ -76,23 +77,49 @@ async def create_document_from_upload(
     status: str = "uploaded",
     client_id: int | None = None,
 ) -> Document:
-    saved_file = await storage.save_upload_file(file)
+    staged = await file_store.stage_upload(file)
 
-    payload = DocumentCreate(
-        title=title.strip(),
-        original_filename=saved_file["original_filename"],
-        stored_filename=saved_file["stored_filename"],
-        file_path=saved_file["file_path"],
-        mime_type=saved_file["mime_type"],
-        file_size=saved_file["file_size"],
-        status=status,
-        document_category=document_category,
-        notes=notes,
-        uploaded_by_user_id=uploaded_by_user_id,
-        client_id=client_id,
-    )
+    # Everything after the upload stage is synchronous I/O (sha256 dedupe
+    # query, file commit, DB insert).  Running it inline blocks the asyncio
+    # event loop and stalls every other in-flight request during burst
+    # uploads — push it to the threadpool so the event loop stays free.
+    def _commit() -> Document:
+        existing = repo.get_document_by_sha256(db, staged.sha256)
+        if existing is not None:
+            file_store.abort_staged(staged)
+            raise DuplicateFileError(existing.id, staged.sha256)
 
-    return create_document(db, payload)
+        final_path = file_store.commit_staged(staged)
+        stored_filename = final_path.name
+
+        payload = DocumentCreate(
+            title=title.strip(),
+            original_filename=staged.original_filename,
+            stored_filename=stored_filename,
+            file_path=str(final_path).replace("\\", "/"),
+            mime_type=staged.mime_type,
+            file_size=staged.file_size,
+            status=status,
+            document_category=document_category,
+            notes=notes,
+            uploaded_by_user_id=uploaded_by_user_id,
+            client_id=client_id,
+            sha256_hash=staged.sha256,
+        )
+
+        try:
+            return create_document(db, payload)
+        except Exception:
+            try:
+                final_path.unlink(missing_ok=True)
+            except OSError as exc:
+                logger.warning(
+                    "create_document_from_upload: DB insert failed; could not remove file %s: %s",
+                    final_path, exc,
+                )
+            raise
+
+    return await run_in_threadpool(_commit)
 
 
 def get_document_by_id(db, document_id: int) -> Document | None:
@@ -117,9 +144,13 @@ def list_documents(
     document_category: str | None = None,
     uploaded_by_user_id: int | None = None,
     client_id: int | None = None,
+    skip: int = 0,
+    limit: int = 100,
 ) -> list[Document]:
     normalized_status = status.strip().lower() if status else None
     normalized_document_category = document_category.strip().lower() if document_category else None
+
+    skip, limit = normalize_pagination(skip, limit)
 
     if (
         normalized_status
@@ -133,13 +164,21 @@ def list_documents(
             document_category=normalized_document_category,
             uploaded_by_user_id=uploaded_by_user_id,
             client_id=client_id,
+            skip=skip,
+            limit=limit,
         )
 
-    return repo.list_documents(db)
+    return repo.list_documents(db, skip=skip, limit=limit)
 
 
-def list_documents_by_uploader(db, uploaded_by_user_id: int) -> list[Document]:
-    return repo.list_documents_by_uploader(db, uploaded_by_user_id)
+def list_documents_by_uploader(
+    db,
+    uploaded_by_user_id: int,
+    skip: int = 0,
+    limit: int = 100,
+) -> list[Document]:
+    skip, limit = normalize_pagination(skip, limit)
+    return repo.list_documents_by_uploader(db, uploaded_by_user_id, skip=skip, limit=limit)
 
 
 def update_document(db, document_id: int, payload: DocumentUpdate) -> Document:
@@ -293,7 +332,7 @@ def process_document_full(
             document_text=text,
             document_type="all",
         )
-        db.add(_build_compliance_check(document_id, compliance_result))
+        db.add(_build_compliance_result(document_id, compliance_result))
         logger.info(
             "process_document_full: compliance check for document %d — "
             "score=%.2f status=%s",

@@ -2,8 +2,7 @@
 Tests for the IPEC FSR-1 scraper depth and URL filter fixes.
 Uses mocked HTTP responses — no real network calls.
 """
-import pytest
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 from app.infrastructure.scrapers.ipec_fsr1_scraper import _is_fsr1_pdf_url, IPECScraperConfig
 
 

@@ -1,0 +1,115 @@
+{
+  "version": "1.0",
+  "jurisdiction": "Zimbabwe",
+  "legal_reference": "Insurance Act [Chapter 24:07] & IPEC Regulations",
+  "prohibited_terms": [
+    {
+      "id": "PT001",
+      "term": "guaranteed returns",
+      "severity": "critical",
+      "reason": "Insurance policies cannot guarantee investment returns; only licensed investment products may do so.",
+      "legal_reference": "IPEC Circular 5 of 2018 — Misleading Marketing Practices",
+      "patterns": ["guaranteed return", "guaranteed profit", "guaranteed yield", "guaranteed payout"],
+      "context": "any"
+    },
+    {
+      "id": "PT002",
+      "term": "no claims bonus guaranteed",
+      "severity": "high",
+      "reason": "Guaranteeing no-claims bonuses in policy documents is misleading as it depends on future claims experience.",
+      "legal_reference": "Insurance Act Section 19(2) — Misleading Policy Terms",
+      "patterns": ["no.?claims? bonus guaranteed", "guaranteed no.?claims?", "ncb guaranteed"],
+      "context": "any"
+    },
+    {
+      "id": "PT003",
+      "term": "unlimited coverage",
+      "severity": "high",
+      "reason": "All insurance policies must state defined limits of liability; 'unlimited' coverage is prohibited under Section 15(1)(c).",
+      "legal_reference": "Insurance Act Section 15(1)(c)",
+      "patterns": ["unlimited coverage", "unlimited liability", "unlimited indemnity", "no limit of liability"],
+      "context": "any"
+    },
+    {
+      "id": "PT004",
+      "term": "all risks covered",
+      "severity": "medium",
+      "reason": "Blanket 'all risks' statements without specifying exclusions are misleading under IPEC consumer protection guidelines.",
+      "legal_reference": "IPEC Consumer Protection Circular 2019",
+      "patterns": ["all risks covered", "covers all risks", "covers everything", "full coverage guaranteed"],
+      "context": "marketing"
+    },
+    {
+      "id": "PT005",
+      "term": "unregistered insurer",
+      "severity": "critical",
+      "reason": "Only IPEC-registered insurers may underwrite policies in Zimbabwe. References to unregistered entities are prohibited.",
+      "legal_reference": "Insurance Act Section 7 — Registration of Insurers",
+      "patterns": ["not registered with ipec", "unregistered insurer", "offshore insurer.*not.*registered"],
+      "context": "any"
+    },
+    {
+      "id": "PT006",
+      "term": "waiver of subrogation against insured",
+      "severity": "medium",
+      "reason": "Clauses that waive the insurer's right of subrogation against the insured for intentional acts are prohibited.",
+      "legal_reference": "Insurance Act Section 38 — Subrogation Rights",
+      "patterns": ["waive.*subrogation.*insured.*intentional", "no subrogation.*willful"],
+      "context": "any"
+    },
+    {
+      "id": "PT007",
+      "term": "retroactive coverage without disclosure",
+      "severity": "high",
+      "reason": "Retroactive coverage that is not explicitly disclosed and agreed upon at policy inception is prohibited.",
+      "legal_reference": "IPEC Circular 3 of 2015 — Policy Transparency",
+      "patterns": ["retroactive.*coverage.*prior.*known", "covers.*incidents.*before.*inception.*without.*disclosure"],
+      "context": "any"
+    },
+    {
+      "id": "PT008",
+      "term": "automatic renewal without notice",
+      "severity": "medium",
+      "reason": "Policies cannot automatically renew without providing advance written notice to the insured.",
+      "legal_reference": "Insurance Act Section 35(3) — Renewal Notice Requirements",
+      "patterns": ["automatically renews without notice", "auto.?renew.*no.*notice", "renewed.*without.*informing"],
+      "context": "any"
+    },
+    {
+      "id": "PT009",
+      "term": "discriminatory exclusion",
+      "severity": "critical",
+      "reason": "Exclusions based on race, gender, disability, or religion are prohibited under Zimbabwe's Constitution and insurance law.",
+      "legal_reference": "Constitution of Zimbabwe Section 56 & Insurance Act Section 20",
+      "patterns": ["excluded.*race", "not covered.*gender", "excluded.*religion", "excluded.*disability.*unfair"],
+      "context": "exclusions"
+    },
+    {
+      "id": "PT010",
+      "term": "foreign currency clause without RBZ approval",
+      "severity": "high",
+      "reason": "Policies denominated or payable in foreign currency require Reserve Bank of Zimbabwe (RBZ) approval.",
+      "legal_reference": "Exchange Control Regulations SI 109 of 2019",
+      "patterns": ["payable in usd.*without.*rbz", "foreign currency.*payable.*without approval", "usd.*payout.*no.*rbz.*approval"],
+      "context": "any"
+    },
+    {
+      "id": "PT011",
+      "term": "premium paid to unlicensed broker",
+      "severity": "critical",
+      "reason": "Insurance premiums must be collected by IPEC-licensed brokers or directly by the insurer.",
+      "legal_reference": "Insurance Act Section 51 — Licensed Intermediaries",
+      "patterns": ["premium.*paid.*unlicensed", "broker.*not.*licensed.*ipec", "intermediary.*unregistered.*collect.*premium"],
+      "context": "any"
+    },
+    {
+      "id": "PT012",
+      "term": "claims settled in perpetuity",
+      "severity": "medium",
+      "reason": "Open-ended claims settlement obligations without a defined period are prohibited as they create unquantifiable liabilities.",
+      "legal_reference": "IPEC Prudential Guidelines 2020 — Claims Management",
+      "patterns": ["claims settled.*forever", "pay claims.*indefinitely", "perpetual.*claims.*obligation"],
+      "context": "any"
+    }
+  ]
+}

@@ -6,7 +6,7 @@ from __future__ import annotations
 
 import logging
 from datetime import datetime, timezone, timedelta
-from typing import Any
+from typing import Any, Dict
 
 from sqlalchemy.orm import Session
 
@@ -36,8 +36,14 @@ class AuditLogger:
     REPORT_EXPORTED        = "REPORT_EXPORTED"
     USER_LOGIN             = "USER_LOGIN"
     USER_LOGOUT            = "USER_LOGOUT"
+    USER_REGISTERED        = "USER_REGISTERED"
     ADMIN_ACTION           = "ADMIN_ACTION"
     RETRAINING_TRIGGERED   = "RETRAINING_TRIGGERED"
+    # Auth security events
+    LOGIN_FAILED           = "LOGIN_FAILED"
+    TOKEN_REFRESHED        = "TOKEN_REFRESHED"
+    TOKEN_REVOKED          = "TOKEN_REVOKED"
+    PERMISSION_DENIED      = "PERMISSION_DENIED"
 
     # ------------------------------------------------------------------ #
     # Write

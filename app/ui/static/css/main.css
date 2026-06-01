@@ -126,25 +126,16 @@ html:not(.dark) .btn-glass-gold {
 
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   GLASS CARD
+   GLASS CARD — base shape lives in base.html <style>; this only adjusts
+   border-radius / shadow / light-mode override beyond what base provides.
    ═══════════════════════════════════════════════════════════════════════════ */
 
 .glass-card {
-  background:              rgba(26,26,26,0.60);
-  backdrop-filter:         blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border:                  1px solid rgba(212,175,55,0.10);
   border-radius:           16px;
   box-shadow:              0 4px 32px rgba(0,0,0,0.18);
 }
 
-html.dark .glass-card {
-  background: rgba(15,23,42,0.60);
-}
-
 html:not(.dark) .glass-card {
-  background:   rgba(255,255,255,0.85);
-  border-color: rgba(0,74,198,0.12);
   box-shadow:   0 4px 24px rgba(0,0,0,0.06);
 }
 
@@ -237,8 +228,9 @@ body.sidebar-collapsed #main-wrapper {
 
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   TILE GRID CARD HOVER EFFECT
+   TILE CARD HOVER EFFECT
    Used by category landing pages (documents, analysis, etc.)
+   Grid sizing lives in layout.css (.tile-grid).
    ═══════════════════════════════════════════════════════════════════════════ */
 
 .tile-card {
@@ -246,9 +238,9 @@ body.sidebar-collapsed #main-wrapper {
   cursor: pointer;
 }
 .tile-card:hover {
-  transform:    translateY(-3px);
+  transform:    scale(1.02);
   border-color: rgba(212,175,55,0.25);
-  box-shadow:   0 8px 40px rgba(0,0,0,0.25), 0 0 0 1px rgba(212,175,55,0.10);
+  box-shadow:   0 10px 48px rgba(0,0,0,0.30), 0 0 0 1px rgba(212,175,55,0.14);
 }
 html:not(.dark) .tile-card:hover {
   border-color: rgba(0,74,198,0.20);
@@ -473,15 +465,14 @@ html:not(.dark) .kanban-column {
 
 /* ═══════════════════════════════════════════════════════════════════════════
    TYPOGRAPHY SYSTEM  (A4-T1)
+   Base body colours/fonts are set in base.html <style>; only adds
+   transition + text-size + line-height refinements here.
    ═══════════════════════════════════════════════════════════════════════════ */
 
-/* Smooth colour-scheme transitions */
 body {
   transition: background-color 0.3s ease, color 0.3s ease;
-  font-size: 0.9375rem;   /* 15px default */
+  font-size: 0.9375rem;
   line-height: 1.6;
-  color: var(--cos);
-  background: var(--cbg);
 }
 
 h1, .h1 {
@@ -520,43 +511,17 @@ html:not(.dark) .text-white {
 }
 
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   TILE GRID RESPONSIVE  (A4-T3)
-   ═══════════════════════════════════════════════════════════════════════════ */
-
-.tile-grid {
-  display: grid;
-  gap: 2rem;
-  grid-template-columns: repeat(1, 1fr);
-}
-@media (min-width: 640px) {
-  .tile-grid { grid-template-columns: repeat(2, 1fr); }
-}
-@media (min-width: 1024px) {
-  .tile-grid { grid-template-columns: repeat(3, 1fr); }
-}
-
-.tile-card:hover {
-  transform: scale(1.02);
-  box-shadow: 0 10px 48px rgba(0,0,0,0.30), 0 0 0 1px rgba(212,175,55,0.14);
-}
+/* .tile-grid is defined in layout.css. */
+/* .tile-card:hover is defined above (single source of truth). */
 
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   SIDEBAR POLISH  (A4-T2)
+   SIDEBAR POLISH  (A4-T2) — .nav-link / .nav-link.active base lives in
+   base.html <style>; this only extends with the brand-tinted hover.
    ═══════════════════════════════════════════════════════════════════════════ */
 
-/* Enhanced active state */
-.nav-link.active {
-  background: var(--active-grad);
-  border-left: 3px solid var(--cp);
-  color: var(--cp);
-}
-
-/* Enhanced hover state */
 .nav-link:hover {
   background: rgba(212,175,55,0.08);
-  transition: all 0.15s ease;
 }
 html:not(.dark) .nav-link:hover {
   background: rgba(0,74,198,0.06);
@@ -734,46 +699,14 @@ html:not(.dark) .pill-tab.active {
 
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   MOBILE SIDEBAR OVERLAY  (A4-T9)
+   MOBILE SIDEBAR — base/transform rules live in base.html + layout.css.
+   This block only adds the mobile-only padding override + hamburger toggle.
    ═══════════════════════════════════════════════════════════════════════════ */
 
 @media (max-width: 767px) {
-  /* Sidebar hidden by default on mobile */
-  #sidebar {
-    transform: translateX(-100%);
-    transition: transform 0.25s ease;
-  }
-  #sidebar.mobile-open {
-    transform: translateX(0);
-  }
-  /* Overlay behind sidebar on mobile */
-  #sidebar-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.5);
-    z-index: 49;
-  }
-  #sidebar-overlay.active {
-    display: block;
-  }
-  /* Main content full width on mobile */
-  #main-wrapper,
-  .ml-64 {
-    margin-left: 0 !important;
-  }
-  /* Page content mobile padding */
+  #main-wrapper, .ml-64 { margin-left: 0 !important; }
   .px-8 { padding-left: 1rem !important; padding-right: 1rem !important; }
-}
-
-/* Hamburger button (shown on mobile) */
-#sidebar-hamburger {
-  display: none;
-}
-@media (max-width: 767px) {
-  #sidebar-hamburger {
-    display: flex;
-  }
+  #sidebar-hamburger { display: flex; }
 }
 
 

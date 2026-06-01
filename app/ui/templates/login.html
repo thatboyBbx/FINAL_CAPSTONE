@@ -111,8 +111,8 @@
 
         <!-- Error -->
         {% if error %}
-        <div class="alert-error mb-6">
-          <span class="material-symbols-outlined text-lg flex-shrink-0">error</span>
+        <div class="alert-error mb-6" role="alert" aria-live="assertive" aria-atomic="true">
+          <span class="material-symbols-outlined text-lg flex-shrink-0" aria-hidden="true">error</span>
           <span>{{ error }}</span>
         </div>
         {% endif %}
@@ -130,15 +130,19 @@
           </div>
 
           <div>
-            <label class="block text-xs font-bold uppercase tracking-wider mb-1.5" style="color:rgb(var(--osv))">Password</label>
+            <label class="block text-xs font-bold uppercase tracking-wider mb-1.5" for="pwd" style="color:rgb(var(--osv))">Password</label>
             <div class="field-wrap">
-              <span class="material-symbols-outlined field-icon text-xl">lock</span>
+              <span class="material-symbols-outlined field-icon text-xl" aria-hidden="true">lock</span>
               <input type="password" name="password" id="pwd" required class="field-input" placeholder="••••••••"
-                     style="padding-right:2.75rem">
+                     style="padding-right:2.75rem" aria-describedby="pwd-toggle-hint">
               <button type="button" onclick="togglePwd()" id="eye-btn"
-                      class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-xl cursor-pointer"
-                      style="background:none;border:none;color:rgb(var(--osv))">visibility</button>
+                      aria-label="Show password" aria-pressed="false"
+                      class="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer flex"
+                      style="background:none;border:none;color:rgb(var(--osv))">
+                <span class="material-symbols-outlined text-xl" aria-hidden="true">visibility</span>
+              </button>
             </div>
+            <span id="pwd-toggle-hint" class="sr-only">Use the button at the right to show or hide your password.</span>
           </div>
 
           <div class="flex items-center gap-3">
@@ -146,10 +150,12 @@
             <label for="remember" class="text-sm cursor-pointer select-none" style="color:rgb(var(--osv))">Remember this device for 30 days</label>
           </div>
 
-          <button type="submit" class="btn-primary mt-1">
-            <span>Sign into Dashboard</span>
-            <span class="material-symbols-outlined text-xl">arrow_forward</span>
+          <button type="submit" id="login-submit-btn" class="btn-primary mt-1">
+            <span id="login-btn-text">Sign into Dashboard</span>
+            <span id="login-btn-icon" class="material-symbols-outlined text-xl" aria-hidden="true">arrow_forward</span>
+            <span id="login-btn-spinner" style="display:none;width:18px;height:18px;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;animation:btnSpin 0.7s linear infinite" aria-hidden="true"></span>
           </button>
+          <span id="login-status" role="status" aria-live="polite" class="sr-only"></span>
 
         </form>
 
@@ -232,9 +238,28 @@
 
   </main>
 
+  <style>@keyframes btnSpin{to{transform:rotate(360deg);}}</style>
   <script>
     function toggleTheme(){const h=document.getElementById('html-root');h.classList.toggle('dark');localStorage.setItem('insureIntelTheme',h.classList.contains('dark')?'dark':'light');}
-    function togglePwd(){const f=document.getElementById('pwd'),b=document.getElementById('eye-btn');if(f.type==='password'){f.type='text';b.textContent='visibility_off';}else{f.type='password';b.textContent='visibility';}}
+    function togglePwd(){
+      const f=document.getElementById('pwd'),
+            b=document.getElementById('eye-btn'),
+            s=b.querySelector('span');
+      if(f.type==='password'){f.type='text';s.textContent='visibility_off';b.setAttribute('aria-pressed','true');b.setAttribute('aria-label','Hide password');}
+      else{f.type='password';s.textContent='visibility';b.setAttribute('aria-pressed','false');b.setAttribute('aria-label','Show password');}
+    }
+    document.querySelector('form').addEventListener('submit', function() {
+      const btn  = document.getElementById('login-submit-btn');
+      const text = document.getElementById('login-btn-text');
+      const icon = document.getElementById('login-btn-icon');
+      const spin = document.getElementById('login-btn-spinner');
+      const status = document.getElementById('login-status');
+      btn.disabled = true;
+      text.textContent = 'Signing in…';
+      icon.style.display = 'none';
+      spin.style.display = 'inline-block';
+      status.textContent = 'Signing in, please wait.';
+    });
   </script>
 </body>
 </html>

@@ -121,7 +121,7 @@ def test_sentiment_scoring():
     try:
         import nltk
         nltk.download("vader_lexicon", quiet=True)
-        from nltk.sentiment.vader import SentimentIntensityAnalyzer
+        from nltk.sentiment.vader import SentimentIntensityAnalyzer  # noqa: F401 — availability probe
     except ImportError:
         pytest.skip("nltk not installed")
 

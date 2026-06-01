@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en" id="html-root" class="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}InsureIntel Zimbabwe{% endblock %}</title>
+
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+
+  <style>
+    :root {
+      --p:0 74 198;--op:255 255 255;--bg:248 249 251;--sf:255 255 255;
+      --sfc:237 238 240;--olv:195 198 215;--os:25 28 30;--osv:67 70 85;
+      --err:239 68 68;
+    }
+    .dark {
+      --p:212 175 55;--op:0 0 0;--bg:10 10 10;--sf:18 18 18;
+      --sfc:30 30 30;--olv:50 50 50;--os:245 245 245;--osv:160 160 160;
+    }
+    *,*::before,*::after { box-sizing:border-box; }
+    body {
+      font-family:'Inter',sans-serif;
+      background:rgb(var(--bg)); color:rgb(var(--os));
+      min-height:100vh; -webkit-font-smoothing:antialiased;
+    }
+    h1,h2,h3 { font-family:'Manrope',sans-serif; }
+    .material-symbols-outlined {
+      font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;
+      vertical-align:middle;
+    }
+    /* Form fields */
+    .field-wrap { position:relative; }
+    .field-icon  {
+      position:absolute; left:0.875rem; top:50%; transform:translateY(-50%);
+      color:rgb(var(--p)/0.5); pointer-events:none;
+    }
+    .field-input {
+      width:100%; padding:0.8rem 0.875rem 0.8rem 2.75rem;
+      background:rgb(var(--sfc)); border:1px solid rgb(var(--olv));
+      border-radius:0.75rem; font-size:0.875rem; color:rgb(var(--os));
+      outline:none; transition:border-color .2s,box-shadow .2s;
+    }
+    .dark .field-input { background:rgba(255,255,255,0.05); border-color:rgba(255,255,255,0.1); color:#f5f5f5; }
+    .field-input:focus { border-color:rgb(var(--p)); box-shadow:0 0 0 3px rgb(var(--p)/0.14); }
+    .field-input::placeholder { color:rgb(var(--osv)/0.5); }
+    /* Buttons */
+    .btn-auth {
+      width:100%; padding:0.9rem 1.5rem; border:none; border-radius:0.75rem;
+      font-weight:700; font-size:0.95rem; cursor:pointer;
+      display:flex; align-items:center; justify-content:center; gap:0.5rem;
+      transition:all .15s; text-decoration:none;
+    }
+    html:not(.dark) .btn-auth {
+      background:linear-gradient(135deg,rgb(var(--p)),rgb(0 55 160));
+      color:#fff; box-shadow:0 8px 24px rgb(var(--p)/0.28);
+    }
+    .dark .btn-auth {
+      background:linear-gradient(135deg,#d4af37,#aa8c2c);
+      color:#000; box-shadow:0 8px 24px rgba(212,175,55,0.22);
+    }
+    .btn-auth:hover { filter:brightness(1.08); transform:translateY(-1px); }
+    .btn-auth:active { transform:scale(0.97); }
+    /* Alerts */
+    .auth-alert {
+      display:flex; align-items:flex-start; gap:0.5rem;
+      padding:0.625rem 0.875rem; border-radius:0.5rem;
+      font-size:0.875rem; margin-bottom:1.25rem;
+    }
+    .auth-alert-error {
+      background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.28); color:#f87171;
+    }
+    html:not(.dark) .auth-alert-error { color:#ff4d4f; background:#fff1f0; border-color:#ffccc7; }
+    .auth-alert-success {
+      background:rgba(74,222,128,0.1); border:1px solid rgba(74,222,128,0.28); color:#4ade80;
+    }
+    html:not(.dark) .auth-alert-success { color:#006438; background:rgba(0,100,60,0.06); border-color:rgba(0,100,60,0.2); }
+    /* Theme icon toggle */
+    html.dark       .icon-dark-mode  { display:none; }
+    html:not(.dark) .icon-light-mode { display:none; }
+
+    {% block head_styles %}{% endblock %}
+  </style>
+
+  {% block head %}{% endblock %}
+  <script>(function(){var t=localStorage.getItem('insureIntelTheme')||'dark';if(t==='dark')document.documentElement.classList.add('dark');})();</script>
+</head>
+<body>
+
+  <!-- Theme toggle -->
+  <button onclick="toggleTheme()" title="Toggle theme"
+          class="fixed top-4 right-4 z-50 w-9 h-9 flex items-center justify-center rounded-full"
+          style="background:rgba(128,128,128,0.15);border:1px solid rgba(128,128,128,0.25)">
+    <span class="material-symbols-outlined text-lg icon-light-mode" style="color:#d4af37">light_mode</span>
+    <span class="material-symbols-outlined text-lg icon-dark-mode"  style="color:rgb(var(--osv))">dark_mode</span>
+  </button>
+
+  <!-- Layout: left form + optional right panel -->
+  <main class="flex min-h-screen">
+
+    <!-- Left: form column -->
+    <section class="w-full {% block has_panel %}lg:w-1/2{% endblock %} flex flex-col justify-center px-8 sm:px-14 lg:px-20 py-12">
+      <div class="max-w-md w-full mx-auto">
+
+        <!-- Logo -->
+        <div class="mb-10 flex items-center gap-3">
+          <div class="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
+               style="background:rgb(var(--p));box-shadow:0 0 18px rgb(var(--p)/0.4)">
+            <span class="material-symbols-outlined text-2xl"
+                  style="color:rgb(var(--op));font-variation-settings:'FILL' 1">security</span>
+          </div>
+          <div>
+            <p class="text-base font-bold font-headline leading-none" style="color:rgb(var(--p))">InsureIntel</p>
+            <p class="text-[9px] font-bold uppercase tracking-widest mt-0.5" style="color:rgb(var(--p)/0.55)">Zimbabwe Sovereign</p>
+          </div>
+        </div>
+
+        <!-- Page heading -->
+        {% block auth_heading %}{% endblock %}
+
+        <!-- Flash messages -->
+        {% if error %}
+        <div class="auth-alert auth-alert-error">
+          <span class="material-symbols-outlined text-lg flex-shrink-0">error</span>
+          <span>{{ error }}</span>
+        </div>
+        {% endif %}
+        {% if success %}
+        <div class="auth-alert auth-alert-success">
+          <span class="material-symbols-outlined text-lg flex-shrink-0">check_circle</span>
+          <span>{{ success }}</span>
+        </div>
+        {% endif %}
+
+        <!-- Form content -->
+        {% block auth_content %}{% endblock %}
+
+        <!-- Footer links -->
+        {% block auth_footer %}{% endblock %}
+
+        <!-- IPEC compliance strip -->
+        <div class="mt-8 flex items-center justify-center gap-4" style="opacity:0.4">
+          <span class="text-[10px] font-bold tracking-widest uppercase" style="color:rgb(var(--osv))">IPEC Compliant</span>
+          <div class="w-1 h-1 rounded-full" style="background:rgb(var(--osv))"></div>
+          <span class="text-[10px] font-bold tracking-widest uppercase" style="color:rgb(var(--osv))">Secure Ledger</span>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Right: decorative panel (override block to suppress) -->
+    {% block auth_panel %}
+    <section class="hidden lg:flex w-1/2 relative overflow-hidden flex-col items-center justify-center"
+             style="background:rgb(var(--p))">
+      <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute -top-32 -right-32 w-[600px] h-[600px] rounded-full opacity-20"
+             style="background:radial-gradient(circle,rgba(255,255,255,0.5),transparent 70%);filter:blur(60px)"></div>
+        <div class="absolute -bottom-32 -left-32 w-[500px] h-[500px] rounded-full opacity-15"
+             style="background:radial-gradient(circle,rgba(0,0,0,0.4),transparent 70%);filter:blur(60px)"></div>
+      </div>
+      <div class="relative z-10 flex flex-col items-center px-14 text-center" style="color:rgb(var(--op))">
+        {% block auth_panel_content %}
+        <span class="material-symbols-outlined text-7xl mb-6 opacity-80"
+              style="font-variation-settings:'FILL' 1">shield</span>
+        <h3 class="text-3xl font-extrabold font-headline leading-tight mb-4 tracking-tight">
+          Intelligent Insurance Analysis<br>for Zimbabwe
+        </h3>
+        <p class="text-base font-medium leading-relaxed" style="opacity:0.82;max-width:340px">
+          ML-driven clause detection, policy comparison, and compliance monitoring tailored for Southern Africa.
+        </p>
+        {% endblock %}
+      </div>
+      <div class="absolute bottom-8 right-8 flex items-center gap-1.5" style="opacity:0.5;color:rgb(var(--op))">
+        <span class="material-symbols-outlined text-sm">location_on</span>
+        <span class="text-[10px] font-bold uppercase tracking-widest">Harare, Zimbabwe</span>
+      </div>
+    </section>
+    {% endblock %}
+
+  </main>
+
+  <script>
+    function toggleTheme() {
+      const h = document.getElementById('html-root');
+      h.classList.toggle('dark');
+      localStorage.setItem('insureIntelTheme', h.classList.contains('dark') ? 'dark' : 'light');
+    }
+  </script>
+  {% block scripts %}{% endblock %}
+
+</body>
+</html>

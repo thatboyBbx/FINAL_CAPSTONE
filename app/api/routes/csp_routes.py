@@ -24,7 +24,7 @@ from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Query
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 
-from app.core.db import get_db
+from app.core.db import get_db, session_scope
 from app.modules.auth.dependencies import get_current_user
 
 logger = logging.getLogger(__name__)
@@ -213,7 +213,8 @@ def force_csp_refresh(
         try:
             logger.info("CSP force-refresh started (job_id=%s)", job_id)
             csp_service = _get_csp_service()
-            updated = csp_service.refresh_all_scores(db)
+            with session_scope() as job_db:
+                updated = csp_service.refresh_all_scores(job_db)
             logger.info("CSP force-refresh complete: %d insurers updated (job_id=%s)", updated, job_id)
         except Exception as exc:
             logger.error("CSP force-refresh failed (job_id=%s): %s", job_id, exc, exc_info=True)

@@ -199,21 +199,8 @@
     _applySidebarWidth(sidebarCollapsed, true);
   };
 
-  /* ── Accordion animation keyframes ──────────────────────────────────────── */
-
-  (function injectStyles() {
-    if (document.getElementById("_sidebarStyles")) return;
-    const s = document.createElement("style");
-    s.id = "_sidebarStyles";
-    s.textContent = `
-      @keyframes accordionOpen  { from { opacity:0; transform:translateY(-6px) } to { opacity:1; transform:none } }
-      @keyframes accordionClose { from { opacity:1; transform:none } to { opacity:0; transform:translateY(-4px) } }
-      .chevron { transition: transform 0.18s ease; display:inline-block; }
-      #sidebar { transition: width 0.25s ease; }
-      #main-content { transition: margin-left 0.25s ease; }
-    `;
-    document.head.appendChild(s);
-  })();
+  /* Accordion keyframes (.chevron / #sidebar / #main-content transitions)
+     live in static/css/main.css and static/css/layout.css. */
 
   /* ── Init on DOMContentLoaded ────────────────────────────────────────────── */
 

@@ -18,70 +18,87 @@
     <h1 class="font-headline" style="font-size:1.5rem;font-weight:800;color:var(--cos);margin:0">
       👤 Clients
     </h1>
-    <button onclick="openAddModal()" class="btn-glass-gold">
-      <span class="material-symbols-outlined" style="font-size:18px">person_add</span>
+    <button id="open-add-btn" onclick="openAddModal(this)" class="btn-glass btn-glass-gold"
+            aria-expanded="false" aria-controls="add-modal">
+      <span class="material-symbols-outlined icon-md" aria-hidden="true">person_add</span>
       Add Client
     </button>
   </div>
 
   <!-- Filters -->
-  <div style="display:flex;gap:0.75rem;margin-bottom:1.25rem;flex-wrap:wrap">
+  <div style="display:flex;gap:0.75rem;margin-bottom:1.25rem;flex-wrap:wrap" role="search">
     <div style="position:relative;flex:1;min-width:200px">
-      <span class="material-symbols-outlined" style="position:absolute;left:0.625rem;top:50%;
-            transform:translateY(-50%);font-size:16px;color:var(--cosv)">search</span>
-      <input id="search-input" type="text" placeholder="Search clients…"
-             style="background:var(--csfc);border:1px solid var(--col);color:var(--cos);
-                    border-radius:6px;padding:0.4rem 0.625rem 0.4rem 2rem;
-                    font-size:0.8rem;outline:none;width:100%"
+      <span class="material-symbols-outlined icon-sm" aria-hidden="true"
+            style="position:absolute;left:0.625rem;top:50%;transform:translateY(-50%);color:var(--cosv)">search</span>
+      <input id="search-input" type="search" placeholder="Search clients…"
+             aria-label="Search clients by name or company"
+             class="form-input" style="padding-left:2rem"
              oninput="renderTable()">
     </div>
-    <select id="seg-filter" class="form-input" style="max-width:180px" onchange="renderTable()">
+    <label for="seg-filter" class="sr-only">Filter by segment</label>
+    <select id="seg-filter" class="form-input" style="max-width:180px" onchange="renderTable()"
+            aria-label="Filter by segment">
       <option value="">All Segments</option>
       <option value="retail">Retail</option>
       <option value="corporate">Corporate</option>
       <option value="smb">SMB</option>
     </select>
   </div>
+  <p id="results-count" style="color:var(--cosv);font-size:0.75rem;margin-bottom:0.5rem"
+     aria-live="polite" aria-atomic="true"></p>
 
   <!-- Table -->
   <div class="glass-card" style="overflow:hidden">
-    <table class="data-table" id="clients-table">
-      <thead>
-        <tr>
-          <th>Name / Company</th>
-          <th>Segment</th>
-          <th>Linked</th>
-          <th>Email</th>
-          <th>Phone</th>
-          <th>Added</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody id="clients-tbody">
-        <tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--cosv)">
-          Loading…</td></tr>
-      </tbody>
-    </table>
+    <div class="overflow-x-auto">
+      <table class="data-table" id="clients-table">
+        <thead>
+          <tr>
+            <th>Name / Company</th>
+            <th>Segment</th>
+            <th>Linked</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Added</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="clients-tbody">
+          {# Skeleton loading state — replaced by renderTable() on load #}
+          {% from "macros/tables.html" import skeleton_table_rows %}
+          {{ skeleton_table_rows(rows=5, cols=7) }}
+        </tbody>
+      </table>
+    </div>
   </div>
 
 </div>
 
 <!-- Add Client Modal -->
-<div id="add-modal" style="display:none;position:fixed;inset:0;z-index:5000;
-     background:rgba(0,0,0,0.65);backdrop-filter:blur(4px);
-     align-items:center;justify-content:center">
-  <div class="glass-card" style="width:480px;padding:1.75rem">
-    <h3 style="color:var(--cos);font-weight:700;margin:0 0 1.25rem">Add New Client</h3>
+<div id="add-modal"
+     class="hidden fixed inset-0 flex items-center justify-center z-50 modal-backdrop"
+     role="dialog" aria-modal="true" aria-labelledby="add-modal-title">
+  <div class="glass-card" style="width:480px;max-width:calc(100vw - 2rem);padding:1.75rem">
+    <h3 id="add-modal-title" style="color:var(--cos);font-weight:700;margin:0 0 1.25rem">Add New Client</h3>
     <div style="display:flex;flex-direction:column;gap:0.875rem">
-      <div><label class="form-label">Full Name *</label>
-        <input id="new-name" class="form-input" type="text" placeholder="John Moyo"></div>
-      <div><label class="form-label">Company</label>
-        <input id="new-company" class="form-input" type="text" placeholder="Moyo Enterprises (Pvt) Ltd"></div>
-      <div><label class="form-label">Email</label>
-        <input id="new-email" class="form-input" type="email"></div>
-      <div><label class="form-label">Phone</label>
-        <input id="new-phone" class="form-input" type="text" placeholder="+263 77…"></div>
-      <div><label class="form-label">Segment</label>
+      <div>
+        <label class="form-label" for="new-name">Full Name <span aria-hidden="true" style="color:var(--cerr)">*</span></label>
+        <input id="new-name" class="form-input" type="text" placeholder="John Moyo"
+               required aria-required="true">
+      </div>
+      <div>
+        <label class="form-label" for="new-company">Company</label>
+        <input id="new-company" class="form-input" type="text" placeholder="Moyo Enterprises (Pvt) Ltd">
+      </div>
+      <div>
+        <label class="form-label" for="new-email">Email</label>
+        <input id="new-email" class="form-input" type="email">
+      </div>
+      <div>
+        <label class="form-label" for="new-phone">Phone</label>
+        <input id="new-phone" class="form-input" type="text" placeholder="+263 77…">
+      </div>
+      <div>
+        <label class="form-label" for="new-segment">Segment</label>
         <select id="new-segment" class="form-input">
           <option value="retail">Retail</option>
           <option value="corporate">Corporate</option>
@@ -89,10 +106,14 @@
         </select>
       </div>
     </div>
-    <div id="add-error" style="display:none;margin-top:0.75rem" class="alert alert-error"></div>
+    <div id="add-error" style="display:none;margin-top:0.75rem"
+         class="alert alert-error" role="alert" aria-live="assertive" aria-atomic="true"></div>
     <div style="display:flex;gap:0.625rem;justify-content:flex-end;margin-top:1.25rem">
-      <button onclick="closeAddModal()" class="btn-glass">Cancel</button>
-      <button onclick="submitAddClient()" class="btn-glass-gold">Save Client</button>
+      <button onclick="closeModal('add-modal')" class="btn-glass">Cancel</button>
+      <button id="save-client-btn" onclick="submitAddClient()" class="btn-glass btn-glass-gold">
+        <span class="btn-spinner" aria-hidden="true"></span>
+        <span id="save-client-text">Save Client</span>
+      </button>
     </div>
   </div>
 </div>
@@ -108,7 +129,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     allClients = await apiFetch("/api/clients");
     renderTable();
   } catch (err) {
-    showErrorModal("Failed to load clients: " + err.message);
+    document.getElementById("clients-tbody").innerHTML =
+      `<tr><td colspan="7" style="padding:0">
+        <div class="empty-state-container" style="color:var(--cosv)">
+          <span class="material-symbols-outlined empty-state-icon" aria-hidden="true" style="color:var(--cerr)">error</span>
+          <h3 class="font-headline text-lg font-semibold mb-2" style="color:var(--cos)">Could not load clients</h3>
+          <p style="font-size:0.875rem;max-width:24rem;margin:0 auto 1.5rem">
+            A network error occurred. Please refresh the page to try again.
+          </p>
+          <button onclick="location.reload()" class="btn-glass btn-glass-gold">Refresh</button>
+        </div>
+      </td></tr>`;
   }
 });
 
@@ -121,11 +152,30 @@ function renderTable() {
     return (c.name||"").toLowerCase().includes(q) || (c.company||"").toLowerCase().includes(q);
   });
   const tbody = document.getElementById("clients-tbody");
+  const countEl = document.getElementById("results-count");
   if (cs.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--cosv)">
-      No clients found.</td></tr>`;
+    const isFiltered = q || seg;
+    countEl.textContent = "";
+    tbody.innerHTML = `<tr><td colspan="7" style="padding:0">
+      <div class="empty-state-container" style="color:var(--cosv)">
+        <span class="material-symbols-outlined empty-state-icon" aria-hidden="true" style="color:var(--col)">${isFiltered ? 'search_off' : 'group'}</span>
+        <h3 class="font-headline text-lg font-semibold mb-2" style="color:var(--cos)">
+          ${isFiltered ? 'No clients match your search' : 'No clients yet'}
+        </h3>
+        <p style="font-size:0.875rem;color:var(--cosv);max-width:24rem;margin:0 auto 1.5rem">
+          ${isFiltered ? 'Try adjusting your search or clearing the segment filter.' : 'Add your first client to start tracking policies and documents.'}
+        </p>
+        ${isFiltered
+          ? `<button onclick="document.getElementById('search-input').value='';document.getElementById('seg-filter').value='';renderTable()" class="btn-glass btn-glass-gold">Clear filters</button>`
+          : `<button onclick="openAddModal(document.getElementById('open-add-btn'))" class="btn-glass btn-glass-gold">Add First Client</button>`
+        }
+      </div>
+    </td></tr>`;
     return;
   }
+  countEl.textContent = cs.length === allClients.length
+    ? `${cs.length} client${cs.length !== 1 ? 's' : ''}`
+    : `${cs.length} of ${allClients.length} clients`;
   const segColors = { retail:"#60a5fa", corporate:"#d4af37", smb:"#4ade80" };
   tbody.innerHTML = cs.map(c => `
     <tr>
@@ -163,12 +213,33 @@ function renderTable() {
     </tr>`).join("");
 }
 
-function openAddModal()  { document.getElementById("add-modal").style.display = "flex"; }
-function closeAddModal() { document.getElementById("add-modal").style.display = "none"; }
+function openAddModal(triggerEl) {
+  document.getElementById("add-error").style.display = "none";
+  document.getElementById("new-name").value = "";
+  document.getElementById("new-company").value = "";
+  document.getElementById("new-email").value = "";
+  document.getElementById("new-phone").value = "";
+  document.getElementById("new-segment").value = "retail";
+  const btn = document.getElementById("open-add-btn");
+  if (btn) btn.setAttribute("aria-expanded", "true");
+  openModal("add-modal", triggerEl || btn);
+}
 
 async function submitAddClient() {
   const name = document.getElementById("new-name").value.trim();
-  if (!name) { showToast("Name is required.", "warning"); return; }
+  const errEl = document.getElementById("add-error");
+  if (!name) {
+    errEl.textContent = "Full name is required.";
+    errEl.style.display = "block";
+    document.getElementById("new-name").focus();
+    return;
+  }
+  const saveBtn = document.getElementById("save-client-btn");
+  const saveText = document.getElementById("save-client-text");
+  saveBtn.disabled = true;
+  saveBtn.classList.add("btn-loading");
+  saveText.textContent = "Saving…";
+  errEl.style.display = "none";
   const payload = {
     name:    name,
     company: document.getElementById("new-company").value.trim() || null,
@@ -180,11 +251,16 @@ async function submitAddClient() {
     const c = await apiFetch("/api/clients", { method: "POST", body: JSON.stringify(payload) });
     allClients.unshift(c);
     renderTable();
-    closeAddModal();
-    showSuccessModal("Client added successfully.");
+    document.getElementById("open-add-btn").setAttribute("aria-expanded", "false");
+    closeModal("add-modal");
+    showToast(`Client "${c.name}" added successfully.`, "success");
   } catch (err) {
-    document.getElementById("add-error").textContent = err.message;
-    document.getElementById("add-error").style.display = "block";
+    errEl.textContent = err.message || "Failed to save client. Please try again.";
+    errEl.style.display = "block";
+  } finally {
+    saveBtn.disabled = false;
+    saveBtn.classList.remove("btn-loading");
+    saveText.textContent = "Save Client";
   }
 }
 

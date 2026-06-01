@@ -7,11 +7,11 @@ All DB queries live here; service.py contains business logic.
 from __future__ import annotations
 
 from datetime import date, timedelta
-from typing import Any
 
 from sqlalchemy import func
 from sqlalchemy.orm import Session
 
+from app.core.pagination import normalize_pagination
 from app.modules.clients.model import Client, ClientAlert, ClientInteraction, ClientNote, ClientPolicy
 from app.modules.documents.model import Document
 
@@ -27,6 +27,7 @@ def get_all(
     limit: int = 100,
     offset: int = 0,
 ) -> list[Client]:
+    offset, limit = normalize_pagination(offset, limit)
     q = db.query(Client)
     if segment:
         q = q.filter(Client.segment == segment)
@@ -108,16 +109,25 @@ def add_policy(db: Session, client_id: int, data: dict) -> ClientPolicy:
     return policy
 
 
-def get_client_documents(db: Session, client_id: int) -> list[Document]:
+def get_client_documents(
+    db: Session,
+    client_id: int,
+    offset: int = 0,
+    limit: int = 100,
+) -> list[Document]:
+    offset, limit = normalize_pagination(offset, limit)
     return (
         db.query(Document)
         .filter(Document.client_id == client_id)
         .order_by(Document.created_at.desc())
+        .offset(offset)
+        .limit(limit)
         .all()
     )
 
 
 def get_unlinked_documents(db: Session, limit: int = 10) -> list[Document]:
+    _, limit = normalize_pagination(0, limit, max_limit=50)
     return (
         db.query(Document)
         .filter(Document.client_id.is_(None))

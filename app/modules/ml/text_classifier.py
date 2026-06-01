@@ -11,7 +11,6 @@ from __future__ import annotations
 from sqlalchemy.orm import Session
 
 from app.modules.circulars.model import CircularAnalysis
-from app.modules.documents.model import Document
 
 
 # Feature names contributed by circular NLP (must match order used in trainer)

@@ -17,6 +17,7 @@ import logging
 from datetime import datetime, timezone
 from typing import Any
 
+from sqlalchemy import func, or_
 from sqlalchemy.orm import Session
 
 from app.ai.inference.csp_nlg import CSPNaturalLanguageGenerator, XGBResult
@@ -27,6 +28,13 @@ from app.modules.insurers.model import Insurer
 from app.modules.financials.model import InsurerFinancials
 
 logger = logging.getLogger(__name__)
+
+
+def _active_insurer_filter():
+    return or_(
+        Insurer.ipec_registration_status.is_(None),
+        Insurer.ipec_registration_status == "active",
+    )
 
 
 def _fuzzy_match(query: str, candidates: list[str], threshold: int = 75) -> str | None:
@@ -81,7 +89,7 @@ class CSPService:
         db: Session,
     ) -> dict[str, Any] | None:
         try:
-            insurers = db.query(Insurer).filter(Insurer.is_active == True).all()
+            insurers = db.query(Insurer).filter(_active_insurer_filter()).all()
             if not insurers:
                 return None
 
@@ -113,20 +121,38 @@ class CSPService:
 
     def get_all_csp_scores(self, db: Session) -> list[dict[str, Any]]:
         try:
-            insurers = db.query(Insurer).filter(Insurer.is_active == True).all()
-            result = []
-            for insurer in insurers:
-                score_row = (
-                    db.query(CSPScore)
-                    .filter(CSPScore.insurer_id == insurer.id)
-                    .order_by(CSPScore.scored_at.desc())
-                    .first()
+            latest_scores = (
+                db.query(
+                    CSPScore.insurer_id.label("insurer_id"),
+                    func.max(CSPScore.scored_at).label("max_scored_at"),
                 )
-                if score_row:
-                    financials = db.query(InsurerFinancials).filter(
-                        InsurerFinancials.id == score_row.financials_id
-                    ).first()
-                    result.append(self._serialize_score(score_row, insurer, financials))
+                .group_by(CSPScore.insurer_id)
+                .subquery()
+            )
+            rows = (
+                db.query(CSPScore, Insurer)
+                .join(
+                    latest_scores,
+                    (CSPScore.insurer_id == latest_scores.c.insurer_id)
+                    & (CSPScore.scored_at == latest_scores.c.max_scored_at),
+                )
+                .join(Insurer, Insurer.id == CSPScore.insurer_id)
+                .filter(_active_insurer_filter())
+                .all()
+            )
+            financial_ids = [score.financials_id for score, _ in rows]
+            financial_map = {
+                row.id: row
+                for row in db.query(InsurerFinancials)
+                .filter(InsurerFinancials.id.in_(financial_ids))
+                .all()
+            } if financial_ids else {}
+
+            result = []
+            for score_row, insurer in rows:
+                result.append(
+                    self._serialize_score(score_row, insurer, financial_map.get(score_row.financials_id))
+                )
             return result
         except Exception as exc:
             logger.error("get_all_csp_scores failed: %s", exc, exc_info=True)
@@ -134,7 +160,7 @@ class CSPService:
 
     # ── Scoring ───────────────────────────────────────────────────────────────
 
-    def score_insurer(self, insurer_id: str, db: Session) -> dict[str, Any] | None:
+    def score_insurer(self, insurer_id: int, db: Session) -> dict[str, Any] | None:
         try:
             insurer = db.query(Insurer).filter(Insurer.id == insurer_id).first()
             if not insurer:
@@ -218,7 +244,7 @@ class CSPService:
             return None
 
     def refresh_all_scores(self, db: Session) -> int:
-        insurers = db.query(Insurer).filter(Insurer.is_active == True).all()
+        insurers = db.query(Insurer).filter(_active_insurer_filter()).all()
         updated = 0
         for insurer in insurers:
             result = self.score_insurer(insurer.id, db)
@@ -272,7 +298,7 @@ class CSPService:
             "insurer_id": insurer.id,
             "insurer_name": insurer.name,
             "insurer_short_name": insurer.short_name,
-            "ipec_licence_number": insurer.ipec_licence_number,
+            "ipec_licence_number": insurer.registration_number,
             "wcs_score": score.wcs_score,
             "wcs_band": score.wcs_band,
             "solvency_score": score.solvency_score,

@@ -1,8 +1,9 @@
-from sqlalchemy.orm import Session
-from sqlalchemy import select, desc
 from datetime import date, timedelta
 
+from sqlalchemy import desc, func, select
+from sqlalchemy.orm import Session
 
+from app.core.pagination import normalize_pagination
 from app.modules.financials.model import FinancialSnapshot
 
 
@@ -13,6 +14,7 @@ class FinancialRepo:
         return len(snapshots)
 
     def list_by_insurer(self, db: Session, insurer_id: int, skip: int = 0, limit: int = 200) -> list[FinancialSnapshot]:
+        skip, limit = normalize_pagination(skip, limit)
         stmt = (
             select(FinancialSnapshot)
             .where(FinancialSnapshot.insurer_id == insurer_id)
@@ -49,11 +51,14 @@ class FinancialRepo:
         if days <= 0:
             return []
 
-        latest = self.latest(db, insurer_id)
-        if not latest:
+        end = db.execute(
+            select(func.max(FinancialSnapshot.reporting_date)).where(
+                FinancialSnapshot.insurer_id == insurer_id
+            )
+        ).scalar_one_or_none()
+        if not end:
             return []
 
-        end = latest.reporting_date
         start = end - timedelta(days=days)
 
         return self.list_by_range(db, insurer_id, start=start, end=end)

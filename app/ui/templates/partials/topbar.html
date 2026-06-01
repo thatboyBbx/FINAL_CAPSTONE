@@ -1,0 +1,71 @@
+{# partials/topbar.html — Sticky application topbar #}
+<header id="topbar"
+        class="h-16 flex items-center justify-between px-8 sticky top-0 z-40 flex-shrink-0"
+        style="background:color-mix(in srgb,var(--cbg) 85%,transparent);
+               backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+               border-bottom:1px solid var(--sidebar-bdr)">
+
+  <!-- Mobile hamburger -->
+  <button id="sidebar-hamburger"
+          onclick="toggleSidebar()"
+          class="mr-3 p-2 rounded-lg"
+          style="color:var(--cosv)"
+          aria-label="Open sidebar">
+    <span class="material-symbols-outlined text-[22px]" id="sidebar-toggle-icon">menu</span>
+  </button>
+
+  <!-- Search (disabled) -->
+  <div class="relative flex-1 max-w-md" title="Search coming soon">
+    <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[18px]"
+          style="color:var(--col)">search</span>
+    <input type="text" placeholder="Search — coming soon"
+           class="w-full rounded-lg py-2 pl-10 pr-4 text-sm outline-none"
+           style="background:var(--csfc);border:1px solid var(--col);color:var(--col);cursor:not-allowed"
+           disabled>
+  </div>
+
+  <!-- Right controls -->
+  <div class="flex items-center gap-3 ml-6">
+
+    <!-- HTMX loading indicator — shown via JS on htmx:beforeRequest -->
+    <div id="htmx-indicator"
+         class="flex items-center gap-1.5"
+         style="opacity:0;transition:opacity 0.2s ease;pointer-events:none;
+                color:var(--cp);font-size:0.75rem;font-weight:600">
+      <svg class="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+           style="color:var(--cp)">
+        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" stroke-dasharray="60" stroke-dashoffset="20" stroke-linecap="round"/>
+      </svg>
+      <span>Loading…</span>
+    </div>
+
+    <!-- Theme toggle -->
+    <button onclick="toggleTheme()" title="Toggle light / dark"
+            class="p-2 rounded-lg transition-all hover:opacity-80"
+            style="color:var(--cosv)">
+      <span class="material-symbols-outlined icon-light-mode text-[22px]">light_mode</span>
+      <span class="material-symbols-outlined icon-dark-mode text-[22px]">dark_mode</span>
+    </button>
+
+    <div class="w-px h-7 mx-1" style="background:var(--col)"></div>
+
+    <!-- User chip -->
+    <div class="flex items-center gap-2.5">
+      <div class="text-right">
+        <p class="text-sm font-bold leading-tight" style="color:var(--cos)">
+          {% if user %}{{ user.full_name or user.staff_id }}{% else %}User{% endif %}
+        </p>
+        <p class="text-[9px] font-bold uppercase tracking-wider" style="color:var(--cp)">
+          {% if user %}{{ user.role }}{% else %}Staff{% endif %}
+        </p>
+      </div>
+      <div class="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0"
+           style="background:color-mix(in srgb,var(--cp) 18%,transparent);
+                  border:2px solid color-mix(in srgb,var(--cp) 30%,transparent);
+                  color:var(--cp)">
+        {% if user %}{{ (user.full_name or user.staff_id or 'U')[0]|upper }}{% else %}U{% endif %}
+      </div>
+    </div>
+
+  </div>
+</header>

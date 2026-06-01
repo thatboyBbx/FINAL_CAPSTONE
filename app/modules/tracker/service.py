@@ -11,7 +11,7 @@ import smtplib
 import ssl
 from datetime import date, datetime, timedelta, timezone
 from email.mime.text import MIMEText
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 from sqlalchemy.orm import Session
 

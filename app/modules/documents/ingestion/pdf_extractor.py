@@ -96,9 +96,28 @@ def _extract_raw_bt_et(raw: bytes) -> str:
 # Public API
 # ---------------------------------------------------------------------------
 
-def extract_text_from_pdf(pdf_path: str | Path) -> str:
+def extract_text_from_pdf_bytes(pdf_bytes: bytes) -> str:
     """
-    Extract all visible text from a PDF.
+    Extract visible text from PDF bytes (e.g. a downloaded HTTP response body).
+    Uses pdfplumber only — suitable for scrapers that never write the file to disk.
+    Returns empty string on failure.
+    """
+    import io
+    try:
+        import pdfplumber
+        with pdfplumber.open(io.BytesIO(pdf_bytes)) as pdf:
+            parts = [page.extract_text() for page in pdf.pages if page.extract_text()]
+        return "\n".join(parts)
+    except ImportError:
+        raise ImportError("pdfplumber is required: pip install pdfplumber")
+    except Exception as exc:
+        logger.warning("PDF bytes extraction failed: %s", exc)
+        return ""
+
+
+def extract_text_from_pdf(pdf_path: str | Path, max_pages: int | None = None) -> str:
+    """
+    Extract visible text from a PDF.
     Returns empty string on complete failure.
     """
     pdf_path = Path(pdf_path)
@@ -110,7 +129,10 @@ def extract_text_from_pdf(pdf_path: str | Path) -> str:
         import pdfplumber
         pages: list[str] = []
         with pdfplumber.open(pdf_path) as pdf:
-            for page in pdf.pages:
+            pdf_pages = pdf.pages
+            if max_pages is not None:
+                pdf_pages = pdf_pages[:max_pages]
+            for page in pdf_pages:
                 t = page.extract_text()
                 if t:
                     pages.append(t)

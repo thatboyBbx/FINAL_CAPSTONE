@@ -1,8 +1,13 @@
 /**
  * api.js — InsureIntel Zimbabwe
- * Centralised API helpers. All authenticated calls use apiFetch().
- * All notifications use showErrorModal() or showSuccessModal().
- * Never use window.alert() or alert() anywhere in this codebase.
+ *
+ * Centralised API helpers (apiGet/apiPost/apiPatch/apiDelete + apiFetch),
+ * UI helpers (showToast, showErrorModal, showSuccessModal, showProgress,
+ * confirmDialog), and a reusable fetch core that standardises error
+ * handling across the whole front-end.
+ *
+ * Loaded via <script defer src="/static/js/api.js"> from base.html.
+ * Never use window.alert() anywhere in this codebase.
  */
 
 function showErrorModal(message, durationMs = 5000) {
@@ -79,16 +84,6 @@ async function apiFetch(url, options = {}) {
   return response.json();
 }
 
-
-/**
- * api.js — Global API helper layer for InsureIntel Zimbabwe
- *
- * Provides async fetch wrappers (apiGet, apiPost, apiPatch, apiDelete),
- * UI helpers (showToast, showProgress, confirmDialog), and a reusable
- * fetch core that standardises error handling across the whole front-end.
- *
- * Loaded via <script src="/static/js/api.js"> in base.html before </body>.
- */
 
 /* ──────────────────────────────────────────────────────────────────────────
    INTERNAL HELPERS
@@ -358,16 +353,94 @@ function confirmDialog(msg) {
 }
 
 
+/* toastIn / toastOut keyframes live in static/css/main.css */
+
+
 /* ──────────────────────────────────────────────────────────────────────────
-   TOAST ANIMATION KEYFRAMES — injected once
+   MODAL FOCUS MANAGEMENT
+   Automatically traps focus, handles Escape, and restores focus on close
+   for any element with role="dialog". Works with existing markup — no
+   changes to individual pages needed to get keyboard accessibility.
    ────────────────────────────────────────────────────────────────────────── */
-(function injectToastStyles() {
-  if (document.getElementById("_toastStyles")) return;
-  const s = document.createElement("style");
-  s.id = "_toastStyles";
-  s.textContent = `
-    @keyframes toastIn  { from { opacity:0; transform:translateY(12px) } to { opacity:1; transform:none } }
-    @keyframes toastOut { from { opacity:1; transform:none } to { opacity:0; transform:translateY(8px) } }
-  `;
-  document.head.appendChild(s);
+
+(function () {
+  const FOCUSABLE = [
+    'a[href]',
+    'button:not([disabled])',
+    'input:not([disabled])',
+    'select:not([disabled])',
+    'textarea:not([disabled])',
+    '[tabindex]:not([tabindex="-1"])',
+  ].join(',');
+
+  function _trapFocus(modal, e) {
+    const els = Array.from(modal.querySelectorAll(FOCUSABLE));
+    if (!els.length) return;
+    const first = els[0], last = els[els.length - 1];
+    if (e.shiftKey) {
+      if (document.activeElement === first) { last.focus(); e.preventDefault(); }
+    } else {
+      if (document.activeElement === last) { first.focus(); e.preventDefault(); }
+    }
+  }
+
+  function _onModalOpen(modal) {
+    document.body.style.overflow = 'hidden';
+    const firstFocusable = modal.querySelector(FOCUSABLE);
+    if (firstFocusable) firstFocusable.focus();
+    modal._escapeFn = (e) => { if (e.key === 'Escape') closeModal(modal.id); };
+    modal._tabFn    = (e) => { if (e.key === 'Tab') _trapFocus(modal, e); };
+    document.addEventListener('keydown', modal._escapeFn);
+    document.addEventListener('keydown', modal._tabFn);
+  }
+
+  function _onModalClose(modal) {
+    if (modal._escapeFn) { document.removeEventListener('keydown', modal._escapeFn); modal._escapeFn = null; }
+    if (modal._tabFn)    { document.removeEventListener('keydown', modal._tabFn);    modal._tabFn    = null; }
+    const anyOpen = Array.from(document.querySelectorAll('[role="dialog"]'))
+      .some((m) => !m.classList.contains('hidden'));
+    if (!anyOpen) document.body.style.overflow = '';
+    if (modal._trigger) { modal._trigger.focus(); modal._trigger = null; }
+  }
+
+  // MutationObserver watches class changes on all [role="dialog"] elements
+  const _dialogObserver = new MutationObserver((mutations) => {
+    mutations.forEach((m) => {
+      if (m.type === 'attributes' && m.attributeName === 'class') {
+        const el = m.target;
+        const wasHidden = m.oldValue && m.oldValue.includes('hidden');
+        const isHidden  = el.classList.contains('hidden');
+        if (wasHidden && !isHidden) _onModalOpen(el);
+        if (!wasHidden && isHidden) _onModalClose(el);
+      }
+    });
+  });
+
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('[role="dialog"]').forEach((el) => {
+      _dialogObserver.observe(el, { attributes: true, attributeOldValue: true, attributeFilter: ['class'] });
+    });
+  });
+
+  /**
+   * openModal — show a modal by ID and wire up focus management.
+   * @param {string} id — the modal element's id attribute
+   * @param {Element|null} triggerEl — the element that opened the modal (focus returns here on close)
+   */
+  window.openModal = function (id, triggerEl) {
+    const modal = document.getElementById(id);
+    if (!modal) return;
+    if (triggerEl) modal._trigger = triggerEl;
+    modal.classList.remove('hidden');
+  };
+
+  /**
+   * closeModal — hide a modal by ID and restore page state.
+   * @param {string} id — the modal element's id attribute
+   */
+  window.closeModal = function (id) {
+    const modal = document.getElementById(id);
+    if (!modal) return;
+    modal.classList.add('hidden');
+  };
 })();

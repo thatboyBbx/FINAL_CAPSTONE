@@ -8,7 +8,7 @@ re-embedding on every request.
 from __future__ import annotations
 
 import logging
-from typing import Any
+from typing import Any, Dict
 
 import numpy as np
 
@@ -41,7 +41,7 @@ class ClauseDeviationScorer:
     def _load_standards(self, db) -> None:
         """Fetch standard clauses and embed them into a numpy cache."""
         from app.modules.deviation.model import StandardClause
-        from app.ai.rag.vector_store import _get_st_model
+        from app.ai.rag.vector_store import get_embedding_model
 
         rows = db.query(StandardClause).all()
         if not rows:
@@ -62,7 +62,7 @@ class ClauseDeviationScorer:
         ]
 
         try:
-            model = _get_st_model()
+            model = get_embedding_model()
             texts = [c["text"] for c in self._standard_clauses]
             embs  = model.encode(texts, show_progress_bar=False)
             self._embeddings = embs / (
@@ -90,8 +90,8 @@ class ClauseDeviationScorer:
         if self._embeddings is None or not self._standard_clauses:
             return _empty_score(clause_text, clause_type)
 
-        from app.ai.rag.vector_store import _get_st_model
-        model = _get_st_model()
+        from app.ai.rag.vector_store import get_embedding_model
+        model = get_embedding_model()
 
         try:
             emb = model.encode([clause_text], show_progress_bar=False)[0]
@@ -148,7 +148,6 @@ class ClauseDeviationScorer:
         from app.modules.circulars.model import CircularAnalysis
         from app.modules.documents.model import Document
         from app.modules.deviation.model import ClauseDeviationScore
-        from app.modules.comparison.service import _classify_clause_type
 
         # Get document text
         analysis = (

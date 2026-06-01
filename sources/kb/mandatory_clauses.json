@@ -1,0 +1,133 @@
+{
+  "version": "1.0",
+  "jurisdiction": "Zimbabwe",
+  "legal_reference": "Insurance Act [Chapter 24:07]",
+  "clauses": [
+    {
+      "id": "MC001",
+      "requirement": "Insurer Identification",
+      "section": "Section 14(1)",
+      "description": "The policy must clearly identify the registered insurer, including company name and registration number.",
+      "keywords": ["insurer", "insurance company", "underwriter", "registered", "registration number"],
+      "patterns": ["insurer[:\\s]+", "insurance company[:\\s]+", "underwritten by", "registration no"],
+      "document_types": ["all"]
+    },
+    {
+      "id": "MC002",
+      "requirement": "Insured Party Identification",
+      "section": "Section 14(2)",
+      "description": "The policy must clearly identify the insured party (policyholder) by full name.",
+      "keywords": ["insured", "policyholder", "policy holder", "assured"],
+      "patterns": ["insured[:\\s]+", "policyholder[:\\s]+", "name of insured"],
+      "document_types": ["all"]
+    },
+    {
+      "id": "MC003",
+      "requirement": "Policy Number",
+      "section": "Section 15(1)(a)",
+      "description": "Every policy must have a unique policy number for identification and reference.",
+      "keywords": ["policy number", "policy no", "policy ref", "certificate number"],
+      "patterns": ["policy\\s*(?:number|no\\.?|#)[:\\s]*\\w+", "certificate\\s*no[:\\s]*"],
+      "document_types": ["all"]
+    },
+    {
+      "id": "MC004",
+      "requirement": "Policy Period / Coverage Dates",
+      "section": "Section 15(1)(b)",
+      "description": "The policy must specify the commencement date and expiry date of coverage.",
+      "keywords": ["policy period", "effective date", "expiry date", "commencement", "inception", "renewal date", "from", "to"],
+      "patterns": ["policy period", "effective[:\\s]+\\d", "expir[yi]", "commencement date", "inception date", "valid from"],
+      "document_types": ["all"]
+    },
+    {
+      "id": "MC005",
+      "requirement": "Sum Insured / Coverage Amount",
+      "section": "Section 15(1)(c)",
+      "description": "The policy must state the sum insured or maximum liability of the insurer.",
+      "keywords": ["sum insured", "sum assured", "coverage amount", "limit of liability", "insured value", "total insured"],
+      "patterns": ["sum insured[:\\s]+\\$?", "sum assured", "limit of liability", "coverage[:\\s]+\\$?\\d"],
+      "document_types": ["all"]
+    },
+    {
+      "id": "MC006",
+      "requirement": "Premium Statement",
+      "section": "Section 15(1)(d)",
+      "description": "The policy must state the premium amount payable and the payment terms.",
+      "keywords": ["premium", "annual premium", "monthly premium", "payment", "payable"],
+      "patterns": ["premium[:\\s]+\\$?\\d", "annual premium", "premium payable", "total premium"],
+      "document_types": ["all"]
+    },
+    {
+      "id": "MC007",
+      "requirement": "Deductible / Excess",
+      "section": "Section 15(2)(a)",
+      "description": "The policy must clearly state any deductible or excess amounts applicable to claims.",
+      "keywords": ["deductible", "excess", "self-insured retention", "first loss"],
+      "patterns": ["deductible[:\\s]+\\$?", "excess[:\\s]+\\$?", "first loss[:\\s]+\\$?"],
+      "document_types": ["motor", "property", "all"]
+    },
+    {
+      "id": "MC008",
+      "requirement": "Coverage Description",
+      "section": "Section 15(1)(e)",
+      "description": "The policy must describe the risks covered or the nature of the insurance coverage.",
+      "keywords": ["coverage", "covers", "insures against", "risks covered", "scope of cover", "indemnity"],
+      "patterns": ["coverage[:\\s]+", "covers[:\\s]+", "insures against", "scope of cover", "this policy covers"],
+      "document_types": ["all"]
+    },
+    {
+      "id": "MC009",
+      "requirement": "Exclusions",
+      "section": "Section 15(2)(b)",
+      "description": "The policy must explicitly list all exclusions from coverage.",
+      "keywords": ["exclusions", "excluded", "not covered", "this policy does not cover", "exceptions"],
+      "patterns": ["exclusion", "excluded risks", "not covered", "this policy does not", "exceptions to coverage"],
+      "document_types": ["all"]
+    },
+    {
+      "id": "MC010",
+      "requirement": "Claims Procedure",
+      "section": "Section 32(1)",
+      "description": "The policy must specify the procedure for making a claim, including notification requirements and timeframes.",
+      "keywords": ["claims procedure", "claim notification", "notify", "report a claim", "claims process", "how to claim"],
+      "patterns": ["claims? procedure", "claim notification", "to make a claim", "notify.*within", "claims? must be"],
+      "document_types": ["all"]
+    },
+    {
+      "id": "MC011",
+      "requirement": "Cancellation Terms",
+      "section": "Section 35(1)",
+      "description": "The policy must state the terms and notice period for cancellation by either party.",
+      "keywords": ["cancellation", "cancel", "termination", "notice of cancellation", "days notice"],
+      "patterns": ["cancellation", "cancel.*notice", "terminate.*policy", "days.*notice.*cancel"],
+      "document_types": ["all"]
+    },
+    {
+      "id": "MC012",
+      "requirement": "Duty of Disclosure",
+      "section": "Section 18(1)",
+      "description": "The policy must include a clause requiring the insured to disclose all material facts.",
+      "keywords": ["duty of disclosure", "material facts", "disclose", "utmost good faith", "uberrimae fidei"],
+      "patterns": ["duty of disclosure", "material fact", "disclose all", "utmost good faith", "uberrimae fidei"],
+      "document_types": ["all"]
+    },
+    {
+      "id": "MC013",
+      "requirement": "Governing Law",
+      "section": "Section 7(1)",
+      "description": "The policy should specify that it is governed by the laws of Zimbabwe.",
+      "keywords": ["governing law", "zimbabwe law", "laws of zimbabwe", "jurisdiction"],
+      "patterns": ["governed by.*laws.*zimbabwe", "zimbabwe.*jurisdiction", "governing law"],
+      "document_types": ["all"]
+    },
+    {
+      "id": "MC014",
+      "requirement": "Dispute Resolution",
+      "section": "Section 42(1)",
+      "description": "The policy should outline the dispute resolution mechanism, including arbitration or court proceedings.",
+      "keywords": ["dispute", "arbitration", "mediation", "court", "legal proceedings", "disagreement"],
+      "patterns": ["dispute resolution", "arbitration clause", "refer.*arbitration", "disputes.*resolved"],
+      "document_types": ["all"]
+    }
+  ]
+}

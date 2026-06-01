@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 
-from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, String, Text
+from sqlalchemy import Boolean, DateTime, ForeignKey, Index, Integer, String, Text
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.core.db import Base
@@ -38,6 +38,10 @@ class EntityFeedback(Base):
         DateTime, default=lambda: datetime.now(timezone.utc), nullable=False, index=True
     )
 
+    __table_args__ = (
+        Index("ix_entity_feedback_pending", "used_in_training", "created_at"),
+    )
+
 
 class RiskFlagFeedback(Base):
     """Stores corrections to risk flag classifications."""
@@ -60,4 +64,8 @@ class RiskFlagFeedback(Base):
 
     created_at: Mapped[datetime] = mapped_column(
         DateTime, default=lambda: datetime.now(timezone.utc), nullable=False, index=True
+    )
+
+    __table_args__ = (
+        Index("ix_risk_flag_feedback_pending", "used_in_training", "created_at"),
     )

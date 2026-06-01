@@ -9,7 +9,6 @@ The compliance checks are exposed via the documents router:
 There is no standalone /api/compliance/check endpoint; compliance is
 document-centric and lives under the documents prefix.
 """
-import pytest
 from fastapi.testclient import TestClient
 
 

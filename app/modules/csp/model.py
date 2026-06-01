@@ -10,7 +10,7 @@ from __future__ import annotations
 import uuid
 from datetime import datetime, timezone
 
-from sqlalchemy import Boolean, DateTime, Float, ForeignKey, String, Text
+from sqlalchemy import Boolean, DateTime, Float, ForeignKey, Index, Integer, String, Text
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.core.db import Base
@@ -24,8 +24,8 @@ class CSPScore(Base):
     id: Mapped[str] = mapped_column(
         String(36), primary_key=True, default=lambda: str(uuid.uuid4())
     )
-    insurer_id: Mapped[str] = mapped_column(
-        String(36), ForeignKey("insurers.id"), nullable=False, index=True
+    insurer_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey("insurers.id"), nullable=False, index=True
     )
     financials_id: Mapped[str] = mapped_column(
         String(36), ForeignKey("insurer_financials.id"), nullable=False, index=True
@@ -59,4 +59,8 @@ class CSPScore(Base):
     )
     model_version: Mapped[str] = mapped_column(
         String(50), nullable=False, default="wcs_v1.0_xgb_v1.0"
+    )
+
+    __table_args__ = (
+        Index("ix_csp_scores_insurer_date", "insurer_id", "scored_at"),
     )

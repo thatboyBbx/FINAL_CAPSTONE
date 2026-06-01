@@ -3,7 +3,6 @@ tests/test_chatbot.py
 ======================
 Tests for the offline rule-based chatbot.
 """
-import pytest
 from fastapi.testclient import TestClient
 
 

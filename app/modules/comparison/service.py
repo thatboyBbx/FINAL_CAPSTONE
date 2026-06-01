@@ -13,6 +13,7 @@ from sqlalchemy.orm import Session
 
 from app.modules.comparison.clause_aligner import ClauseAligner
 from app.modules.comparison.delta_reporter import DeltaReporter
+from app.modules.shared.clause_classifier import classify_clause_type as _classify_clause_type
 
 logger = logging.getLogger(__name__)
 
@@ -146,18 +147,3 @@ class ComparisonService:
             pos = end - overlap if end - overlap > pos else pos + 1
         return clauses
 
-
-def _classify_clause_type(text: str) -> str:
-    """Classify a text block into a clause type based on keyword presence."""
-    text_lower = text.lower()
-    if any(w in text_lower for w in ("exclusion", "excluded", "not covered", "does not cover")):
-        return "exclusion"
-    if any(w in text_lower for w in ("coverage", "covers", "insured amount", "limit of")):
-        return "coverage"
-    if any(w in text_lower for w in ("condition", "shall", "must", "warranty", "warranted")):
-        return "condition"
-    if any(w in text_lower for w in ("cancellation", "cancel", "termination")):
-        return "cancellation"
-    if any(w in text_lower for w in ("claims", "claim procedure", "notification", "notify")):
-        return "claims_procedure"
-    return "general"

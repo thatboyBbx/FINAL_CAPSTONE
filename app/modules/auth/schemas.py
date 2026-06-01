@@ -11,10 +11,16 @@ class LoginRequest(BaseModel):
 class TokenResponse(BaseModel):
     access_token: str
     token_type: str = "bearer"
+    expires_in: int            # seconds until access token expires
     user_id: int
     staff_id: str
     full_name: str
     role: str
+
+
+class RefreshRequest(BaseModel):
+    """Body-based refresh — cookie-based refresh is preferred for browsers."""
+    refresh_token: str
 
 
 class CurrentUserResponse(BaseModel):

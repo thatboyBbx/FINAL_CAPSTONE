@@ -3,7 +3,6 @@ Tests for Client Management API endpoints.
 
 All routes are under /api/clients prefix.
 """
-import pytest
 from fastapi.testclient import TestClient
 
 

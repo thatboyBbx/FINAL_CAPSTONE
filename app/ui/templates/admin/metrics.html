@@ -1,0 +1,306 @@
+{% extends "base.html" %}
+{#
+  admin/metrics.html — System health & operations dashboard (admin only)
+  Route: GET /admin/metrics
+  Context: queue_stats{}, dead_letters[], all_counts{}, total_docs, total_chunks,
+           indexed_docs, total_users, total_queries, stale_count, doc_status{},
+           recent_events[], sys_config{}
+#}
+{% block title %}Admin Metrics — InsureIntel Zimbabwe{% endblock %}
+
+{% block content %}
+<div class="px-6 py-7 lg:px-8">
+
+  <!-- Breadcrumb -->
+  <nav style="display:flex;align-items:center;gap:.375rem;font-size:.75rem;color:var(--cosv);margin-bottom:1.5rem">
+    <a href="/home" style="color:var(--cosv);text-decoration:none">Home</a>
+    <span class="material-symbols-outlined" style="font-size:14px">chevron_right</span>
+    <a href="/system" style="color:var(--cosv);text-decoration:none">System</a>
+    <span class="material-symbols-outlined" style="font-size:14px">chevron_right</span>
+    <span style="color:var(--cp);font-weight:600">Admin Metrics</span>
+  </nav>
+
+  <!-- Header -->
+  <div style="margin-bottom:2rem;display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:1rem">
+    <div>
+      <h1 class="font-headline" style="font-size:1.75rem;font-weight:800;color:var(--cos);margin:0 0 .375rem">
+        System Metrics
+      </h1>
+      <p style="color:var(--cosv);font-size:.9rem;margin:0">
+        Live system health, queue throughput, document pipeline, and audit trail.
+      </p>
+    </div>
+    <div style="display:flex;gap:.625rem;align-items:center">
+      <span class="badge badge-red" style="font-size:.65rem;letter-spacing:.05em">ADMIN ONLY</span>
+      <button onclick="location.reload()" class="btn btn-secondary btn-sm">
+        <span class="material-symbols-outlined" style="font-size:16px">refresh</span>
+        Refresh
+      </button>
+    </div>
+  </div>
+
+  <!-- Top-level system health cards -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:1.25rem;margin-bottom:2rem">
+
+    <div class="glass-card stat-card">
+      <p style="color:var(--cosv);font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin:0 0 .5rem">Documents</p>
+      <p class="font-headline" style="font-size:1.875rem;font-weight:800;color:var(--cos);margin:0">{{ total_docs }}</p>
+      <p style="color:var(--cosv);font-size:.72rem;margin:.25rem 0 0">in vault</p>
+    </div>
+
+    <div class="glass-card stat-card">
+      <p style="color:var(--cosv);font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin:0 0 .5rem">RAG Indexed</p>
+      <p class="font-headline" style="font-size:1.875rem;font-weight:800;color:#4ade80;margin:0">{{ indexed_docs }}</p>
+      <p style="color:var(--cosv);font-size:.72rem;margin:.25rem 0 0">{{ total_chunks }} chunks</p>
+    </div>
+
+    <div class="glass-card stat-card">
+      <p style="color:var(--cosv);font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin:0 0 .5rem">Stale Embeddings</p>
+      <p class="font-headline" style="font-size:1.875rem;font-weight:800;color:{% if stale_count > 0 %}#fbbf24{% else %}#4ade80{% endif %};margin:0">{{ stale_count }}</p>
+      <p style="color:var(--cosv);font-size:.72rem;margin:.25rem 0 0">need re-index</p>
+    </div>
+
+    <div class="glass-card stat-card">
+      <p style="color:var(--cosv);font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin:0 0 .5rem">Users</p>
+      <p class="font-headline" style="font-size:1.875rem;font-weight:800;color:var(--cos);margin:0">{{ total_users }}</p>
+      <p style="color:var(--cosv);font-size:.72rem;margin:.25rem 0 0">registered</p>
+    </div>
+
+    <div class="glass-card stat-card">
+      <p style="color:var(--cosv);font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin:0 0 .5rem">RAG Queries</p>
+      <p class="font-headline" style="font-size:1.875rem;font-weight:800;color:var(--cos);margin:0">{{ total_queries }}</p>
+      <p style="color:var(--cosv);font-size:.72rem;margin:.25rem 0 0">all time</p>
+    </div>
+
+    <div class="glass-card stat-card">
+      <p style="color:var(--cosv);font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin:0 0 .5rem">Dead Letters</p>
+      <p class="font-headline" style="font-size:1.875rem;font-weight:800;color:{% if (queue_stats.dead_letter_pending_redrive or 0) > 0 %}#f87171{% else %}var(--cosv){% endif %};margin:0">
+        {{ queue_stats.dead_letter_pending_redrive or 0 }}
+      </p>
+      <p style="color:var(--cosv);font-size:.72rem;margin:.25rem 0 0">pending redrive</p>
+    </div>
+
+  </div>
+
+  <!-- Two-column: Queue summary + Doc status -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1.75rem;align-items:start" class="home-grid">
+
+    <!-- Queue status -->
+    <div class="glass-card" style="padding:1.5rem;border-radius:.75rem">
+      <h2 style="font-size:.9375rem;font-weight:700;color:var(--cos);margin:0 0 1.25rem;display:flex;align-items:center;gap:.5rem">
+        <span class="material-symbols-outlined" style="font-size:18px;color:var(--cp)">queue</span>
+        Queue Status
+      </h2>
+      {% set total_jobs = all_counts.values()|sum %}
+      <div style="margin-bottom:1rem;padding:.625rem .875rem;background:rgba(255,255,255,.03);border-radius:.5rem;border:1px solid var(--glass-bdr)">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:.78rem;color:var(--cosv)">Total across all queues</span>
+          <span class="font-headline" style="font-size:1.1rem;font-weight:800;color:var(--cos)">{{ total_jobs }}</span>
+        </div>
+      </div>
+      {% set s_colors = {'queued': '#60a5fa', 'claimed': '#a78bfa', 'processing': '#fbbf24', 'complete': '#4ade80', 'failed': '#f87171', 'dead_letter': '#ef4444'} %}
+      <div style="display:flex;flex-direction:column;gap:.5rem">
+        {% for status, cnt in all_counts.items()|sort(attribute='1', reverse=True) %}
+        {% set color = s_colors.get(status, '#a1a1a1') %}
+        <div style="display:flex;align-items:center;gap:.625rem">
+          <span style="width:8px;height:8px;border-radius:50%;background:{{ color }};flex-shrink:0"></span>
+          <span style="font-size:.78rem;color:var(--cosv);flex:1;text-transform:capitalize">{{ status }}</span>
+          <span style="font-size:.78rem;font-weight:700;color:{{ color }}">{{ cnt }}</span>
+          {% if total_jobs > 0 %}
+          <span style="font-size:.7rem;color:var(--col);width:38px;text-align:right">{{ ((cnt / total_jobs) * 100)|round(0)|int }}%</span>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+      <div style="margin-top:1rem;padding-top:1rem;border-top:1px solid var(--glass-bdr)">
+        <a href="/analytics/jobs" style="font-size:.75rem;color:var(--cp);font-weight:600;text-decoration:none">
+          Full job queue monitor →
+        </a>
+      </div>
+    </div>
+
+    <!-- Document status -->
+    <div class="glass-card" style="padding:1.5rem;border-radius:.75rem">
+      <h2 style="font-size:.9375rem;font-weight:700;color:var(--cos);margin:0 0 1.25rem;display:flex;align-items:center;gap:.5rem">
+        <span class="material-symbols-outlined" style="font-size:18px;color:var(--cp)">description</span>
+        Document Status
+      </h2>
+      {% set ds_colors = {'processed': '#4ade80', 'uploaded': '#60a5fa', 'processing': '#fbbf24', 'failed': '#f87171', 'archived': '#a1a1a1'} %}
+      {% if doc_status %}
+      <div style="display:flex;flex-direction:column;gap:.625rem">
+        {% for status, cnt in doc_status.items()|sort(attribute='1', reverse=True) %}
+        {% set color = ds_colors.get(status, '#a1a1a1') %}
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:3px">
+            <span style="font-size:.78rem;font-weight:600;color:var(--cosv);text-transform:capitalize">{{ status }}</span>
+            <span style="font-size:.78rem;font-weight:700;color:{{ color }}">{{ cnt }}{% if total_docs > 0 %} <span style="color:var(--col)">({{ ((cnt / total_docs) * 100)|round(1) }}%)</span>{% endif %}</span>
+          </div>
+          <div style="background:rgba(255,255,255,.06);border-radius:4px;height:8px;overflow:hidden">
+            <div style="height:100%;border-radius:4px;background:{{ color }};width:{{ ((cnt / [total_docs, 1]|max) * 100)|round(1) }}%"></div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <p style="font-size:.875rem;color:var(--cosv)">No documents.</p>
+      {% endif %}
+      <div style="margin-top:1rem;padding-top:1rem;border-top:1px solid var(--glass-bdr)">
+        <a href="/analytics/upload-tracking" style="font-size:.75rem;color:var(--cp);font-weight:600;text-decoration:none">
+          Full upload tracking →
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- System config -->
+  <div class="glass-card" style="padding:1.5rem;margin-bottom:1.75rem;border-radius:.75rem">
+    <h2 style="font-size:.9375rem;font-weight:700;color:var(--cos);margin:0 0 1.25rem;display:flex;align-items:center;gap:.5rem">
+      <span class="material-symbols-outlined" style="font-size:18px;color:var(--cp)">tune</span>
+      System Configuration
+    </h2>
+    {% set cfg = sys_config %}
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.75rem">
+
+      <div style="padding:.75rem 1rem;background:rgba(255,255,255,.03);border:1px solid var(--glass-bdr);border-radius:.5rem">
+        <p style="font-size:.65rem;text-transform:uppercase;letter-spacing:.08em;color:var(--col);margin:0 0 .375rem">Environment</p>
+        <p style="font-size:.875rem;font-weight:700;color:{% if cfg.env == 'production' %}#f87171{% else %}#4ade80{% endif %};margin:0">
+          {{ cfg.env or '—' }}
+        </p>
+      </div>
+
+      <div style="padding:.75rem 1rem;background:rgba(255,255,255,.03);border:1px solid var(--glass-bdr);border-radius:.5rem">
+        <p style="font-size:.65rem;text-transform:uppercase;letter-spacing:.08em;color:var(--col);margin:0 0 .375rem">Embedding Model</p>
+        <p style="font-size:.875rem;font-weight:700;color:var(--cos);margin:0">{{ cfg.embedding_model or '—' }}</p>
+        <p style="font-size:.68rem;color:var(--cosv);margin:.125rem 0 0">v{{ cfg.embedding_version or '?' }}</p>
+      </div>
+
+      <div style="padding:.75rem 1rem;background:rgba(255,255,255,.03);border:1px solid var(--glass-bdr);border-radius:.5rem">
+        <p style="font-size:.65rem;text-transform:uppercase;letter-spacing:.08em;color:var(--col);margin:0 0 .375rem">RAG Min Confidence</p>
+        <p style="font-size:.875rem;font-weight:700;color:var(--cp);margin:0">{{ cfg.rag_min_confidence or '—' }}</p>
+      </div>
+
+      <div style="padding:.75rem 1rem;background:rgba(255,255,255,.03);border:1px solid var(--glass-bdr);border-radius:.5rem">
+        <p style="font-size:.65rem;text-transform:uppercase;letter-spacing:.08em;color:var(--col);margin:0 0 .375rem">RAG Top-K</p>
+        <p style="font-size:.875rem;font-weight:700;color:var(--cos);margin:0">{{ cfg.rag_top_k or '—' }}</p>
+      </div>
+
+      <div style="padding:.75rem 1rem;background:rgba(255,255,255,.03);border:1px solid var(--glass-bdr);border-radius:.5rem">
+        <p style="font-size:.65rem;text-transform:uppercase;letter-spacing:.08em;color:var(--col);margin:0 0 .375rem">Queue Backend</p>
+        <p style="font-size:.875rem;font-weight:700;color:var(--cos);margin:0">{{ cfg.queue_backend or '—' }}</p>
+      </div>
+
+      <div style="padding:.75rem 1rem;background:rgba(255,255,255,.03);border:1px solid var(--glass-bdr);border-radius:.5rem">
+        <p style="font-size:.65rem;text-transform:uppercase;letter-spacing:.08em;color:var(--col);margin:0 0 .375rem">DB Pool Size</p>
+        <p style="font-size:.875rem;font-weight:700;color:var(--cos);margin:0">{{ cfg.db_pool_size or '—' }}</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Recent dead letters (top 5) + Recent audit events -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1.75rem;align-items:start" class="home-grid">
+
+    <!-- Recent dead letters -->
+    <div class="glass-card" style="border-radius:.75rem;overflow:hidden">
+      <div style="padding:1.25rem 1.5rem;border-bottom:1px solid var(--glass-bdr);display:flex;align-items:center;justify-content:space-between">
+        <h2 style="font-size:.9375rem;font-weight:700;color:var(--cos);margin:0;display:flex;align-items:center;gap:.5rem">
+          <span class="material-symbols-outlined" style="font-size:18px;color:#f87171">cancel</span>
+          Recent Dead Letters
+        </h2>
+        <a href="/analytics/jobs" style="font-size:.72rem;color:var(--cp);font-weight:600;text-decoration:none">All →</a>
+      </div>
+      {% if dead_letters %}
+      <div style="display:flex;flex-direction:column">
+        {% for dl in dead_letters[:5] %}
+        <div style="padding:.75rem 1.25rem;border-bottom:1px solid rgba(255,255,255,.03);display:flex;align-items:flex-start;gap:.75rem">
+          <div style="flex:1;min-width:0">
+            <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.25rem">
+              <span style="font-size:.78rem;font-weight:700;color:var(--cos)">#{{ dl.id }}</span>
+              <span class="badge badge-red" style="font-size:.6rem">{{ dl.queue }}</span>
+            </div>
+            <p style="font-size:.72rem;color:var(--cosv);margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ dl.fn_name }}</p>
+            {% if dl.error_msg %}
+            <p style="font-size:.68rem;color:#f87171;margin:.125rem 0 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="{{ dl.error_msg }}">{{ dl.error_msg[:70] }}</p>
+            {% endif %}
+          </div>
+          <span style="font-size:.68rem;color:var(--col);white-space:nowrap;flex-shrink:0">{{ dl.failed_at[:10] if dl.failed_at else '—' }}</span>
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <div style="padding:2rem;text-align:center;color:var(--cosv)">
+        <span class="material-symbols-outlined" style="font-size:28px;display:block;margin-bottom:.375rem;color:#4ade80;opacity:.6">check_circle</span>
+        <span style="font-size:.8125rem">No dead letters.</span>
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- Recent audit events -->
+    <div class="glass-card" style="border-radius:.75rem;overflow:hidden">
+      <div style="padding:1.25rem 1.5rem;border-bottom:1px solid var(--glass-bdr);display:flex;align-items:center;justify-content:space-between">
+        <h2 style="font-size:.9375rem;font-weight:700;color:var(--cos);margin:0;display:flex;align-items:center;gap:.5rem">
+          <span class="material-symbols-outlined" style="font-size:18px;color:var(--cp)">shield_person</span>
+          Recent Audit Events
+        </h2>
+        <a href="/system/audit" style="font-size:.72rem;color:var(--cp);font-weight:600;text-decoration:none">All →</a>
+      </div>
+      {% if recent_events %}
+      <div style="display:flex;flex-direction:column">
+        {% for evt in recent_events %}
+        <div style="padding:.75rem 1.25rem;border-bottom:1px solid rgba(255,255,255,.03);display:flex;align-items:flex-start;gap:.75rem">
+          <div style="flex:1;min-width:0">
+            <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.25rem;flex-wrap:wrap">
+              <span style="font-size:.78rem;font-weight:700;color:var(--cos)">{{ evt.event_type or '—' }}</span>
+              {% if evt.actor %}
+              <span class="badge badge-gold" style="font-size:.6rem">{{ evt.actor }}</span>
+              {% endif %}
+            </div>
+            {% if evt.ip_address %}
+            <p style="font-size:.68rem;color:var(--col);margin:0">{{ evt.ip_address }}</p>
+            {% endif %}
+          </div>
+          <span style="font-size:.68rem;color:var(--col);white-space:nowrap;flex-shrink:0">{{ evt.timestamp[:16] if evt.timestamp else '—' }}</span>
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <div style="padding:2rem;text-align:center;color:var(--cosv)">
+        <span class="material-symbols-outlined" style="font-size:28px;display:block;margin-bottom:.375rem;opacity:.4">history</span>
+        <span style="font-size:.8125rem">No recent events.</span>
+      </div>
+      {% endif %}
+    </div>
+
+  </div>
+
+  <!-- Quick links -->
+  <div class="glass-card" style="padding:1.25rem 1.5rem;border-radius:.75rem">
+    <h2 style="font-size:.9375rem;font-weight:700;color:var(--cos);margin:0 0 1rem;display:flex;align-items:center;gap:.5rem">
+      <span class="material-symbols-outlined" style="font-size:18px;color:var(--cp)">open_in_new</span>
+      Admin Quick Links
+    </h2>
+    <div style="display:flex;flex-wrap:wrap;gap:.625rem">
+      <a href="/analytics/jobs" class="btn btn-secondary btn-sm">
+        <span class="material-symbols-outlined" style="font-size:15px">queue</span> Job Queue
+      </a>
+      <a href="/analytics/rag-audit" class="btn btn-secondary btn-sm">
+        <span class="material-symbols-outlined" style="font-size:15px">manage_search</span> RAG Audit
+      </a>
+      <a href="/analytics/upload-tracking" class="btn btn-secondary btn-sm">
+        <span class="material-symbols-outlined" style="font-size:15px">upload_file</span> Uploads
+      </a>
+      <a href="/analytics/claims" class="btn btn-secondary btn-sm">
+        <span class="material-symbols-outlined" style="font-size:15px">bar_chart</span> Claims
+      </a>
+      <a href="/analytics/insurer-insights" class="btn btn-secondary btn-sm">
+        <span class="material-symbols-outlined" style="font-size:15px">insights</span> Insurer Insights
+      </a>
+      <a href="/system/audit" class="btn btn-secondary btn-sm">
+        <span class="material-symbols-outlined" style="font-size:15px">shield_person</span> Audit Log
+      </a>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

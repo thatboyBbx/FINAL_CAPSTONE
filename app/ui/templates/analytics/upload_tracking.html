@@ -1,0 +1,251 @@
+{% extends "base.html" %}
+{#
+  analytics/upload_tracking.html — Upload history, OCR & pipeline status
+  Route: GET /analytics/upload-tracking
+  Context: status_counts{}, total_docs, category_counts{}, recent_docs[],
+           pipeline_stats{}, indexed_count, total_chunks
+#}
+{% block title %}Upload Tracking — InsureIntel Zimbabwe{% endblock %}
+
+{% block content %}
+<div class="px-6 py-7 lg:px-8">
+
+  <!-- Breadcrumb -->
+  <nav style="display:flex;align-items:center;gap:.375rem;font-size:.75rem;color:var(--cosv);margin-bottom:1.5rem">
+    <a href="/home" style="color:var(--cosv);text-decoration:none">Home</a>
+    <span class="material-symbols-outlined" style="font-size:14px">chevron_right</span>
+    <a href="/documents" style="color:var(--cosv);text-decoration:none">Documents</a>
+    <span class="material-symbols-outlined" style="font-size:14px">chevron_right</span>
+    <span style="color:var(--cp);font-weight:600">Upload Tracking</span>
+  </nav>
+
+  <!-- Header -->
+  <div style="margin-bottom:2rem;display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:1rem">
+    <div>
+      <h1 class="font-headline" style="font-size:1.75rem;font-weight:800;color:var(--cos);margin:0 0 .375rem">Upload Tracking</h1>
+      <p style="color:var(--cosv);font-size:.9rem;margin:0">
+        Document ingestion status, OCR pipeline progress, and embedding coverage.
+      </p>
+    </div>
+    <a href="/documents/upload" class="btn btn-primary btn-sm">
+      <span class="material-symbols-outlined" style="font-size:16px">upload_file</span>
+      New Upload
+    </a>
+  </div>
+
+  <!-- Summary stat cards -->
+  {% set processed = status_counts.get('processed', 0) %}
+  {% set uploaded  = status_counts.get('uploaded', 0) %}
+  {% set processing= status_counts.get('processing', 0) %}
+  {% set failed    = status_counts.get('failed', 0) %}
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1.25rem;margin-bottom:2rem">
+
+    <div class="glass-card stat-card">
+      <p style="color:var(--cosv);font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin:0 0 .5rem">Total Documents</p>
+      <p class="font-headline" style="font-size:1.875rem;font-weight:800;color:var(--cos);margin:0">{{ total_docs }}</p>
+      <p style="color:var(--cosv);font-size:.72rem;margin:.25rem 0 0">in vault</p>
+    </div>
+
+    <div class="glass-card stat-card">
+      <p style="color:var(--cosv);font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin:0 0 .5rem">Processed</p>
+      <p class="font-headline" style="font-size:1.875rem;font-weight:800;color:#4ade80;margin:0">{{ processed }}</p>
+      <p style="color:var(--cosv);font-size:.72rem;margin:.25rem 0 0">fully extracted</p>
+    </div>
+
+    <div class="glass-card stat-card">
+      <p style="color:var(--cosv);font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin:0 0 .5rem">Pending / Processing</p>
+      <p class="font-headline" style="font-size:1.875rem;font-weight:800;color:#fbbf24;margin:0">{{ uploaded + processing }}</p>
+      <p style="color:var(--cosv);font-size:.72rem;margin:.25rem 0 0">in queue</p>
+    </div>
+
+    <div class="glass-card stat-card">
+      <p style="color:var(--cosv);font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin:0 0 .5rem">Failed</p>
+      <p class="font-headline" style="font-size:1.875rem;font-weight:800;color:{% if failed > 0 %}#f87171{% else %}#4ade80{% endif %};margin:0">{{ failed }}</p>
+      <p style="color:var(--cosv);font-size:.72rem;margin:.25rem 0 0">extraction errors</p>
+    </div>
+
+    <div class="glass-card stat-card">
+      <p style="color:var(--cosv);font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin:0 0 .5rem">RAG Indexed</p>
+      <p class="font-headline" style="font-size:1.875rem;font-weight:800;color:var(--cos);margin:0">{{ indexed_count }}</p>
+      <p style="color:var(--cosv);font-size:.72rem;margin:.25rem 0 0">{{ total_chunks }} chunks</p>
+    </div>
+
+  </div>
+
+  <!-- Pipeline status + category breakdown -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1.75rem;align-items:start" class="home-grid">
+
+    <!-- Status distribution bar -->
+    <div class="glass-card" style="padding:1.5rem;border-radius:.75rem">
+      <h2 style="font-size:.9375rem;font-weight:700;color:var(--cos);margin:0 0 1.25rem;display:flex;align-items:center;gap:.5rem">
+        <span class="material-symbols-outlined" style="font-size:18px;color:var(--cp)">pie_chart</span>
+        Status Distribution
+      </h2>
+      {% if total_docs > 0 %}
+      {% set status_colors = {'processed': '#4ade80', 'uploaded': '#60a5fa', 'processing': '#fbbf24', 'failed': '#f87171', 'archived': '#a1a1a1'} %}
+      <div style="display:flex;flex-direction:column;gap:.625rem">
+        {% for status, cnt in status_counts.items()|sort(attribute='1', reverse=True) %}
+        {% set color = status_colors.get(status, '#a1a1a1') %}
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:3px">
+            <span style="font-size:.78rem;font-weight:600;color:var(--cosv);text-transform:capitalize">{{ status }}</span>
+            <span style="font-size:.78rem;font-weight:700;color:var(--cos)">{{ cnt }} <span style="color:var(--col)">({{ ((cnt / total_docs) * 100)|round(1) }}%)</span></span>
+          </div>
+          <div style="background:rgba(255,255,255,.06);border-radius:4px;height:8px;overflow:hidden">
+            <div style="height:100%;border-radius:4px;background:{{ color }};width:{{ ((cnt / total_docs) * 100)|round(1) }}%"></div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <p style="font-size:.875rem;color:var(--cosv)">No documents yet.</p>
+      {% endif %}
+    </div>
+
+    <!-- Category breakdown -->
+    <div class="glass-card" style="padding:1.5rem;border-radius:.75rem">
+      <h2 style="font-size:.9375rem;font-weight:700;color:var(--cos);margin:0 0 1.25rem;display:flex;align-items:center;gap:.5rem">
+        <span class="material-symbols-outlined" style="font-size:18px;color:var(--cp)">category</span>
+        By Category
+      </h2>
+      {% if category_counts %}
+      {% set cat_total = category_counts.values()|sum %}
+      <div style="display:flex;flex-direction:column;gap:.5rem">
+        {% for cat, cnt in category_counts.items()|sort(attribute='1', reverse=True) %}
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:.375rem 0;border-bottom:1px solid rgba(255,255,255,.04)">
+          <span style="font-size:.8125rem;color:var(--cosv)">{{ cat or 'Uncategorised' }}</span>
+          <span class="badge badge-gold" style="font-size:.65rem">{{ cnt }}</span>
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <p style="font-size:.875rem;color:var(--cosv)">No category data.</p>
+      {% endif %}
+    </div>
+
+  </div>
+
+  <!-- OCR / Pipeline step status -->
+  {% if pipeline_stats %}
+  <div class="glass-card" style="padding:1.5rem;margin-bottom:1.75rem;border-radius:.75rem">
+    <h2 style="font-size:.9375rem;font-weight:700;color:var(--cos);margin:0 0 1.25rem;display:flex;align-items:center;gap:.5rem">
+      <span class="material-symbols-outlined" style="font-size:18px;color:var(--cp)">schema</span>
+      OCR / Pipeline Step Status
+    </h2>
+    <div style="overflow-x:auto">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Step</th>
+            <th>Queue</th>
+            <th>Queued</th>
+            <th>Processing</th>
+            <th>Complete</th>
+            <th>Failed</th>
+            <th>Dead Letter</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for step, statuses in pipeline_stats.items()|sort %}
+          <tr>
+            <td style="font-weight:600;color:var(--cos)">{{ step | replace('_', ' ') | title }}</td>
+            <td style="font-size:.75rem;color:var(--col)">
+              {{ statuses.keys()|first if statuses else '—' }}
+            </td>
+            <td>{{ statuses.get('queued', 0) or '—' }}</td>
+            <td>
+              {% set proc = statuses.get('processing', 0) %}
+              {% if proc > 0 %}<span style="color:#fbbf24;font-weight:600">{{ proc }}</span>{% else %}—{% endif %}
+            </td>
+            <td>
+              {% set comp = statuses.get('complete', 0) %}
+              {% if comp > 0 %}<span style="color:#4ade80;font-weight:600">{{ comp }}</span>{% else %}—{% endif %}
+            </td>
+            <td>
+              {% set fail = statuses.get('failed', 0) %}
+              {% if fail > 0 %}<span style="color:#f87171;font-weight:600">{{ fail }}</span>{% else %}—{% endif %}
+            </td>
+            <td>
+              {% set dl = statuses.get('dead_letter', 0) %}
+              {% if dl > 0 %}<span style="color:#f87171;font-weight:700">{{ dl }}</span>{% else %}—{% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Recent uploads -->
+  <div class="glass-card" style="border-radius:.75rem;overflow:hidden">
+    <div style="padding:1.25rem 1.5rem;border-bottom:1px solid var(--glass-bdr);display:flex;align-items:center;justify-content:space-between">
+      <h2 style="font-size:.9375rem;font-weight:700;color:var(--cos);margin:0;display:flex;align-items:center;gap:.5rem">
+        <span class="material-symbols-outlined" style="font-size:18px;color:var(--cp)">history</span>
+        Recent Uploads
+      </h2>
+      <a href="/documents/vault" style="font-size:.75rem;color:var(--cp);font-weight:600;text-decoration:none">View all →</a>
+    </div>
+    {% if recent_docs %}
+    <div style="overflow-x:auto">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Status</th>
+            <th>OCR / RAG</th>
+            <th>File Size</th>
+            <th>Uploaded</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for doc in recent_docs %}
+          {% set sc = {'processed': 'badge-green', 'uploaded': 'badge-blue', 'processing': 'badge-amber', 'failed': 'badge-red', 'archived': ''}.get(doc.status, '') %}
+          <tr>
+            <td style="max-width:220px">
+              <p style="font-weight:600;color:var(--cos);font-size:.8125rem;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">
+                {{ doc.title or doc.original_filename or 'Untitled' }}
+              </p>
+              <p style="font-size:.7rem;color:var(--col);margin:0">{{ doc.original_filename or '' }}</p>
+            </td>
+            <td style="font-size:.78rem;color:var(--cosv)">{{ doc.document_category or '—' }}</td>
+            <td><span class="badge {{ sc }}" style="font-size:.65rem;text-transform:capitalize">{{ doc.status }}</span></td>
+            <td>
+              <div style="display:flex;gap:.5rem;align-items:center">
+                {% if doc.rag_indexed %}
+                <span class="badge badge-green" style="font-size:.6rem">RAG ✓</span>
+                {% else %}
+                <span class="badge" style="font-size:.6rem;background:rgba(255,255,255,.05);color:var(--col)">RAG —</span>
+                {% endif %}
+                {% if doc.chunk_count %}
+                <span style="font-size:.7rem;color:var(--cosv)">{{ doc.chunk_count }}ch</span>
+                {% endif %}
+              </div>
+            </td>
+            <td style="font-size:.78rem;color:var(--cosv)">
+              {% if doc.file_size %}{{ (doc.file_size / 1024)|round(1) }} KB{% else %}—{% endif %}
+            </td>
+            <td style="font-size:.75rem;color:var(--cosv)">
+              {% if doc.created_at %}{{ doc.created_at.strftime('%Y-%m-%d') }}{% else %}—{% endif %}
+            </td>
+            <td>
+              <a href="/documents-ui/{{ doc.id }}" style="color:var(--cp);font-size:.75rem;font-weight:600;text-decoration:none">View</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <div style="padding:3rem 2rem;text-align:center;color:var(--cosv)">
+      <span class="material-symbols-outlined" style="font-size:36px;display:block;margin-bottom:.5rem;opacity:.4">description</span>
+      No documents uploaded yet.
+    </div>
+    {% endif %}
+  </div>
+
+</div>
+{% endblock %}

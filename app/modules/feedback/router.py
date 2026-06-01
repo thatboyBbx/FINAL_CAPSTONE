@@ -6,13 +6,15 @@ from __future__ import annotations
 import logging
 from typing import Any, Dict
 
-from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, status
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, Request, status
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from app.core.db import get_db
+from app.modules.audit.audit_logger import AuditLogger, get_audit_logger
 from app.modules.feedback.feedback_store import FeedbackStore
-from app.modules.auth.dependencies import get_current_user
+from app.modules.auth.dependencies import get_current_user, require_role
+from app.modules.users.model import User
 
 logger = logging.getLogger(__name__)
 router = APIRouter(
@@ -98,28 +100,34 @@ def get_feedback_stats(db: Session = Depends(get_db)) -> Dict[str, Any]:
 
 @router.post("/trigger-retraining")
 def trigger_retraining(
+    request: Request,
     background_tasks: BackgroundTasks,
     db: Session = Depends(get_db),
+    admin: User = Depends(require_role("admin")),
 ) -> Dict[str, Any]:
-    """Admin: trigger model retraining with accumulated feedback (background task)."""
+    """Admin-only: trigger model retraining with accumulated feedback."""
     import uuid
 
     job_id = str(uuid.uuid4())[:8]
     background_tasks.add_task(_run_retraining)
+    get_audit_logger().log(
+        db,
+        event_type=AuditLogger.RETRAINING_TRIGGERED,
+        actor=admin.staff_id,
+        ip_address=request.client.host if request.client else None,
+        details={"job_id": job_id},
+    )
     return {"status": "retraining_started", "job_id": job_id}
 
 
 def _run_retraining() -> None:
     """Background task: run full retraining pipeline with its own DB session."""
-    from app.core.db import SessionLocal
+    from app.core.db import session_scope
     from app.modules.feedback.retraining_pipeline import RetrainingPipeline
 
-    db = SessionLocal()
     try:
-        pipeline = RetrainingPipeline()
-        result = pipeline.run_full_retraining(db)
-        logger.info("Retraining result: %s", result)
+        with session_scope() as db:
+            result = RetrainingPipeline().run_full_retraining(db)
+            logger.info("Retraining result: %s", result)
     except Exception as exc:
         logger.error("Retraining pipeline failed: %s", exc)
-    finally:
-        db.close()

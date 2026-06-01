@@ -48,6 +48,16 @@ import app.modules.compliance.model        # noqa: F401
 
 target_metadata = Base.metadata
 
+
+def _use_batch_mode(url: str) -> bool:
+    """
+    render_as_batch is required for SQLite (which cannot ALTER columns directly).
+    PostgreSQL supports full ALTER TABLE, so batch mode must be off — it wraps
+    statements in a table-copy approach that breaks PostgreSQL-specific DDL.
+    """
+    return url.startswith("sqlite")
+
+
 # ─── Migration runners ────────────────────────────────────────────────────────
 
 def run_migrations_offline() -> None:
@@ -60,7 +70,7 @@ def run_migrations_offline() -> None:
         target_metadata=target_metadata,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
-        render_as_batch=True,   # required for SQLite ALTER TABLE support
+        render_as_batch=_use_batch_mode(url),
     )
     with context.begin_transaction():
         context.run_migrations()
@@ -74,7 +84,7 @@ def run_migrations_online() -> None:
         context.configure(
             connection=connection,
             target_metadata=target_metadata,
-            render_as_batch=True,   # required for SQLite ALTER TABLE support
+            render_as_batch=(connection.dialect.name == "sqlite"),
         )
         with context.begin_transaction():
             context.run_migrations()

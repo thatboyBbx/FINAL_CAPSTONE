@@ -1,7 +1,6 @@
 """
 Tests for Settlement Power (WCS) scoring endpoints and the WCS formula itself.
 """
-import pytest
 from fastapi.testclient import TestClient
 
 

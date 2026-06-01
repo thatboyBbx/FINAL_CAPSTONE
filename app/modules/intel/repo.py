@@ -7,9 +7,10 @@ import json
 import logging
 from datetime import datetime, timezone
 
-from sqlalchemy.orm import Session
 from sqlalchemy import func, text
+from sqlalchemy.orm import Session
 
+from app.core.pagination import normalize_pagination
 from app.modules.intel.model import IntelArticle
 
 logger = logging.getLogger(__name__)
@@ -63,8 +64,10 @@ def query_articles(
     insurance_type: str | None = None,
     risk_label: str | None = None,
     limit: int = 60,
+    skip: int = 0,
 ) -> list[IntelArticle]:
     try:
+        skip, limit = normalize_pagination(skip, limit)
         query = db.query(IntelArticle)
         if q:
             pattern = f"%{q}%"
@@ -82,6 +85,7 @@ def query_articles(
                 IntelArticle.published_at.desc().nullslast(),
                 IntelArticle.fetched_at.desc(),
             )
+            .offset(skip)
             .limit(limit)
             .all()
         )
@@ -90,10 +94,11 @@ def query_articles(
         return []
 
 
-def get_all_articles(db: Session) -> List[IntelArticle]:
+def get_all_articles(db: Session, limit: int = 500) -> list[IntelArticle]:
     """Fetch all articles (used for ML training)."""
     try:
-        return db.query(IntelArticle).order_by(IntelArticle.fetched_at.desc()).limit(500).all()
+        _, limit = normalize_pagination(0, limit)
+        return db.query(IntelArticle).order_by(IntelArticle.fetched_at.desc()).limit(limit).all()
     except Exception as e:
         logger.warning("intel get_all_articles error: %s", e)
         return []

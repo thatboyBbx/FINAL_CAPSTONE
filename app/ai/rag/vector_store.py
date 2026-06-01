@@ -18,19 +18,26 @@ _st_model = None
 
 
 def _get_st_model():
-    """Lazily load and cache the SentenceTransformer model."""
+    """Lazily load and cache the SentenceTransformer model (name from config)."""
     global _st_model
     if _st_model is None:
         try:
             from sentence_transformers import SentenceTransformer
-            _st_model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
-            logger.info("SentenceTransformer all-MiniLM-L6-v2 loaded.")
+            from app.core.config import settings
+            model_name = settings.embedding_model_name
+            _st_model = SentenceTransformer(model_name)
+            logger.info("SentenceTransformer %s loaded.", model_name)
         except ImportError:
             raise ImportError(
                 "sentence-transformers is required for RAG. "
                 "Install with: pip install sentence-transformers"
             )
     return _st_model
+
+
+def get_embedding_model():
+    """Public accessor for the shared SentenceTransformer singleton."""
+    return _get_st_model()
 
 
 class VectorStore:
@@ -137,20 +144,35 @@ class VectorStore:
     # Embedding + storage
     # ------------------------------------------------------------------
 
-    def embed_and_store(self, chunks: List[Dict[str, Any]]) -> int:
+    def embed_and_store(
+        self,
+        chunks: List[Dict[str, Any]],
+        batch_size: int,
+        embedding_model: str,
+        embedding_version: str,
+    ) -> int:
         """
-        Embed each chunk with SentenceTransformer and upsert into ChromaDB.
-        Returns the number of chunks stored.
+        Embed chunks in batches of batch_size and upsert into ChromaDB.
+
+        batch_size controls how many texts are passed to model.encode() at once —
+        keeps peak memory bounded for large documents.  Returns the number of
+        chunks stored.
         """
         if not chunks:
             return 0
 
         model = _get_st_model()
         texts = [c["text"] for c in chunks]
+
+        # Encode in configurable batches to limit peak memory usage
+        all_embeddings = []
         try:
-            embeddings = model.encode(texts, show_progress_bar=False)
+            for i in range(0, len(texts), batch_size):
+                batch_texts = texts[i : i + batch_size]
+                batch_embs = model.encode(batch_texts, show_progress_bar=False)
+                all_embeddings.extend(batch_embs)
         except Exception as exc:
-            logger.error("Embedding failed: %s", exc)
+            logger.error("Embedding failed at batch starting index %d: %s", i, exc)
             raise
 
         ids = [c["chunk_id"] for c in chunks]
@@ -160,19 +182,28 @@ class VectorStore:
                 "chunk_index": c["chunk_index"],
                 "char_start": c["char_start"],
                 "char_end": c["char_end"],
+                "embedding_model": embedding_model,
+                "embedding_version": embedding_version,
+                # governance metadata — stored so query() can return them without a DB round-trip
+                "page_estimate": c.get("page_estimate", 1),
+                "section_label": c.get("section_label", ""),
+                "word_count": c.get("word_count", 0),
             }
             for c in chunks
         ]
-        embedding_lists = [e.tolist() for e in embeddings]
+        embedding_lists = [e.tolist() for e in all_embeddings]
 
+        # ChromaDB upserts in batches to avoid per-call overhead on large sets
+        _CHROMA_BATCH = 500
         try:
-            # Upsert so re-indexing is idempotent
-            self._col.upsert(
-                ids=ids,
-                embeddings=embedding_lists,
-                documents=texts,
-                metadatas=metadatas,
-            )
+            for i in range(0, len(ids), _CHROMA_BATCH):
+                sl = slice(i, i + _CHROMA_BATCH)
+                self._col.upsert(
+                    ids=ids[sl],
+                    embeddings=embedding_lists[sl],
+                    documents=texts[sl],
+                    metadatas=metadatas[sl],
+                )
         except Exception as exc:
             logger.error("ChromaDB upsert failed: %s", exc)
             raise
@@ -188,10 +219,17 @@ class VectorStore:
         document_id: str,
         question: str,
         top_k: int = 5,
+        embedding_version_filter: str | None = None,
     ) -> List[Dict[str, Any]]:
         """
         Embed the question and retrieve top_k most relevant chunks for
         document_id, sorted by distance ascending (most relevant first).
+
+        Parameters
+        ----------
+        embedding_version_filter
+            When set, only chunks embedded with this version are returned.
+            Uses ChromaDB's $and compound filter.
         """
         if not question.strip():
             return []
@@ -203,11 +241,22 @@ class VectorStore:
             logger.error("Question embedding failed: %s", exc)
             return []
 
+        # Build where clause — compound filter when version pinning is requested
+        if embedding_version_filter:
+            where: Any = {
+                "$and": [
+                    {"document_id": {"$eq": document_id}},
+                    {"embedding_version": {"$eq": embedding_version_filter}},
+                ]
+            }
+        else:
+            where = {"document_id": document_id}
+
         try:
             results = self._col.query(
                 query_embeddings=[q_emb],
                 n_results=top_k,
-                where={"document_id": document_id},
+                where=where,
                 include=["documents", "metadatas", "distances"],
             )
         except Exception as exc:
@@ -219,13 +268,20 @@ class VectorStore:
 
         output = []
         for i in range(len(results["ids"][0])):
+            meta = results["metadatas"][0][i]
             output.append({
                 "chunk_id": results["ids"][0][i],
                 "text": results["documents"][0][i],
-                "chunk_index": results["metadatas"][0][i].get("chunk_index", i),
-                "char_start": results["metadatas"][0][i].get("char_start", 0),
-                "char_end": results["metadatas"][0][i].get("char_end", 0),
+                "chunk_index": meta.get("chunk_index", i),
+                "char_start": meta.get("char_start", 0),
+                "char_end": meta.get("char_end", 0),
                 "distance": results["distances"][0][i],
+                # governance fields — stored in ChromaDB metadata at embed time
+                "embedding_model": meta.get("embedding_model", ""),
+                "embedding_version": meta.get("embedding_version", ""),
+                "page_estimate": meta.get("page_estimate", 1),
+                "section_label": meta.get("section_label", ""),
+                "word_count": meta.get("word_count", 0),
             })
 
         output.sort(key=lambda x: x["distance"])

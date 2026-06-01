@@ -7,11 +7,6 @@ Demo data dependency removed — visualizations now use real DB data or empty de
 from __future__ import annotations
 
 
-def _load_demo_rows() -> list[dict]:
-    """Demo data source removed — returns empty list."""
-    return []
-
-
 def _round2(value: float) -> float:
     return round(value, 2)
 
@@ -47,7 +42,7 @@ def _group_count(rows: list[dict], key_field: str) -> tuple[list[str], list[int]
 
 
 def get_default_dashboard_visualizations() -> dict:
-    rows = _load_demo_rows()
+    rows: list[dict] = []
 
     insurer_claim_labels, insurer_claim_values = _group_sum(rows, "insurer", "claim_amount")
     insurer_settlement_labels, insurer_settlement_values = _group_avg(rows, "insurer", "settlement_days")

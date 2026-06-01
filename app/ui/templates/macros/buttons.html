@@ -3,12 +3,12 @@
 {% macro btn_primary(text, href=None, icon=None, size='', type='button', disabled=False, attrs='') %}
 {% if href %}
 <a href="{{ href }}" class="btn btn-primary {{ size }}" {{ 'aria-disabled=true' if disabled else '' }}>
-  {% if icon %}<span class="material-symbols-outlined" style="font-size:18px">{{ icon }}</span>{% endif %}
+  {% if icon %}<span class="material-symbols-outlined icon-md" aria-hidden="true">{{ icon }}</span>{% endif %}
   {{ text }}
 </a>
 {% else %}
 <button type="{{ type }}" class="btn btn-primary {{ size }}" {{ 'disabled' if disabled else '' }}>
-  {% if icon %}<span class="material-symbols-outlined" style="font-size:18px">{{ icon }}</span>{% endif %}
+  {% if icon %}<span class="material-symbols-outlined icon-md" aria-hidden="true">{{ icon }}</span>{% endif %}
   {{ text }}
 </button>
 {% endif %}
@@ -17,12 +17,12 @@
 {% macro btn_secondary(text, href=None, icon=None, size='', type='button', disabled=False) %}
 {% if href %}
 <a href="{{ href }}" class="btn btn-secondary {{ size }}">
-  {% if icon %}<span class="material-symbols-outlined" style="font-size:18px">{{ icon }}</span>{% endif %}
+  {% if icon %}<span class="material-symbols-outlined icon-md" aria-hidden="true">{{ icon }}</span>{% endif %}
   {{ text }}
 </a>
 {% else %}
 <button type="{{ type }}" class="btn btn-secondary {{ size }}" {{ 'disabled' if disabled else '' }}>
-  {% if icon %}<span class="material-symbols-outlined" style="font-size:18px">{{ icon }}</span>{% endif %}
+  {% if icon %}<span class="material-symbols-outlined icon-md" aria-hidden="true">{{ icon }}</span>{% endif %}
   {{ text }}
 </button>
 {% endif %}
@@ -31,12 +31,12 @@
 {% macro btn_glass(text, href=None, icon=None, size='', type='button', disabled=False) %}
 {% if href %}
 <a href="{{ href }}" class="btn-glass {{ size }}">
-  {% if icon %}<span class="material-symbols-outlined" style="font-size:18px">{{ icon }}</span>{% endif %}
+  {% if icon %}<span class="material-symbols-outlined icon-md" aria-hidden="true">{{ icon }}</span>{% endif %}
   {{ text }}
 </a>
 {% else %}
 <button type="{{ type }}" class="btn-glass {{ size }}" {{ 'disabled' if disabled else '' }}>
-  {% if icon %}<span class="material-symbols-outlined" style="font-size:18px">{{ icon }}</span>{% endif %}
+  {% if icon %}<span class="material-symbols-outlined icon-md" aria-hidden="true">{{ icon }}</span>{% endif %}
   {{ text }}
 </button>
 {% endif %}
@@ -45,12 +45,12 @@
 {% macro btn_glass_gold(text, href=None, icon=None, size='', type='button', disabled=False) %}
 {% if href %}
 <a href="{{ href }}" class="btn-glass btn-glass-gold {{ size }}">
-  {% if icon %}<span class="material-symbols-outlined" style="font-size:18px">{{ icon }}</span>{% endif %}
+  {% if icon %}<span class="material-symbols-outlined icon-md" aria-hidden="true">{{ icon }}</span>{% endif %}
   {{ text }}
 </a>
 {% else %}
 <button type="{{ type }}" class="btn-glass btn-glass-gold {{ size }}" {{ 'disabled' if disabled else '' }}>
-  {% if icon %}<span class="material-symbols-outlined" style="font-size:18px">{{ icon }}</span>{% endif %}
+  {% if icon %}<span class="material-symbols-outlined icon-md" aria-hidden="true">{{ icon }}</span>{% endif %}
   {{ text }}
 </button>
 {% endif %}
@@ -59,12 +59,12 @@
 {% macro btn_danger(text, href=None, icon=None, size='', type='button', disabled=False, confirm=None) %}
 {% if href %}
 <a href="{{ href }}" class="btn-glass btn-glass-danger {{ size }}" {{ ('onclick="return confirm(\'' + confirm + '\')"') | safe if confirm else '' }}>
-  {% if icon %}<span class="material-symbols-outlined" style="font-size:18px">{{ icon }}</span>{% endif %}
+  {% if icon %}<span class="material-symbols-outlined icon-md" aria-hidden="true">{{ icon }}</span>{% endif %}
   {{ text }}
 </a>
 {% else %}
 <button type="{{ type }}" class="btn-glass btn-glass-danger {{ size }}" {{ 'disabled' if disabled else '' }} {{ ('onclick="return confirm(\'' + confirm + '\')"') | safe if confirm else '' }}>
-  {% if icon %}<span class="material-symbols-outlined" style="font-size:18px">{{ icon }}</span>{% endif %}
+  {% if icon %}<span class="material-symbols-outlined icon-md" aria-hidden="true">{{ icon }}</span>{% endif %}
   {{ text }}
 </button>
 {% endif %}
@@ -73,25 +73,52 @@
 {% macro btn_ghost(text, href=None, icon=None, size='', type='button') %}
 {% if href %}
 <a href="{{ href }}" class="btn btn-ghost {{ size }}">
-  {% if icon %}<span class="material-symbols-outlined" style="font-size:18px">{{ icon }}</span>{% endif %}
+  {% if icon %}<span class="material-symbols-outlined icon-md" aria-hidden="true">{{ icon }}</span>{% endif %}
   {{ text }}
 </a>
 {% else %}
 <button type="{{ type }}" class="btn btn-ghost {{ size }}">
-  {% if icon %}<span class="material-symbols-outlined" style="font-size:18px">{{ icon }}</span>{% endif %}
+  {% if icon %}<span class="material-symbols-outlined icon-md" aria-hidden="true">{{ icon }}</span>{% endif %}
   {{ text }}
 </button>
 {% endif %}
 {% endmacro %}
 
-{% macro btn_icon(icon, onclick=None, href=None, title='', size='text-[20px]', style='') %}
+{% macro btn_icon(icon, onclick=None, href=None, title='', size='text-[20px]', style='', label=None) %}
 {% if href %}
-<a href="{{ href }}" title="{{ title }}" class="p-2 rounded-lg transition-all hover:opacity-80" style="color:var(--cosv);{{ style }}">
-  <span class="material-symbols-outlined {{ size }}">{{ icon }}</span>
+<a href="{{ href }}" title="{{ title }}" aria-label="{{ label or title }}" class="p-2 rounded-lg transition-all hover:opacity-80" style="color:var(--cosv);{{ style }}">
+  <span class="material-symbols-outlined {{ size }}" aria-hidden="true">{{ icon }}</span>
 </a>
 {% else %}
-<button type="button" onclick="{{ onclick }}" title="{{ title }}" class="p-2 rounded-lg transition-all hover:opacity-80" style="color:var(--cosv);{{ style }}">
-  <span class="material-symbols-outlined {{ size }}">{{ icon }}</span>
+<button type="button" onclick="{{ onclick }}" title="{{ title }}" aria-label="{{ label or title }}" class="p-2 rounded-lg transition-all hover:opacity-80" style="color:var(--cosv);{{ style }}">
+  <span class="material-symbols-outlined {{ size }}" aria-hidden="true">{{ icon }}</span>
 </button>
 {% endif %}
+{% endmacro %}
+
+{#
+  btn_loading — submit button that shows a spinner while loading.
+
+  Usage:
+    {{ btn_loading('Save Changes', id='save-btn', type='submit') }}
+
+  To activate the loading state from JS:
+    document.getElementById('save-btn').classList.add('btn-loading');
+    document.getElementById('save-btn').querySelector('.btn-loading-text').textContent = 'Saving…';
+
+  To deactivate:
+    document.getElementById('save-btn').classList.remove('btn-loading');
+    document.getElementById('save-btn').querySelector('.btn-loading-text').textContent = originalText;
+#}
+{% macro btn_loading(text, loading_text=None, id=None, type='submit', variant='btn-glass-gold', size='', disabled=False) %}
+<button
+  type="{{ type }}"
+  {% if id %}id="{{ id }}"{% endif %}
+  class="btn-glass {{ variant }} {{ size }}"
+  {{ 'disabled' if disabled else '' }}
+>
+  <span class="btn-spinner" aria-hidden="true"></span>
+  <span class="btn-loading-text">{{ text }}</span>
+  <span class="sr-only" role="status" aria-live="polite"></span>
+</button>
 {% endmacro %}

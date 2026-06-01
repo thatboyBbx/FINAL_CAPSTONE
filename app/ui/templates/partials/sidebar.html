@@ -1,0 +1,156 @@
+{# partials/sidebar.html — Fixed sidebar navigation #}
+<aside id="sidebar"
+       style="background:var(--sidebar-bg);border-right:1px solid var(--sidebar-bdr);width:250px"
+       class="h-screen fixed left-0 top-0 overflow-y-auto flex flex-col py-6 z-50">
+
+  <!-- Logo -->
+  <div class="px-5 mb-6 flex-shrink-0">
+    <a href="/home" class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
+           style="background:var(--cp);box-shadow:0 0 14px var(--glow)">
+        <span class="material-symbols-outlined text-[20px]"
+              style="color:var(--cop);font-variation-settings:'FILL' 1">security</span>
+      </div>
+      <div>
+        <p class="text-base font-extrabold font-headline leading-tight" style="color:var(--cos)">InsureIntel</p>
+        <p class="text-[9px] font-bold uppercase tracking-[0.2em]" style="color:var(--cp)">Zimbabwe Sovereign</p>
+      </div>
+    </a>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="flex-1 overflow-y-auto px-2 space-y-0.5 pb-2" id="sidebar-nav">
+
+    <a href="/home" class="nav-link {% if request.url.path == '/home' %}active{% endif %}">
+      <span class="material-symbols-outlined text-[20px]">dashboard</span>
+      <span class="sidebar-label">Dashboard</span>
+    </a>
+
+    <!-- Documents -->
+    <button class="nav-link w-full text-left"
+            data-accordion-trigger="s-documents"
+            data-section-paths="/documents,/document-qa,/analytics/upload-tracking">
+      <span class="material-symbols-outlined text-[20px]">folder</span>
+      <span class="sidebar-label">Documents</span>
+      <span class="chevron material-symbols-outlined sidebar-label" style="font-size:16px;margin-left:auto;transition:transform 0.18s ease">chevron_right</span>
+    </button>
+    <ul data-accordion-body="s-documents" class="pl-4 space-y-0.5" style="display:none">
+      <li><a href="/documents/vault"            class="nav-link {% if request.url.path == '/documents/vault'            %}active{% endif %}"><span class="material-symbols-outlined text-[18px]">description</span><span class="sidebar-label">Document Vault</span></a></li>
+      <li><a href="/documents/upload"           class="nav-link {% if request.url.path == '/documents/upload'           %}active{% endif %}"><span class="material-symbols-outlined text-[18px]">upload_file</span><span class="sidebar-label">Upload</span></a></li>
+      <li><a href="/documents/compare"          class="nav-link {% if request.url.path == '/documents/compare'          %}active{% endif %}"><span class="material-symbols-outlined text-[18px]">compare_arrows</span><span class="sidebar-label">Compare</span></a></li>
+      <li><a href="/document-qa"                class="nav-link {% if request.url.path == '/document-qa'                %}active{% endif %}"><span class="material-symbols-outlined text-[18px]">forum</span><span class="sidebar-label">Document Q&amp;A</span></a></li>
+      <li><a href="/analytics/upload-tracking"  class="nav-link {% if request.url.path == '/analytics/upload-tracking'  %}active{% endif %}"><span class="material-symbols-outlined text-[18px]">track_changes</span><span class="sidebar-label">Upload Tracking</span></a></li>
+    </ul>
+
+    <!-- Analysis -->
+    <button class="nav-link w-full text-left"
+            data-accordion-trigger="s-analysis"
+            data-section-paths="/analysis,/compliance-center,/analytics/claims">
+      <span class="material-symbols-outlined text-[20px]">analytics</span>
+      <span class="sidebar-label">Analysis</span>
+      <span class="chevron material-symbols-outlined sidebar-label" style="font-size:16px;margin-left:auto;transition:transform 0.18s ease">chevron_right</span>
+    </button>
+    <ul data-accordion-body="s-analysis" class="pl-4 space-y-0.5" style="display:none">
+      <li><a href="/analysis/ml"        class="nav-link {% if request.url.path == '/analysis/ml'        %}active{% endif %}"><span class="material-symbols-outlined text-[18px]">insights</span><span class="sidebar-label">ML Analytics</span></a></li>
+      <li><a href="/analysis/deviation" class="nav-link {% if request.url.path == '/analysis/deviation' %}active{% endif %}"><span class="material-symbols-outlined text-[18px]">difference</span><span class="sidebar-label">Clause Deviation</span></a></li>
+      <li><a href="/analysis/risk"      class="nav-link {% if request.url.path == '/analysis/risk'      %}active{% endif %}"><span class="material-symbols-outlined text-[18px]">warning</span><span class="sidebar-label">Risk Analysis</span></a></li>
+      <li><a href="/compliance-center"  class="nav-link {% if request.url.path == '/compliance-center'  %}active{% endif %}"><span class="material-symbols-outlined text-[18px]">verified_user</span><span class="sidebar-label">Compliance</span></a></li>
+      <li><a href="/analytics/claims"   class="nav-link {% if request.url.path == '/analytics/claims'   %}active{% endif %}"><span class="material-symbols-outlined text-[18px]">bar_chart</span><span class="sidebar-label">Claims Analytics</span></a></li>
+    </ul>
+
+    <!-- Intelligence -->
+    <button class="nav-link w-full text-left"
+            data-accordion-trigger="s-intelligence"
+            data-section-paths="/intelligence,/financial-position,/policy-tracker,/alerts-ui,/analytics/insurer-insights">
+      <span class="material-symbols-outlined text-[20px]">psychology</span>
+      <span class="sidebar-label">Intelligence</span>
+      <span class="chevron material-symbols-outlined sidebar-label" style="font-size:16px;margin-left:auto;transition:transform 0.18s ease">chevron_right</span>
+    </button>
+    <ul data-accordion-body="s-intelligence" class="pl-4 space-y-0.5" style="display:none">
+      <li><a href="/intelligence/insurers"       class="nav-link {% if '/intelligence' in request.url.path              %}active{% endif %}"><span class="material-symbols-outlined text-[18px]">groups</span><span class="sidebar-label">Insurer Intel</span></a></li>
+      <li><a href="/financial-position"          class="nav-link {% if request.url.path == '/financial-position'        %}active{% endif %}"><span class="material-symbols-outlined text-[18px]">account_balance</span><span class="sidebar-label">Financial Position</span></a></li>
+      <li><a href="/policy-tracker"              class="nav-link {% if request.url.path == '/policy-tracker'            %}active{% endif %}"><span class="material-symbols-outlined text-[18px]">event_upcoming</span><span class="sidebar-label">Policy Tracker</span></a></li>
+      <li><a href="/alerts-ui"                   class="nav-link {% if request.url.path == '/alerts-ui'                 %}active{% endif %}"><span class="material-symbols-outlined text-[18px]">notifications_active</span><span class="sidebar-label">Risk Alerts</span></a></li>
+      <li><a href="/analytics/insurer-insights"  class="nav-link {% if request.url.path == '/analytics/insurer-insights' %}active{% endif %}"><span class="material-symbols-outlined text-[18px]">leaderboard</span><span class="sidebar-label">Insurer Insights</span></a></li>
+    </ul>
+
+    <!-- Reports -->
+    <button class="nav-link w-full text-left"
+            data-accordion-trigger="s-reports"
+            data-section-paths="/reports,/news-ui,/knowledge-base">
+      <span class="material-symbols-outlined text-[20px]">summarize</span>
+      <span class="sidebar-label">Reports</span>
+      <span class="chevron material-symbols-outlined sidebar-label" style="font-size:16px;margin-left:auto;transition:transform 0.18s ease">chevron_right</span>
+    </button>
+    <ul data-accordion-body="s-reports" class="pl-4 space-y-0.5" style="display:none">
+      <li><a href="/reports"          class="nav-link {% if request.url.path == '/reports'          %}active{% endif %}"><span class="material-symbols-outlined text-[18px]">bar_chart</span><span class="sidebar-label">Reports Hub</span></a></li>
+      <li><a href="/reports/news"     class="nav-link {% if request.url.path == '/reports/news'     %}active{% endif %}"><span class="material-symbols-outlined text-[18px]">newspaper</span><span class="sidebar-label">News Feed</span></a></li>
+      <li><a href="/knowledge-base"   class="nav-link {% if request.url.path == '/knowledge-base'   %}active{% endif %}"><span class="material-symbols-outlined text-[18px]">auto_stories</span><span class="sidebar-label">Knowledge Base</span></a></li>
+      <li><a href="/reports/generate" class="nav-link {% if request.url.path == '/reports/generate' %}active{% endif %}"><span class="material-symbols-outlined text-[18px]">picture_as_pdf</span><span class="sidebar-label">Generate Report</span></a></li>
+    </ul>
+
+    <!-- Clients -->
+    <button class="nav-link w-full text-left"
+            data-accordion-trigger="s-clients"
+            data-section-paths="/clients">
+      <span class="material-symbols-outlined text-[20px]">people</span>
+      <span class="sidebar-label">Clients</span>
+      <span class="chevron material-symbols-outlined sidebar-label" style="font-size:16px;margin-left:auto;transition:transform 0.18s ease">chevron_right</span>
+    </button>
+    <ul data-accordion-body="s-clients" class="pl-4 space-y-0.5" style="display:none">
+      <li><a href="/clients/list"     class="nav-link {% if request.url.path == '/clients/list'     %}active{% endif %}"><span class="material-symbols-outlined text-[18px]">person</span><span class="sidebar-label">Client List</span></a></li>
+      <li><a href="/clients/expiry"   class="nav-link {% if request.url.path == '/clients/expiry'   %}active{% endif %}"><span class="material-symbols-outlined text-[18px]">calendar_month</span><span class="sidebar-label">Policy Expiry</span></a></li>
+      <li><a href="/clients/renewals" class="nav-link {% if request.url.path == '/clients/renewals' %}active{% endif %}"><span class="material-symbols-outlined text-[18px]">loop</span><span class="sidebar-label">Renewals</span></a></li>
+    </ul>
+
+    <!-- System -->
+    <button class="nav-link w-full text-left"
+            data-accordion-trigger="s-system"
+            data-section-paths="/system,/audit-trail,/feedback-panel,/settings,/analytics/jobs,/analytics/rag-audit,/admin/metrics">
+      <span class="material-symbols-outlined text-[20px]">settings</span>
+      <span class="sidebar-label">System</span>
+      <span class="chevron material-symbols-outlined sidebar-label" style="font-size:16px;margin-left:auto;transition:transform 0.18s ease">chevron_right</span>
+    </button>
+    <ul data-accordion-body="s-system" class="pl-4 space-y-0.5" style="display:none">
+      <li><a href="/system"                   class="nav-link {% if request.url.path == '/system'                   %}active{% endif %}"><span class="material-symbols-outlined text-[18px]">computer</span><span class="sidebar-label">System Overview</span></a></li>
+      <li><a href="/audit-trail"              class="nav-link {% if request.url.path == '/audit-trail'              %}active{% endif %}"><span class="material-symbols-outlined text-[18px]">history</span><span class="sidebar-label">Audit Trail</span></a></li>
+      <li><a href="/analytics/jobs"           class="nav-link {% if request.url.path == '/analytics/jobs'           %}active{% endif %}"><span class="material-symbols-outlined text-[18px]">queue</span><span class="sidebar-label">Job Queue</span></a></li>
+      <li><a href="/analytics/rag-audit"      class="nav-link {% if request.url.path == '/analytics/rag-audit'      %}active{% endif %}"><span class="material-symbols-outlined text-[18px]">manage_search</span><span class="sidebar-label">RAG Audit</span></a></li>
+      <li><a href="/feedback-panel"           class="nav-link {% if request.url.path == '/feedback-panel'           %}active{% endif %}"><span class="material-symbols-outlined text-[18px]">rate_review</span><span class="sidebar-label">Feedback</span></a></li>
+      <li><a href="/settings"                 class="nav-link {% if request.url.path == '/settings'                 %}active{% endif %}"><span class="material-symbols-outlined text-[18px]">tune</span><span class="sidebar-label">Settings</span></a></li>
+      {% if user and user.role == 'admin' %}
+      <li><a href="/admin/metrics"            class="nav-link {% if request.url.path == '/admin/metrics'            %}active{% endif %}" style="color:#fbbf24"><span class="material-symbols-outlined text-[18px]">admin_panel_settings</span><span class="sidebar-label">Admin Metrics</span></a></li>
+      {% endif %}
+    </ul>
+
+  </nav>
+
+  <!-- User + Logout -->
+  <div class="flex-shrink-0 px-2 pt-3 mt-2"
+       style="border-top:1px solid var(--sidebar-bdr)">
+    <div class="flex items-center gap-3 px-3 py-2 mb-1">
+      <div class="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0"
+           style="background:color-mix(in srgb,var(--cp) 18%,transparent);
+                  color:var(--cp);border:1px solid color-mix(in srgb,var(--cp) 30%,transparent)">
+        {% if user %}{{ (user.full_name or user.staff_id or 'U')[0] | upper }}{% else %}?{% endif %}
+      </div>
+      <div class="min-w-0 flex-1">
+        <p class="text-sm font-semibold truncate" style="color:var(--cos)">
+          {% if user %}{{ user.full_name or user.staff_id }}{% else %}Guest{% endif %}
+        </p>
+        <p class="text-[9px] font-bold uppercase tracking-widest" style="color:var(--cp)">
+          {% if user %}{{ user.role }}{% else %}—{% endif %}
+        </p>
+      </div>
+    </div>
+    <a href="/logout"
+       class="nav-link"
+       style="color:#ef4444"
+       onmouseover="this.style.background='rgba(239,68,68,0.08)'"
+       onmouseout="this.style.background=''">
+      <span class="material-symbols-outlined text-[20px]">logout</span>
+      <span>Sign Out</span>
+    </a>
+  </div>
+
+</aside>

@@ -12,7 +12,7 @@ Half-life defaults:
 from __future__ import annotations
 
 import math
-from datetime import date, timedelta
+from datetime import date
 
 
 def exponential_weight(age_days: int, half_life_days: int) -> float:

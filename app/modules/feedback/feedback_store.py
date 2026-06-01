@@ -7,7 +7,10 @@ import logging
 from datetime import datetime, timezone
 from typing import Any, Dict, List
 
+from sqlalchemy import func
 from sqlalchemy.orm import Session
+
+from app.core.pagination import normalize_pagination
 
 logger = logging.getLogger(__name__)
 
@@ -94,7 +97,7 @@ class FeedbackStore:
     # ------------------------------------------------------------------
 
     def get_pending_feedback(
-        self, db: Session, min_count: int = 50
+        self, db: Session, min_count: int = 50, limit: int = 500
     ) -> Dict[str, Any]:
         """
         Return unused feedback items and whether enough have accumulated
@@ -102,18 +105,40 @@ class FeedbackStore:
         """
         from app.modules.feedback.model import EntityFeedback, RiskFlagFeedback
 
-        entity_rows = (
-            db.query(EntityFeedback)
+        _, limit = normalize_pagination(0, limit)
+        entity_count = (
+            db.query(func.count(EntityFeedback.id))
             .filter(EntityFeedback.used_in_training == False)  # noqa: E712
-            .all()
+            .scalar()
+            or 0
         )
-        risk_rows = (
-            db.query(RiskFlagFeedback)
+        risk_count = (
+            db.query(func.count(RiskFlagFeedback.id))
             .filter(RiskFlagFeedback.used_in_training == False)  # noqa: E712
-            .all()
+            .scalar()
+            or 0
         )
+        total = int(entity_count) + int(risk_count)
 
-        total = len(entity_rows) + len(risk_rows)
+        entity_rows = []
+        risk_rows = []
+        if total:
+            entity_rows = (
+                db.query(EntityFeedback)
+                .filter(EntityFeedback.used_in_training == False)  # noqa: E712
+                .order_by(EntityFeedback.created_at.asc())
+                .limit(limit)
+                .all()
+            )
+            remaining = max(limit - len(entity_rows), 0)
+            if remaining:
+                risk_rows = (
+                    db.query(RiskFlagFeedback)
+                    .filter(RiskFlagFeedback.used_in_training == False)  # noqa: E712
+                    .order_by(RiskFlagFeedback.created_at.asc())
+                    .limit(remaining)
+                    .all()
+                )
 
         return {
             "entity_corrections": [_entity_to_dict(r) for r in entity_rows],
@@ -142,6 +167,7 @@ class FeedbackStore:
         except Exception as exc:
             logger.error("mark_feedback_used failed: %s", exc)
             db.rollback()
+            raise
 
 
 # ---------------------------------------------------------------------------

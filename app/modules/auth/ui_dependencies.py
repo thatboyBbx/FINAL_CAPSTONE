@@ -3,8 +3,9 @@ app/modules/auth/ui_dependencies.py
 =====================================
 Auth dependency for Jinja2 HTML page routes.
 
-Returns a redirect to /login when the session is missing or invalid.
-This is DIFFERENT from the API dependency (dependencies.py) which returns 401 JSON.
+Returns a redirect to /login when the session is missing, invalid, revoked,
+or expired.  This is DIFFERENT from the API dependency (dependencies.py)
+which returns 401 JSON.
 
 Usage in any UI route:
     from app.modules.auth.ui_dependencies import require_ui_login
@@ -31,7 +32,7 @@ from fastapi.responses import RedirectResponse
 from sqlalchemy.orm import Session
 
 from app.core.db import get_db
-from app.modules.auth.service import decode_access_token
+from app.modules.auth.service import verify_access_token
 from app.modules.users.model import User
 
 logger = logging.getLogger(__name__)
@@ -47,7 +48,8 @@ def require_ui_login(
 
     Returns:
         User object if the session is valid.
-        RedirectResponse to /login if the session is missing or invalid.
+        RedirectResponse to /login if the session is missing, invalid,
+        expired, or revoked.
 
     The redirect includes ?next=<original path> so after login the user
     returns to where they were trying to go.
@@ -58,9 +60,15 @@ def require_ui_login(
             status_code=302,
         )
 
-    payload = decode_access_token(access_token)
+    payload, reason = verify_access_token(db, access_token)
+
     if payload is None:
-        # Expired or tampered token — clear cookie and redirect
+        if reason in ("token_invalid", "token_missing_claims"):
+            logger.warning(
+                "UI session rejected for %s — reason: %s",
+                request.client.host if request.client else "?",
+                reason,
+            )
         response = RedirectResponse(url="/login", status_code=302)
         response.delete_cookie("access_token")
         return response

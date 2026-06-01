@@ -1,0 +1,36 @@
+{
+  "profile": "demo",
+  "model_label": "DEMO: Settlement-Risk Classifier (Proxy-Labeled)",
+  "label_source": "proxy_labels_csv",
+  "model_path": "C:\\Users\\lenovo\\Desktop\\CODEX2\\EXPERIMENT\\storage\\models\\demo\\model.joblib",
+  "feature_names": [
+    "reserve_adequacy_index",
+    "claims_pressure_indicator",
+    "liquidity_stress_score",
+    "reserve_depletion_velocity",
+    "adverse_event_count",
+    "settlement_event_count",
+    "regulatory_event_count",
+    "lawsuit_event_count",
+    "catastrophe_event_count",
+    "news_risk_score",
+    "circular_count",
+    "circular_high_count",
+    "circular_moderate_count",
+    "circular_avg_risk_score",
+    "circular_max_risk_score",
+    "circular_compliance_signals",
+    "circular_financial_stress_signals",
+    "circular_claims_signals",
+    "circular_total_risk_signals"
+  ],
+  "metrics": {
+    "accuracy": 0.9847,
+    "rows": 1572,
+    "train_rows": 1179,
+    "test_rows": 393,
+    "test_size": 0.25,
+    "model_label": "GBDT: Settlement-Risk Classifier (HistGradientBoosting + Circular-NLP)"
+  },
+  "saved_at": "2026-05-31T22:50:48.772581Z"
+}

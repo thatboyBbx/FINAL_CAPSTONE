@@ -81,30 +81,30 @@ def compare_documents(
 
 def _run_comparison(comp_id: int, doc_a_id: int, doc_b_id: int) -> None:
     """Background task: run comparison and update the DB row."""
-    from app.core.db import SessionLocal
+    from app.core.db import session_scope
     from app.modules.comparison.service import ComparisonService
     from app.modules.comparison.model import DocumentComparison
 
-    db = SessionLocal()
     try:
-        service = ComparisonService()
-        report = service.compare(doc_a_id, doc_b_id, db)
-        # The report is already saved inside compare(); update status
-        comp = db.query(DocumentComparison).filter(DocumentComparison.id == comp_id).first()
-        if comp:
-            comp.status = "complete"
-            db.commit()
+        with session_scope() as db:
+            service = ComparisonService()
+            service.compare(doc_a_id, doc_b_id, db)
+            comp = db.query(DocumentComparison).filter(
+                DocumentComparison.id == comp_id
+            ).first()
+            if comp:
+                comp.status = "complete"
     except Exception as exc:
         logger.error("Comparison %d failed: %s", comp_id, exc)
         try:
-            comp = db.query(DocumentComparison).filter(DocumentComparison.id == comp_id).first()
-            if comp:
-                comp.status = "failed"
-                db.commit()
+            with session_scope() as db:
+                comp = db.query(DocumentComparison).filter(
+                    DocumentComparison.id == comp_id
+                ).first()
+                if comp:
+                    comp.status = "failed"
         except Exception:
             pass
-    finally:
-        db.close()
 
 
 @router.get("/{comparison_id}")

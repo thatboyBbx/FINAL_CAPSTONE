@@ -9,7 +9,6 @@ API prefix: /api/clients
 from __future__ import annotations
 
 import logging
-from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
@@ -186,8 +185,16 @@ def add_client_policy(
 
 
 @router.get("/{client_id}/documents", response_model=None)
-def list_client_documents(client_id: int, db: Session = Depends(get_db)) -> list[dict]:
-    return [_document_to_dict(d) for d in svc.list_client_documents(db, client_id)]
+def list_client_documents(
+    client_id: int,
+    limit: int = Query(100, ge=1, le=500),
+    offset: int = Query(0, ge=0),
+    db: Session = Depends(get_db),
+) -> list[dict]:
+    return [
+        _document_to_dict(d)
+        for d in svc.list_client_documents(db, client_id, offset=offset, limit=limit)
+    ]
 
 
 @router.get("/{client_id}/document-suggestions", response_model=None)

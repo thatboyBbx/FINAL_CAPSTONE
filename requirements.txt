@@ -6,6 +6,7 @@ python-multipart
 # Database
 sqlalchemy
 alembic
+psycopg2-binary
 
 # Validation & config
 pydantic[email]
@@ -21,6 +22,7 @@ httpx
 python-jose[cryptography]
 passlib[bcrypt]
 bcrypt
+slowapi
 
 # ML — tabular (existing)
 scikit-learn

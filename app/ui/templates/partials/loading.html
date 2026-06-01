@@ -1,0 +1,139 @@
+{#
+  partials/loading.html — Loading state macros.
+
+  Usage:
+    {% from "partials/loading.html" import spinner, spinner_section,
+       skeleton_card, skeleton_card_grid, skeleton_table, skeleton_text,
+       loading_overlay, htmx_indicator %}
+#}
+
+<style>
+  @keyframes _ii-spin    { to { transform: rotate(360deg); } }
+  @keyframes _ii-shimmer { 0%  { background-position: 200% 0; }
+                           100%{ background-position:-200% 0; } }
+  ._ii-shimmer {
+    background: linear-gradient(
+      90deg,
+      rgba(255,255,255,0.05) 25%,
+      rgba(255,255,255,0.10) 50%,
+      rgba(255,255,255,0.05) 75%
+    );
+    background-size: 200% 100%;
+    animation: _ii-shimmer 1.4s infinite;
+    border-radius: 4px;
+  }
+  html:not(.dark) ._ii-shimmer {
+    background: linear-gradient(
+      90deg,
+      rgba(0,0,0,0.04) 25%,
+      rgba(0,0,0,0.08) 50%,
+      rgba(0,0,0,0.04) 75%
+    );
+    background-size: 200% 100%;
+  }
+</style>
+
+{# ── Inline spinner (SVG, no external deps) ── #}
+{% macro spinner(size='20px', color='var(--cp)') %}
+<svg width="{{ size }}" height="{{ size }}" viewBox="0 0 24 24" fill="none"
+     xmlns="http://www.w3.org/2000/svg"
+     style="animation:_ii-spin 0.8s linear infinite;flex-shrink:0;color:{{ color }}"
+     aria-hidden="true">
+  <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2.5"
+          stroke-dasharray="55" stroke-dashoffset="20" stroke-linecap="round"/>
+</svg>
+{% endmacro %}
+
+{# ── Full-section centred spinner with optional label ── #}
+{% macro spinner_section(label='Loading…', height='12rem') %}
+<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;
+            gap:0.875rem;height:{{ height }};color:var(--cosv)" role="status" aria-label="{{ label }}">
+  {{ spinner(size='32px') }}
+  <p style="font-size:0.875rem;font-weight:500;margin:0">{{ label }}</p>
+</div>
+{% endmacro %}
+
+{# ── Skeleton stat card (mirrors glass-card stat-card) ── #}
+{% macro skeleton_card(extra_class='') %}
+<div class="glass-card stat-card {{ extra_class }}" aria-busy="true" aria-label="Loading…">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:1rem">
+    <div style="flex:1;min-width:0">
+      <div class="_ii-shimmer" style="height:10px;width:55%;margin-bottom:0.875rem"></div>
+      <div class="_ii-shimmer" style="height:28px;width:40%;margin-bottom:0.625rem"></div>
+      <div class="_ii-shimmer" style="height:8px;width:30%"></div>
+    </div>
+    <div style="width:42px;height:42px;border-radius:10px;flex-shrink:0;
+                background:rgba(255,255,255,0.05)"></div>
+  </div>
+</div>
+{% endmacro %}
+
+{# ── Grid of N skeleton stat cards ── #}
+{% macro skeleton_card_grid(count=4, min_col='200px') %}
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax({{ min_col }},1fr));gap:1.25rem">
+  {% for _ in range(count) %}{{ skeleton_card() }}{% endfor %}
+</div>
+{% endmacro %}
+
+{# ── Skeleton table ── #}
+{% macro skeleton_table(rows=5, cols=4) %}
+{% set col_widths = ['55%','75%','45%','65%','80%'] %}
+<div style="overflow-x:auto" aria-busy="true" aria-label="Loading table…">
+  <table class="data-table">
+    <thead>
+      <tr>
+        {% for c in range(cols) %}
+        <th><div class="_ii-shimmer" style="height:8px;width:60%"></div></th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in range(rows) %}
+      <tr>
+        {% for c in range(cols) %}
+        <td>
+          <div class="_ii-shimmer"
+               style="height:10px;width:{{ col_widths[c % 5] }};
+                      animation-delay:{{ (r * cols + c) * 0.04 }}s"></div>
+        </td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endmacro %}
+
+{# ── Skeleton text lines (for paragraph placeholders) ── #}
+{% macro skeleton_text(lines=3) %}
+{% set widths = ['100%','82%','68%','90%','58%'] %}
+<div style="display:flex;flex-direction:column;gap:0.625rem" aria-busy="true">
+  {% for i in range(lines) %}
+  <div class="_ii-shimmer"
+       style="height:10px;width:{{ widths[i % 5] }};animation-delay:{{ i * 0.07 }}s"></div>
+  {% endfor %}
+</div>
+{% endmacro %}
+
+{# ── Full-section loading overlay (absolute, needs position:relative on parent) ── #}
+{% macro loading_overlay(label='Please wait…', id=None) %}
+<div {% if id %}id="{{ id }}"{% endif %}
+     style="position:absolute;inset:0;display:flex;flex-direction:column;
+            align-items:center;justify-content:center;gap:0.75rem;
+            background:color-mix(in srgb,var(--cbg) 80%,transparent);
+            backdrop-filter:blur(3px);z-index:20;border-radius:inherit"
+     role="status" aria-label="{{ label }}">
+  {{ spinner(size='28px') }}
+  <p style="font-size:0.8125rem;font-weight:500;color:var(--cosv);margin:0">{{ label }}</p>
+</div>
+{% endmacro %}
+
+{# ── HTMX in-line indicator (shown via .htmx-indicator class mechanism) ── #}
+{% macro htmx_indicator(label=None) %}
+<span class="htmx-indicator"
+      style="display:inline-flex;align-items:center;gap:0.375rem;
+             color:var(--cosv);font-size:0.8125rem">
+  {{ spinner(size='16px') }}
+  {% if label %}<span>{{ label }}</span>{% endif %}
+</span>
+{% endmacro %}

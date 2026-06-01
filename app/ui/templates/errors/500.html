@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" id="html-root" class="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>500 — Server Error | InsureIntel Zimbabwe</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  <style>
+    :root { --p:#d4af37; --bg:#0f0f0f; --sf:#1a1a1a; --os:#f5f5f5; --osv:#a1a1a1; --err:#ff4d4d; }
+    html:not(.dark) { --p:#004ac6; --bg:#f8f9fb; --sf:#ffffff; --os:#191c1e; --osv:#434655; --err:#ba1a1a; }
+    *,*::before,*::after { box-sizing:border-box; }
+    body {
+      font-family:'Inter',sans-serif; background:var(--bg); color:var(--os);
+      min-height:100vh; display:flex; align-items:center; justify-content:center;
+      -webkit-font-smoothing:antialiased;
+    }
+    h1 { font-family:'Manrope',sans-serif; }
+    .material-symbols-outlined { font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24; vertical-align:middle; }
+    .glass { background:rgba(26,26,26,0.6); backdrop-filter:blur(12px); border:1px solid rgba(255,77,77,0.15); }
+    html:not(.dark) .glass { background:rgba(255,255,255,0.85); border-color:rgba(186,26,26,0.15); }
+    .btn { display:inline-flex;align-items:center;gap:0.5rem;padding:0.625rem 1.25rem;
+           border-radius:8px;font-size:0.875rem;font-weight:600;text-decoration:none;
+           transition:all 0.15s; border:none; cursor:pointer; }
+    .btn-p { background:var(--p); color:#000; }
+    html:not(.dark) .btn-p { color:#fff; }
+    .btn-p:hover { opacity:0.88; }
+    .btn-r { background:rgba(255,77,77,0.1); color:var(--err); border:1px solid rgba(255,77,77,0.3); }
+    .btn-r:hover { background:rgba(255,77,77,0.18); }
+    .code-box {
+      background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.06);
+      border-radius:0.5rem; padding:0.75rem 1rem;
+      font-family:'Courier New',monospace; font-size:0.75rem;
+      color:var(--osv); word-break:break-all; text-align:left; max-height:8rem; overflow-y:auto;
+    }
+    html:not(.dark) .code-box { background:rgba(0,0,0,0.04); border-color:rgba(0,0,0,0.08); }
+  </style>
+  <script>(function(){var t=localStorage.getItem('insureIntelTheme')||'dark';if(t!=='dark')document.documentElement.classList.remove('dark');})();</script>
+</head>
+<body>
+
+  <div class="glass" style="max-width:32rem;width:100%;margin:1.5rem;padding:3rem 2.5rem;border-radius:1.25rem;text-align:center">
+
+    <!-- Icon -->
+    <div style="width:72px;height:72px;border-radius:50%;margin:0 auto 1.5rem;
+                background:rgba(255,77,77,0.1);border:1px solid rgba(255,77,77,0.25);
+                display:flex;align-items:center;justify-content:center">
+      <span class="material-symbols-outlined" style="font-size:36px;color:var(--err);font-variation-settings:'FILL' 1">error</span>
+    </div>
+
+    <p style="font-size:0.7rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--err);margin:0 0 0.5rem">Error 500</p>
+    <h1 style="font-size:1.75rem;font-weight:800;color:var(--os);margin:0 0 0.75rem;line-height:1.2">Something went wrong</h1>
+    <p style="font-size:0.9rem;color:var(--osv);margin:0 0 1.5rem;line-height:1.6">
+      An unexpected server error occurred. The issue has been logged. Please try again or contact system administration if the problem persists.
+    </p>
+
+    {% if detail %}
+    <div class="code-box" style="margin-bottom:1.5rem">{{ detail }}</div>
+    {% endif %}
+
+    {% if request_id %}
+    <p style="font-size:0.75rem;color:var(--osv);margin:0 0 1.5rem">
+      Reference ID: <span style="font-family:monospace;color:var(--p)">{{ request_id }}</span>
+    </p>
+    {% endif %}
+
+    <div style="display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap">
+      <a href="/home" class="btn btn-p">
+        <span class="material-symbols-outlined" style="font-size:18px">home</span>
+        Go to Dashboard
+      </a>
+      <button onclick="location.reload()" class="btn btn-r">
+        <span class="material-symbols-outlined" style="font-size:18px">refresh</span>
+        Try Again
+      </button>
+    </div>
+
+  </div>
+
+</body>
+</html>

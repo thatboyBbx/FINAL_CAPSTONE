@@ -7,7 +7,7 @@ Requires: sentence-transformers, scipy
 from __future__ import annotations
 
 import logging
-from typing import Any
+from typing import Any, Dict, List
 
 import numpy as np
 
@@ -48,8 +48,8 @@ class ClauseAligner:
             return [_alignment("removed", ca, None) for ca in clauses_a]
 
         # Embed all clause texts
-        from app.ai.rag.vector_store import _get_st_model
-        model = _get_st_model()
+        from app.ai.rag.vector_store import get_embedding_model
+        model = get_embedding_model()
 
         texts_a = [c.get("text", "") for c in clauses_a]
         texts_b = [c.get("text", "") for c in clauses_b]

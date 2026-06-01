@@ -1,5 +1,6 @@
 from sqlalchemy.orm import Session
 
+from app.core.pagination import normalize_pagination
 from app.modules.documents.model import Document
 from app.modules.documents.schemas import DocumentCreate, DocumentUpdate
 
@@ -17,6 +18,7 @@ def create_document(db: Session, payload: DocumentCreate) -> Document:
         notes=payload.notes,
         uploaded_by_user_id=payload.uploaded_by_user_id,
         client_id=payload.client_id,
+        sha256_hash=payload.sha256_hash,
     )
     db.add(document)
     db.commit()
@@ -32,15 +34,28 @@ def get_document_by_stored_filename(db: Session, stored_filename: str) -> Docume
     return db.query(Document).filter(Document.stored_filename == stored_filename).first()
 
 
-def list_documents(db: Session) -> list[Document]:
-    return db.query(Document).order_by(Document.created_at.desc()).all()
+def get_document_by_sha256(db: Session, sha256: str) -> Document | None:
+    return db.query(Document).filter(Document.sha256_hash == sha256).first()
 
 
-def list_documents_by_uploader(db: Session, uploaded_by_user_id: int) -> list[Document]:
+def list_documents(db: Session, skip: int = 0, limit: int = 100) -> list[Document]:
+    skip, limit = normalize_pagination(skip, limit)
+    return db.query(Document).order_by(Document.created_at.desc()).offset(skip).limit(limit).all()
+
+
+def list_documents_by_uploader(
+    db: Session,
+    uploaded_by_user_id: int,
+    skip: int = 0,
+    limit: int = 100,
+) -> list[Document]:
+    skip, limit = normalize_pagination(skip, limit)
     return (
         db.query(Document)
         .filter(Document.uploaded_by_user_id == uploaded_by_user_id)
         .order_by(Document.created_at.desc())
+        .offset(skip)
+        .limit(limit)
         .all()
     )
 
@@ -51,7 +66,10 @@ def list_documents_filtered(
     document_category: str | None = None,
     uploaded_by_user_id: int | None = None,
     client_id: int | None = None,
+    skip: int = 0,
+    limit: int = 100,
 ) -> list[Document]:
+    skip, limit = normalize_pagination(skip, limit)
     query = db.query(Document)
 
     if status is not None:
@@ -66,7 +84,7 @@ def list_documents_filtered(
     if client_id is not None:
         query = query.filter(Document.client_id == client_id)
 
-    return query.order_by(Document.created_at.desc()).all()
+    return query.order_by(Document.created_at.desc()).offset(skip).limit(limit).all()
 
 
 def update_document(db: Session, document: Document, payload: DocumentUpdate) -> Document:

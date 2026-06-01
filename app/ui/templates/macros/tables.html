@@ -1,13 +1,42 @@
 {# macros/tables.html — Data table macros for InsureIntel Zimbabwe #}
 
-{% macro data_table(headers, rows, empty_msg='No data available.', id=None) %}
-<div style="overflow-x:auto">
+{#
+  data_table — renders a full data table with proper empty state.
+
+  headers — list of strings OR dicts with keys:
+    label     (required) — display text
+    sortable  (optional) — if True, adds sortable class
+    sort_key  (optional) — field name used in query params for sort links
+    sort_dir  (optional) — 'asc' | 'desc' | None — current sort direction
+
+  empty_title / empty_subtitle / empty_action_text / empty_action_href
+    — control the empty state shown when rows is empty
+#}
+{% macro data_table(headers, rows, empty_msg=None, id=None,
+                    empty_title='No data yet',
+                    empty_subtitle=None,
+                    empty_icon='table_rows',
+                    empty_action_text=None,
+                    empty_action_href=None) %}
+{% from "macros/alerts.html" import empty_state %}
+<div class="overflow-x-auto">
   <table class="data-table" {% if id %}id="{{ id }}"{% endif %}>
     <thead>
       <tr>
         {% for header in headers %}
-        <th class="{% if header.get('sortable', False) %}sortable{% endif %}">
-          {{ header.label if header is mapping else header }}
+        {% set h = header if header is mapping else {'label': header} %}
+        {% set is_sortable = h.get('sortable', False) %}
+        {% set sort_dir = h.get('sort_dir', None) %}
+        <th
+          class="{{ 'sortable' if is_sortable else '' }}"
+          {% if is_sortable %}aria-sort="{{ sort_dir if sort_dir else 'none' }}"{% endif %}
+        >
+          {{ h.label }}
+          {% if is_sortable %}
+          <span class="material-symbols-outlined icon-sm sort-icon" aria-hidden="true">
+            {% if sort_dir == 'asc' %}arrow_upward{% elif sort_dir == 'desc' %}arrow_downward{% else %}unfold_more{% endif %}
+          </span>
+          {% endif %}
         </th>
         {% endfor %}
       </tr>
@@ -23,9 +52,14 @@
       {% endfor %}
       {% else %}
       <tr>
-        <td colspan="{{ headers | length }}" style="text-align:center;padding:2rem;color:var(--cosv)">
-          <span class="material-symbols-outlined" style="display:block;font-size:36px;margin-bottom:0.5rem;color:var(--col)">table_rows</span>
-          {{ empty_msg }}
+        <td colspan="{{ headers | length }}" style="padding:0">
+          {{ empty_state(
+               title=empty_title,
+               subtitle=empty_subtitle or empty_msg,
+               icon=empty_icon,
+               action_text=empty_action_text,
+               action_href=empty_action_href
+             ) }}
         </td>
       </tr>
       {% endif %}
@@ -41,8 +75,8 @@
 {% macro table_actions(actions) %}
 <div style="display:flex;gap:0.5rem;align-items:center">
   {% for action in actions %}
-  <a href="{{ action.href }}" class="btn-glass btn-sm" style="font-size:0.75rem;padding:0.3rem 0.625rem">
-    {% if action.get('icon') %}<span class="material-symbols-outlined" style="font-size:15px">{{ action.icon }}</span>{% endif %}
+  <a href="{{ action.href }}" class="btn-glass btn-sm">
+    {% if action.get('icon') %}<span class="material-symbols-outlined icon-sm" aria-hidden="true">{{ action.icon }}</span>{% endif %}
     {{ action.label }}
   </a>
   {% endfor %}
@@ -51,20 +85,41 @@
 
 {% macro pagination(page, total_pages, base_url) %}
 {% if total_pages > 1 %}
-<div style="display:flex;align-items:center;justify-content:center;gap:0.5rem;margin-top:1.5rem">
+<nav aria-label="Pagination" style="display:flex;align-items:center;justify-content:center;gap:0.5rem;margin-top:1.5rem">
   {% if page > 1 %}
-  <a href="{{ base_url }}?page={{ page - 1 }}" class="btn-glass btn-sm">
-    <span class="material-symbols-outlined" style="font-size:16px">chevron_left</span>
+  <a href="{{ base_url }}?page={{ page - 1 }}" class="btn-glass btn-sm" aria-label="Previous page">
+    <span class="material-symbols-outlined icon-sm" aria-hidden="true">chevron_left</span>
   </a>
   {% endif %}
   {% for p in range(1, total_pages + 1) %}
-  <a href="{{ base_url }}?page={{ p }}" class="btn-glass btn-sm{% if p == page %} btn-glass-gold{% endif %}">{{ p }}</a>
+  <a href="{{ base_url }}?page={{ p }}"
+     class="btn-glass btn-sm{% if p == page %} btn-glass-gold{% endif %}"
+     {% if p == page %}aria-current="page"{% endif %}
+     aria-label="Page {{ p }}">{{ p }}</a>
   {% endfor %}
   {% if page < total_pages %}
-  <a href="{{ base_url }}?page={{ page + 1 }}" class="btn-glass btn-sm">
-    <span class="material-symbols-outlined" style="font-size:16px">chevron_right</span>
+  <a href="{{ base_url }}?page={{ page + 1 }}" class="btn-glass btn-sm" aria-label="Next page">
+    <span class="material-symbols-outlined icon-sm" aria-hidden="true">chevron_right</span>
   </a>
   {% endif %}
-</div>
+</nav>
 {% endif %}
+{% endmacro %}
+
+{#
+  skeleton_table_rows — inline skeleton for use directly inside a table tbody
+  when you can't import from partials/loading.html (e.g. inside an existing table).
+#}
+{% macro skeleton_table_rows(rows=5, cols=4) %}
+{% set col_widths = ['55%','75%','45%','65%','80%'] %}
+{% for r in range(rows) %}
+<tr aria-hidden="true">
+  {% for c in range(cols) %}
+  <td>
+    <div class="skeleton"
+         style="height:10px;width:{{ col_widths[c % 5] }};animation-delay:{{ (r * cols + c) * 0.04 }}s"></div>
+  </td>
+  {% endfor %}
+</tr>
+{% endfor %}
 {% endmacro %}

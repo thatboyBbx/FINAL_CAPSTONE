@@ -5,9 +5,7 @@ Model persisted to storage/models/intel_classifier.pkl
 """
 from __future__ import annotations
 
-import io
 import logging
-import os
 import pickle
 from datetime import datetime, timezone
 from pathlib import Path

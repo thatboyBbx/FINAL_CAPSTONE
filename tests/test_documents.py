@@ -9,7 +9,6 @@ Notes on routing:
   /documents requests go to the UI layer, not the API.
 """
 import io
-import pytest
 from fastapi.testclient import TestClient
 
 

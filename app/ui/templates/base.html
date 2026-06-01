@@ -8,12 +8,13 @@
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
-  <!-- Global glassmorphism system & design tokens -->
-  <link rel="stylesheet" href="/static/css/main.css">
+
+  <!-- Tokens -> structural -> components -> utilities -> overrides -->
   <link rel="stylesheet" href="/static/css/theme.css">
   <link rel="stylesheet" href="/static/css/layout.css">
   <link rel="stylesheet" href="/static/css/components.css">
   <link rel="stylesheet" href="/static/css/utilities.css">
+  <link rel="stylesheet" href="/static/css/main.css">
 
   <script id="tailwind-config">
     tailwind.config = {
@@ -54,6 +55,8 @@
       --cos:  #f5f5f5;
       --cosv: #a1a1a1;
       --cerr: #ff4d4d;
+      --sidebar-w:    250px;
+      --topbar-h:     4rem;
       --sidebar-bg:   #0a0a0a;
       --sidebar-bdr:  rgba(212,175,55,0.15);
       --glass-bg:     rgba(26,26,26,0.6);
@@ -165,13 +168,9 @@
     html:not(.dark) .alert-success { background:rgba(0,100,60,0.06);   color:#006438; }
     html:not(.dark) .alert-warn    { background:rgba(100,73,0,0.06);   color:#644900; }
     html:not(.dark) .alert-info    { background:rgba(0,74,198,0.06);   color:#004ac6; }
-    /* ── Error visibility utility — guaranteed visible error display ── */
     .error-visible {
-      color:#ff4d4f;
-      background:#fff1f0;
-      border:1px solid #ffccc7;
-      border-radius:4px;
-      padding:8px 12px;
+      color:#ff4d4f; background:#fff1f0;
+      border:1px solid #ffccc7; border-radius:4px; padding:8px 12px;
     }
 
     /* ── Buttons ── */
@@ -233,6 +232,48 @@
     html.dark       .icon-dark-mode  { display:none; }
     html:not(.dark) .icon-light-mode { display:none; }
 
+    /* ── HTMX loading states ── */
+    .htmx-indicator { opacity:0; transition:opacity 0.2s ease; pointer-events:none; }
+    .htmx-request .htmx-indicator,
+    .htmx-request.htmx-indicator  { opacity:1; pointer-events:auto; }
+
+    /* Dim the target element while a request is in-flight */
+    .htmx-request[hx-target],
+    .htmx-request [hx-target] { opacity:0.6; }
+
+    /* Button spinner on htmx-request */
+    button.htmx-request,
+    a.htmx-request {
+      position:relative; pointer-events:none; opacity:0.7;
+    }
+    button.htmx-request::after,
+    a.htmx-request::after {
+      content:'';
+      position:absolute; right:0.75rem; top:50%; transform:translateY(-50%);
+      width:14px; height:14px; border-radius:50%;
+      border:2px solid currentColor; border-top-color:transparent;
+    }
+
+    /* ── Responsive: sidebar hidden on mobile ── */
+    @media (max-width: 1023px) {
+      #sidebar { transform:translateX(-100%); transition:transform 0.25s ease; }
+      #sidebar.mobile-open { transform:translateX(0); }
+      #main-wrapper { margin-left:0 !important; }
+      #sidebar-overlay { display:block; }
+      #sidebar-hamburger { display:flex; }
+    }
+    @media (min-width: 1024px) {
+      #sidebar { transform:none !important; }
+      #sidebar-hamburger { display:none; }
+    }
+
+    /* Mobile sidebar overlay */
+    #sidebar-overlay {
+      display:none; position:fixed; inset:0; z-index:49;
+      background:rgba(0,0,0,0.5); backdrop-filter:blur(2px);
+    }
+    #sidebar-overlay.active { display:block; }
+
     {% block head_styles %}{% endblock %}
   </style>
 
@@ -249,224 +290,31 @@
 
 <body>
 
+  <!-- Skip to main content (first focusable element — visible on keyboard focus) -->
+  <a href="#main-content"
+     class="sr-only focusable"
+     style="position:absolute;top:1rem;left:1rem;z-index:99999;
+            background:var(--cp);color:var(--cop);
+            padding:0.5rem 1rem;border-radius:6px;font-weight:700;
+            text-decoration:none;font-size:0.875rem">
+    Skip to main content
+  </a>
+
   <!-- Fixed top progress bar — controlled via showProgress() in api.js -->
   <div id="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
 
-  <!-- ═══════════════════════════════════════════════
-       SIDEBAR
-  ═══════════════════════════════════════════════ -->
-  <aside id="sidebar"
-         style="background:var(--sidebar-bg);border-right:1px solid var(--sidebar-bdr);width:250px"
-         class="h-screen fixed left-0 top-0 overflow-y-auto flex flex-col py-6 z-50">
+  <!-- Sidebar (extracted partial) -->
+  {% include "partials/sidebar.html" %}
 
-    <!-- Logo -->
-    <div class="px-5 mb-6 flex-shrink-0">
-      <a href="/home" class="flex items-center gap-3">
-        <div class="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
-             style="background:var(--cp);box-shadow:0 0 14px var(--glow)">
-          <span class="material-symbols-outlined text-[20px]"
-                style="color:var(--cop);font-variation-settings:'FILL' 1">security</span>
-        </div>
-        <div>
-          <p class="text-base font-extrabold font-headline leading-tight" style="color:var(--cos)">InsureIntel</p>
-          <p class="text-[9px] font-bold uppercase tracking-[0.2em]" style="color:var(--cp)">Zimbabwe Sovereign</p>
-        </div>
-      </a>
-    </div>
+  <!-- Main area -->
+  <div style="margin-left:var(--sidebar-w)" class="min-h-screen flex flex-col" id="main-wrapper">
 
-    <!-- Navigation -->
-    <nav class="flex-1 overflow-y-auto px-2 space-y-0.5 pb-2" id="sidebar-nav">
+    <!-- Topbar (extracted partial) -->
+    {% include "partials/topbar.html" %}
 
-      <!-- Standalone: Dashboard -->
-      <a href="/home" class="nav-link {% if request.url.path == '/home' %}active{% endif %}">
-        <span class="material-symbols-outlined text-[20px]">dashboard</span>
-        <span class="sidebar-label">Dashboard</span>
-      </a>
-
-      <!-- SECTION: Documents -->
-      <button class="nav-link w-full text-left"
-              data-accordion-trigger="s-documents"
-              data-section-paths="/documents,/document-qa">
-        <span class="material-symbols-outlined text-[20px]">folder</span>
-        <span class="sidebar-label">Documents</span>
-        <span class="chevron material-symbols-outlined sidebar-label" style="font-size:16px;margin-left:auto;transition:transform 0.18s ease">chevron_right</span>
-      </button>
-      <ul data-accordion-body="s-documents" class="pl-4 space-y-0.5" style="display:none">
-        <li><a href="/documents/vault" class="nav-link {% if request.url.path == '/documents/vault' %}active{% endif %}"><span class="material-symbols-outlined text-[18px]">description</span><span class="sidebar-label">Document Vault</span></a></li>
-        <li><a href="/documents/upload" class="nav-link {% if request.url.path == '/documents/upload' %}active{% endif %}"><span class="material-symbols-outlined text-[18px]">upload_file</span><span class="sidebar-label">Upload</span></a></li>
-        <li><a href="/documents/compare" class="nav-link {% if request.url.path == '/documents/compare' %}active{% endif %}"><span class="material-symbols-outlined text-[18px]">compare_arrows</span><span class="sidebar-label">Compare</span></a></li>
-        <li><a href="/document-qa" class="nav-link {% if request.url.path == '/document-qa' %}active{% endif %}"><span class="material-symbols-outlined text-[18px]">forum</span><span class="sidebar-label">Document Q&amp;A</span></a></li>
-      </ul>
-
-      <!-- SECTION: Analysis -->
-      <button class="nav-link w-full text-left"
-              data-accordion-trigger="s-analysis"
-              data-section-paths="/analysis,/compliance-center">
-        <span class="material-symbols-outlined text-[20px]">analytics</span>
-        <span class="sidebar-label">Analysis</span>
-        <span class="chevron material-symbols-outlined sidebar-label" style="font-size:16px;margin-left:auto;transition:transform 0.18s ease">chevron_right</span>
-      </button>
-      <ul data-accordion-body="s-analysis" class="pl-4 space-y-0.5" style="display:none">
-        <li><a href="/analysis/ml" class="nav-link {% if request.url.path == '/analysis/ml' %}active{% endif %}"><span class="material-symbols-outlined text-[18px]">insights</span><span class="sidebar-label">ML Analytics</span></a></li>
-        <li><a href="/analysis/deviation" class="nav-link {% if request.url.path == '/analysis/deviation' %}active{% endif %}"><span class="material-symbols-outlined text-[18px]">difference</span><span class="sidebar-label">Clause Deviation</span></a></li>
-        <li><a href="/analysis/risk" class="nav-link {% if request.url.path == '/analysis/risk' %}active{% endif %}"><span class="material-symbols-outlined text-[18px]">warning</span><span class="sidebar-label">Risk Analysis</span></a></li>
-        <li><a href="/compliance-center" class="nav-link {% if request.url.path == '/compliance-center' %}active{% endif %}"><span class="material-symbols-outlined text-[18px]">verified_user</span><span class="sidebar-label">Compliance</span></a></li>
-      </ul>
-
-      <!-- SECTION: Intelligence -->
-      <button class="nav-link w-full text-left"
-              data-accordion-trigger="s-intelligence"
-              data-section-paths="/intelligence,/financial-position,/policy-tracker,/alerts-ui">
-        <span class="material-symbols-outlined text-[20px]">psychology</span>
-        <span class="sidebar-label">Intelligence</span>
-        <span class="chevron material-symbols-outlined sidebar-label" style="font-size:16px;margin-left:auto;transition:transform 0.18s ease">chevron_right</span>
-      </button>
-      <ul data-accordion-body="s-intelligence" class="pl-4 space-y-0.5" style="display:none">
-        <li><a href="/intelligence/insurers" class="nav-link {% if '/intelligence' in request.url.path %}active{% endif %}"><span class="material-symbols-outlined text-[18px]">groups</span><span class="sidebar-label">Insurer Intel</span></a></li>
-        <li><a href="/financial-position" class="nav-link {% if request.url.path == '/financial-position' %}active{% endif %}"><span class="material-symbols-outlined text-[18px]">account_balance</span><span class="sidebar-label">Financial Position</span></a></li>
-        <li><a href="/policy-tracker" class="nav-link {% if request.url.path == '/policy-tracker' %}active{% endif %}"><span class="material-symbols-outlined text-[18px]">event_upcoming</span><span class="sidebar-label">Policy Tracker</span></a></li>
-        <li><a href="/alerts-ui" class="nav-link {% if request.url.path == '/alerts-ui' %}active{% endif %}"><span class="material-symbols-outlined text-[18px]">notifications_active</span><span class="sidebar-label">Risk Alerts</span></a></li>
-      </ul>
-
-      <!-- SECTION: Reports -->
-      <button class="nav-link w-full text-left"
-              data-accordion-trigger="s-reports"
-              data-section-paths="/reports,/news-ui,/knowledge-base">
-        <span class="material-symbols-outlined text-[20px]">summarize</span>
-        <span class="sidebar-label">Reports</span>
-        <span class="chevron material-symbols-outlined sidebar-label" style="font-size:16px;margin-left:auto;transition:transform 0.18s ease">chevron_right</span>
-      </button>
-      <ul data-accordion-body="s-reports" class="pl-4 space-y-0.5" style="display:none">
-        <li><a href="/reports" class="nav-link {% if request.url.path == '/reports' %}active{% endif %}"><span class="material-symbols-outlined text-[18px]">bar_chart</span><span class="sidebar-label">Reports Hub</span></a></li>
-        <li><a href="/reports/news" class="nav-link {% if request.url.path == '/reports/news' %}active{% endif %}"><span class="material-symbols-outlined text-[18px]">newspaper</span><span class="sidebar-label">News Feed</span></a></li>
-        <li><a href="/knowledge-base" class="nav-link {% if request.url.path == '/knowledge-base' %}active{% endif %}"><span class="material-symbols-outlined text-[18px]">auto_stories</span><span class="sidebar-label">Knowledge Base</span></a></li>
-        <li><a href="/reports/generate" class="nav-link {% if request.url.path == '/reports/generate' %}active{% endif %}"><span class="material-symbols-outlined text-[18px]">picture_as_pdf</span><span class="sidebar-label">Generate Report</span></a></li>
-      </ul>
-
-      <!-- SECTION: Clients -->
-      <button class="nav-link w-full text-left"
-              data-accordion-trigger="s-clients"
-              data-section-paths="/clients">
-        <span class="material-symbols-outlined text-[20px]">people</span>
-        <span class="sidebar-label">Clients</span>
-        <span class="chevron material-symbols-outlined sidebar-label" style="font-size:16px;margin-left:auto;transition:transform 0.18s ease">chevron_right</span>
-      </button>
-      <ul data-accordion-body="s-clients" class="pl-4 space-y-0.5" style="display:none">
-        <li><a href="/clients/list" class="nav-link {% if request.url.path == '/clients/list' %}active{% endif %}"><span class="material-symbols-outlined text-[18px]">person</span><span class="sidebar-label">Client List</span></a></li>
-        <li><a href="/clients/expiry" class="nav-link {% if request.url.path == '/clients/expiry' %}active{% endif %}"><span class="material-symbols-outlined text-[18px]">calendar_month</span><span class="sidebar-label">Policy Expiry</span></a></li>
-        <li><a href="/clients/renewals" class="nav-link {% if request.url.path == '/clients/renewals' %}active{% endif %}"><span class="material-symbols-outlined text-[18px]">loop</span><span class="sidebar-label">Renewals</span></a></li>
-      </ul>
-
-      <!-- SECTION: System -->
-      <button class="nav-link w-full text-left"
-              data-accordion-trigger="s-system"
-              data-section-paths="/system,/audit-trail,/feedback-panel,/settings">
-        <span class="material-symbols-outlined text-[20px]">settings</span>
-        <span class="sidebar-label">System</span>
-        <span class="chevron material-symbols-outlined sidebar-label" style="font-size:16px;margin-left:auto;transition:transform 0.18s ease">chevron_right</span>
-      </button>
-      <ul data-accordion-body="s-system" class="pl-4 space-y-0.5" style="display:none">
-        <li><a href="/system" class="nav-link {% if request.url.path == '/system' %}active{% endif %}"><span class="material-symbols-outlined text-[18px]">computer</span><span class="sidebar-label">System Overview</span></a></li>
-        <li><a href="/audit-trail" class="nav-link {% if request.url.path == '/audit-trail' %}active{% endif %}"><span class="material-symbols-outlined text-[18px]">history</span><span class="sidebar-label">Audit Trail</span></a></li>
-
-        <li><a href="/feedback-panel" class="nav-link {% if request.url.path == '/feedback-panel' %}active{% endif %}"><span class="material-symbols-outlined text-[18px]">rate_review</span><span class="sidebar-label">Feedback</span></a></li>
-        <li><a href="/settings" class="nav-link {% if request.url.path == '/settings' %}active{% endif %}"><span class="material-symbols-outlined text-[18px]">tune</span><span class="sidebar-label">Settings</span></a></li>
-      </ul>
-
-    </nav>
-
-    <!-- User + Logout -->
-    <div class="flex-shrink-0 px-2 pt-3 mt-2"
-         style="border-top:1px solid var(--sidebar-bdr)">
-      <div class="flex items-center gap-3 px-3 py-2 mb-1">
-        <div class="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0"
-             style="background:color-mix(in srgb,var(--cp) 18%,transparent);
-                    color:var(--cp);border:1px solid color-mix(in srgb,var(--cp) 30%,transparent)">
-          {% if user %}{{ (user.full_name or user.staff_id or 'U')[0] | upper }}{% else %}?{% endif %}
-        </div>
-        <div class="min-w-0 flex-1">
-          <p class="text-sm font-semibold truncate" style="color:var(--cos)">
-            {% if user %}{{ user.full_name or user.staff_id }}{% else %}Guest{% endif %}
-          </p>
-          <p class="text-[9px] font-bold uppercase tracking-widest" style="color:var(--cp)">
-            {% if user %}{{ user.role }}{% else %}—{% endif %}
-          </p>
-        </div>
-      </div>
-      <a href="/logout"
-         class="nav-link"
-         style="color:#ef4444"
-         onmouseover="this.style.background='rgba(239,68,68,0.08)'"
-         onmouseout="this.style.background=''">
-        <span class="material-symbols-outlined text-[20px]">logout</span>
-        <span>Sign Out</span>
-      </a>
-    </div>
-
-  </aside>
-
-  <!-- ═══════════════════════════════════════════════
-       MAIN AREA
-  ═══════════════════════════════════════════════ -->
-  <div style="margin-left:250px" class="min-h-screen flex flex-col" id="main-wrapper">
-
-    <!-- Topbar -->
-    <header class="h-16 flex items-center justify-between px-8 sticky top-0 z-40 flex-shrink-0"
-            style="background:color-mix(in srgb,var(--cbg) 85%,transparent);
-                   backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-                   border-bottom:1px solid var(--sidebar-bdr)">
-
-      <!-- Mobile hamburger (visible only on small screens) -->
-      <button id="sidebar-hamburger"
-              onclick="toggleSidebar()"
-              class="mr-3 p-2 rounded-lg"
-              style="color:var(--cosv)"
-              aria-label="Open sidebar">
-        <span class="material-symbols-outlined text-[22px]" id="sidebar-toggle-icon">menu</span>
-      </button>
-
-      <!-- Search (disabled — no backend) -->
-      <div class="relative flex-1 max-w-md" title="Search coming soon">
-        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[18px]"
-              style="color:var(--col)">search</span>
-        <input type="text" placeholder="Search — coming soon"
-               class="w-full rounded-lg py-2 pl-10 pr-4 text-sm outline-none"
-               style="background:var(--csfc);border:1px solid var(--col);color:var(--col);cursor:not-allowed"
-               disabled>
-      </div>
-
-      <!-- Right controls -->
-      <div class="flex items-center gap-3 ml-6">
-
-        <!-- Theme toggle -->
-        <button onclick="toggleTheme()" title="Toggle light / dark"
-                class="p-2 rounded-lg transition-all hover:opacity-80"
-                style="color:var(--cosv)">
-          <span class="material-symbols-outlined icon-light-mode text-[22px]">light_mode</span>
-          <span class="material-symbols-outlined icon-dark-mode text-[22px]">dark_mode</span>
-        </button>
-
-        <div class="w-px h-7 mx-1" style="background:var(--col)"></div>
-
-        <!-- User chip -->
-        <div class="flex items-center gap-2.5">
-          <div class="text-right">
-            <p class="text-sm font-bold leading-tight" style="color:var(--cos)">{% if user %}{{ user.full_name or user.staff_id }}{% else %}User{% endif %}</p>
-            <p class="text-[9px] font-bold uppercase tracking-wider" style="color:var(--cp)">{% if user %}{{ user.role }}{% else %}Staff{% endif %}</p>
-          </div>
-          <div class="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold flex-shrink-0"
-               style="background:color-mix(in srgb,var(--cp) 18%,transparent);
-                      border:2px solid color-mix(in srgb,var(--cp) 30%,transparent);
-                      color:var(--cp)">
-            {% if user %}{{ (user.full_name or user.staff_id or 'U')[0]|upper }}{% else %}U{% endif %}
-          </div>
-        </div>
-
-      </div>
-    </header>
-
-    <!-- Page Content -->
-    <main class="flex-1" id="main-content">
+    <!-- Page content — primary HTMX swap target -->
+    <main class="flex-1" id="main-content"
+          hx-history-elt>
       {% block content %}{% endblock %}
     </main>
 
@@ -475,23 +323,27 @@
   <!-- Mobile sidebar overlay -->
   <div id="sidebar-overlay" onclick="mobileSidebarClose()"></div>
 
-  <!-- Global Error Modal — displayed by showGlobalError() on any page -->
+  <!-- Global Error Modal -->
   <div id="globalErrorModal"
-       class="hidden fixed inset-0 flex items-center justify-center z-50"
-       style="background:rgba(0,0,0,0.65);backdrop-filter:blur(4px)"
-       role="dialog" aria-modal="true" aria-labelledby="gemTitle">
-    <div class="glass-card rounded-lg p-6 max-w-md w-full mx-4"
-         style="max-width:28rem">
-      <h2 id="gemTitle" class="text-lg font-bold" id="gemType"
-          style="color:var(--cerr);font-family:'Manrope',sans-serif"></h2>
+       class="hidden fixed inset-0 flex items-center justify-center z-50 modal-backdrop"
+       role="dialog" aria-modal="true" aria-labelledby="gemTitle" aria-describedby="gemMsg">
+    <div class="glass-card rounded-lg p-6 max-w-md w-full mx-4" style="max-width:28rem">
+      <h2 id="gemTitle" class="text-lg font-bold font-headline" style="color:var(--cerr)"></h2>
       <p class="text-sm mt-2" id="gemMsg" style="color:var(--cos)"></p>
       <p class="text-xs mt-3 font-semibold" id="gemAction" style="color:var(--cp)"></p>
-      <button onclick="document.getElementById('globalErrorModal').classList.add('hidden')"
-              class="btn-glass-gold mt-4 text-sm">
+      <button onclick="closeModal('globalErrorModal')"
+              class="btn btn-secondary mt-4 text-sm">
         OK
       </button>
     </div>
   </div>
+
+  <!-- Out-of-band HTMX swap targets (toast, modals, etc.) -->
+  <div id="oob-toast-target" style="display:none"></div>
+  {% block oob_targets %}{% endblock %}
+
+  <!-- Toast container -->
+  <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
 
   <script>
     function toggleTheme() {
@@ -499,7 +351,6 @@
       localStorage.setItem('insureIntelTheme', isDark ? 'dark' : 'light');
     }
 
-    /* ── Mobile sidebar helpers ────────────────────────────────────────── */
     function mobileSidebarOpen() {
       document.getElementById('sidebar').classList.add('mobile-open');
       const ov = document.getElementById('sidebar-overlay');
@@ -510,38 +361,82 @@
       const ov = document.getElementById('sidebar-overlay');
       if (ov) ov.classList.remove('active');
     }
-
-    /**
-     * Display the global error modal.
-     * @param {string} type    — error_type (red header)
-     * @param {string} msg     — error_msg  (body text)
-     * @param {string} action  — user_action (blue hint)
-     */
-    function showGlobalError(type, msg, action) {
-      document.getElementById('gemType').textContent   = type   || 'Error';
-      document.getElementById('gemMsg').textContent    = msg    || 'An unexpected error occurred.';
-      document.getElementById('gemAction').textContent = action || 'Please try again.';
-      document.getElementById('globalErrorModal').classList.remove('hidden');
+    function toggleSidebar() {
+      const sb = document.getElementById('sidebar');
+      sb.classList.contains('mobile-open') ? mobileSidebarClose() : mobileSidebarOpen();
     }
 
-    // Intercept fetch-level errors from JS that use showGlobalError pattern
+    function showGlobalError(type, msg, action) {
+      document.getElementById('gemTitle').textContent  = type   || 'Error';
+      document.getElementById('gemMsg').textContent    = msg    || 'An unexpected error occurred.';
+      document.getElementById('gemAction').textContent = action || 'Please try again.';
+      if (typeof openModal === 'function') {
+        openModal('globalErrorModal');
+      } else {
+        document.getElementById('globalErrorModal').classList.remove('hidden');
+      }
+    }
+
     window.addEventListener('unhandledrejection', function(evt) {
       if (evt.reason && evt.reason.isGlobalError) {
         showGlobalError(evt.reason.type, evt.reason.msg, evt.reason.action);
         evt.preventDefault();
       }
     });
+
+    /* Show topbar loading indicator during HTMX requests */
+    document.addEventListener('htmx:beforeRequest', function() {
+      const el = document.getElementById('htmx-indicator');
+      if (el) el.style.opacity = '1';
+    });
+    document.addEventListener('htmx:afterRequest', function() {
+      const el = document.getElementById('htmx-indicator');
+      if (el) el.style.opacity = '0';
+    });
+    document.addEventListener('htmx:responseError', function(evt) {
+      const status = evt.detail?.xhr?.status;
+      const msgs = { 401:'Session expired — please log in again.',
+                     403:'You do not have permission for this action.',
+                     404:'The requested resource was not found.',
+                     500:'A server error occurred. Please try again.' };
+      showGlobalError('Request Failed', msgs[status] || 'An unexpected error occurred.', 'HTTP ' + status);
+    });
+
+    /* After HTMX swaps content, move focus to the swapped region's first
+       focusable element (or the region itself) so keyboard users are not
+       left behind on the previous position. */
+    document.addEventListener('htmx:afterSwap', function(evt) {
+      const target = evt.detail.target;
+      if (!target) return;
+      const FOCUSABLE = 'a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])';
+      const first = target.querySelector(FOCUSABLE);
+      if (first) {
+        first.focus({ preventScroll: true });
+      } else if (target !== document.getElementById('main-content')) {
+        target.setAttribute('tabindex', '-1');
+        target.focus({ preventScroll: true });
+      }
+    });
   </script>
 
   {% block scripts %}{% endblock %}
 
-  <!-- Toast container — populated by showToast() in api.js -->
-  <div id="toast-container" aria-live="polite" aria-atomic="true"></div>
+  <!-- Global JS layer (defer = parse during HTML download, execute in order after parse) -->
+  <script defer src="/static/js/theme-toggle.js"></script>
+  <script defer src="/static/js/api.js"></script>
+  <script defer src="/static/js/sidebar.js"></script>
 
-  <!-- Global JS layer -->
-  <script src="/static/js/theme-toggle.js"></script>
-  <script src="/static/js/api.js"></script>
-  <script src="/static/js/sidebar.js"></script>
+  <!-- HTMX — defer so config runs after htmx loads -->
+  <script defer src="https://unpkg.com/htmx.org@1.9.12/dist/htmx.min.js" crossorigin="anonymous"></script>
+  <script defer>
+    /* Global HTMX configuration */
+    htmx.config.defaultSwapStyle     = 'innerHTML';
+    htmx.config.defaultSettleDelay   = 80;
+    htmx.config.historyCacheSize     = 10;
+    htmx.config.globalViewTransitions = false;
+    htmx.config.requestClass          = 'htmx-request';
+    htmx.config.indicatorClass        = 'htmx-indicator';
+  </script>
 
 </body>
 </html>

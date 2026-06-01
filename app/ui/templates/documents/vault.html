@@ -16,6 +16,11 @@
 .folder-tree-item .count {
   margin-left:auto; background:rgba(255,255,255,0.06);
   border-radius:9999px; padding:0.05rem 0.4rem; font-size:0.65rem; font-weight:700; }
+.vault-doc-link {
+  color:var(--cos); font-size:0.8125rem; font-weight:600; margin:0;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:220px;
+  display:block; text-decoration:none; transition:color 0.15s; }
+.vault-doc-link:hover { color:var(--cp); }
 {% endblock %}
 
 {% block content %}
@@ -73,10 +78,9 @@
       </h1>
       <div style="display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap">
         <!-- Sort -->
-        <select id="sort-select" onchange="renderTable()"
-                style="background:var(--csfc);border:1px solid var(--col);
-                       color:var(--cos);border-radius:6px;padding:0.4rem 0.625rem;
-                       font-size:0.8rem;cursor:pointer;outline:none">
+        <label for="sort-select" class="sr-only">Sort documents</label>
+        <select id="sort-select" onchange="renderTable()" class="form-input"
+                aria-label="Sort documents" style="max-width:180px;font-size:0.8rem">
           <option value="date-desc">Newest first</option>
           <option value="date-asc">Oldest first</option>
           <option value="name-asc">Name A→Z</option>
@@ -86,17 +90,15 @@
         </select>
         <!-- Search -->
         <div style="position:relative">
-          <span class="material-symbols-outlined"
-                style="position:absolute;left:0.5rem;top:50%;transform:translateY(-50%);
-                       font-size:16px;color:var(--cosv)">search</span>
-          <input id="search-input" type="text" placeholder="Search documents…"
-                 style="background:var(--csfc);border:1px solid var(--col);
-                        color:var(--cos);border-radius:6px;padding:0.4rem 0.625rem 0.4rem 1.875rem;
-                        font-size:0.8rem;outline:none;width:220px"
+          <span class="material-symbols-outlined icon-sm" aria-hidden="true"
+                style="position:absolute;left:0.5rem;top:50%;transform:translateY(-50%);color:var(--cosv)">search</span>
+          <input id="search-input" type="search" placeholder="Search documents…"
+                 aria-label="Search documents by name, type, or status"
+                 class="form-input" style="padding-left:1.875rem;width:220px;font-size:0.8rem"
                  oninput="renderTable()">
         </div>
-        <a href="/documents/upload" class="btn-glass-gold" style="font-size:0.8125rem">
-          <span class="material-symbols-outlined" style="font-size:16px">upload_file</span>
+        <a href="/documents/upload" class="btn-glass btn-glass-gold" style="font-size:0.8125rem">
+          <span class="material-symbols-outlined icon-sm" aria-hidden="true">upload_file</span>
           Upload
         </a>
       </div>
@@ -125,9 +127,9 @@
             </tr>
           </thead>
           <tbody id="docs-tbody">
-            <tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--cosv)">
-              Loading documents…
-            </td></tr>
+            {# Skeleton loading state #}
+            {% from "macros/tables.html" import skeleton_table_rows %}
+            {{ skeleton_table_rows(rows=6, cols=6) }}
           </tbody>
         </table>
       </div>
@@ -137,42 +139,44 @@
 </div>
 
 <!-- ── PDF Preview Modal ───────────────────────────────────────────────── -->
-<div id="preview-modal" style="display:none;position:fixed;inset:0;z-index:5000;
-     background:rgba(0,0,0,0.65);backdrop-filter:blur(4px);
-     align-items:center;justify-content:center">
+<div id="preview-modal"
+     class="hidden fixed inset-0 flex items-center justify-center z-50 modal-backdrop"
+     role="dialog" aria-modal="true" aria-labelledby="preview-modal-title">
   <div class="glass-card" style="width:80vw;height:85vh;display:flex;flex-direction:column">
     <div style="display:flex;align-items:center;justify-content:space-between;
                 padding:1rem 1.25rem;border-bottom:1px solid rgba(255,255,255,0.06)">
-      <span id="preview-title" style="color:var(--cos);font-weight:700;font-size:0.9375rem"></span>
-      <button onclick="closePreview()"
-              style="background:none;border:none;color:var(--cosv);cursor:pointer;font-size:1.5rem">×</button>
+      <span id="preview-modal-title" style="color:var(--cos);font-weight:700;font-size:0.9375rem"></span>
+      <button onclick="closePreview()" aria-label="Close preview"
+              class="alert-dismiss-btn" style="font-size:1.5rem">×</button>
     </div>
-    <iframe id="preview-frame" style="flex:1;border:none;background:#fff"></iframe>
+    <iframe id="preview-frame" style="flex:1;border:none;background:#fff"
+            title="Document preview"></iframe>
   </div>
 </div>
 
 <!-- ── Move Folder Modal ─────────────────────────────────────────────── -->
-<div id="move-modal" style="display:none;position:fixed;inset:0;z-index:5000;
-     background:rgba(0,0,0,0.65);backdrop-filter:blur(4px);
-     align-items:center;justify-content:center">
-  <div class="glass-card" style="width:400px;padding:1.75rem">
-    <h3 style="color:var(--cos);font-weight:700;margin:0 0 1.25rem;font-size:1rem">
+<div id="move-modal"
+     class="hidden fixed inset-0 flex items-center justify-center z-50 modal-backdrop"
+     role="dialog" aria-modal="true" aria-labelledby="move-modal-title">
+  <div class="glass-card" style="width:400px;max-width:calc(100vw - 2rem);padding:1.75rem">
+    <h3 id="move-modal-title" style="color:var(--cos);font-weight:700;margin:0 0 1.25rem;font-size:1rem">
       Move Document
     </h3>
     <input type="hidden" id="move-doc-id">
-    <label class="form-label">Select Folder</label>
+    <label class="form-label" for="move-folder-select">Select Folder</label>
     <select id="move-folder-select" class="form-input" style="margin-bottom:0.75rem">
       <option value="Uncategorised">Uncategorised</option>
     </select>
     <p style="color:var(--cosv);font-size:0.8rem;margin:0 0 0.75rem">
       Or create a new folder:
     </p>
+    <label for="move-new-folder" class="sr-only">New folder name</label>
     <input id="move-new-folder" type="text" placeholder="New folder name"
            class="form-input" style="margin-bottom:1rem">
     <div style="display:flex;gap:0.625rem;justify-content:flex-end">
-      <button onclick="closeMoveModal()" class="btn-glass"
+      <button onclick="closeModal('move-modal')" class="btn-glass"
               style="font-size:0.8rem">Cancel</button>
-      <button onclick="submitMove()" class="btn-glass-gold"
+      <button onclick="submitMove()" class="btn-glass btn-glass-gold"
               style="font-size:0.8rem">Move</button>
     </div>
   </div>
@@ -222,13 +226,16 @@ function sortBy(col) {
     currentSort.col = col;
     currentSort.dir = "asc";
   }
-  // Update indicators
+  // Update text indicators and aria-sort
   document.querySelectorAll(".sort-indicator").forEach(el => {
     const c = el.getAttribute("data-col");
+    const th = el.closest("th");
     if (c === col) {
       el.textContent = currentSort.dir === "asc" ? " ↑" : " ↓";
+      if (th) th.setAttribute("aria-sort", currentSort.dir === "asc" ? "ascending" : "descending");
     } else {
       el.textContent = "";
+      if (th) th.setAttribute("aria-sort", "none");
     }
   });
   renderTable();
@@ -330,14 +337,21 @@ function renderTable() {
   });
 
   const tbody = document.getElementById("docs-tbody");
+  const isFiltered = !!(document.getElementById("search-input").value || activeFolder);
   if (docs.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:3rem;color:var(--cosv)">
-      <div style="display:flex;flex-direction:column;align-items:center;gap:0.75rem">
-        <span class="material-symbols-outlined" style="font-size:48px;color:var(--col)">folder_open</span>
-        <p style="margin:0;font-size:0.9rem">No documents found.</p>
-        <a href="/documents/upload" class="btn-glass btn-glass-gold" style="font-size:0.8rem">
-          Upload your first document
-        </a>
+    tbody.innerHTML = `<tr><td colspan="6" style="padding:0">
+      <div class="empty-state-container" style="color:var(--cosv)">
+        <span class="material-symbols-outlined empty-state-icon" aria-hidden="true" style="color:var(--col)">${isFiltered ? 'search_off' : 'folder_open'}</span>
+        <h3 class="font-headline text-lg font-semibold mb-2" style="color:var(--cos)">
+          ${isFiltered ? 'No documents match your search' : 'No documents yet'}
+        </h3>
+        <p style="font-size:0.875rem;color:var(--cosv);max-width:24rem;margin:0 auto 1.5rem">
+          ${isFiltered ? 'Try a different search term or select a different folder.' : 'Upload your first document to get started.'}
+        </p>
+        ${isFiltered
+          ? `<button onclick="document.getElementById('search-input').value='';renderTable()" class="btn-glass btn-glass-gold">Clear search</button>`
+          : `<a href="/documents/upload" class="btn-glass btn-glass-gold">Upload Document</a>`
+        }
       </div>
     </td></tr>`;
     return;
@@ -353,11 +367,7 @@ function renderTable() {
                 style="color:var(--cp);font-size:18px;flex-shrink:0;
                        font-variation-settings:'FILL' 1">description</span>
           <div style="min-width:0">
-            <a href="/documents-ui/${d.id}"
-               style="color:var(--cos);font-size:0.8125rem;font-weight:600;margin:0;
-                      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:220px;
-                      display:block;text-decoration:none"
-               onmouseover="this.style.color='var(--cp)'" onmouseout="this.style.color='var(--cos)'">
+            <a href="/documents-ui/${d.id}" class="vault-doc-link">
               ${_esc(d.title || d.original_filename || 'Untitled')}
             </a>
             <p style="color:var(--cosv);font-size:0.7rem;margin:0">
@@ -401,13 +411,12 @@ function renderTable() {
 /* ── Actions ────────────────────────────────────────────────────────────── */
 
 function openPreview(id, title) {
-  document.getElementById("preview-title").textContent = title;
+  document.getElementById("preview-modal-title").textContent = title;
   document.getElementById("preview-frame").src = `/api/documents/${id}/download`;
-  const m = document.getElementById("preview-modal");
-  m.style.display = "flex";
+  openModal("preview-modal");
 }
 function closePreview() {
-  document.getElementById("preview-modal").style.display = "none";
+  closeModal("preview-modal");
   document.getElementById("preview-frame").src = "";
 }
 
@@ -443,10 +452,10 @@ async function deleteDoc(id) {
 function moveDoc(id) {
   document.getElementById("move-doc-id").value = id;
   document.getElementById("move-new-folder").value = "";
-  document.getElementById("move-modal").style.display = "flex";
+  openModal("move-modal");
 }
 function closeMoveModal() {
-  document.getElementById("move-modal").style.display = "none";
+  closeModal("move-modal");
 }
 async function submitMove() {
   const id        = document.getElementById("move-doc-id").value;
@@ -459,7 +468,7 @@ async function submitMove() {
     if (doc) doc.folder = newFolder;
     buildFolderTree();
     renderTable();
-    closeMoveModal();
+    closeModal("move-modal");
     showToast(`Moved to "${newFolder}".`, "success");
   } catch (err) {
     showToast("Move failed: " + err.message, "error");

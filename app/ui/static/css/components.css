@@ -83,6 +83,32 @@ html:not(.dark) .skeleton {
   100% { background-position: 200% 0; }
 }
 
+/* Empty state container */
+.empty-state-container {
+  text-align: center;
+  padding: 4rem 2rem;
+}
+.empty-state-icon {
+  font-size: 52px !important;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+/* Alert dismiss button — replaces inline styles on alert close buttons */
+.alert-dismiss-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  padding: 0;
+  line-height: 1;
+  flex-shrink: 0;
+  display: flex;
+  opacity: 0.7;
+  transition: opacity 0.15s;
+}
+.alert-dismiss-btn:hover { opacity: 1; }
+
 /* Page header pattern */
 .page-header { margin-bottom: 2rem; }
 .page-header h1 { margin: 0 0 0.25rem; }

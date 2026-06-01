@@ -380,7 +380,7 @@ async def system_settings(request: Request, current_user=Depends(require_ui_logi
     """System settings page."""
     if isinstance(current_user, RedirectResponse):
         return current_user
-    return templates.TemplateResponse(request, "settings.html", {
+    return templates.TemplateResponse(request, "system/settings.html", {
         "request": request, "active_page": "settings",
         "user": current_user,
     })
@@ -391,7 +391,7 @@ async def system_audit(request: Request, current_user=Depends(require_ui_login))
     """System audit log page."""
     if isinstance(current_user, RedirectResponse):
         return current_user
-    return templates.TemplateResponse(request, "audit_trail.html", {
+    return templates.TemplateResponse(request, "system/audit_trail.html", {
         "request": request, "active_page": "audit-trail",
         "user": current_user,
     })
@@ -402,7 +402,7 @@ async def system_active_learning(request: Request, current_user=Depends(require_
     """Active learning / feedback panel."""
     if isinstance(current_user, RedirectResponse):
         return current_user
-    return templates.TemplateResponse(request, "feedback_panel.html", {
+    return templates.TemplateResponse(request, "system/feedback_panel.html", {
         "request": request, "active_page": "feedback-panel",
         "user": current_user,
     })
@@ -418,7 +418,7 @@ async def audit_trail_page(request: Request, current_user=Depends(require_ui_log
         return current_user
     return templates.TemplateResponse(
         request,
-        "audit_trail.html",
+        "system/audit_trail.html",
         {
             "request": request,
             "active_page": "audit-trail",
@@ -432,7 +432,7 @@ async def batch_portfolio_page(request: Request, current_user=Depends(require_ui
         return current_user
     return templates.TemplateResponse(
         request,
-        "batch_portfolio.html",
+        "documents/batch_portfolio.html",
         {
             "request": request,
             "active_page": "batch-portfolio",
@@ -446,7 +446,7 @@ async def clause_deviations_page(request: Request, current_user=Depends(require_
         return current_user
     return templates.TemplateResponse(
         request,
-        "clause_deviations.html",
+        "analysis/clause_deviations.html",
         {
             "request": request,
             "active_page": "clause-deviations",
@@ -481,7 +481,7 @@ async def compliance_center_page(request: Request, current_user=Depends(require_
 
     return templates.TemplateResponse(
         request,
-        "compliance_center.html",
+        "analysis/compliance_center.html",
         {
             "request": request,
             "active_page": "compliance-center",
@@ -527,7 +527,7 @@ async def compliance_detail_page(document_id: int, request: Request, current_use
 
     return templates.TemplateResponse(
         request,
-        "compliance_detail.html",
+        "analysis/compliance_detail.html",
         {
             "request": request,
             "active_page": "documents",
@@ -551,7 +551,7 @@ async def feedback_panel_page(request: Request, current_user=Depends(require_ui_
         return current_user
     return templates.TemplateResponse(
         request,
-        "feedback_panel.html",
+        "system/feedback_panel.html",
         {
             "request": request,
             "active_page": "feedback-panel",
@@ -565,7 +565,7 @@ async def knowledge_base_page(request: Request, current_user=Depends(require_ui_
         return current_user
     return templates.TemplateResponse(
         request,
-        "knowledge_base.html",
+        "reports/knowledge_base.html",
         {
             "request": request,
             "active_page": "knowledge-base",
@@ -579,7 +579,7 @@ async def multilingual_analysis_page(request: Request, current_user=Depends(requ
         return current_user
     return templates.TemplateResponse(
         request,
-        "multilingual_analysis.html",
+        "analysis/multilingual.html",
         {
             "request": request,
             "active_page": "multilingual-analysis",
@@ -593,7 +593,7 @@ async def policy_tracker_page(request: Request, current_user=Depends(require_ui_
         return current_user
     return templates.TemplateResponse(
         request,
-        "policy_tracker.html",
+        "clients/policy_tracker.html",
         {
             "request": request,
             "active_page": "policy-tracker",
@@ -613,7 +613,7 @@ async def settings_page(request: Request, current_user=Depends(require_ui_login)
         return current_user
     return templates.TemplateResponse(
         request,
-        "settings.html",
+        "system/settings.html",
         {
             "request": request,
             "active_page": "settings",
@@ -627,7 +627,7 @@ async def document_qa_page(request: Request, current_user=Depends(require_ui_log
         return current_user
     return templates.TemplateResponse(
         request,
-        "document_qa.html",
+        "documents/qa.html",
         {
             "request": request,
             "active_page": "document-qa",

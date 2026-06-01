@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 
-from sqlalchemy import Boolean, DateTime, Float, ForeignKey, Integer, String, Text
+from sqlalchemy import Boolean, DateTime, Float, ForeignKey, Index, Integer, String, Text
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.core.db import Base
@@ -41,6 +41,12 @@ class Document(Base):
     rag_indexed_at: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
     chunk_count:    Mapped[int]             = mapped_column(Integer, default=0, nullable=False)
 
+    # Content identity — hex SHA-256 of the stored file bytes.
+    # NULL on rows created before this column was introduced (legacy uploads).
+    sha256_hash: Mapped[str | None] = mapped_column(
+        String(64), nullable=True, unique=True, index=True
+    )
+
     # Batch / Portfolio grouping
     portfolio_id: Mapped[str | None] = mapped_column(String(200), nullable=True, index=True)
     batch_id:     Mapped[int | None] = mapped_column(
@@ -51,6 +57,10 @@ class Document(Base):
     folder:    Mapped[str | None] = mapped_column(String(255), nullable=True, default="Uncategorised", index=True)
     # Optional FK to clients table (populated when doc is linked to a client)
     client_id: Mapped[int | None] = mapped_column(Integer, ForeignKey("clients.id"), nullable=True, index=True)
+
+    __table_args__ = (
+        Index("ix_documents_created_at", "created_at"),
+    )
 
 
 class ExtractedEntity(Base):

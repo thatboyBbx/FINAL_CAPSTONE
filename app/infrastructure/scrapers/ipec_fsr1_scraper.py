@@ -16,7 +16,7 @@ import logging
 import re
 import tempfile
 import time
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
 from urllib.parse import urljoin, urlparse
 
@@ -57,8 +57,6 @@ def _fetch_with_retry(
     Fetch a URL with exponential backoff. Returns the Response or None if all retries fail.
     Works with both requests.Session and httpx.Client objects.
     """
-    import requests  # imported here to keep top-level imports clean
-
     for attempt in range(max_retries):
         try:
             response = session.get(url, timeout=15)

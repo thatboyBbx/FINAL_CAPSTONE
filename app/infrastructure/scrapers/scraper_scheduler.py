@@ -89,15 +89,12 @@ def run_scraper_now(scraper_name: str) -> int:
     if scraper_name not in _SCRAPER_CLASSES:
         raise ValueError(f"Unknown scraper: {scraper_name!r}")
     import importlib
-    from app.core.db import SessionLocal
+    from app.core.db import session_scope
     module_path, class_name = _SCRAPER_CLASSES[scraper_name].split(":")
-    db = SessionLocal()
-    try:
+    with session_scope() as db:
         module = importlib.import_module(module_path)
         result = getattr(module, class_name)().run(db)
         return result.run_id or 0
-    finally:
-        db.close()
 
 
 _SCRAPER_CLASSES = {
@@ -112,19 +109,17 @@ def _run_scraper(name: str) -> None:
     """Generic job runner — imports and runs the named scraper class."""
     module_path, class_name = _SCRAPER_CLASSES[name].split(":")
     logger.info("[scheduler] starting %s scraper job", name)
-    from app.core.db import SessionLocal
+    from app.core.db import session_scope
     import importlib
-    db = SessionLocal()
     try:
-        module = importlib.import_module(module_path)
-        scraper = getattr(module, class_name)()
-        result = scraper.run(db)
-        logger.info("[scheduler] %s done — inserted=%d updated=%d status=%s",
-                    name, result.records_inserted, result.records_updated, result.status)
+        with session_scope() as db:
+            module = importlib.import_module(module_path)
+            scraper = getattr(module, class_name)()
+            result = scraper.run(db)
+            logger.info("[scheduler] %s done — inserted=%d updated=%d status=%s",
+                        name, result.records_inserted, result.records_updated, result.status)
     except Exception as exc:
         logger.error("[scheduler] %s job error: %s", name, exc, exc_info=True)
-    finally:
-        db.close()
 
 
 def _run_ipec() -> None:
@@ -140,16 +135,14 @@ def _run_news() -> None:
 def _run_retraining() -> None:
     """Monthly job: retrain NER and risk models with accumulated feedback."""
     logger.info("[scheduler] starting monthly retraining job")
-    from app.core.db import SessionLocal
+    from app.core.db import session_scope
     from app.modules.feedback.retraining_pipeline import RetrainingPipeline
-    db = SessionLocal()
     try:
-        result = RetrainingPipeline().run_full_retraining(db)
-        logger.info("[scheduler] retraining complete: %s", result)
+        with session_scope() as db:
+            result = RetrainingPipeline().run_full_retraining(db)
+            logger.info("[scheduler] retraining complete: %s", result)
     except Exception as exc:
         logger.error("[scheduler] retraining job error: %s", exc, exc_info=True)
-    finally:
-        db.close()
 
 
 # ── Advancement 6: Daily expiry alert job ────────────────────────────────────
@@ -157,25 +150,22 @@ def _run_retraining() -> None:
 def _run_expiry_alerts() -> None:
     """Daily job: send email notifications for policies expiring within 60 days."""
     logger.info("[scheduler] starting daily expiry alert job")
-    from app.core.db import SessionLocal
+    from app.core.db import session_scope
     from app.modules.tracker.service import PolicyTrackerService
-    db = SessionLocal()
     try:
-        result = PolicyTrackerService().send_expiry_notifications(db)
-        logger.info("[scheduler] expiry alerts sent: %s", result)
+        with session_scope() as db:
+            result = PolicyTrackerService().send_expiry_notifications(db)
+            logger.info("[scheduler] expiry alerts sent: %s", result)
     except Exception as exc:
         logger.error("[scheduler] expiry alert job error: %s", exc, exc_info=True)
-    finally:
-        db.close()
 
 
 def _trigger_startup_check() -> None:
     """If no successful scrape run in 7 days, trigger the news scraper once at startup."""
     try:
-        from app.core.db import SessionLocal
+        from app.core.db import session_scope
         from app.modules.insurers.scrape_model import ScrapeRun
-        db = SessionLocal()
-        try:
+        with session_scope() as db:
             cutoff = datetime.utcnow() - timedelta(days=7)
             recent = (
                 db.query(ScrapeRun)
@@ -193,7 +183,5 @@ def _trigger_startup_check() -> None:
                         id="news_startup",
                         replace_existing=True,
                     )
-        finally:
-            db.close()
     except Exception as exc:
         logger.warning("[scheduler] startup check failed: %s", exc)

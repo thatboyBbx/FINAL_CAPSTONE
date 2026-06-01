@@ -1,0 +1,972 @@
+{
+  "modules": [
+    "app.main",
+    "app",
+    "app.ai",
+    "app.ai.inference.csp_nlg",
+    "app.ai.inference.csp_normalizer",
+    "app.ai.inference.csp_wcs_scorer",
+    "app.ai.inference.csp_xgboost_model",
+    "app.ai.inference",
+    "app.ai.models",
+    "app.ai.multilingual.language_detector",
+    "app.ai.multilingual.multilingual_pipeline",
+    "app.ai.multilingual",
+    "app.ai.nlp.entity_registry",
+    "app.ai.nlp.ner_pipeline",
+    "app.ai.nlp",
+    "app.ai.rag.indexing_pipeline",
+    "app.ai.rag.qa_engine",
+    "app.ai.rag.vector_store",
+    "app.ai.rag",
+    "app.ai.training.csp_training_pipeline",
+    "app.ai.training",
+    "app.api",
+    "app.api.routes.csp_routes",
+    "app.api.routes",
+    "app.batch.batch_processor",
+    "app.batch.tasks",
+    "app.batch",
+    "app.core.config",
+    "app.core.db",
+    "app.core.logging",
+    "app.core",
+    "app.infrastructure",
+    "app.infrastructure.db",
+    "app.infrastructure.scrapers.base_scraper",
+    "app.infrastructure.scrapers.ipec_fsr1_scraper",
+    "app.infrastructure.scrapers.ipec_scraper",
+    "app.infrastructure.scrapers.news_scraper",
+    "app.infrastructure.scrapers.sandbox_annotator",
+    "app.infrastructure.scrapers.scraper_scheduler",
+    "app.infrastructure.scrapers.scraper_utils",
+    "app.infrastructure.scrapers",
+    "app.infrastructure.storage.dataset_registry",
+    "app.infrastructure.storage",
+    "app.infrastructure.storage.training_data.generate_synthetic_data",
+    "app.infrastructure.storage.training_data",
+    "app.modules.compat_router",
+    "app.modules",
+    "app.modules.audit.audit_logger",
+    "app.modules.audit.audit_middleware",
+    "app.modules.audit.model",
+    "app.modules.audit.router",
+    "app.modules.audit",
+    "app.modules.auth.dependencies",
+    "app.modules.auth.router",
+    "app.modules.auth.schemas",
+    "app.modules.auth.service",
+    "app.modules.auth.ui_dependencies",
+    "app.modules.batch.model",
+    "app.modules.batch.router",
+    "app.modules.batch",
+    "app.modules.chatbot.router",
+    "app.modules.chatbot",
+    "app.modules.circulars.classifier",
+    "app.modules.circulars.extractor",
+    "app.modules.circulars.model",
+    "app.modules.circulars.nlp",
+    "app.modules.circulars.repo",
+    "app.modules.circulars.router",
+    "app.modules.circulars.schemas",
+    "app.modules.circulars.service",
+    "app.modules.circulars",
+    "app.modules.clients.model",
+    "app.modules.clients.repo",
+    "app.modules.clients.router",
+    "app.modules.clients.schemas",
+    "app.modules.clients.service",
+    "app.modules.clients",
+    "app.modules.comparison.clause_aligner",
+    "app.modules.comparison.delta_reporter",
+    "app.modules.comparison.model",
+    "app.modules.comparison.router",
+    "app.modules.comparison.service",
+    "app.modules.comparison",
+    "app.modules.compliance.model",
+    "app.modules.compliance.schemas",
+    "app.modules.compliance.service",
+    "app.modules.compliance",
+    "app.modules.csp.model",
+    "app.modules.csp.schemas",
+    "app.modules.csp.service",
+    "app.modules.csp",
+    "app.modules.deviation.clause_scorer",
+    "app.modules.deviation.knowledge_base_seeder",
+    "app.modules.deviation.model",
+    "app.modules.deviation.router",
+    "app.modules.deviation",
+    "app.modules.documents.classifier_service",
+    "app.modules.documents.entity_extraction_service",
+    "app.modules.documents.model",
+    "app.modules.documents.repo",
+    "app.modules.documents.router",
+    "app.modules.documents.schemas",
+    "app.modules.documents.service",
+    "app.modules.documents.storage",
+    "app.modules.documents.ingestion.corpus_builder",
+    "app.modules.documents.ingestion.feature_extractor",
+    "app.modules.documents.ingestion.pdf_extractor",
+    "app.modules.documents.ingestion",
+    "app.modules.feedback.feedback_store",
+    "app.modules.feedback.model",
+    "app.modules.feedback.retraining_pipeline",
+    "app.modules.feedback.router",
+    "app.modules.feedback",
+    "app.modules.financials.dev_seed",
+    "app.modules.financials.features",
+    "app.modules.financials.model",
+    "app.modules.financials.repo",
+    "app.modules.financials.router",
+    "app.modules.financials.schemas",
+    "app.modules.financials.service",
+    "app.modules.financials",
+    "app.modules.insurers.analytics_service",
+    "app.modules.insurers.claims_model",
+    "app.modules.insurers.dev_seed",
+    "app.modules.insurers.model",
+    "app.modules.insurers.repo",
+    "app.modules.insurers.router",
+    "app.modules.insurers.schemas",
+    "app.modules.insurers.scrape_model",
+    "app.modules.insurers.service",
+    "app.modules.insurers",
+    "app.modules.intel.advisory_service",
+    "app.modules.intel.classifier",
+    "app.modules.intel.gdelt",
+    "app.modules.intel.model",
+    "app.modules.intel.repo",
+    "app.modules.intel.router",
+    "app.modules.intel.schemas",
+    "app.modules.intel.settlement_router",
+    "app.modules.intel",
+    "app.modules.ml.circular_classifier",
+    "app.modules.ml.explain",
+    "app.modules.ml.forecaster",
+    "app.modules.ml.insurer_predictor",
+    "app.modules.ml.labels",
+    "app.modules.ml.prediction_service",
+    "app.modules.ml.predictor",
+    "app.modules.ml.registry",
+    "app.modules.ml.router",
+    "app.modules.ml.text_classifier",
+    "app.modules.ml.trainer",
+    "app.modules.ml.training_orchestrator",
+    "app.modules.ml.training_service",
+    "app.modules.ml.visualization_service",
+    "app.modules.ml",
+    "app.modules.multilingual.model",
+    "app.modules.multilingual.router",
+    "app.modules.multilingual",
+    "app.modules.news.features",
+    "app.modules.news.model",
+    "app.modules.news.repo",
+    "app.modules.news.router",
+    "app.modules.news.schemas",
+    "app.modules.news.service",
+    "app.modules.news",
+    "app.modules.qa.model",
+    "app.modules.qa.router",
+    "app.modules.qa",
+    "app.modules.reports.router",
+    "app.modules.reports.sandbox_report_service",
+    "app.modules.reports",
+    "app.modules.scoring.fusion",
+    "app.modules.scoring.time_decay",
+    "app.modules.scoring",
+    "app.modules.tests.test_insurer_module",
+    "app.modules.tests",
+    "app.modules.tracker.model",
+    "app.modules.tracker.router",
+    "app.modules.tracker.service",
+    "app.modules.tracker",
+    "app.modules.users.model",
+    "app.modules.users.repo",
+    "app.modules.users.schemas",
+    "app.modules.users.service",
+    "app.modules.users",
+    "app.ui.extra_router",
+    "app.ui.router"
+  ],
+  "dependency_graph": {
+    "app.main": [
+      "app.modules.tracker.router",
+      "app.modules.multilingual.model",
+      "app.modules.documents.model",
+      "app.modules.audit.model",
+      "app.modules.chatbot.router",
+      "app.api.routes.csp_routes",
+      "app.modules.compat_router",
+      "app.modules.comparison.model",
+      "app.modules.insurers.model",
+      "app.modules.reports.router",
+      "app.modules.feedback.router",
+      "app.core.config",
+      "app.modules.insurers.claims_model",
+      "app.modules.feedback.model",
+      "app.modules.batch.model",
+      "app.modules.documents.router",
+      "app.modules.multilingual.router",
+      "app.modules.financials.router",
+      "app.modules.comparison.router",
+      "app.infrastructure.scrapers.scraper_scheduler",
+      "app.ui.extra_router",
+      "app.modules.insurers.scrape_model",
+      "app.core.logging",
+      "app.modules.qa.router",
+      "app.modules.clients.model",
+      "app.modules.csp.model",
+      "app.modules.audit.router",
+      "app.modules.deviation.model",
+      "app.modules.clients.router",
+      "app.modules.qa.model",
+      "app.modules.audit.audit_middleware",
+      "app.modules.news.router",
+      "app.modules.batch.router",
+      "app.modules.intel.settlement_router",
+      "app.modules.intel.router",
+      "app.modules.financials.model",
+      "app.modules.tracker.model",
+      "app.modules.ml.router",
+      "app.modules.auth.router",
+      "app.ui.router",
+      "app.core.db",
+      "app.modules.deviation.router",
+      "app.modules.news.model",
+      "app.modules.insurers.router"
+    ],
+    "app": [],
+    "app.ai": [],
+    "app.ai.inference.csp_nlg": [
+      "app.ai.inference.csp_wcs_scorer"
+    ],
+    "app.ai.inference.csp_normalizer": [],
+    "app.ai.inference.csp_wcs_scorer": [
+      "app.ai.inference.csp_normalizer"
+    ],
+    "app.ai.inference.csp_xgboost_model": [],
+    "app.ai.inference": [],
+    "app.ai.models": [],
+    "app.ai.multilingual.language_detector": [
+      "app.modules.multilingual.model"
+    ],
+    "app.ai.multilingual.multilingual_pipeline": [],
+    "app.ai.multilingual": [],
+    "app.ai.nlp.entity_registry": [],
+    "app.ai.nlp.ner_pipeline": [
+      "app.ai.nlp.entity_registry"
+    ],
+    "app.ai.nlp": [],
+    "app.ai.rag.indexing_pipeline": [
+      "app.modules.circulars.extractor",
+      "app.modules.circulars.model",
+      "app.modules.documents.model",
+      "app.ai.rag.vector_store"
+    ],
+    "app.ai.rag.qa_engine": [],
+    "app.ai.rag.vector_store": [],
+    "app.ai.rag": [],
+    "app.ai.training.csp_training_pipeline": [
+      "app.ai.inference.csp_xgboost_model"
+    ],
+    "app.ai.training": [],
+    "app.api": [],
+    "app.api.routes.csp_routes": [
+      "app.modules.csp.service",
+      "app.core.db",
+      "app.modules.auth.dependencies"
+    ],
+    "app.api.routes": [],
+    "app.batch.batch_processor": [
+      "app.modules.batch.model",
+      "app.modules.documents.model"
+    ],
+    "app.batch.tasks": [
+      "app.modules.batch.model",
+      "app.modules.tracker.service",
+      "app.modules.circulars.model",
+      "app.modules.documents.model",
+      "app.modules.circulars.nlp",
+      "app.core.db",
+      "app.ai.rag.indexing_pipeline",
+      "app.modules.deviation.clause_scorer",
+      "app.modules.circulars.extractor",
+      "app.modules.scoring.fusion"
+    ],
+    "app.batch": [],
+    "app.core.config": [],
+    "app.core.db": [
+      "app.core.config"
+    ],
+    "app.core.logging": [
+      "app.core.config"
+    ],
+    "app.core": [],
+    "app.infrastructure": [],
+    "app.infrastructure.db": [],
+    "app.infrastructure.scrapers.base_scraper": [
+      "app.infrastructure.scrapers.scraper_utils",
+      "app.modules.insurers.scrape_model"
+    ],
+    "app.infrastructure.scrapers.ipec_fsr1_scraper": [
+      "app.modules.financials.model"
+    ],
+    "app.infrastructure.scrapers.ipec_scraper": [
+      "app.modules.insurers.claims_model",
+      "app.modules.financials.model",
+      "app.infrastructure.scrapers.base_scraper",
+      "app.infrastructure.scrapers.scraper_utils",
+      "app.modules.insurers.scrape_model"
+    ],
+    "app.infrastructure.scrapers.news_scraper": [
+      "app.modules.news.model",
+      "app.infrastructure.scrapers.base_scraper",
+      "app.infrastructure.scrapers.scraper_utils"
+    ],
+    "app.infrastructure.scrapers.sandbox_annotator": [],
+    "app.infrastructure.scrapers.scraper_scheduler": [
+      "app.modules.feedback.retraining_pipeline",
+      "app.core.db",
+      "app.modules.tracker.service",
+      "app.modules.insurers.scrape_model"
+    ],
+    "app.infrastructure.scrapers.scraper_utils": [
+      "app.modules.insurers.model"
+    ],
+    "app.infrastructure.scrapers": [],
+    "app.infrastructure.storage.dataset_registry": [
+      "app.core.config"
+    ],
+    "app.infrastructure.storage": [],
+    "app.infrastructure.storage.training_data.generate_synthetic_data": [],
+    "app.infrastructure.storage.training_data": [],
+    "app.modules.compat_router": [
+      "app.ai.rag.qa_engine",
+      "app.modules.documents.ingestion",
+      "app.modules.documents.router",
+      "app.modules.documents.service",
+      "app.modules.documents.model",
+      "app.modules.comparison.service",
+      "app.modules.compliance.service",
+      "app.core.db",
+      "app.modules",
+      "app.modules.auth.dependencies",
+      "app.modules.deviation.clause_scorer",
+      "app.modules.comparison.router"
+    ],
+    "app.modules": [],
+    "app.modules.audit.audit_logger": [
+      "app.modules.audit.model"
+    ],
+    "app.modules.audit.audit_middleware": [
+      "app.modules.auth.service",
+      "app.modules.audit.audit_logger",
+      "app.core.db"
+    ],
+    "app.modules.audit.model": [
+      "app.core.db"
+    ],
+    "app.modules.audit.router": [
+      "app.modules.audit.audit_logger",
+      "app.core.db",
+      "app.modules.auth.dependencies"
+    ],
+    "app.modules.audit": [],
+    "app.modules.auth.dependencies": [
+      "app.modules.auth.service",
+      "app.modules.users.model",
+      "app.core.db"
+    ],
+    "app.modules.auth.router": [
+      "app.modules.auth.service",
+      "app.modules.users.service",
+      "app.modules.users.schemas",
+      "app.core.db",
+      "app.modules",
+      "app.modules.users",
+      "app.modules.auth.schemas"
+    ],
+    "app.modules.auth.schemas": [],
+    "app.modules.auth.service": [
+      "app.modules.users",
+      "app.modules.users.model",
+      "app.core.config",
+      "app.modules.users.service"
+    ],
+    "app.modules.auth.ui_dependencies": [
+      "app.modules.auth.service",
+      "app.modules.users.model",
+      "app.core.db"
+    ],
+    "app.modules.batch.model": [
+      "app.core.db"
+    ],
+    "app.modules.batch.router": [
+      "app.batch.tasks",
+      "app.core.db",
+      "app.modules.auth.dependencies",
+      "app.batch.batch_processor"
+    ],
+    "app.modules.batch": [],
+    "app.modules.chatbot.router": [
+      "app.modules.documents.model",
+      "app.core.db",
+      "app.modules.auth.dependencies"
+    ],
+    "app.modules.chatbot": [],
+    "app.modules.circulars.classifier": [
+      "app.modules.circulars.nlp"
+    ],
+    "app.modules.circulars.extractor": [
+      "app.ai.multilingual.language_detector",
+      "app.ai.multilingual.multilingual_pipeline"
+    ],
+    "app.modules.circulars.model": [
+      "app.core.db"
+    ],
+    "app.modules.circulars.nlp": [],
+    "app.modules.circulars.repo": [
+      "app.modules.circulars.model"
+    ],
+    "app.modules.circulars.router": [
+      "app.modules.circulars.schemas",
+      "app.modules.circulars",
+      "app.core.db",
+      "app.modules.auth.dependencies",
+      "app.modules.circulars.service"
+    ],
+    "app.modules.circulars.schemas": [],
+    "app.modules.circulars.service": [
+      "app.modules.documents.repo",
+      "app.modules.circulars.model",
+      "app.modules.circulars.classifier",
+      "app.modules.circulars.repo",
+      "app.modules.circulars.nlp",
+      "app.modules.circulars.extractor"
+    ],
+    "app.modules.circulars": [],
+    "app.modules.clients.model": [
+      "app.core.db"
+    ],
+    "app.modules.clients.repo": [
+      "app.modules.documents.model",
+      "app.modules.clients.model"
+    ],
+    "app.modules.clients.router": [
+      "app.modules.clients",
+      "app.modules.auth.dependencies",
+      "app.core.db",
+      "app.modules.clients.service"
+    ],
+    "app.modules.clients.schemas": [],
+    "app.modules.clients.service": [
+      "app.modules.clients.model",
+      "app.modules.clients",
+      "app.modules.clients.repo"
+    ],
+    "app.modules.clients": [],
+    "app.modules.comparison.clause_aligner": [
+      "app.ai.rag.vector_store"
+    ],
+    "app.modules.comparison.delta_reporter": [
+      "app.modules.documents.model",
+      "app.modules.comparison.model",
+      "app.infrastructure.scrapers.scraper_utils"
+    ],
+    "app.modules.comparison.model": [
+      "app.core.db"
+    ],
+    "app.modules.comparison.router": [
+      "app.modules.documents.model",
+      "app.modules.comparison.service",
+      "app.core.db",
+      "app.modules.auth.dependencies",
+      "app.modules.comparison.model"
+    ],
+    "app.modules.comparison.service": [
+      "app.modules.circulars.model",
+      "app.modules.documents.model",
+      "app.modules.circulars.extractor",
+      "app.modules.comparison.delta_reporter",
+      "app.modules.comparison.clause_aligner"
+    ],
+    "app.modules.comparison": [],
+    "app.modules.compliance.model": [
+      "app.core.db"
+    ],
+    "app.modules.compliance.schemas": [],
+    "app.modules.compliance.service": [],
+    "app.modules.compliance": [],
+    "app.modules.csp.model": [
+      "app.core.db"
+    ],
+    "app.modules.csp.schemas": [],
+    "app.modules.csp.service": [
+      "app.ai.inference.csp_xgboost_model",
+      "app.modules.financials.model",
+      "app.modules.csp.model",
+      "app.ai.inference.csp_nlg",
+      "app.modules.insurers.model",
+      "app.ai.inference.csp_wcs_scorer"
+    ],
+    "app.modules.csp": [],
+    "app.modules.deviation.clause_scorer": [
+      "app.ai.rag.vector_store",
+      "app.modules.circulars.model",
+      "app.modules.documents.model",
+      "app.modules.comparison.service",
+      "app.modules.circulars.extractor",
+      "app.modules.deviation.model"
+    ],
+    "app.modules.deviation.knowledge_base_seeder": [
+      "app.modules.deviation.model"
+    ],
+    "app.modules.deviation.model": [
+      "app.core.db"
+    ],
+    "app.modules.deviation.router": [
+      "app.modules.documents.model",
+      "app.modules.deviation.knowledge_base_seeder",
+      "app.core.db",
+      "app.modules.deviation.clause_scorer",
+      "app.modules.auth.dependencies",
+      "app.modules.deviation.model"
+    ],
+    "app.modules.deviation": [],
+    "app.modules.documents.classifier_service": [],
+    "app.modules.documents.entity_extraction_service": [
+      "app.modules.documents.model"
+    ],
+    "app.modules.documents.model": [
+      "app.core.db"
+    ],
+    "app.modules.documents.repo": [
+      "app.modules.documents.schemas",
+      "app.modules.documents.model"
+    ],
+    "app.modules.documents.router": [
+      "app.modules.documents.classifier_service",
+      "app.modules.documents.ingestion.pdf_extractor",
+      "app.modules.documents.service",
+      "app.modules.documents.model",
+      "app.modules.compliance.service",
+      "app.core.db",
+      "app.modules",
+      "app.modules.auth.dependencies",
+      "app.modules.documents.schemas"
+    ],
+    "app.modules.documents.schemas": [],
+    "app.modules.documents.service": [
+      "app.modules.documents.classifier_service",
+      "app.modules.documents.repo",
+      "app.modules.documents.ingestion.pdf_extractor",
+      "app.modules.documents.model",
+      "app.modules.documents.entity_extraction_service",
+      "app.modules.compliance.service",
+      "app.modules",
+      "app.modules.documents.schemas",
+      "app.modules.documents.storage"
+    ],
+    "app.modules.documents.storage": [],
+    "app.modules.documents.ingestion.corpus_builder": [
+      "app.modules.documents.ingestion.feature_extractor",
+      "app.modules.documents.ingestion.pdf_extractor"
+    ],
+    "app.modules.documents.ingestion.feature_extractor": [],
+    "app.modules.documents.ingestion.pdf_extractor": [],
+    "app.modules.documents.ingestion": [
+      "app.modules.documents.ingestion.pdf_extractor"
+    ],
+    "app.modules.feedback.feedback_store": [
+      "app.modules.feedback.model"
+    ],
+    "app.modules.feedback.model": [
+      "app.core.db"
+    ],
+    "app.modules.feedback.retraining_pipeline": [
+      "app.modules.circulars.model",
+      "app.modules.feedback.model",
+      "app.modules.feedback.feedback_store"
+    ],
+    "app.modules.feedback.router": [
+      "app.modules.feedback.retraining_pipeline",
+      "app.modules.auth.dependencies",
+      "app.core.db",
+      "app.modules.feedback.feedback_store"
+    ],
+    "app.modules.feedback": [],
+    "app.modules.financials.dev_seed": [
+      "app.modules.financials.model",
+      "app.modules.insurers.model"
+    ],
+    "app.modules.financials.features": [
+      "app.modules.financials.model"
+    ],
+    "app.modules.financials.model": [
+      "app.core.db"
+    ],
+    "app.modules.financials.repo": [
+      "app.modules.financials.model"
+    ],
+    "app.modules.financials.router": [
+      "app.modules.financials.service",
+      "app.modules.financials.dev_seed",
+      "app.modules.financials.repo",
+      "app.modules.financials.schemas",
+      "app.core.db",
+      "app.modules.auth.dependencies",
+      "app.modules.financials.features"
+    ],
+    "app.modules.financials.schemas": [],
+    "app.modules.financials.service": [
+      "app.modules.financials.repo",
+      "app.modules.financials.model",
+      "app.modules.insurers.repo",
+      "app.modules.insurers.schemas"
+    ],
+    "app.modules.financials": [],
+    "app.modules.insurers.analytics_service": [
+      "app.modules.news.model",
+      "app.modules.insurers.claims_model",
+      "app.modules.financials.model",
+      "app.modules.insurers.model"
+    ],
+    "app.modules.insurers.claims_model": [
+      "app.core.db"
+    ],
+    "app.modules.insurers.dev_seed": [
+      "app.modules.insurers.model"
+    ],
+    "app.modules.insurers.model": [
+      "app.core.db"
+    ],
+    "app.modules.insurers.repo": [
+      "app.modules.insurers.model",
+      "app.modules.insurers.schemas"
+    ],
+    "app.modules.insurers.router": [
+      "app.modules.insurers.analytics_service",
+      "app.modules.ml.insurer_predictor",
+      "app.modules.insurers.schemas",
+      "app.modules.insurers.service",
+      "app.core.db",
+      "app.modules.auth.dependencies",
+      "app.modules.insurers.dev_seed",
+      "app.infrastructure.scrapers.scraper_scheduler",
+      "app.modules.insurers.model",
+      "app.modules.insurers.scrape_model"
+    ],
+    "app.modules.insurers.schemas": [],
+    "app.modules.insurers.scrape_model": [
+      "app.core.db"
+    ],
+    "app.modules.insurers.service": [
+      "app.modules.insurers.repo",
+      "app.modules.insurers.model",
+      "app.modules.insurers.schemas"
+    ],
+    "app.modules.insurers": [],
+    "app.modules.intel.advisory_service": [
+      "app.modules.ml.predictor",
+      "app.modules.insurers.analytics_service",
+      "app.modules.ml.insurer_predictor",
+      "app.modules.news.features",
+      "app.modules.financials.features",
+      "app.modules.scoring.fusion"
+    ],
+    "app.modules.intel.classifier": [
+      "app.modules.intel.repo"
+    ],
+    "app.modules.intel.gdelt": [
+      "app.modules.intel.repo"
+    ],
+    "app.modules.intel.model": [
+      "app.core.db"
+    ],
+    "app.modules.intel.repo": [
+      "app.modules.intel.model"
+    ],
+    "app.modules.intel.router": [
+      "app.modules.intel.gdelt",
+      "app.modules.intel.classifier",
+      "app.modules.intel",
+      "app.core.db",
+      "app.modules.auth.dependencies",
+      "app.modules.intel.repo"
+    ],
+    "app.modules.intel.schemas": [],
+    "app.modules.intel.settlement_router": [
+      "app.modules.financials.model",
+      "app.modules.csp.service",
+      "app.modules.csp.model",
+      "app.core.db",
+      "app.modules.auth.dependencies",
+      "app.modules.insurers.model"
+    ],
+    "app.modules.intel": [],
+    "app.modules.ml.circular_classifier": [
+      "app.core.config",
+      "app.modules.documents.ingestion.feature_extractor"
+    ],
+    "app.modules.ml.explain": [
+      "app.modules.ml.predictor",
+      "app.modules.ml.registry"
+    ],
+    "app.modules.ml.forecaster": [
+      "app.modules.financials.repo",
+      "app.modules.insurers.repo"
+    ],
+    "app.modules.ml.insurer_predictor": [
+      "app.modules.news.model",
+      "app.modules.insurers.claims_model",
+      "app.modules.financials.model",
+      "app.modules.insurers.model"
+    ],
+    "app.modules.ml.labels": [],
+    "app.modules.ml.prediction_service": [
+      "app.modules.ml.training_service"
+    ],
+    "app.modules.ml.predictor": [
+      "app.modules.news.repo",
+      "app.modules.news.features",
+      "app.modules.ml.registry",
+      "app.modules.financials.repo",
+      "app.modules.ml.text_classifier",
+      "app.modules.financials.features"
+    ],
+    "app.modules.ml.registry": [],
+    "app.modules.ml.router": [
+      "app.modules.ml.predictor",
+      "app.modules.scoring.fusion",
+      "app.modules.ml.circular_classifier",
+      "app.modules.ml.training_orchestrator",
+      "app.core.db",
+      "app.modules.ml.explain",
+      "app.modules.ml.forecaster",
+      "app.modules.auth.dependencies",
+      "app.modules.ml.trainer"
+    ],
+    "app.modules.ml.text_classifier": [
+      "app.modules.circulars.model",
+      "app.modules.documents.model"
+    ],
+    "app.modules.ml.trainer": [
+      "app.modules.ml.labels",
+      "app.modules.insurers.repo",
+      "app.modules.news.features",
+      "app.modules.news.repo",
+      "app.modules.ml.registry",
+      "app.modules.financials.repo",
+      "app.modules.ml.text_classifier",
+      "app.modules.financials.features"
+    ],
+    "app.modules.ml.training_orchestrator": [
+      "app.modules.ml.circular_classifier",
+      "app.core.config",
+      "app.modules.documents.ingestion.corpus_builder",
+      "app.modules.ml.training_service"
+    ],
+    "app.modules.ml.training_service": [
+      "app.infrastructure.storage.dataset_registry"
+    ],
+    "app.modules.ml.visualization_service": [],
+    "app.modules.ml": [],
+    "app.modules.multilingual.model": [
+      "app.core.db"
+    ],
+    "app.modules.multilingual.router": [
+      "app.ai.multilingual.language_detector",
+      "app.modules.multilingual.model",
+      "app.ai.multilingual.multilingual_pipeline",
+      "app.core.db",
+      "app.modules.auth.dependencies"
+    ],
+    "app.modules.multilingual": [],
+    "app.modules.news.features": [
+      "app.modules.news.model"
+    ],
+    "app.modules.news.model": [
+      "app.core.db"
+    ],
+    "app.modules.news.repo": [
+      "app.modules.news.model"
+    ],
+    "app.modules.news.router": [
+      "app.modules.news.repo",
+      "app.modules.news.features",
+      "app.modules.financials.repo",
+      "app.modules.news.service",
+      "app.core.db",
+      "app.modules.auth.dependencies",
+      "app.modules.news.schemas",
+      "app.modules.news.model",
+      "app.infrastructure.scrapers.news_scraper"
+    ],
+    "app.modules.news.schemas": [],
+    "app.modules.news.service": [
+      "app.modules.news.schemas",
+      "app.modules.news.model",
+      "app.modules.news.repo"
+    ],
+    "app.modules.news": [],
+    "app.modules.qa.model": [
+      "app.core.db"
+    ],
+    "app.modules.qa.router": [
+      "app.modules.qa.model",
+      "app.ai.rag.qa_engine",
+      "app.modules.documents.model",
+      "app.core.db",
+      "app.modules.auth.dependencies",
+      "app.ai.rag.indexing_pipeline"
+    ],
+    "app.modules.qa": [],
+    "app.modules.reports.router": [
+      "app.modules.documents.ingestion",
+      "app.modules.documents.service",
+      "app.modules.reports.sandbox_report_service",
+      "app.core.db",
+      "app.modules.auth.dependencies",
+      "app.modules"
+    ],
+    "app.modules.reports.sandbox_report_service": [
+      "app.modules.documents.model"
+    ],
+    "app.modules.reports": [],
+    "app.modules.scoring.fusion": [
+      "app.modules.ml.predictor",
+      "app.modules.news.repo",
+      "app.modules.news.features",
+      "app.modules.circulars.model",
+      "app.modules.financials.repo",
+      "app.modules.scoring.time_decay"
+    ],
+    "app.modules.scoring.time_decay": [],
+    "app.modules.scoring": [],
+    "app.modules.tests.test_insurer_module": [
+      "app.modules.auth.service",
+      "app.modules.insurers.claims_model",
+      "app.modules.insurers.analytics_service",
+      "app.modules.ml.insurer_predictor",
+      "app.modules.users",
+      "app.modules.users.service",
+      "app.modules.financials.model",
+      "app.modules.users.schemas",
+      "app.core.db",
+      "app.main",
+      "app.modules.insurers.dev_seed",
+      "app.infrastructure.scrapers.scraper_utils",
+      "app.modules",
+      "app.modules.news.model",
+      "app.infrastructure.scrapers.news_scraper",
+      "app.modules.insurers.model",
+      "app.modules.insurers.scrape_model"
+    ],
+    "app.modules.tests": [],
+    "app.modules.tracker.model": [
+      "app.core.db"
+    ],
+    "app.modules.tracker.router": [
+      "app.modules.auth.dependencies",
+      "app.modules.tracker.model",
+      "app.core.db",
+      "app.modules.tracker.service"
+    ],
+    "app.modules.tracker.service": [
+      "app.modules.documents.model",
+      "app.modules.circulars.model",
+      "app.modules.tracker.model",
+      "app.infrastructure.scrapers.scraper_utils"
+    ],
+    "app.modules.tracker": [],
+    "app.modules.users.model": [
+      "app.core.db"
+    ],
+    "app.modules.users.repo": [
+      "app.modules.users.model",
+      "app.modules.users.schemas"
+    ],
+    "app.modules.users.schemas": [],
+    "app.modules.users.service": [
+      "app.modules.users",
+      "app.modules.users.model",
+      "app.modules.users.schemas",
+      "app.modules.users.repo"
+    ],
+    "app.modules.users": [],
+    "app.ui.extra_router": [
+      "app.modules.auth.ui_dependencies",
+      "app.core.config"
+    ],
+    "app.ui.router": [
+      "app.modules.feedback.feedback_store",
+      "app.modules.circulars",
+      "app.modules.intel.repo",
+      "app.modules.comparison.model",
+      "app.modules.circulars.service",
+      "app.modules.auth.service",
+      "app.core.config",
+      "app.modules.batch.model",
+      "app.modules.auth.ui_dependencies",
+      "app.modules.audit.audit_logger",
+      "app.modules",
+      "app.modules.ml.visualization_service",
+      "app.modules.tracker.service",
+      "app.modules.intel.advisory_service",
+      "app.modules.ml.circular_classifier",
+      "app.modules.qa.model",
+      "app.modules.insurers.analytics_service",
+      "app.modules.insurers.repo",
+      "app.core.db"
+    ]
+  },
+  "cycles": [],
+  "potential_dead": [
+    "app",
+    "app.ai",
+    "app.ai.inference",
+    "app.ai.models",
+    "app.ai.multilingual",
+    "app.ai.nlp.ner_pipeline",
+    "app.ai.nlp",
+    "app.ai.rag",
+    "app.ai.training.csp_training_pipeline",
+    "app.ai.training",
+    "app.api",
+    "app.batch",
+    "app.core",
+    "app.infrastructure",
+    "app.infrastructure.db",
+    "app.infrastructure.scrapers.ipec_fsr1_scraper",
+    "app.infrastructure.scrapers.ipec_scraper",
+    "app.infrastructure.scrapers.sandbox_annotator",
+    "app.infrastructure.scrapers",
+    "app.infrastructure.storage",
+    "app.infrastructure.storage.training_data.generate_synthetic_data",
+    "app.infrastructure.storage.training_data",
+    "app.modules.audit",
+    "app.modules.batch",
+    "app.modules.chatbot",
+    "app.modules.circulars.router",
+    "app.modules.clients.schemas",
+    "app.modules.comparison",
+    "app.modules.compliance.model",
+    "app.modules.compliance.schemas",
+    "app.modules.compliance",
+    "app.modules.csp.schemas",
+    "app.modules.csp",
+    "app.modules.deviation",
+    "app.modules.feedback",
+    "app.modules.financials",
+    "app.modules.insurers",
+    "app.modules.intel.schemas",
+    "app.modules.ml.prediction_service",
+    "app.modules.ml",
+    "app.modules.multilingual",
+    "app.modules.news",
+    "app.modules.qa",
+    "app.modules.reports",
+    "app.modules.scoring",
+    "app.modules.tracker"
+  ]
+}

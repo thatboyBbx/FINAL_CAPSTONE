@@ -1,5 +1,4 @@
 import re
-from datetime import date
 from typing import Iterable
 
 from app.modules.news.model import NewsArticle

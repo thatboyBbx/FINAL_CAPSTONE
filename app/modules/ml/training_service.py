@@ -16,11 +16,6 @@ from sklearn.model_selection import train_test_split
 from app.infrastructure.storage.dataset_registry import DatasetRegistry
 
 
-def _load_demo_rows() -> list[dict]:
-    """Demo data source removed — returns empty list; train on real data instead."""
-    return []
-
-
 registry = DatasetRegistry()
 
 MODEL_FILENAME = "demo_settlement_model.joblib"
@@ -47,7 +42,7 @@ def _get_metadata_path() -> Path:
 
 
 def _build_training_data() -> tuple[list[dict], list[int]]:
-    rows = _load_demo_rows()
+    rows: list[dict] = []
 
     feature_rows: list[dict] = []
     target_rows: list[int] = []

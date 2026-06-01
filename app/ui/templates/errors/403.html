@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" id="html-root" class="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>403 — Forbidden | InsureIntel Zimbabwe</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  <style>
+    :root { --p:#d4af37; --bg:#0f0f0f; --os:#f5f5f5; --osv:#a1a1a1; --warn:#fbbf24; }
+    html:not(.dark) { --p:#004ac6; --bg:#f8f9fb; --os:#191c1e; --osv:#434655; --warn:#b45309; }
+    *,*::before,*::after { box-sizing:border-box; }
+    body {
+      font-family:'Inter',sans-serif; background:var(--bg); color:var(--os);
+      min-height:100vh; display:flex; align-items:center; justify-content:center;
+      -webkit-font-smoothing:antialiased;
+    }
+    h1 { font-family:'Manrope',sans-serif; }
+    .material-symbols-outlined { font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24; vertical-align:middle; }
+    .glass { background:rgba(26,26,26,0.6); backdrop-filter:blur(12px); border:1px solid rgba(251,191,36,0.15); }
+    html:not(.dark) .glass { background:rgba(255,255,255,0.85); border-color:rgba(180,83,9,0.15); }
+    .btn { display:inline-flex;align-items:center;gap:0.5rem;padding:0.625rem 1.25rem;
+           border-radius:8px;font-size:0.875rem;font-weight:600;text-decoration:none;
+           transition:all 0.15s; border:none; cursor:pointer; }
+    .btn-p { background:var(--p); color:#000; }
+    html:not(.dark) .btn-p { color:#fff; }
+    .btn-p:hover { opacity:0.88; }
+    .btn-s { background:transparent; color:var(--p); border:1px solid rgba(212,175,55,0.3); }
+    html:not(.dark) .btn-s { border-color:rgba(0,74,198,0.3); }
+    .btn-s:hover { border-color:var(--p); }
+    .role-chip {
+      display:inline-block; padding:0.2rem 0.625rem; border-radius:9999px;
+      font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em;
+      background:rgba(251,191,36,0.12); color:#fbbf24; border:1px solid rgba(251,191,36,0.3);
+    }
+  </style>
+  <script>(function(){var t=localStorage.getItem('insureIntelTheme')||'dark';if(t!=='dark')document.documentElement.classList.remove('dark');})();</script>
+</head>
+<body>
+
+  <div class="glass" style="max-width:28rem;width:100%;margin:1.5rem;padding:3rem 2.5rem;border-radius:1.25rem;text-align:center">
+
+    <!-- Icon -->
+    <div style="width:72px;height:72px;border-radius:50%;margin:0 auto 1.5rem;
+                background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.25);
+                display:flex;align-items:center;justify-content:center">
+      <span class="material-symbols-outlined" style="font-size:36px;color:var(--warn);font-variation-settings:'FILL' 1">lock</span>
+    </div>
+
+    <p style="font-size:0.7rem;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--warn);margin:0 0 0.5rem">Error 403</p>
+    <h1 style="font-size:1.75rem;font-weight:800;color:var(--os);margin:0 0 0.75rem;line-height:1.2">Access denied</h1>
+    <p style="font-size:0.9rem;color:var(--osv);margin:0 0 1.5rem;line-height:1.6">
+      {% if detail %}
+        {{ detail }}
+      {% else %}
+        You don't have permission to access this resource. Contact your administrator if you believe this is an error.
+      {% endif %}
+    </p>
+
+    {% if required_role %}
+    <p style="font-size:0.8rem;color:var(--osv);margin:0 0 1.75rem">
+      Required role: <span class="role-chip">{{ required_role }}</span>
+    </p>
+    {% endif %}
+
+    <div style="display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap">
+      <a href="/home" class="btn btn-p">
+        <span class="material-symbols-outlined" style="font-size:18px">home</span>
+        Go to Dashboard
+      </a>
+      <button onclick="history.back()" class="btn btn-s">
+        <span class="material-symbols-outlined" style="font-size:18px">arrow_back</span>
+        Go Back
+      </button>
+    </div>
+
+    <p style="font-size:0.75rem;color:var(--osv);margin:2rem 0 0">
+      Signed in as a different account?
+      <a href="/logout" style="color:var(--p);font-weight:600;text-decoration:none">Sign out →</a>
+    </p>
+
+  </div>
+
+</body>
+</html>

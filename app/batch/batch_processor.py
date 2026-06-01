@@ -4,10 +4,12 @@ BatchProcessor — creates batch records and queues document processing tasks.
 from __future__ import annotations
 
 import logging
-from datetime import datetime, timezone
+import os
 from typing import Any, Dict, List
 
 from sqlalchemy.orm import Session
+
+from app.modules.documents.file_store import guess_mime_from_filename
 
 logger = logging.getLogger(__name__)
 
@@ -29,7 +31,6 @@ class BatchProcessor:
         """
         from app.modules.batch.model import ProcessingBatch
         from app.modules.documents.model import Document
-        import os
 
         # Create the batch row
         batch = ProcessingBatch(
@@ -56,7 +57,7 @@ class BatchProcessor:
                     original_filename=fname,
                     stored_filename=fname,
                     file_path=fp,
-                    mime_type=_guess_mime(fname),
+                    mime_type=guess_mime_from_filename(fname),
                     file_size=_safe_size(fp),
                     status="queued",
                     uploaded_by_user_id=0,  # set to 0 for batch uploads (no user context)
@@ -119,14 +120,6 @@ class BatchProcessor:
         }
 
 
-def _guess_mime(filename: str) -> str:
-    if filename.lower().endswith(".pdf"):
-        return "application/pdf"
-    if filename.lower().endswith(".docx"):
-        return "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-    return "application/octet-stream"
-
-
 def _safe_size(path: str) -> int:
     try:
         return os.path.getsize(path)
@@ -134,4 +127,3 @@ def _safe_size(path: str) -> int:
         return 0
 
 
-import os  # noqa: E402 — placed after use for readability

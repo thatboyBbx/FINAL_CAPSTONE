@@ -21,6 +21,97 @@ logger = logging.getLogger(__name__)
 
 _KB_ROOT = Path(r"C:\Users\lenovo\Desktop\Scrapper\kb")
 
+# ---------------------------------------------------------------------------
+# Deliverable 4 — IPEC Sandbox Eligibility Rules (Annexure 1)
+# ---------------------------------------------------------------------------
+
+# Six eligibility criteria from Annexure 1 of the IPEC Regulatory Sandbox
+# Guidelines (2025).  Each rule maps directly to a numbered criterion.
+SANDBOX_ELIGIBILITY_RULES: dict = {
+    "rule_group": "sandbox_eligibility",
+    "display_name": "IPEC Regulatory Sandbox Eligibility Pre-Check",
+    "source": "IPEC Regulatory Sandbox Guidelines (2025), Annexure 1",
+    "rules": [
+        {
+            "id": "SE_001",
+            "criterion": "Scope and mandate",
+            "check": "Document describes an innovation within IPEC supervisory mandate "
+                     "(insurance or pensions)",
+            "keywords_required": ["insurance", "pensions", "ipec", "commission"],
+            "severity": "critical",
+            "pass_message": "Innovation appears within IPEC mandate scope",
+            "fail_message": "Document does not clearly establish activity within IPEC "
+                            "mandate — see Annexure 1, Criterion 1",
+        },
+        {
+            "id": "SE_002",
+            "criterion": "Governance structure",
+            "check": "Document includes or references organisational structure, "
+                     "shareholders, or directors",
+            "keywords_required": [
+                "organogram", "governance", "directors", "shareholders", "beneficial owner",
+            ],
+            "severity": "high",
+            "pass_message": "Governance structure information present",
+            "fail_message": "No governance structure information found — Annexure 1, "
+                            "Criterion 2 requires organogram and shareholder details",
+        },
+        {
+            "id": "SE_003",
+            "criterion": "Regulatory approval requirement",
+            "check": "Document acknowledges whether regulatory approval is required "
+                     "to operate",
+            "keywords_required": [
+                "regulatory approval", "licence", "license", "commission approval",
+            ],
+            "severity": "high",
+            "pass_message": "Regulatory approval status addressed",
+            "fail_message": "Regulatory approval requirement not addressed — "
+                            "Annexure 1, Criterion 3",
+        },
+        {
+            "id": "SE_004",
+            "criterion": "Capacity to participate",
+            "check": "Document demonstrates business model readiness, testing plan, "
+                     "and resource mobilisation",
+            "keywords_required": [
+                "business model", "testing plan", "milestones", "resources", "kpi",
+            ],
+            "severity": "high",
+            "pass_message": "Capacity indicators present",
+            "fail_message": "Insufficient evidence of capacity — missing testing plan, "
+                            "milestones, or KPIs (Annexure 1, Criterion 4)",
+        },
+        {
+            "id": "SE_005",
+            "criterion": "Regulatory gap (cannot operate under existing framework)",
+            "check": "Document explains why existing regulatory framework is insufficient",
+            "keywords_required": [
+                "existing framework", "not covered", "no existing licence",
+                "regulatory gap", "cannot operate",
+            ],
+            "severity": "medium",
+            "pass_message": "Regulatory gap justification present",
+            "fail_message": "No justification for why existing framework is insufficient "
+                            "— Annexure 1, Criterion 5",
+        },
+        {
+            "id": "SE_006",
+            "criterion": "Fit and proper requirements",
+            "check": "Document references police clearance, tax clearance, or fit "
+                     "and proper status",
+            "keywords_required": [
+                "police clearance", "tax clearance", "fit and proper",
+                "insolvent", "money laundering",
+            ],
+            "severity": "medium",
+            "pass_message": "Fit and proper references present",
+            "fail_message": "No fit and proper documentation referenced — Annexure 1, "
+                            "Criterion 6 requires police and tax clearance",
+        },
+    ],
+}
+
 _instance: "ComplianceChecker | None" = None
 
 
@@ -264,3 +355,119 @@ class ComplianceChecker:
             )
 
         return recs
+
+
+# ---------------------------------------------------------------------------
+# Deliverable 4 — Standalone sandbox eligibility checker function
+# ---------------------------------------------------------------------------
+
+def check_sandbox_eligibility(document_text: str) -> dict:
+    """
+    Run all 6 Annexure 1 eligibility checks against a document.
+
+    Checks each of the six IPEC Regulatory Sandbox eligibility criteria
+    using keyword matching against the document text (case-insensitive).
+    Returns a structured result with pass/fail per criterion, an overall
+    eligibility score (0-6 criteria passed), and a plain-English summary
+    suitable for display to a non-technical user (e.g. an insurance broker).
+
+    Status thresholds:
+        ELIGIBLE        : 5-6 criteria passed
+        LIKELY_ELIGIBLE : 3-4 criteria passed
+        NOT_ELIGIBLE    : 0-2 criteria passed
+
+    Dissertation Methodology Note (Chapter 3):
+    This function implements a rule-based eligibility pre-checker whose
+    rules are fully specified in IPEC (2025) Annexure 1.  A rule-based
+    approach is chosen over a learned classifier because (a) the criterion
+    set is closed and authoritatively defined by the regulator, (b) outputs
+    must be explainable for regulatory purposes, and (c) deterministic
+    results avoid probabilistic ambiguity in a compliance context.
+
+    References:
+        IPEC (2025). Regulatory Sandbox Guidelines for the Insurance and
+        Pensions Industry. Insurance and Pensions Commission of Zimbabwe.
+        Effective Q4 2025. Retrieved from ipec.co.zw.
+    """
+    if not document_text:
+        document_text = ""
+
+    # Normalise to lower-case once for efficient substring matching
+    text_lower = document_text.lower()
+
+    results: list[dict] = []
+    criteria_passed = 0
+
+    for rule in SANDBOX_ELIGIBILITY_RULES["rules"]:
+        # A rule passes if ANY of its required keywords is found in the text
+        matched = any(kw in text_lower for kw in rule["keywords_required"])
+
+        if matched:
+            criteria_passed += 1
+            results.append({
+                "id": rule["id"],
+                "criterion": rule["criterion"],
+                "passed": True,
+                "message": rule["pass_message"],
+                "severity": rule["severity"],
+            })
+        else:
+            results.append({
+                "id": rule["id"],
+                "criterion": rule["criterion"],
+                "passed": False,
+                "message": rule["fail_message"],
+                "severity": rule["severity"],
+            })
+
+    total_criteria = len(SANDBOX_ELIGIBILITY_RULES["rules"])
+    criteria_failed = total_criteria - criteria_passed
+    eligibility_score_pct = round(criteria_passed / total_criteria * 100, 1)
+
+    # Determine overall eligibility band
+    if criteria_passed >= 5:
+        overall_status = "ELIGIBLE"
+    elif criteria_passed >= 3:
+        overall_status = "LIKELY_ELIGIBLE"
+    else:
+        overall_status = "NOT_ELIGIBLE"
+
+    # Build a plain-English summary for non-technical users
+    failed_criteria = [r["criterion"] for r in results if not r["passed"]]
+    if overall_status == "ELIGIBLE":
+        summary = (
+            f"This document meets {criteria_passed} of {total_criteria} IPEC sandbox "
+            f"eligibility criteria and is likely eligible to apply for the Regulatory "
+            f"Sandbox. "
+        )
+        if failed_criteria:
+            summary += (
+                f"To strengthen the application, address the following: "
+                f"{', '.join(failed_criteria)}."
+            )
+        else:
+            summary += "All criteria are satisfied."
+    elif overall_status == "LIKELY_ELIGIBLE":
+        summary = (
+            f"This document meets {criteria_passed} of {total_criteria} criteria. "
+            f"It may be eligible for the sandbox but requires the following improvements "
+            f"before submission: {', '.join(failed_criteria)}."
+        )
+    else:
+        summary = (
+            f"This document only meets {criteria_passed} of {total_criteria} eligibility "
+            f"criteria and is unlikely to qualify for the IPEC Regulatory Sandbox in its "
+            f"current form. Please address: {', '.join(failed_criteria)}."
+        )
+
+    return {
+        "rule_group": SANDBOX_ELIGIBILITY_RULES["rule_group"],
+        "source": SANDBOX_ELIGIBILITY_RULES["source"],
+        "total_criteria": total_criteria,
+        "criteria_passed": criteria_passed,
+        "criteria_failed": criteria_failed,
+        "eligibility_score_pct": eligibility_score_pct,
+        "overall_status": overall_status,
+        "results": results,
+        "plain_english_summary": summary,
+    }

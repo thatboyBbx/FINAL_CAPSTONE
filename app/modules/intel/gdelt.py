@@ -109,7 +109,7 @@ def _build_query() -> str:
 def gdelt_search(query: str, start: datetime, end: datetime, max_records: int = 100) -> List[Dict[str, Any]]:
     """Query GDELT 2.1 DOC API. Returns list of article dicts."""
     try:
-        import requests
+        import requests  # noqa: F401  — import-probe; re-imported below
         from dateutil import parser as dtparser  # noqa: F401
     except ImportError as e:
         logger.error("GDELT dependency missing: %s", e)

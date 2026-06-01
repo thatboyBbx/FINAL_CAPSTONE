@@ -93,8 +93,8 @@ class InsurerFinancials(Base):
     id: Mapped[str] = mapped_column(
         String(36), primary_key=True, default=lambda: str(uuid.uuid4())
     )
-    insurer_id: Mapped[str] = mapped_column(
-        String(36), ForeignKey("insurers.id"), nullable=False, index=True
+    insurer_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey("insurers.id"), nullable=False, index=True
     )
 
     # ── Period ────────────────────────────────────────────────────────────────
@@ -149,4 +149,8 @@ class InsurerFinancials(Base):
     )
     created_at: Mapped[datetime] = mapped_column(
         DateTime, nullable=False, default=lambda: datetime.now(timezone.utc)
+    )
+
+    __table_args__ = (
+        Index("ix_insurer_financials_period", "insurer_id", "period_year", "period_quarter"),
     )

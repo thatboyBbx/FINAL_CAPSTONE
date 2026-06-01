@@ -10,8 +10,9 @@ from sqlalchemy.orm import Session
 
 from app.core.db import get_db
 from app.modules.auth.dependencies import get_current_user
+from app.modules.compliance.model import ComplianceResult
 from app.modules.documents import service as document_service
-from app.modules.documents.model import ComplianceCheck, Document
+from app.modules.documents.model import Document
 
 
 router = APIRouter(dependencies=[Depends(get_current_user)], tags=["compat"])
@@ -52,7 +53,7 @@ def _run_compliance_check(db: Session, document_id: int) -> dict[str, Any]:
 
     result = get_compliance_checker().check_compliance(document_text=text, document_type="all")
     try:
-        db.add(document_service._build_compliance_check(document_id, result))
+        db.add(document_service._build_compliance_result(document_id, result))
         db.commit()
     except Exception:
         db.rollback()
@@ -61,26 +62,34 @@ def _run_compliance_check(db: Session, document_id: int) -> dict[str, Any]:
 
 def _latest_or_fresh_compliance(db: Session, document_id: int) -> dict[str, Any]:
     latest = (
-        db.query(ComplianceCheck)
-        .filter(ComplianceCheck.document_id == document_id)
-        .order_by(ComplianceCheck.checked_at.desc())
+        db.query(ComplianceResult)
+        .filter(ComplianceResult.document_id == document_id)
+        .order_by(ComplianceResult.checked_at.desc())
         .first()
     )
     if latest:
+        clause_results = json.loads(latest.clause_results) if latest.clause_results else {}
+        violations = (
+            json.loads(latest.prohibited_terms_found)
+            if latest.prohibited_terms_found
+            else []
+        )
         return {
             "compliance_score": latest.compliance_score,
             "status": latest.status,
             "mandatory_clauses": {
-                "total_required": latest.mandatory_required,
-                "found": latest.mandatory_found,
-                "missing": json.loads(latest.mandatory_missing) if latest.mandatory_missing else [],
-                "present": [],
+                "total_required": clause_results.get("total_required", 0),
+                "found": clause_results.get("found", 0),
+                "missing": json.loads(latest.missing_mandatory_clauses)
+                if latest.missing_mandatory_clauses
+                else [],
+                "present": clause_results.get("present", []),
             },
             "prohibited_terms": {
-                "found": latest.prohibited_found,
-                "violations": json.loads(latest.prohibited_violations) if latest.prohibited_violations else [],
+                "found": len(violations),
+                "violations": violations,
             },
-            "recommendations": json.loads(latest.recommendations) if latest.recommendations else [],
+            "recommendations": json.loads(latest.summary) if latest.summary else [],
         }
     return _run_compliance_check(db, document_id)
 

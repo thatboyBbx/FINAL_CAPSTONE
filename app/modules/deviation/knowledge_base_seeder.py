@@ -18,6 +18,8 @@ from typing import Any, Dict, List
 
 from sqlalchemy.orm import Session
 
+from app.modules.shared.clause_classifier import classify_clause_type as _classify_clause_type
+
 logger = logging.getLogger(__name__)
 
 # ---------------------------------------------------------------------------
@@ -213,7 +215,7 @@ class KnowledgeBaseSeeder:
         try:
             import kaggle  # type: ignore
             import pandas as pd
-            import tempfile, zipfile, json
+            import tempfile, json
 
             # Search for an insurance clause dataset
             datasets = kaggle.api.dataset_list(search="insurance clause policy")
@@ -324,19 +326,3 @@ class KnowledgeBaseSeeder:
             "kaggle_clauses": kaggle_count,
             "total_inserted": inserted,
         }
-
-
-def _classify_clause_type(text: str) -> str:
-    """Classify a text block into a clause type based on keyword presence."""
-    t = text.lower()
-    if any(w in t for w in ("exclusion", "excluded", "not covered", "does not cover")):
-        return "exclusion"
-    if any(w in t for w in ("coverage", "covers", "insured amount", "limit of indemnity")):
-        return "coverage"
-    if any(w in t for w in ("cancellation", "cancel", "termination", "terminate")):
-        return "cancellation"
-    if any(w in t for w in ("claim", "notify", "notification", "report the loss")):
-        return "claims_procedure"
-    if any(w in t for w in ("condition", "warranted", "warranty", "shall not")):
-        return "condition"
-    return "general"

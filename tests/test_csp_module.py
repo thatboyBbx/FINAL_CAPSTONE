@@ -165,7 +165,7 @@ def test_nlg_critical_closes_with_escalation():
 
 def test_fuzzy_lookup_matches_variant():
     try:
-        from rapidfuzz import fuzz
+        import rapidfuzz  # noqa: F401  — import-probe only
     except ImportError:
         pytest.skip("rapidfuzz not installed")
 

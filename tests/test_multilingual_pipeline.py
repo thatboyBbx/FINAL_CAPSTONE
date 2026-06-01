@@ -4,7 +4,6 @@ Uses a mocked MarianMT model — no real model download needed for tests.
 """
 from __future__ import annotations
 
-import pytest
 from unittest.mock import patch, MagicMock
 
 from app.ai.multilingual.multilingual_pipeline import translate_text, TranslationResult

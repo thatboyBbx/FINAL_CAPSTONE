@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 
-from sqlalchemy import DateTime, Enum, Integer, String, Text
+from sqlalchemy import DateTime, Enum, Index, Integer, String, Text
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.core.db import Base
@@ -31,4 +31,8 @@ class ScrapeRun(Base):
     error_message:    Mapped[str | None]     = mapped_column(Text, nullable=True)
     created_at:       Mapped[datetime]       = mapped_column(
         DateTime, default=lambda: datetime.now(timezone.utc), nullable=False
+    )
+
+    __table_args__ = (
+        Index("ix_scrape_runs_status_time", "status", "run_started_at"),
     )

@@ -15,6 +15,7 @@ class DocumentCreate(BaseModel):
     notes: str | None = None
     uploaded_by_user_id: int = Field(gt=0)
     client_id: int | None = None
+    sha256_hash: str | None = Field(default=None, max_length=64)
 
 
 class DocumentUpdate(BaseModel):
@@ -38,6 +39,7 @@ class DocumentRead(BaseModel):
     notes: str | None = None
     uploaded_by_user_id: int
     client_id: int | None = None
+    sha256_hash: str | None = None
     created_at: datetime
 
     model_config = {"from_attributes": True}

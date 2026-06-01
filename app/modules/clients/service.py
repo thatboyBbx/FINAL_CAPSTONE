@@ -10,6 +10,7 @@ from typing import Any
 
 from sqlalchemy.orm import Session
 
+from app.core.pagination import normalize_pagination
 from app.modules.clients import repo
 from app.modules.clients.model import Client, ClientInteraction, ClientNote, ClientPolicy
 
@@ -29,6 +30,7 @@ def list_clients(
     limit: int = 100,
     offset: int = 0,
 ) -> list[Client]:
+    offset, limit = normalize_pagination(offset, limit)
     return repo.get_all(db, segment=segment, search=search, limit=limit, offset=offset)
 
 
@@ -39,6 +41,7 @@ def list_clients_with_counts(
     limit: int = 100,
     offset: int = 0,
 ) -> list[dict[str, Any]]:
+    offset, limit = normalize_pagination(offset, limit)
     clients = repo.get_all(db, segment=segment, search=search, limit=limit, offset=offset)
     if not clients:
         return []
@@ -73,8 +76,14 @@ def list_policies(db: Session, client_id: int) -> list[ClientPolicy]:
     return repo.get_policies(db, client_id)
 
 
-def list_client_documents(db: Session, client_id: int):
-    return repo.get_client_documents(db, client_id)
+def list_client_documents(
+    db: Session,
+    client_id: int,
+    offset: int = 0,
+    limit: int = 100,
+):
+    offset, limit = normalize_pagination(offset, limit)
+    return repo.get_client_documents(db, client_id, offset=offset, limit=limit)
 
 
 def list_recent_unlinked_documents(db: Session, limit: int = 10):

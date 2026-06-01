@@ -1,0 +1,701 @@
+{
+  "generated_by": "InsureIntel Zimbabwe — SANDBOX_EXP_v1",
+  "source": "synthetic_annexure2_annexure3",
+  "labels": [
+    {
+      "label": "SANDBOX_APPLICATION",
+      "examples": [
+        {
+          "text": "REGULATORY SANDBOX APPLICATION\n\nApplicant: ZimAssure Ltd\nApplication Date: 15 March 2026\nSubmitted to: Insurance and Pensions Commission (IPEC)\n\n1. PROBLEM STATEMENT\nZimAssure Ltd seeks to test a parametric micro-insurance product for smallholder farmers in Mashonaland West. The existing regulatory framework under the Insurance Act [Chapter 24:07] does not accommodate automatic trigger-based claims settlement without a formal loss assessment. This regulatory gap prevents deployment of our weather-index insurance solution.\n\n2. BUSINESS MODEL\nThe product uses satellite weather data to trigger automatic payouts when rainfall falls below a defined threshold. Premiums are collected via mobile money platforms including EcoCash and OneMoney. Target customers are smallholder farmers with landholdings between 0.5 and 5 hectares.\n\n3. TESTING PLAN\nProposed testing period: 12 months commencing Q3 2026. Target customer base limited to 500 farmers in Chinhoyi district. Transaction limit of USD 500 per payout per farmer per season. Key performance indicators include claim processing time under 48 hours and customer satisfaction score above 80%.\n\n4. BOUNDARY CONDITIONS\nGeographical location: Chinhoyi district, Mashonaland West. Start and end date: 1 July 2026 to 30 June 2027. Number of customers: maximum 500 enrolled participants. Consent to participate will be obtained in writing before enrolment.\n\n5. REGULATORY RELIEF SOUGHT\nZimAssure Ltd requests relaxation of Section 45 of the Insurance Act to permit trigger-based settlements without a formal loss adjuster assessment during the testing period.",
+          "source": "synthetic_annexure2",
+          "sections_present": [
+            "problem_statement",
+            "business_model",
+            "testing_plan",
+            "boundary_conditions"
+          ]
+        },
+        {
+          "text": "IPEC REGULATORY SANDBOX APPLICATION FORM\n\nParticipant: Harare Mutual Insurance\nDate: 2 February 2026\n\n1. INNOVATION DESCRIPTION\nHarare Mutual Insurance proposes to test a blockchain-based claims ledger that automates subrogation recoveries between insurers. The innovation addresses inefficiencies in the current manual claims reconciliation process, which results in delays exceeding 90 days. No existing licence category accommodates a shared distributed ledger among multiple IPEC-regulated entities.\n\n2. GOVERNANCE STRUCTURE\nThe applicant is a registered short-term insurer licensed by IPEC. Shareholders include Harare City Pension Fund (40%) and private investors (60%). The Board of Directors comprises five members including two independent non-executive directors. An organogram and beneficial owner declarations are attached as Annexure A.\n\n3. REGULATORY APPROVAL REQUIREMENT\nCommission approval is required under Section 12 of the Insurance and Pensions Commission Act to permit data sharing between regulated entities. The sandbox would grant a conditional approval for the duration of the testing period.\n\n4. TESTING PLAN AND KPIs\nTesting period: 6 months. Key performance indicators: reduction in subrogation settlement time from 90 to 30 days; recovery rate improvement from 45% to 65%. Success criteria include zero security incidents and zero customer data breaches.\n\n5. EXIT PLAN\nAt graduation phase, the blockchain ledger will transition to a fully licensed shared infrastructure. An exit report will be submitted to IPEC within 30 days of test conclusion.",
+          "source": "synthetic_annexure2",
+          "sections_present": [
+            "problem_statement",
+            "governance",
+            "testing_plan",
+            "exit_plan"
+          ]
+        },
+        {
+          "text": "APPLICATION FOR REGULATORY SANDBOX PARTICIPATION\n\nApplicant Entity: Victoria Falls Reinsurance Ltd\nRegistered Address: 14 Livingstone Avenue, Harare, Zimbabwe\nDate of Application: 10 January 2026\n\nSECTION A — SCOPE AND MANDATE\nVictoria Falls Reinsurance Ltd operates within the purview of IPEC as a registered reinsurer under the Insurance Act [Chapter 24:07]. The proposed innovation is a real-time risk aggregation dashboard that enables proportional reinsurance treaties to be adjusted automatically based on live exposure data.\n\nSECTION B — REGULATORY GAP\nThe existing framework does not permit mid-period treaty amendments without formal Commission approval. Our solution requires dynamic adjustment of retention levels, which cannot operate within current treaty reporting requirements.\n\nSECTION C — CAPACITY TO PARTICIPATE\nBusiness model: SaaS platform integrated with IPEC quarterly return submissions. Testing plan includes three milestones: integration (Month 1-2), parallel running (Month 3-4), and full deployment assessment (Month 5-6). Resources allocated include a dedicated technical team of four engineers and a compliance officer.\n\nSECTION D — FIT AND PROPER REQUIREMENTS\nAll directors have submitted police clearance certificates and tax clearance certificates. The company has no record of money laundering or financial crime. No director is an insolvent person.\n\nSECTION E — KPI TARGETS\nKey performance indicator 1: system uptime above 99.5%. KPI 2: data reconciliation accuracy above 99.9%. KPI 3: Commission reporting latency below 4 hours.",
+          "source": "synthetic_annexure2",
+          "sections_present": [
+            "problem_statement",
+            "regulatory_gap",
+            "testing_plan",
+            "fit_and_proper"
+          ]
+        },
+        {
+          "text": "SANDBOX APPLICATION — ZimTech Insurance Solutions\n\nExecutive Summary: ZimTech Insurance Solutions seeks approval to test a digital insurance marketplace connecting micro-SMEs with short-term insurers. The platform aggregates quotes in real time and processes premiums via ZIPIT transfer. The innovation is not covered under any existing IPEC licence category as it operates as a price comparison and binding authority platform simultaneously.\n\nTesting Parameters:\n- Duration of the test: 9 months\n- Target customer type: SMEs with turnover below USD 500,000 per annum\n- Geographical location: Harare and Bulawayo metropolitan areas\n- Transaction limit: USD 10,000 per policy\n- Number of customers: maximum 1,000 businesses\n\nKPI Framework:\n- Customer acquisition cost below USD 25\n- Policy issuance within 2 minutes of quote acceptance\n- Claims notification within 24 hours\n- Net Promoter Score above 70\n\nRegulatory Relief Required:\nRelaxation of the intermediary licensing requirements under Section 28 of the Insurance Act to allow algorithmic quote binding during the testing period.\n\nSafeguards:\nAll customer data processed in accordance with Know Your Customer requirements. Anti-Money Laundering checks performed at onboarding. Treating Customers Fairly principles applied throughout the test.\n\nConsent to participate will be obtained electronically with biometric verification.",
+          "source": "synthetic_annexure2",
+          "sections_present": [
+            "problem_statement",
+            "testing_plan",
+            "boundary_conditions",
+            "safeguards"
+          ]
+        },
+        {
+          "text": "REGULATORY SANDBOX APPLICATION\nApplicant: Gweru Life Assurance Company\nProduct: Pay-as-you-live life insurance with wearable device integration\n\nPROBLEM STATEMENT\nGweru Life Assurance Company proposes to test a usage-based life assurance product that adjusts premiums monthly based on health data collected from wearables. The Insurance Act [Chapter 24:07] does not contemplate variable premium life policies. Regulatory approval is required to operate a product with monthly premium variability outside fixed-premium actuarial tables.\n\nBUSINESS MODEL DESCRIPTION\nPremiums are adjusted monthly within a band of +/-20% of the base premium based on health KPIs (steps, heart rate, sleep). Policyholders who meet health targets receive discounts. The product targets employed professionals aged 25-45 in Harare.\n\nBOUNDARY CONDITIONS\nStart and end date: 1 April 2026 to 31 March 2027. Number of customers: 300 policyholders. Geographical location: Harare metropolitan area. Transaction limit: maximum monthly premium of USD 200 per policyholder.\n\nGOVERNANCE\nShareholders: Gweru Holdings (70%), Management (30%). Directors list and organogram attached. Beneficial owner: Dr. S. Moyo (principal). Police clearance and tax clearance certificates attached.\n\nMILESTONES\n- Month 1-3: Device integration and onboarding\n- Month 4-9: Active testing with quarterly reporting to IPEC\n- Month 10-12: Graduation phase assessment and exit report",
+          "source": "synthetic_annexure2",
+          "sections_present": [
+            "problem_statement",
+            "business_model",
+            "boundary_conditions",
+            "governance"
+          ]
+        },
+        {
+          "text": "APPLICATION TO PARTICIPATE IN THE IPEC REGULATORY SANDBOX\n\nApplicant: Mutare Digital Brokers (Pvt) Ltd\nDate: 5 March 2026\n\nINNOVATION SUMMARY\nMutare Digital Brokers proposes a conversational AI insurance assistant that guides rural customers through claims notification via SMS and WhatsApp. The existing framework requires physical claims notification which is inaccessible to rural customers. This regulatory gap prevents us from deploying the solution under any existing licence category.\n\nCAPACITY EVIDENCE\nBusiness model: B2B2C model — the assistant is white-labelled to licensed insurers. Testing plan: 3 phases over 12 months with IPEC milestone reporting. KPI targets include 90% claims notification success rate and average handling time below 5 minutes. Resources: technology team of 6, partnerships with 3 licensed insurers.\n\nREGULATORY WAIVER\nExemption sought: relaxation of the written claims notification requirement under Motor Third Party regulations to permit digital notification during the testing period.\n\nFIT AND PROPER\nAll principals hold valid police clearance certificates. Tax clearance certificates attached. No director is an insolvent person or has been convicted of money laundering.\n\nCUSTOMER SAFEGUARDS\nTreating Customers Fairly policy implemented. Dispute resolution mechanism includes escalation to IPEC within 14 days. Know Your Customer verification via national ID number at onboarding.",
+          "source": "synthetic_annexure2",
+          "sections_present": [
+            "problem_statement",
+            "regulatory_gap",
+            "fit_and_proper",
+            "safeguards"
+          ]
+        },
+        {
+          "text": "IPEC SANDBOX APPLICATION — SECTION SUMMARY\n\nApplicant: Bulawayo Agri-Insurance Co.\nInnovation: Index-based crop insurance with satellite trigger\n\nThis application is submitted in accordance with the IPEC Regulatory Sandbox Guidelines effective Q4 2025. Bulawayo Agri-Insurance Co. is an entity registered under the Insurance Act [Chapter 24:07] and falls under the supervisory purview of the Insurance and Pensions Commission.\n\nThe applicant cannot operate within the existing framework because index insurance products with automatic payouts are not recognised under current policy wording standards. The regulatory gap arises because no existing licence covers parametric trigger settlements.\n\nProposed testing period: 6 months. The test will involve 200 farmers in Matabeleland South. Boundary conditions include: transaction limit of USD 300 per trigger event; consent to participate obtained before enrolment; geographical location restricted to Gwanda district.\n\nKPI success criteria: payout processing time under 72 hours; basis risk below 15%; customer retention above 75% at end of testing period.\n\nGovernance: company directors and shareholders declared. Organogram attached. Beneficial owner: Mr. T. Ndlovu. Police clearance and tax clearance submitted.\n\nRegulatory relief: relaxation of the loss assessment requirement under IPEC Circular 14/2022 during the 6-month testing window.",
+          "source": "synthetic_annexure2",
+          "sections_present": [
+            "problem_statement",
+            "regulatory_gap",
+            "boundary_conditions",
+            "governance"
+          ]
+        },
+        {
+          "text": "SANDBOX APPLICATION — ZimAssure Digital Health Division\n\nProduct Name: TeleCare Health Shield\nApplicant: ZimAssure Ltd (Health Division)\nSubmission Date: 20 February 2026\n\n1. PROBLEM STATEMENT AND REGULATORY GAP\nZimAssure seeks to test a telemedicine-linked health insurance product that includes real-time pre-authorisation for outpatient consultations via a mobile app. No existing IPEC licence category covers real-time pre-authorisation integrated with telemedicine. The existing regulatory approval framework requires prior written Commission approval for each pre-authorisation protocol change.\n\n2. BUSINESS MODEL\nPremiums collected monthly via direct debit. Target customer type: formally employed workers in Harare and Chitungwiza. Coverage: outpatient, inpatient, and dental. Pre-authorisation response time: under 60 seconds.\n\n3. TESTING PLAN\nDuration of the test: 12 months. KPIs: pre-authorisation accuracy above 95%; claims rejection rate below 5%; customer satisfaction above 85%. Milestones at Month 3, 6, and 9 with IPEC quarterly reports.\n\n4. EXIT PLAN\nAt the graduation phase, the pre-authorisation algorithm will be submitted for formal actuarial review. Post-exit, the product transitions to a standard health insurance licence. An orderly exit protocol is in place if the test is discontinued early.\n\n5. SAFEGUARDS\nKnow Your Customer checks at enrolment. Anti-Money Laundering monitoring on premium transactions above USD 1,000. Complaints handled within 5 business days. Treating Customers Fairly framework implemented.",
+          "source": "synthetic_annexure2",
+          "sections_present": [
+            "problem_statement",
+            "business_model",
+            "testing_plan",
+            "exit_plan"
+          ]
+        },
+        {
+          "text": "REGULATORY SANDBOX APPLICATION\nApplicant: Pan-Africa Micro-Finance Insurance Ltd (PAMFIL)\nDate: 1 April 2026\n\nINTRODUCTION\nPAMFIL is a Fintech entity seeking to test an embedded insurance product distributed through a mobile lending platform. The innovation provides automatic credit-life cover triggered at loan disbursement. IPEC's existing regulations do not contemplate embedded insurance distribution via non-insurance platforms. Commission approval is required before PAMFIL can legally distribute policies.\n\nBOUNDARY CONDITIONS\nTesting period: 6 months. Start and end date: 1 May 2026 to 31 October 2026. Target customer type: mobile lending borrowers with loans between USD 50 and USD 500. Number of customers: 2,000 borrowers. Geographical location: nationwide digital distribution.\n\nKEY PERFORMANCE INDICATORS\nKPI 1: policy issuance rate above 90% of eligible borrowers; KPI 2: claims settlement within 7 days of death notification; KPI 3: lapse rate below 10%.\n\nFIT AND PROPER\nShareholders and directors declared. Police clearance and tax clearance attached. No director is insolvent or has been involved in money laundering.\n\nREGULATORY RELIEF SOUGHT\nExemption sought from the intermediary licensing requirement to allow the lending platform to distribute policies as an embedded feature during the testing period. Relaxation will expire at the end of the 6-month test.\n\nEXIT PLAN\nOrderly exit: all active policies novated to a licensed insurer. Exit report submitted to IPEC within 14 days of test conclusion.",
+          "source": "synthetic_annexure2",
+          "sections_present": [
+            "problem_statement",
+            "boundary_conditions",
+            "kpis",
+            "exit_plan"
+          ]
+        },
+        {
+          "text": "SANDBOX APPLICATION SUMMARY — HARARE PENSION TECH (HPT)\n\nApplicant: Harare Pension Tech Ltd\nInnovation: Automated pension drawdown calculator with regulatory override\n\nHPT proposes to test an AI-powered pension drawdown optimisation tool for occupational pension funds. The tool recommends drawdown amounts that may deviate from the statutory minimum drawdown tables under the Pensions and Provident Funds Act [Chapter 24:32]. This cannot operate within the current framework without Commission approval.\n\nScope and mandate: The innovation falls within the purview of IPEC's pension supervisory mandate. Commission oversight applies throughout the testing period.\n\nGovernance: HPT is a Fintech entity incorporated in Zimbabwe. Beneficial owner: Ms. R. Chigumbura. Directors: three members. Police clearance and tax clearance certificates submitted. No director is an insolvent person.\n\nTesting plan: 9 months, 50 pension funds, 500 members. Key performance indicator: member drawdown adequacy score above 80% versus baseline. Milestones at Month 3, 6, and 9.\n\nRegulatory waiver: relaxation of the fixed drawdown table requirement for participating funds during the 9-month testing period.\n\nCustomer safeguards: Treating Customers Fairly principles apply. All members to provide written consent to participate before enrolment. Dispute resolution escalation within 7 days.",
+          "source": "synthetic_annexure2",
+          "sections_present": [
+            "problem_statement",
+            "governance",
+            "testing_plan",
+            "safeguards"
+          ]
+        },
+        {
+          "text": "REGULATORY SANDBOX APPLICATION\nApplicant: Zimnat Digital (Pvt) Ltd\nDate: 12 March 2026\n\nEXECUTIVE SUMMARY\nZimnat Digital proposes to test a P2P risk-pooling product for informal traders in Harare's Mbare market. Participants pool premiums via a mobile app and share losses according to pre-agreed rules. This model is not covered under any existing IPEC licence as mutual associations of this type are not recognised under the Insurance Act [Chapter 24:07].\n\nREGULATORY GAP\nZimnat Digital cannot operate within the existing framework because P2P risk pooling without a licensed insurer as risk carrier has no regulatory basis. The innovation requires a temporary exemption from the insurer capital adequacy requirements.\n\nBOUNDARY CONDITIONS\nTesting period: 6 months. Number of customers: 300 traders. Transaction limit: USD 50 per member per month. Start and end date: 1 June 2026 to 30 November 2026. Geographical location: Mbare district, Harare.\n\nKPIs AND SUCCESS CRITERIA\nSuccess criteria: pool adequacy ratio above 110%; average claim settlement 3 days; member satisfaction above 75%.\n\nFIT AND PROPER REQUIREMENTS\nPolice clearance and tax clearance for all directors attached. No insolvent person on the board. No history of money laundering or CFT violations.\n\nSAFEGUARDS\nKYC checks at member registration. Anti-Money Laundering transaction monitoring. Treating Customers Fairly framework and complaints procedure in place.",
+          "source": "synthetic_annexure2",
+          "sections_present": [
+            "problem_statement",
+            "regulatory_gap",
+            "boundary_conditions",
+            "fit_and_proper"
+          ]
+        },
+        {
+          "text": "APPLICATION TO THE IPEC REGULATORY SANDBOX\nApplicant: Victoria Falls Reinsurance Ltd — Facultative Division\nDate: 20 April 2026\n\nINNOVATION: Dynamic Facultative Pricing Engine\n\nThe applicant proposes to test a machine-learning-based facultative reinsurance pricing engine that generates real-time risk scores and pricing for large individual risks. The existing reinsurance treaty framework requires manual underwriting sign-off, which cannot accommodate automated pricing within a 4-hour turnaround requirement.\n\nSCOPE: This application falls within the supervisory mandate of IPEC as the innovation relates to insurance activities (reinsurance underwriting).\n\nGOVERNANCE: Victoria Falls Reinsurance Ltd is a registered reinsurer under the Insurance Act. Directors declared. Organogram attached. Beneficial owner: VFR Holdings Ltd. Police clearance and tax clearance attached.\n\nTESTING PLAN: 12-month testing period. KPI targets: pricing accuracy within 5% of manual underwriter benchmark; quote turnaround under 4 hours; zero regulatory compliance incidents.\n\nREGULATORY APPROVAL: Commission approval is required under Section 20 of the Insurance Act to permit algorithmic underwriting without manual sign-off.\n\nEXIT PLAN: Graduation phase at Month 10-12. Post-exit, the engine becomes a licensed underwriting support tool. Exit report submitted within 21 days of test conclusion.",
+          "source": "synthetic_annexure2",
+          "sections_present": [
+            "problem_statement",
+            "governance",
+            "testing_plan",
+            "exit_plan"
+          ]
+        },
+        {
+          "text": "SANDBOX APPLICATION — MASVINGO FUNERAL ASSURERS CO-OPERATIVE\nDate: 8 January 2026\n\nAPPLICATION SUMMARY\nMasvingo Funeral Assurers Co-operative seeks to test a community-based funeral assurance product distributed via church networks in Masvingo Province. The product collects weekly contributions via church tithe systems. This distribution model has no existing regulatory basis under the Funeral Assurers Act.\n\nPROBLEM STATEMENT\nThe Co-operative cannot operate within the existing regulatory framework because the use of church networks as distribution agents is not contemplated by any IPEC licence category. A regulatory gap exists between the product concept and current licensing requirements.\n\nBOUNDARY CONDITIONS\nTesting period: 6 months. Number of customers: 1,000 church members across 10 congregations. Transaction limit: USD 5 per week per member. Start and end date: 1 July 2026 to 31 December 2026. Geographical location: Masvingo district. Consent to participate obtained at congregation level.\n\nKEY PERFORMANCE INDICATORS\nKPI 1: membership retention above 80%; KPI 2: claim settlement within 48 hours of death notification; KPI 3: premium collection rate above 90%.\n\nFIT AND PROPER\nPolice clearance: all committee members. Tax clearance: co-operative registered taxpayer. No insolvent person on the committee.\n\nSAFEGUARDS\nKnow Your Customer at enrolment. Complaints escalation to IPEC. Treating Customers Fairly framework adopted.",
+          "source": "synthetic_annexure2",
+          "sections_present": [
+            "problem_statement",
+            "regulatory_gap",
+            "boundary_conditions",
+            "kpis"
+          ]
+        },
+        {
+          "text": "REGULATORY SANDBOX APPLICATION\nApplicant: ZimAssure Ltd — AgriTech Division\nProduct: Livestock mortality index insurance\nDate: 15 April 2026\n\nThe AgriTech Division of ZimAssure Ltd applies for admission to the IPEC Regulatory Sandbox to test a livestock mortality index insurance product for cattle farmers in Midlands Province. The product pays out automatically when livestock mortality in a defined area exceeds a pre-set threshold derived from satellite imagery and veterinary records. This innovation cannot operate within the existing Insurance Act framework because there is no regulatory basis for area-yield or area-mortality index insurance.\n\nRegulatory waiver required: exemption sought from the individual loss assessment requirement for each claim, allowing area-level trigger assessment instead.\n\nTesting parameters: 6-month testing period; 400 cattle farmers; Kwekwe district; transaction limit USD 800 per farm per trigger event.\n\nKPIs: basis risk below 20%; payout processing within 5 days of trigger confirmation; farmer satisfaction above 70%.\n\nGovernance: ZimAssure Ltd is a licensed short-term insurer. Shareholders and directors declared. Police clearance and tax clearance attached. No beneficial owner is an insolvent person.\n\nExit plan: at graduation phase, the product is submitted for full actuarial review and standard product approval. An orderly exit is guaranteed by reinsurance treaty with Victoria Falls Reinsurance.",
+          "source": "synthetic_annexure2",
+          "sections_present": [
+            "problem_statement",
+            "regulatory_gap",
+            "testing_plan",
+            "exit_plan"
+          ]
+        },
+        {
+          "text": "APPLICATION FOR REGULATORY SANDBOX\nApplicant: Harare Mutual Insurance — Cyber Division\nDate: 3 March 2026\n\nINNOVATION: Real-time cyber risk scoring and dynamic cyber insurance\n\nHarare Mutual Insurance proposes to test a cyber insurance product whose premiums are dynamically adjusted monthly based on a real-time cyber risk score derived from the policyholder's network vulnerability scans. This cannot operate within the existing framework because the Insurance Act requires actuarially certified fixed premium tables for all non-life products.\n\nRegulatory gap: no existing licence category contemplates dynamic, vulnerability-linked premium adjustment for cyber insurance.\n\nTesting period: 12 months. Target customer type: SMEs with IT infrastructure in Harare. Number of customers: 150 SMEs. Transaction limit: USD 5,000 monthly premium.\n\nKPI targets: claim frequency reduction of 15% versus static-premium benchmark; customer renewal rate above 80%; vulnerability score improvement of 10% average across the cohort.\n\nGovernance: Harare Mutual Insurance is a licensed insurer. Directors declared. Beneficial owner: Harare City Council Pension Fund. Police clearance and tax clearance submitted.\n\nRegulatory relief: relaxation of the fixed premium certification requirement for the 12-month testing window. Commission approval is required before the test commences.\n\nExit conditions: post-exit, premiums revert to certified actuarial tables pending formal approval of dynamic pricing model.",
+          "source": "synthetic_annexure2",
+          "sections_present": [
+            "problem_statement",
+            "regulatory_gap",
+            "testing_plan",
+            "governance"
+          ]
+        },
+        {
+          "text": "IPEC SANDBOX APPLICATION — FULL SUBMISSION\nApplicant: NovaBridge Insurance Intermediaries\nDate: 17 February 2026\n\nNovaBridge Insurance Intermediaries applies to test an insurance product comparison and instant-bind platform that integrates with five licensed insurers via API. The platform is not covered under any existing intermediary licence as it combines price comparison, instant binding authority, and real-time premium collection.\n\nScope: activities fall within IPEC's insurance supervisory mandate under the Insurance Act [Chapter 24:07].\n\nCapacity to participate: business model is B2B2C via licensed insurer partnerships. Testing plan includes three phases: API integration (Month 1), soft launch to 100 test customers (Month 2-4), and full pilot with 500 customers (Month 5-9). Key performance indicator: policy issuance within 3 minutes; error rate below 1%; customer complaint rate below 2%.\n\nRegulatory approval requirement: Commission approval under the intermediary licence provisions is required. The sandbox provides conditional approval for the 9-month testing period.\n\nFit and proper: directors' police clearance and tax clearance submitted. No director is an insolvent person. No money laundering history.\n\nBoundary conditions: 500 customers maximum; Harare and Bulawayo; transaction limit USD 20,000 per policy.\n\nExit plan: orderly exit via transfer of all bound policies to individual insurer direct books. Exit report within 30 days.",
+          "source": "synthetic_annexure2",
+          "sections_present": [
+            "problem_statement",
+            "testing_plan",
+            "fit_and_proper",
+            "exit_plan"
+          ]
+        },
+        {
+          "text": "SANDBOX APPLICATION — ZIMBABWE HEALTH FINTECH (ZHF)\nDate: 28 January 2026\n\nPRODUCT: Community health micro-savings and insurance hybrid\n\nZimbabwe Health Fintech proposes to test a hybrid savings-insurance product for low-income households in Chitungwiza. Members save weekly into a pool that provides health cover for up to USD 500 per illness episode. This product is not covered under any existing IPEC licence as it combines savings and insurance without being a formal pension fund.\n\nProblem statement: ZHF cannot operate within the existing regulatory framework because hybrid savings-insurance products for low-income households have no licensing pathway under either the Insurance Act or the Pensions and Provident Funds Act.\n\nTesting parameters: 9-month testing period; 600 households; Chitungwiza North ward; weekly contribution of USD 2 per household; transaction limit USD 500 per illness episode.\n\nKPIs: claim settlement within 3 days; pool adequacy maintained above 120%; member retention above 75%.\n\nGovernance: ZHF is incorporated as a private limited company. Directors declared. Beneficial owner: Dr. A. Chikwanda. Police clearance and tax clearance attached.\n\nSafeguards: Know Your Customer at household level; Anti-Money Laundering monitoring; Treating Customers Fairly framework adopted; complaints handled within 5 days.",
+          "source": "synthetic_annexure2",
+          "sections_present": [
+            "problem_statement",
+            "testing_plan",
+            "kpis",
+            "safeguards"
+          ]
+        },
+        {
+          "text": "REGULATORY SANDBOX APPLICATION\nApplicant: Digital Reinsurance Solutions (DRS)\nDate: 22 March 2026\n\nINNOVATION: Automated proportional treaty settlement\n\nDRS proposes a blockchain-based smart contract system that automates quarterly settlement calculations for proportional reinsurance treaties. The system eliminates manual bordereaux reconciliation. The existing IPEC reinsurance framework requires manual submission of bordereaux within 45 days of quarter end, which this system replaces with real-time settlement.\n\nRegulatory gap: smart contract settlement has no basis in current treaty regulations. DRS cannot operate within the existing framework without Commission approval.\n\nBoundary conditions: 6-month testing period; 5 participating IPEC-licensed insurers; transaction value limit of USD 2 million per quarter per insurer.\n\nKPIs: settlement discrepancy rate below 0.1%; processing time reduction from 45 days to 5 days; zero security incidents.\n\nGovernance: DRS is a Fintech entity registered in Zimbabwe. Directors and shareholders declared. Beneficial owner: Digital Africa Holdings. Police clearance and tax clearance submitted. No insolvent person on the board.\n\nRegulatory relief: waiver of the manual bordereaux submission requirement under IPEC Circular 32/2023 for participating insurers during the testing period.\n\nExit plan: at graduation phase, the smart contract protocol is submitted to IPEC for formal recognition as an approved settlement method. Orderly exit provisions include manual reconciliation fallback.",
+          "source": "synthetic_annexure2",
+          "sections_present": [
+            "problem_statement",
+            "regulatory_gap",
+            "boundary_conditions",
+            "exit_plan"
+          ]
+        },
+        {
+          "text": "IPEC REGULATORY SANDBOX — APPLICATION\nApplicant: Midlands Life Assurance Ltd\nDate: 4 April 2026\n\nSUMMARY OF INNOVATION\nMidlands Life proposes to test an automated life underwriting engine for group life schemes, enabling same-day policy issuance for schemes of up to 500 members without individual medical evidence. The existing framework requires medical evidence for group life policies above 100 members.\n\nProblem statement: the regulatory constraint prevents same-day onboarding of larger employer groups, reducing competitiveness against regional insurers.\n\nTesting plan: 12-month testing period. Milestones: Month 1-3 data integration; Month 4-8 active testing; Month 9-12 graduation phase assessment. Key performance indicators: underwriting decision accuracy within 2% of manual benchmark; fraud incidence below industry average; scheme lapse rate below 8%.\n\nBoundary conditions: 20 employer groups; 5,000 lives maximum; Harare and Gweru locations; transaction limit USD 500,000 sum assured per member.\n\nGovernance: Midlands Life is a registered life assurer. Directors declared. Shareholders: Midlands Province Development Fund (35%), private investors (65%). Police clearance and tax clearance submitted.\n\nRegulatory relief: relaxation of the medical evidence threshold from 100 to 500 members for the 12-month test duration.\n\nSafeguards: all members sign written consent to participate. Dispute resolution within 10 business days. Treating Customers Fairly framework enforced.",
+          "source": "synthetic_annexure2",
+          "sections_present": [
+            "problem_statement",
+            "testing_plan",
+            "boundary_conditions",
+            "governance"
+          ]
+        },
+        {
+          "text": "SANDBOX APPLICATION COVER SHEET\nApplicant: AfriGrow Insurance Technology\nDate: 18 March 2026\n\nAfriGrow Insurance Technology applies to participate in the IPEC Regulatory Sandbox with a product that provides automatic trade credit insurance for cross-border SME transactions within the SADC region. The product uses buyer credit scores derived from banking transaction histories to automate underwriting decisions.\n\nScope: the innovation falls within IPEC's insurance supervisory mandate as a short-term insurance product.\n\nRegulatory approval requirement: Commission approval is required because cross-border trade credit insurance using algorithmic underwriting has no existing regulatory basis under the Insurance Act.\n\nBusiness model: premiums collected per shipment, integrated with commercial bank letters of credit. Target customer type: SMEs exporting to SADC markets. Number of customers: 100 SMEs. Testing period: 9 months.\n\nKPIs: claims accuracy rate above 90%; average underwriting decision time under 10 minutes; customer complaint rate below 3%.\n\nFit and proper: directors declared. Police clearance and tax clearance submitted. Beneficial owner: AfriGrow Capital Holdings. No insolvent person on the board. No money laundering history.\n\nBoundary conditions: geographical location — Harare and Bulawayo export hubs; transaction limit USD 50,000 per shipment; consent to participate obtained from each SME.",
+          "source": "synthetic_annexure2",
+          "sections_present": [
+            "problem_statement",
+            "business_model",
+            "kpis",
+            "fit_and_proper"
+          ]
+        },
+        {
+          "text": "REGULATORY SANDBOX APPLICATION — FINAL PAGE\nApplicant: Southern Cross Medical Aid Society\nDate: 25 March 2026\n\nSouthern Cross Medical Aid Society seeks sandbox approval to test a capitation-based primary healthcare model integrated with its medical aid product. Under capitation, a fixed monthly fee per member is paid to a clinic regardless of utilisation. The current regulatory framework for medical aid societies does not accommodate capitation arrangements, requiring fee-for-service reimbursement only.\n\nThe innovation cannot operate within the existing regulatory framework because capitation contracts constitute risk transfer from the society to the clinic, which is not recognised under current IPEC medical aid regulations.\n\nTesting period: 12 months. 1,000 members. Harare North clinic network. Transaction limit: USD 50 per member per month capitation fee.\n\nKPIs: hospital admission rate reduction target of 15%; member satisfaction above 80%; capitation budget variance below 5%.\n\nGovernance: Southern Cross is registered under the Medical Aid Societies Act. Council members declared. Beneficial owner structure disclosed. Police clearance and tax clearance submitted.\n\nRegulatory relief: relaxation of the fee-for-service requirement to permit capitation payments to contracted clinics during the 12-month testing period.\n\nExit conditions: post-exit evaluation by IPEC determines whether capitation is incorporated into the Medical Aid Societies Regulations. Orderly exit provisions include reversion to fee-for-service pending formal approval.",
+          "source": "synthetic_annexure2",
+          "sections_present": [
+            "problem_statement",
+            "regulatory_gap",
+            "testing_plan",
+            "exit_plan"
+          ]
+        },
+        {
+          "text": "IPEC REGULATORY SANDBOX APPLICATION — SECTION 7\nApplicant: ZimCredit Life Assurance\nDate: 10 February 2026\n\nZimCredit Life Assurance proposes to test an automated lender-placed credit-life insurance product embedded in mobile lending applications. When a borrower is approved, cover is automatically placed without a separate insurance application. The Insurance Act does not contemplate automatic placement without explicit policyholder consent documented in a signed proposal form.\n\nRegulatory gap: automatic lender-placed cover conflicts with the signed proposal form requirement under Section 53 of the Insurance Act.\n\nBusiness model: premiums deducted from loan disbursements. Target customer type: mobile money borrowers. Number of customers: 5,000 borrowers. Testing period: 6 months. Transaction limit: USD 100 per policy.\n\nKPIs: policy placement rate above 95%; claim settlement within 5 days; no regulatory complaints from borrowers.\n\nGovernance: ZimCredit is a licensed life insurer. Directors declared. Beneficial owner: ZimCredit Holdings. Police clearance and tax clearance submitted.\n\nRegulatory relief: exemption sought from the signed proposal form requirement for lender-placed cover during the 6-month testing window, subject to digital consent recording.\n\nSafeguards: Know Your Customer at loan origination. Anti-Money Laundering screening. Treating Customers Fairly framework applied. Complaints procedure disclosed to all borrowers.",
+          "source": "synthetic_annexure2",
+          "sections_present": [
+            "problem_statement",
+            "regulatory_gap",
+            "business_model",
+            "safeguards"
+          ]
+        },
+        {
+          "text": "REGULATORY SANDBOX APPLICATION FORM — PAGE 1 OF 3\nApplicant: Harare Mutual Insurance — Property Division\nProduct: Parametric property insurance for flood risk\nDate: 14 April 2026\n\nHarare Mutual Insurance proposes to test a parametric flood insurance product for commercial properties in Harare's low-lying industrial areas. The product pays out automatically when official flood gauges exceed a defined threshold, without requiring a loss adjuster visit. This cannot operate within the existing Insurance Act framework because automatic settlement without a formal loss assessment is not permitted.\n\nRegulatory gap: the non-life insurance regulations require a licensed loss adjuster to assess each claim. Parametric triggers bypass this requirement.\n\nBoundary conditions: start and end date 1 August 2026 to 31 January 2027; 50 commercial properties; Willowvale and Workington industrial areas; transaction limit USD 20,000 per trigger event.\n\nKPIs: trigger accuracy within 10% of actual flood damage; payout within 24 hours of trigger; customer satisfaction above 75%.\n\nGovernance: Harare Mutual is a licensed non-life insurer. Directors declared. Beneficial owner: Harare City Council Pension Fund. Police clearance and tax clearance submitted.\n\nRegulatory relief: waiver of the loss adjuster requirement for parametric products during the 6-month testing period.\n\nExit plan: at graduation, the parametric product seeks formal certification under IPEC's product approval process. Orderly exit ensured by reinsurance backing.",
+          "source": "synthetic_annexure2",
+          "sections_present": [
+            "problem_statement",
+            "regulatory_gap",
+            "boundary_conditions",
+            "exit_plan"
+          ]
+        },
+        {
+          "text": "SANDBOX APPLICATION — MASVINGO DIGITAL INSURERS\nDate: 6 March 2026\n\nMasvingo Digital Insurers applies to test an on-demand short-term insurance product for gig workers delivered entirely via a USSD platform. Cover is purchased per shift (minimum 4 hours) and expires automatically. The existing short-term insurance framework requires annual or monthly policy periods and does not accommodate per-shift micro-duration cover.\n\nRegulatory gap: per-shift cover periods have no basis in IPEC's current policy wording standards. Masvingo Digital cannot operate within the existing framework without a special dispensation.\n\nTesting parameters: 6-month testing period; 1,000 gig workers; Harare, Bulawayo, Mutare; transaction limit USD 5 per shift per worker.\n\nKPIs: policy issuance within 30 seconds of USSD request; claim notification within 2 hours of incident; customer complaint rate below 1%.\n\nGovernance: Masvingo Digital Insurers is a licensed short-term insurer. Directors declared. Beneficial owner: Southern Capital Group. Police clearance and tax clearance submitted.\n\nRegulatory relief: relaxation of the minimum policy period requirement to permit per-shift cover during the 6-month test.\n\nSafeguards: Know Your Customer via national ID at registration. Treating Customers Fairly framework. Dispute resolution via IPEC escalation within 5 days. Consent to participate recorded at registration.",
+          "source": "synthetic_annexure2",
+          "sections_present": [
+            "problem_statement",
+            "regulatory_gap",
+            "testing_plan",
+            "safeguards"
+          ]
+        },
+        {
+          "text": "IPEC REGULATORY SANDBOX APPLICATION\nApplicant: First Fidelity Life Assurance\nDate: 30 March 2026\n\nFirst Fidelity Life Assurance applies to test a tontine-linked savings and assurance product for diaspora Zimbabweans sending remittances. Participants contribute monthly and the pool grows; upon death, dependants receive a pre-agreed lump sum. The product has characteristics of both a life assurance contract and an informal savings club, which has no existing regulatory category.\n\nProblem statement: tontine-linked products are not recognised under the Insurance Act or the Pensions and Provident Funds Act. First Fidelity cannot operate within the existing framework.\n\nTesting period: 12 months. 200 diaspora members. Digital platform (online). Transaction limit USD 100 per month per member.\n\nKPIs: member retention rate above 85%; fund growth above inflation; death benefit processing within 14 days.\n\nGovernance: First Fidelity is a licensed life assurer. Directors declared. Beneficial owner: First Fidelity Holdings. Police clearance and tax clearance submitted. No insolvent person.\n\nRegulatory relief: exemption from the formal policy wording requirements for tontine products during the 12-month testing period.\n\nSafeguards: Know Your Customer via biometric verification. Anti-Money Laundering monitoring. Treating Customers Fairly. Complaints resolution within 7 days. Consent to participate signed digitally.",
+          "source": "synthetic_annexure2",
+          "sections_present": [
+            "problem_statement",
+            "testing_plan",
+            "governance",
+            "safeguards"
+          ]
+        },
+        {
+          "text": "REGULATORY SANDBOX APPLICATION — COVER PAGE\nApplicant: Victoria Falls Reinsurance Ltd — Life Division\nDate: 19 April 2026\n\nVFR Life proposes to test a mortality-linked catastrophe bond structure that transfers pandemic mortality risk to capital markets. IPEC's existing reinsurance framework does not contemplate capital market risk transfer instruments. Commission approval is required before any such structure can be operated.\n\nBoundary conditions: 6-month feasibility and structuring test; no live policyholder risk transferred; Harare-based working group of 3 licensed life insurers.\n\nKPIs: feasibility assessment completed within 3 months; regulatory framework gap analysis submitted to IPEC by Month 4; term sheet agreed by Month 6.\n\nGovernance: VFR Life is a registered reinsurer. Directors declared. Beneficial owner: VFR Holdings Ltd. Police clearance and tax clearance submitted.\n\nRegulatory relief: relaxation of the information-sharing restrictions between regulated entities for the purpose of the joint feasibility study.\n\nExit plan: at graduation, the mortality bond structure is submitted to IPEC for formal regulatory recognition. Post-exit, participating insurers may apply for individual approvals under the new framework.",
+          "source": "synthetic_annexure2",
+          "sections_present": [
+            "problem_statement",
+            "boundary_conditions",
+            "governance",
+            "exit_plan"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "SANDBOX_QUARTERLY_REPORT",
+      "examples": [
+        {
+          "text": "QUARTERLY PROGRESS REPORT — Q2 2026\nParticipant: ZimAssure Ltd\nSubmitted to: Insurance and Pensions Commission (IPEC)\nReport Date: 15 July 2026\n\nSECTION A — KPI PERFORMANCE\nKPI 1: Claim processing time — Target: under 48 hours. Actual: 32 hours average. Status: Met.\nKPI 2: Customer satisfaction — Target: above 80%. Actual: 87%. Status: Met.\nKPI 3: Enrolment — Target: 250 farmers by Q2. Actual: 214 farmers. Status: Partial.\n\nSECTION B — CUSTOMER STATISTICS\nTotal customers enrolled: 214 farmers. Transaction volume: 428 premium transactions. Total premium collected: USD 32,100.\n\nSECTION C — RISK REGISTER\nRisk 1: Low rainfall data delay. Trigger: satellite data latency above 72 hours. Treatment: manual data fallback. Likelihood: Medium.\n\nSECTION E — OPERATIONAL CHALLENGES\nSatellite data provider experienced a 5-day outage in June 2026, causing temporary reliance on manual weather station data. Issue resolved.\n\nSECTION F — AUDIT DETAILS\nInternal audit completed 30 June 2026. No material findings. External auditor review scheduled for September 2026.\n\nSECTION G — CUSTOMER COMPLAINTS\nComplaints received: 2. Resolution: both resolved within 5 business days. Status: Closed.",
+          "source": "synthetic_annexure3",
+          "sections_present": [
+            "kpi_performance",
+            "customer_stats",
+            "risk_register",
+            "complaints"
+          ]
+        },
+        {
+          "text": "SANDBOX QUARTERLY PROGRESS REPORT — Q1 2026\nParticipant: Harare Mutual Insurance\nReporting Period: January to March 2026\nSubmitted to: IPEC\n\nKPI STATUS\n- Subrogation settlement time: Target 30 days. Actual 28 days. Met.\n- Recovery rate: Target 65%. Actual 61%. Partial — improving trend.\n- Security incidents: Target zero. Actual zero. Met.\n\nCUSTOMER STATISTICS\nInsurers using the blockchain ledger: 5. Transactions processed: 1,240. Total value settled: USD 3.8 million.\n\nRISK REGISTER UPDATE\nRisk: Smart contract vulnerability. Trigger: external audit finding of high severity. Treatment: quarterly penetration testing and code review. Likelihood: Low.\n\nOPERATIONAL CHALLENGES\nOne participating insurer's IT team required additional integration support in February 2026. Resolved within 10 days.\n\nAUDIT\nExternal code audit completed by CyberShield Zimbabwe. Report submitted to IPEC 31 March 2026. No critical findings.\n\nCOMPLAINTS\nNo complaints received from participating insurers during Q1 2026.",
+          "source": "synthetic_annexure3",
+          "sections_present": [
+            "kpi_performance",
+            "customer_stats",
+            "risk_register",
+            "audit"
+          ]
+        },
+        {
+          "text": "IPEC REGULATORY SANDBOX — QUARTERLY REPORT\nParticipant: PAMFIL (Pan-Africa Micro-Finance Insurance)\nQuarter: Q2 2026 (April to June 2026)\nReport Date: 10 July 2026\n\nSECTION A — KPI PROGRESS\nPolicy issuance rate: Target 90%. Actual 94%. Met.\nClaims settlement within 7 days: Target 100%. Actual 97%. Met.\nLapse rate: Target below 10%. Actual 8.5%. Met.\n\nSECTION B — CUSTOMER STATISTICS\nActive policies: 1,847. New enrolments this quarter: 632. Total premium collected Q2: USD 46,175.\n\nSECTION C — RISK REGISTER\nRisk: Mobile money platform downtime. Trigger: downtime above 4 hours. Treatment: dual-platform redundancy. Likelihood: Low.\nRisk: Borrower default cascade. Trigger: NPL ratio above 15%. Treatment: portfolio monitoring dashboard. Likelihood: Medium.\n\nSECTION E — OPERATIONAL CHALLENGES\nEcoCash integration experienced intermittent failures in May 2026. Impact: 37 policy issuances delayed by 2 hours. No customer complaints received.\n\nSECTION F — AUDIT\nCompliance audit by Grant Thornton Zimbabwe completed. No material findings. IPEC quarterly return filed 30 June 2026.\n\nSECTION G — COMPLAINTS\nComplaints: 4. Nature: 3 relating to premium deduction queries; 1 claim status enquiry. All resolved within 3 business days.",
+          "source": "synthetic_annexure3",
+          "sections_present": [
+            "kpi_performance",
+            "customer_stats",
+            "risk_register",
+            "complaints"
+          ]
+        },
+        {
+          "text": "REGULATORY SANDBOX QUARTERLY PROGRESS REPORT\nParticipant: Zimnat Digital (P2P Risk Pooling)\nQuarter: Q1 2026 (January to March 2026)\nDate: 5 April 2026\n\nA. KPI PERFORMANCE SUMMARY\nPool adequacy ratio: Target above 110%. Actual 118%. Met.\nAverage claim settlement: Target 3 days. Actual 2.4 days. Met.\nMember satisfaction: Target above 75%. Actual 79%. Met.\n\nB. CUSTOMER STATISTICS\nActive pool members: 287. New members this quarter: 47. Claims paid: 12. Total claims value: USD 3,240.\n\nC. RISK REGISTER\nRisk: Pool depletion in catastrophe scenario. Trigger: pool adequacy below 100%. Treatment: reinsurance stop-loss arrangement. Likelihood: Low.\n\nE. OPERATIONAL CHALLENGES\nNone reported this quarter.\n\nF. AUDIT DETAILS\nInternal audit completed 31 March 2026. External audit scheduled for Q2 2026. IPEC quarterly return submitted on time.\n\nG. CUSTOMER COMPLAINTS\nComplaints: 1 (claim assessment dispute). Resolution: reviewed and upheld within 7 days. Status: Closed.",
+          "source": "synthetic_annexure3",
+          "sections_present": [
+            "kpi_performance",
+            "customer_stats",
+            "risk_register",
+            "challenges"
+          ]
+        },
+        {
+          "text": "QUARTERLY SANDBOX REPORT — Q3 2026\nParticipant: Midlands Life Assurance Ltd (Group Life Underwriting Engine)\nReporting Period: July to September 2026\nSubmitted: 10 October 2026\n\nKPI STATUS\nUnderwriting accuracy: Target within 2% of manual benchmark. Actual 1.3% variance. Met.\nFraud incidence: Target below industry average. Actual 0.2% (industry 0.8%). Met.\nScheme lapse rate: Target below 8%. Actual 6.5%. Met.\n\nCUSTOMER STATISTICS\nEmployer groups enrolled: 18 of 20 maximum. Total lives covered: 4,200. Quarterly premium income: USD 126,000.\n\nRISK REGISTER\nRisk: algorithm bias leading to adverse selection. Trigger: loss ratio above 85%. Treatment: quarterly model recalibration. Likelihood: Low.\n\nOPERATIONAL CHALLENGES\nTwo employer groups required extended integration timelines due to HR system incompatibility. Resolved in Week 3 of July. No customer impact.\n\nAUDIT\nActuarial review by Deloitte Zimbabwe completed. No material deviations from manual benchmarks identified.\n\nCOMPLAINTS\nComplaints: 3. Nature: premium deduction queries (2), coverage dispute (1). All resolved within 5 days.",
+          "source": "synthetic_annexure3",
+          "sections_present": [
+            "kpi_performance",
+            "customer_stats",
+            "risk_register",
+            "audit"
+          ]
+        },
+        {
+          "text": "SANDBOX QUARTERLY PROGRESS REPORT\nParticipant: ZimTech Insurance Solutions (Digital Marketplace)\nQ2 2026 Report\nDate: 14 July 2026\n\nA. KPI PROGRESS\nCustomer acquisition cost: Target below USD 25. Actual USD 19.40. Met.\nPolicy issuance time: Target under 2 minutes. Actual 87 seconds average. Met.\nClaims notification within 24 hours: Target 100%. Actual 96%. Partial.\nNet Promoter Score: Target above 70. Actual 74. Met.\n\nB. CUSTOMER STATISTICS\nRegistered SME users: 743. Policies issued Q2: 312. Total GWP Q2: USD 218,500.\n\nC. RISK REGISTER\nRisk: API failure causing policy issuance error. Trigger: error rate above 2%. Treatment: automated rollback and manual processing fallback. Likelihood: Medium.\n\nE. OPERATIONAL CHALLENGES\nOne insurer partner upgraded their underwriting system in May 2026, causing 3-day API downtime. ZimTech rerouted traffic to backup insurer. 14 customers affected, all notified within 2 hours.\n\nF. AUDIT DETAILS\nIPEC quarterly return filed 30 June 2026. Internal compliance review completed by Chief Compliance Officer.\n\nG. CUSTOMER COMPLAINTS\nComplaints received: 6. Category: 4 quote discrepancy, 2 policy not received. All resolved within 2 business days.",
+          "source": "synthetic_annexure3",
+          "sections_present": [
+            "kpi_performance",
+            "customer_stats",
+            "operational_challenges",
+            "complaints"
+          ]
+        },
+        {
+          "text": "QUARTERLY PROGRESS REPORT — MASVINGO FUNERAL ASSURERS\nPeriod: Q2 2026\nIPEC Reference: SBX-2026-009\nDate: 12 July 2026\n\nSECTION A — KPIs\nMembership retention: Target above 80%. Actual 83%. Met.\nClaim settlement within 48 hours: Target 100%. Actual 91%. Partial — two rural claims required additional documentation.\nPremium collection rate: Target above 90%. Actual 94%. Met.\n\nSECTION B — STATISTICS\nTotal members: 924 across 9 congregations. New enrolments Q2: 89. Claims paid: 7. Total claims value: USD 2,450.\n\nSECTION C — RISK REGISTER\nRisk: Congregation disbandment. Trigger: congregation membership below 50. Treatment: merge affected congregation with nearest active group. Likelihood: Low.\nRisk: Premium collection failure. Trigger: monthly collection rate below 80%. Treatment: alternative mobile money collection. Likelihood: Medium.\n\nSECTION E — OPERATIONAL CHALLENGES\nTwo rural claims required physical verification due to poor mobile network connectivity. Processing extended to 72 hours for these cases.\n\nSECTION F — AUDIT\nChurch council internal audit 30 June 2026. IPEC quarterly return submitted 5 July 2026.\n\nSECTION G — COMPLAINTS\nNo complaints received in Q2 2026.",
+          "source": "synthetic_annexure3",
+          "sections_present": [
+            "kpi_performance",
+            "customer_stats",
+            "risk_register",
+            "audit"
+          ]
+        },
+        {
+          "text": "REGULATORY SANDBOX — QUARTERLY REPORT\nParticipant: Digital Reinsurance Solutions (DRS)\nQ2 2026 (April to June 2026)\nSubmitted to IPEC: 8 July 2026\n\nKPI PERFORMANCE\nSettlement discrepancy rate: Target below 0.1%. Actual 0.04%. Met.\nProcessing time reduction: Target 5 days (from 45). Actual 4.2 days. Met.\nSecurity incidents: Target zero. Actual zero. Met.\n\nPARTICIPATING INSURER STATISTICS\nActive insurer participants: 5. Treaties settled this quarter: 28. Total value settled: USD 18.7 million.\n\nRISK REGISTER\nRisk: blockchain network split. Trigger: more than 2 nodes go offline simultaneously. Treatment: minimum 3-of-5 consensus rule enforced. Likelihood: Very Low.\nRisk: regulatory non-recognition of smart contract settlements. Trigger: IPEC audit finding. Treatment: parallel manual records maintained. Likelihood: Low.\n\nOPERATIONAL CHALLENGES\nOne node experienced hardware failure in May 2026. Recovery completed within 6 hours using hot standby. No settlement delays.\n\nAUDIT DETAILS\nExternal blockchain audit by TechAssure Zimbabwe completed June 2026. Report submitted to IPEC.\n\nCOMPLAINTS\nNo complaints from participating insurers during Q2 2026.",
+          "source": "synthetic_annexure3",
+          "sections_present": [
+            "kpi_performance",
+            "customer_stats",
+            "risk_register",
+            "audit"
+          ]
+        },
+        {
+          "text": "SANDBOX PROGRESS REPORT — Q1 2026\nParticipant: NovaBridge Insurance Intermediaries\nPeriod: January to March 2026\nIPEC Reference: SBX-2026-012\n\nA. KPI PERFORMANCE\nPolicy issuance time: Target under 3 minutes. Actual 2.1 minutes. Met.\nAPI error rate: Target below 1%. Actual 0.3%. Met.\nCustomer complaint rate: Target below 2%. Actual 0.8%. Met.\n\nB. CUSTOMER STATISTICS\nRegistered customers: 312 (target 500 by Q2). Policies issued Q1: 189. GWP Q1: USD 94,500.\n\nC. RISK REGISTER\nRisk: insurer API deprecation. Trigger: insurer upgrades system without notice. Treatment: 90-day API version support SLA in all insurer agreements. Likelihood: Low.\n\nE. OPERATIONAL CHALLENGES\nNovaBridge experienced higher than expected customer support queries related to the comparison tool interface. UX improvements deployed in February 2026, reducing support calls by 40%.\n\nF. AUDIT\nCompliance officer quarterly review completed. IPEC return filed 31 March 2026.\n\nG. CUSTOMER COMPLAINTS\nComplaints: 3 (2 relating to quote accuracy, 1 policy document delivery). Resolved within 2 business days each.",
+          "source": "synthetic_annexure3",
+          "sections_present": [
+            "kpi_performance",
+            "customer_stats",
+            "operational_challenges",
+            "complaints"
+          ]
+        },
+        {
+          "text": "QUARTERLY REPORT — Q3 2026\nParticipant: ZimCredit Life Assurance (Lender-Placed Credit Life)\nReporting Period: July to September 2026\nDate: 5 October 2026\n\nKPI STATUS\nPolicy placement rate: Target above 95%. Actual 97.2%. Met.\nClaim settlement within 5 days: Target 100%. Actual 99%. Met.\nRegulatory complaints: Target zero. Actual zero. Met.\n\nCUSTOMER STATISTICS\nActive policies: 4,381. New policies placed Q3: 1,204. Claims paid Q3: 23. Total claims value: USD 45,800.\n\nRISK REGISTER\nRisk: borrower default leading to premium shortfall. Trigger: default rate above 15%. Treatment: premium collected at disbursement. Likelihood: Medium.\nRisk: regulator disallowing automatic placement mid-test. Trigger: IPEC regulatory query. Treatment: legal opinion on file; IPEC liaison maintained. Likelihood: Low.\n\nOPERATIONAL CHALLENGES\nNone reported this quarter.\n\nAUDIT DETAILS\nActuarial review completed September 2026 by Barnett Waddingham Zimbabwe. No material findings.\n\nCOMPLAINTS\nComplaints: 2. Nature: 1 policy cancellation query; 1 claim status. Both resolved within 3 business days.",
+          "source": "synthetic_annexure3",
+          "sections_present": [
+            "kpi_performance",
+            "customer_stats",
+            "risk_register",
+            "audit"
+          ]
+        },
+        {
+          "text": "IPEC REGULATORY SANDBOX — Q2 2026 QUARTERLY REPORT\nParticipant: Zimbabwe Health Fintech (ZHF)\nDate: 10 July 2026\n\nSECTION A — KPI PERFORMANCE\nClaim settlement target: 3 days. Actual: 2.7 days. Status: Met.\nPool adequacy: Target above 120%. Actual 131%. Status: Met.\nMember retention: Target above 75%. Actual 78%. Status: Met.\n\nSECTION B — CUSTOMER STATISTICS\nHouseholds enrolled: 543 (of 600 maximum). New enrolments Q2: 97. Claims settled Q2: 34. Total claims value: USD 12,450.\n\nSECTION C — RISK REGISTER\nRisk: adverse selection by high-utilisation households. Trigger: claim frequency above 3x average. Treatment: claims review panel for outlier cases. Likelihood: Low.\nRisk: mobile money platform failure. Trigger: EcoCash downtime above 24 hours. Treatment: OneMoney fallback. Likelihood: Medium.\n\nSECTION E — OPERATIONAL CHALLENGES\nOne ward experienced above-average illness claims in May 2026 due to a waterborne disease outbreak. Claims handled within standard SLA. ZHF notified IPEC promptly.\n\nSECTION F — AUDIT\nInternal audit completed 30 June 2026. IPEC quarterly return filed on time.\n\nSECTION G — COMPLAINTS\nComplaints: 5. Nature: 4 claim eligibility disputes; 1 premium deduction error. All resolved within 5 days. Status: Closed.",
+          "source": "synthetic_annexure3",
+          "sections_present": [
+            "kpi_performance",
+            "customer_stats",
+            "risk_register",
+            "complaints"
+          ]
+        },
+        {
+          "text": "SANDBOX QUARTERLY REPORT — Q4 2026\nParticipant: Gweru Life Assurance (Pay-as-you-live product)\nPeriod: October to December 2026\nDate: 12 January 2027\n\nKPI PERFORMANCE\nPremium adjustment accuracy: Target within 5% of actuarial model. Actual 3.2%. Met.\nMember engagement with app: Target 70% monthly active users. Actual 74%. Met.\nCustomer retention: Target above 85%. Actual 88%. Met.\n\nCUSTOMER STATISTICS\nActive policyholders: 298 (of 300 maximum). Premiums collected Q4: USD 53,640. Average premium Q4: USD 180 per member.\n\nRISK REGISTER\nRisk: wearable device failure causing data gaps. Trigger: data gap exceeding 14 days. Treatment: revert to base premium for affected month. Likelihood: Medium.\nRisk: health data privacy breach. Trigger: unauthorised access to health records. Treatment: end-to-end encryption and ISO 27001 compliance. Likelihood: Low.\n\nOPERATIONAL CHALLENGES\nWearable device compatibility issue identified with 12 Xiaomi devices. Resolved by firmware update in November 2026.\n\nAUDIT DETAILS\nAnnual external audit by KPMG Zimbabwe completed December 2026. No material findings. IPEC year-end return submitted 5 January 2027.\n\nCOMPLAINTS\nComplaints: 4. Nature: 3 premium adjustment disputes; 1 device pairing issue. All resolved within 7 days.",
+          "source": "synthetic_annexure3",
+          "sections_present": [
+            "kpi_performance",
+            "customer_stats",
+            "operational_challenges",
+            "audit"
+          ]
+        },
+        {
+          "text": "REGULATORY SANDBOX QUARTERLY PROGRESS REPORT\nParticipant: AfriGrow Insurance Technology\nQ2 2026 (April to June 2026)\nDate: 9 July 2026\n\nSECTION A — KPI STATUS\nClaims accuracy: Target above 90%. Actual 93%. Met.\nUnderwriting decision time: Target under 10 minutes. Actual 7.3 minutes. Met.\nCustomer complaint rate: Target below 3%. Actual 1.2%. Met.\n\nSECTION B — CUSTOMER STATISTICS\nSMEs covered: 82 (of 100 maximum). New enrolments Q2: 31. Shipments insured: 214. Total premium Q2: USD 38,200.\n\nSECTION C — RISK REGISTER\nRisk: trade sanctions causing underwriting model failure. Trigger: new SADC sanctions list update not reflected within 24 hours. Treatment: daily automated sanctions list sync. Likelihood: Low.\n\nSECTION E — OPERATIONAL CHALLENGES\nOne SADC market partner bank changed API specifications in May 2026. Integration update required 2 weeks. 5 policies delayed.\n\nSECTION F — AUDIT\nCompliance review by Ernst & Young Zimbabwe completed June 2026. Report on file. IPEC quarterly return filed 30 June 2026.\n\nSECTION G — CUSTOMER COMPLAINTS\nComplaints: 2 (both relating to premium calculation queries). Resolved within 3 business days.",
+          "source": "synthetic_annexure3",
+          "sections_present": [
+            "kpi_performance",
+            "customer_stats",
+            "operational_challenges",
+            "audit"
+          ]
+        },
+        {
+          "text": "QUARTERLY SANDBOX REPORT — Q1 2026\nParticipant: First Fidelity Life Assurance (Tontine Product)\nPeriod: January to March 2026\nDate: 4 April 2026\n\nA. KPI PERFORMANCE\nMember retention: Target above 85%. Actual 89%. Met.\nFund growth vs inflation: Target CPI+2%. Actual CPI+3.1%. Met.\nDeath benefit processing: Target within 14 days. Actual 11 days average. Met.\n\nB. CUSTOMER STATISTICS\nActive diaspora members: 187 (of 200 maximum). Total fund value: USD 140,250. Claims paid Q1: 2. Claims value: USD 18,000.\n\nC. RISK REGISTER\nRisk: currency fluctuation eroding USD fund value. Trigger: ZiG devaluation above 10% in a quarter. Treatment: USD-denominated fund accounts. Likelihood: Medium.\n\nE. OPERATIONAL CHALLENGES\nDigital signature verification failed for 3 new members in February 2026 due to passport scan quality. Resolved via video KYC alternative.\n\nF. AUDIT\nInternal audit 31 March 2026. No material findings. IPEC quarterly return filed on time.\n\nG. CUSTOMER COMPLAINTS\nComplaints: 1 (contribution allocation query). Resolved within 2 business days.",
+          "source": "synthetic_annexure3",
+          "sections_present": [
+            "kpi_performance",
+            "customer_stats",
+            "risk_register",
+            "audit"
+          ]
+        },
+        {
+          "text": "IPEC SANDBOX PROGRESS REPORT — Q2 2026\nParticipant: Masvingo Digital Insurers (On-Demand Gig Insurance)\nDate: 11 July 2026\n\nKPI PERFORMANCE\nPolicy issuance within 30 seconds: Target 100%. Actual 98.7%. Met (2 failures due to USSD timeout).\nClaim notification within 2 hours: Target 100%. Actual 95%. Partial.\nComplaint rate: Target below 1%. Actual 0.4%. Met.\n\nCUSTOMER STATISTICS\nRegistered gig workers: 876 (target 1,000). Policies issued Q2: 4,312 shifts. Total GWP Q2: USD 21,560.\n\nRISK REGISTER\nRisk: USSD gateway overload during peak hours. Trigger: response time above 45 seconds. Treatment: dedicated USSD gateway with burst capacity. Likelihood: Medium.\n\nOPERATIONAL CHALLENGES\nUSSD timeouts during Friday evening peak periods (18:00-20:00) caused 1.3% issuance failures. Gateway capacity upgrade completed June 2026.\n\nAUDIT\nCompliance officer review completed June 2026. IPEC return filed 30 June 2026.\n\nCOMPLAINTS\nComplaints: 4. Category: 3 claim notification delays; 1 premium query. Resolved within 2 business days.",
+          "source": "synthetic_annexure3",
+          "sections_present": [
+            "kpi_performance",
+            "customer_stats",
+            "operational_challenges",
+            "complaints"
+          ]
+        },
+        {
+          "text": "REGULATORY SANDBOX QUARTERLY REPORT\nParticipant: Southern Cross Medical Aid Society\nQ3 2026 (July to September 2026)\nDate: 8 October 2026\n\nSECTION A — KPI STATUS\nHospital admission reduction: Target 15%. Actual 12% (trend improving). Partial.\nMember satisfaction: Target above 80%. Actual 82%. Met.\nCapitation budget variance: Target below 5%. Actual 3.8%. Met.\n\nSECTION B — CUSTOMER STATISTICS\nMembers on capitation: 1,000. Clinic consultations Q3: 3,240. Capitation payments Q3: USD 150,000.\n\nSECTION C — RISK REGISTER\nRisk: clinic provider capacity constraints. Trigger: average waiting time above 60 minutes. Treatment: overflow clinic agreements. Likelihood: Medium.\nRisk: capitation model adversely incentivising under-treatment. Trigger: complaint rate above 5%. Treatment: clinical governance audit quarterly. Likelihood: Low.\n\nSECTION E — OPERATIONAL CHALLENGES\nOne contracted clinic closed for renovation in August 2026. Members redirected to backup clinic. No service disruption.\n\nSECTION F — AUDIT\nClinical governance audit by medical consultant completed September 2026. No under-treatment evidence found. IPEC quarterly return filed.\n\nSECTION G — COMPLAINTS\nComplaints: 8. Nature: 5 waiting time complaints; 3 referral disputes. All resolved within 5 business days.",
+          "source": "synthetic_annexure3",
+          "sections_present": [
+            "kpi_performance",
+            "customer_stats",
+            "risk_register",
+            "complaints"
+          ]
+        },
+        {
+          "text": "SANDBOX Q3 2026 REPORT\nParticipant: Harare Pension Tech Ltd (AI Drawdown Calculator)\nPeriod: July to September 2026\nDate: 7 October 2026\n\nKPI PERFORMANCE\nDrawdown adequacy score: Target above 80%. Actual 83%. Met.\nMilestone 3 completion: Completed on schedule. Met.\nIPEC reporting compliance: 100% on-time submissions. Met.\n\nFUND STATISTICS\nPension funds participating: 48 (of 50 maximum). Members affected: 482. Recommendations generated Q3: 12,460.\n\nRISK REGISTER\nRisk: AI recommendation error leading to inadequate retirement income. Trigger: adequacy score below 70% for any member. Treatment: human actuarial override for flagged cases. Likelihood: Low.\n\nOPERATIONAL CHALLENGES\nTwo pension funds required additional data cleaning before onboarding due to legacy system data quality issues. Delay of 3 weeks. Resolved.\n\nAUDIT\nActuarial peer review by Watson Wyatt Zimbabwe completed September 2026. Recommendations validated within 2% of manual benchmark.\n\nCOMPLAINTS\nComplaints: 1 (member querying drawdown recommendation). Reviewed by actuarial team and explained within 5 days.",
+          "source": "synthetic_annexure3",
+          "sections_present": [
+            "kpi_performance",
+            "customer_stats",
+            "risk_register",
+            "audit"
+          ]
+        },
+        {
+          "text": "IPEC SANDBOX QUARTERLY REPORT\nParticipant: Victoria Falls Reinsurance Ltd — Facultative Division\nQ1 2026 (January to March 2026)\nDate: 3 April 2026\n\nA. KPI STATUS\nPricing accuracy vs manual: Target within 5%. Actual 3.1% variance. Met.\nQuote turnaround: Target under 4 hours. Actual 2.8 hours. Met.\nCompliance incidents: Target zero. Actual zero. Met.\n\nB. STATISTICS\nFacultative risks priced Q1: 342. New cedants: 8. Total GWP Q1: USD 2.3 million.\n\nC. RISK REGISTER\nRisk: model drift causing pricing errors. Trigger: accuracy deviation above 5% for 3 consecutive weeks. Treatment: weekly model recalibration. Likelihood: Low.\n\nE. OPERATIONAL CHALLENGES\nNone reported this quarter.\n\nF. AUDIT\nModel validation by Aon Zimbabwe completed March 2026. Report submitted to IPEC 31 March 2026.\n\nG. COMPLAINTS\nNo complaints from cedants during Q1 2026.",
+          "source": "synthetic_annexure3",
+          "sections_present": [
+            "kpi_performance",
+            "customer_stats",
+            "risk_register",
+            "audit"
+          ]
+        },
+        {
+          "text": "QUARTERLY PROGRESS REPORT — Q2 2026\nParticipant: Bulawayo Agri-Insurance Co. (Livestock Mortality Index)\nDate: 15 July 2026\n\nSECTION A — KPI PERFORMANCE\nBasis risk: Target below 20%. Actual 14%. Met.\nPayout processing: Target within 5 days of trigger. Actual 3.8 days. Met.\nFarmer satisfaction: Target above 70%. Actual 76%. Met.\n\nSECTION B — CUSTOMER STATISTICS\nFarmers enrolled: 382 (of 400 maximum). Trigger events Q2: 2. Claims paid: 2. Total claims value: USD 64,000.\n\nSECTION C — RISK REGISTER\nRisk: satellite data quality degradation. Trigger: data quality score below 90%. Treatment: secondary data source (veterinary records). Likelihood: Medium.\nRisk: basis risk above threshold. Trigger: individual farmer loss > 2x trigger payout. Treatment: discretionary top-up fund. Likelihood: Low.\n\nSECTION E — OPERATIONAL CHALLENGES\nHeavy rains in May 2026 caused one trigger event. Satellite confirmation took 6 days (1 day beyond target). Root cause: cloud cover preventing clear imagery. Mitigation: secondary data source now activated for extended cloud cover.\n\nSECTION F — AUDIT\nActuarial review of trigger events completed by Deloitte Zimbabwe. Findings: triggers accurate and payments appropriate.\n\nSECTION G — COMPLAINTS\nComplaints: 3 (farmers claiming higher losses than trigger payout covered). Explained and closed within 10 days.",
+          "source": "synthetic_annexure3",
+          "sections_present": [
+            "kpi_performance",
+            "customer_stats",
+            "operational_challenges",
+            "complaints"
+          ]
+        },
+        {
+          "text": "SANDBOX QUARTERLY PROGRESS REPORT\nParticipant: Harare Mutual Insurance — Cyber Division\nQuarter: Q4 2026 (October to December 2026)\nDate: 8 January 2027\n\nSECTION A — KPI PERFORMANCE\nClaim frequency reduction: Target 15% vs static benchmark. Actual 17%. Met.\nCustomer renewal rate: Target above 80%. Actual 84%. Met.\nVulnerability score improvement: Target 10% average. Actual 12%. Met.\n\nSECTION B — CUSTOMER STATISTICS\nSME policyholders enrolled: 148 (of 150 maximum). Policies renewed Q4: 112. Quarterly GWP: USD 744,000.\n\nSECTION C — RISK REGISTER\nRisk: Zero-day vulnerability in cyber scoring model. Trigger: CVSS score above 9.0 on scoring platform. Treatment: emergency patch protocol within 4 hours. Likelihood: Low.\nRisk: Regulatory query on dynamic premium model. Trigger: IPEC formal enquiry. Treatment: legal opinion and actuarial justification on file. Likelihood: Low.\n\nSECTION E — OPERATIONAL CHALLENGES\nOne SME client suffered a ransomware attack in November 2026. Premium adjustment responded within 48 hours. No coverage dispute. Insurer claim paid within 5 days.\n\nSECTION F — AUDIT DETAILS\nAnnual external audit by Deloitte Zimbabwe completed December 2026. Dynamic pricing model validated. No material findings. IPEC annual return submitted 2 January 2027.\n\nSECTION G — CUSTOMER COMPLAINTS\nComplaints: 2. Nature: 1 premium increase query; 1 coverage scope dispute. Both resolved within 5 business days. Status: Closed.",
+          "source": "synthetic_annexure3",
+          "sections_present": [
+            "kpi_performance",
+            "customer_stats",
+            "risk_register",
+            "audit"
+          ]
+        }
+      ]
+    },
+    {
+      "label": "SANDBOX_EXIT_REPORT",
+      "examples": [
+        {
+          "text": "REGULATORY SANDBOX EXIT REPORT\nParticipant: ZimAssure Ltd (Parametric Crop Insurance)\nTest Conclusion Date: 30 June 2027\nSubmitted to: IPEC\nDate: 14 July 2027\n\nEXECUTIVE SUMMARY\nZimAssure Ltd successfully completed its 12-month regulatory sandbox test. The parametric crop insurance product demonstrated commercial viability and technical accuracy. The test was successful.\n\nFINAL KPI OUTCOMES\nClaim processing time: Target 48 hours. Final average 31 hours. Met.\nCustomer satisfaction: Target 80%. Final score 89%. Met.\nTotal enrolment: 487 farmers (target 500). Partial.\n\nCOMPLIANCE OUTCOMES\nAll 6 Annexure 1 eligibility criteria maintained throughout the test. No regulatory breaches. Zero customer complaints outstanding at exit.\n\nEXIT PLAN EXECUTION\nAll active policies novated to ZimAssure's standard short-term insurance book. Exit report submitted within 14 days of test conclusion as required. Commission will communicate the formal test outcome within 30 days.\n\nRECOMMENDATION\nZimAssure Ltd requests graduation to full product deployment under a new parametric insurance product class. Proposed regulatory framework amendments attached as Annexure B.\n\nPOST-EXIT TRANSITION\nPost-exit, the product will operate under ZimAssure's existing short-term licence pending Commission approval of parametric insurance regulations.",
+          "source": "synthetic_annexure3",
+          "sections_present": [
+            "summary",
+            "kpi_outcomes",
+            "compliance",
+            "exit_plan",
+            "post_exit"
+          ]
+        },
+        {
+          "text": "SANDBOX EXIT REPORT — HARARE MUTUAL INSURANCE (BLOCKCHAIN CLAIMS LEDGER)\nTest End Date: 31 December 2026\nDate Submitted: 12 January 2027\n\nSUMMARY OF TEST OUTCOMES\nThe blockchain-based claims subrogation ledger test concluded on 31 December 2026. The test was successful. All three key performance indicators were met or exceeded.\n\nFINAL KPI RESULTS\nSubrogation settlement time: reduced from 90 days to 24 days (target 30 days). Exceeded.\nRecovery rate: improved from 45% to 71% (target 65%). Exceeded.\nSecurity incidents: zero (target zero). Met.\n\nELIGIBILITY AND COMPLIANCE\nThe innovation remained within IPEC supervisory mandate throughout. Governance maintained: no director changes. Regulatory waivers honoured. No revocations.\n\nEXIT PLAN EXECUTION\nAll five participating insurers have agreed to continue on the production blockchain platform under a formal multilateral data-sharing agreement. Orderly exit from sandbox status achieved. Exit report submitted within 10 days of test conclusion.\n\nCOMMISSION COMMUNICATION\nHarare Mutual awaits formal written communication from the Commission confirming test successful outcome and graduation phase commencement.\n\nPOST-EXIT\nPost-exit, the platform will operate under the Commission-approved data-sharing framework. Annual reports to IPEC on platform performance will continue.",
+          "source": "synthetic_annexure3",
+          "sections_present": [
+            "summary",
+            "kpi_outcomes",
+            "compliance",
+            "exit_plan",
+            "post_exit"
+          ]
+        },
+        {
+          "text": "IPEC REGULATORY SANDBOX — EXIT REPORT\nParticipant: Zimnat Digital (P2P Risk Pooling)\nTest Period: June to November 2026\nDate: 5 December 2026\n\nTEST OUTCOME SUMMARY\nZimnat Digital's P2P risk pooling test concluded after 6 months. The test was successful. Pool adequacy was maintained above 110% throughout. Customer satisfaction exceeded the target.\n\nFINAL KPI RESULTS\nPool adequacy ratio at exit: 122% (target above 110%). Met.\nAverage claim settlement: 2.6 days (target 3 days). Met.\nMember satisfaction at exit survey: 81% (target above 75%). Met.\n\nCOMPLIANCE SUMMARY\nAll Annexure 1 criteria maintained. KYC and AML checks performed for all 300 members. No regulatory violations. Treating Customers Fairly framework compliance confirmed by internal audit. The Commission had approved the test in Q2 2025 and the test was successful.\n\nEXIT PLAN EXECUTION\nOrderly exit: all active members offered conversion to a standard funeral assurance policy with ZimAssure Ltd. 267 of 300 members accepted conversion. 33 members chose to exit. Exit report submitted within 7 days of test conclusion.\n\nPOST-EXIT TRANSITION\nPost-exit, Zimnat Digital applies for a micro-insurance licence. Commission approval pending. Transition deployment to full regulatory framework targeted for Q2 2027.",
+          "source": "synthetic_annexure3",
+          "sections_present": [
+            "summary",
+            "kpi_outcomes",
+            "compliance",
+            "exit_plan",
+            "post_exit"
+          ]
+        },
+        {
+          "text": "SANDBOX EXIT REPORT — PAMFIL (EMBEDDED CREDIT-LIFE)\nTest Period: May to October 2026\nDate: 10 November 2026\n\nEXECUTIVE SUMMARY\nPAMFIL concludes its 6-month regulatory sandbox test of embedded credit-life insurance. The test was successful. All three KPIs were met. PAMFIL requests formal graduation to standard insurance distribution under an approved distribution model.\n\nFINAL KPI OUTCOMES\nPolicy placement rate: 96.8% (target above 90%). Met.\nClaim settlement within 7 days: 98% (target 100%). Partial — 2% required additional documentation.\nLapse rate: 7.9% (target below 10%). Met.\n\nCOMPLIANCE\nIPEC regulatory waivers maintained throughout. KYC and Anti-Money Laundering checks performed at loan origination. No sanctions violations. Treating Customers Fairly framework maintained. Commission approved the model at test commencement; approval maintained throughout.\n\nEXIT PLAN\nOrderly exit: 1,847 active policies novated to partnering licensed insurer at test conclusion. Borrowers notified in writing 30 days before exit. Exit report submitted 10 November 2026.\n\nPOST-EXIT\nPAMFIL applies for registration as an approved insurance distributor under the Insurance Act. Transition to full deployment pending Commission approval of the embedded insurance distribution framework.",
+          "source": "synthetic_annexure3",
+          "sections_present": [
+            "summary",
+            "kpi_outcomes",
+            "compliance",
+            "exit_plan",
+            "post_exit"
+          ]
+        },
+        {
+          "text": "REGULATORY SANDBOX EXIT REPORT\nParticipant: Midlands Life Assurance Ltd\nProduct: Automated Group Life Underwriting\nTest Conclusion: 31 March 2027\nDate: 14 April 2027\n\nSUMMARY\nMidlands Life Assurance Ltd completed 12 months of sandbox testing. The test was successful. The AI underwriting engine demonstrated accuracy within 1.3% of manual benchmark throughout.\n\nFINAL KPI RESULTS\nUnderwriting accuracy: 1.3% variance (target 2%). Met.\nFraud incidence: 0.2% (industry 0.8%). Met.\nScheme lapse rate: 6.5% (target below 8%). Met.\n\nCUSTOMER AND COMPLIANCE SUMMARY\nTotal lives covered at exit: 4,847 across 20 employer groups. No regulatory breaches. All employer groups maintained appropriate governance. Treating Customers Fairly compliance confirmed. KYC maintained for all scheme administrators.\n\nEXIT PLAN EXECUTION\nAll 20 schemes transition to standard group life policies under Midlands Life's existing licence. Exit report submitted 14 April 2027. The Commission will communicate the formal exit outcome within 30 days per Sandbox Guidelines.\n\nGRADUATION RECOMMENDATION\nMidlands Life requests amendment of the Insurance Act's medical evidence threshold from 100 to 500 members to enable permanent deployment of the automated engine.\n\nPOST-EXIT\nPost-exit deployment contingent on formal regulatory amendment. Midlands Life will continue operating under the existing threshold pending amendment.",
+          "source": "synthetic_annexure3",
+          "sections_present": [
+            "summary",
+            "kpi_outcomes",
+            "compliance",
+            "exit_plan",
+            "graduation"
+          ]
+        },
+        {
+          "text": "IPEC SANDBOX EXIT REPORT — DIGITAL REINSURANCE SOLUTIONS\nTest Conclusion: 31 October 2026\nDate: 12 November 2026\n\nEXECUTIVE SUMMARY\nDRS successfully completed 6 months of sandbox testing of its blockchain-based proportional treaty settlement system. Test outcome: successful. Settlement discrepancy rate remained at 0.04% throughout, well within target.\n\nFINAL KPI OUTCOMES\nDiscrepancy rate: 0.04% (target below 0.1%). Met.\nProcessing time: 4.1 days (target 5 days). Met.\nSecurity incidents: zero. Met.\n\nCOMPLIANCE AND GOVERNANCE\nAll 5 participating insurers maintained full IPEC licence compliance. No governance changes. Anti-Money Laundering and KYC checks on all settlement parties maintained. The Commission communicated in writing its satisfaction with test conduct on 1 October 2026.\n\nEXIT PLAN\nOrderly exit: all outstanding treaty settlements completed by 31 October 2026. Smart contract addresses decommissioned. Exit report submitted 12 November 2026. Orderly transition to production system commenced.\n\nPOST-EXIT TRANSITION\nDRS and the 5 participating insurers have submitted a joint application for recognition of the smart contract settlement method under the IPEC reinsurance regulations. Transition deployment scheduled Q1 2027.",
+          "source": "synthetic_annexure3",
+          "sections_present": [
+            "summary",
+            "kpi_outcomes",
+            "compliance",
+            "exit_plan",
+            "post_exit"
+          ]
+        },
+        {
+          "text": "SANDBOX EXIT REPORT — ZIMBABWE HEALTH FINTECH (ZHF)\nTest Period: Q1 to Q4 2026\nDate: 8 January 2027\n\nSUMMARY OF OUTCOMES\nZHF's community health micro-savings and insurance product completed 9 months of sandbox testing. The test was successful. All three KPIs exceeded their targets at exit.\n\nFINAL KPI RESULTS\nClaim settlement time: average 2.5 days at exit (target 3 days). Met.\nPool adequacy: 138% at exit (target above 120%). Met.\nMember retention: 82% at exit (target above 75%). Met.\n\nCOMPLIANCE\nKYC maintained for all 543 enrolled households. AML monitoring throughout. No suspicious transactions identified. Treating Customers Fairly framework audit passed. Regulatory relief (hybrid product classification) maintained without revocation throughout the test period.\n\nEXIT PLAN EXECUTION\nOrderly exit: all active members offered conversion to a ZimAssure micro-health product. 501 of 543 members accepted. Unconverted members received premium refunds. Exit report submitted within 7 days.\n\nGRADUATION\nZHF submits a formal application for a hybrid savings-insurance product licence. The Commission is expected to communicate its decision within 30 days of exit report submission.\n\nPOST-EXIT\nZHF will operate in advisory capacity only until Commission approval of the new licence category. Transition deployment timeline: Q2 2027.",
+          "source": "synthetic_annexure3",
+          "sections_present": [
+            "summary",
+            "kpi_outcomes",
+            "compliance",
+            "exit_plan",
+            "graduation"
+          ]
+        },
+        {
+          "text": "REGULATORY SANDBOX EXIT REPORT — NOVA BRIDGE INSURANCE INTERMEDIARIES\nTest Conclusion: 30 September 2026\nDate: 10 October 2026\n\nTEST OUTCOME\nNovaBridge completed 9 months of sandbox testing. The test was successful. All three primary KPIs were met.\n\nFINAL RESULTS\nPolicy issuance time: 2.1 minutes average at exit (target under 3 minutes). Met.\nAPI error rate: 0.3% (target below 1%). Met.\nComplaint rate: 0.8% (target below 2%). Met.\n\nCUSTOMER SUMMARY AT EXIT\nTotal registered customers: 489. Policies issued during test: 1,244. GWP during test: USD 622,000.\n\nCOMPLIANCE AND SAFEGUARDS\nKYC for all customers. AML monitoring throughout. Treating Customers Fairly compliance audit passed. No regulatory breaches. Commission approved the test model and the model remained approved throughout.\n\nEXIT PLAN\nOrderly exit: all bound policies remain with the respective insurer partners. NovaBridge's intermediary function wound down as sandbox intermediary. Exit report submitted 10 October 2026. The Commission will communicate in writing the formal exit outcome.\n\nGRADUATION PHASE\nNovaBridge applies for a composite insurance intermediary licence covering both brokerage and binding authority. Post-exit transition to full operation under new licence expected Q1 2027.",
+          "source": "synthetic_annexure3",
+          "sections_present": [
+            "summary",
+            "kpi_outcomes",
+            "compliance",
+            "exit_plan",
+            "graduation"
+          ]
+        },
+        {
+          "text": "EXIT REPORT — GWERU LIFE ASSURANCE (PAY-AS-YOU-LIVE)\nTest Period: April 2026 to March 2027\nDate: 4 April 2027\n\nEXECUTIVE SUMMARY\nGweru Life Assurance concluded 12 months of testing of its wearable-linked variable premium life product. The test was successful. Premium adjustment accuracy remained within 3.5% of the actuarial model throughout.\n\nFINAL KPI RESULTS\nPremium accuracy: 3.2% average variance (target within 5%). Met.\nMember engagement: 74% average monthly active users (target 70%). Met.\nCustomer retention at exit: 88% (target above 85%). Met.\n\nCOMPLIANCE\nActuarial oversight maintained. KYC at onboarding for all 300 policyholders. No AML incidents. Treating Customers Fairly framework audit passed. Variable premium model maintained within approved regulatory waiver throughout the 12-month testing period.\n\nEXIT PLAN\nAt the graduation phase, Gweru Life submits the variable premium model to the Insurance and Pensions Commission's actuarial unit for formal certification. Post-exit, the product is offered under Gweru Life's existing life assurance licence pending Commission certification of the premium model.\n\nOrderly exit: all 298 policies transitioned to standard life assurance with fixed premiums pending formal product approval. Exit report submitted 4 April 2027.\n\nCOMMISSION PROCESS\nGweru Life awaits the Commission's written communication confirming formal test outcome and graduation phase commencement.",
+          "source": "synthetic_annexure3",
+          "sections_present": [
+            "summary",
+            "kpi_outcomes",
+            "compliance",
+            "exit_plan",
+            "graduation"
+          ]
+        },
+        {
+          "text": "REGULATORY SANDBOX EXIT REPORT\nParticipant: Victoria Falls Reinsurance Ltd — Facultative Division\nTest Conclusion: 31 December 2026\nDate: 12 January 2027\n\nTEST SUMMARY\nVFR Facultative Division completed its 12-month sandbox test. The test was successful. The AI pricing engine outperformed the manual benchmark throughout.\n\nFINAL KPI OUTCOMES\nPricing accuracy: 2.9% average variance (target within 5%). Met.\nQuote turnaround: 2.6 hours average at exit (target under 4 hours). Met.\nCompliance incidents: zero (target zero). Met.\n\nCEDANT STATISTICS AT EXIT\nTotal cedants using the engine: 24. Facultative risks priced during test: 1,847. GWP processed: USD 12.3 million.\n\nCOMPLIANCE\nAll IPEC regulatory waivers maintained. No governance changes. Commission approved the test at commencement; no revocations. KYC and AML maintained for all cedants.\n\nEXIT PLAN\nOrderly exit: the pricing engine continues to support underwriting under manual oversight pending formal approval. Exit report submitted 12 January 2027. Commission will communicate test outcome within 30 days.\n\nPOST-EXIT AND GRADUATION\nVFR Facultative requests formal recognition of the AI pricing engine as a licensed underwriting support tool under a new IPEC product innovation framework. Transition deployment scheduled Q2 2027 subject to Commission approval.\n\nRECOMMENDATION\nIPEC is invited to consider adopting an AI underwriting support tool standard to enable the insurance industry to deploy similar technologies under a clear regulatory framework.",
+          "source": "synthetic_annexure3",
+          "sections_present": [
+            "summary",
+            "kpi_outcomes",
+            "compliance",
+            "exit_plan",
+            "graduation"
+          ]
+        },
+        {
+          "text": "IPEC REGULATORY SANDBOX EXIT REPORT — FIRST FIDELITY LIFE\nProduct: Tontine-Linked Diaspora Savings and Assurance\nTest Period: January to December 2026\nDate: 9 January 2027\n\nTEST OUTCOME\nFirst Fidelity completed 12 months of tontine product testing. The test was successful. Member retention and fund growth exceeded targets.\n\nFINAL KPI RESULTS\nMember retention at exit: 91% (target above 85%). Met.\nFund growth vs inflation: CPI+3.4% (target CPI+2%). Met.\nDeath benefit processing time: 10.5 days average (target within 14 days). Met.\n\nCOMPLIANCE\nKYC verified for all 200 members via biometric identity verification. AML monitoring throughout. No suspicious transactions. Treating Customers Fairly framework audit passed. No regulatory waivers revoked during the test period.\n\nEXIT PLAN AND ORDERLY EXIT\nAll 197 active members offered transfer to a First Fidelity endowment policy. 189 members accepted. 8 members requested full fund withdrawal (processed within 14 days). Exit report submitted 9 January 2027.\n\nGRADUATION\nFirst Fidelity requests creation of a Tontine Insurance licence category under the Insurance Act [Chapter 24:07]. A draft regulatory framework for tontine products is attached as Annexure C. Commission will communicate its response within 30 days.\n\nPOST-EXIT\nFirst Fidelity continues to operate existing endowment and life products under its current licence. The tontine product is suspended pending formal licence approval.",
+          "source": "synthetic_annexure3",
+          "sections_present": [
+            "summary",
+            "kpi_outcomes",
+            "compliance",
+            "exit_plan",
+            "graduation"
+          ]
+        },
+        {
+          "text": "SANDBOX EXIT REPORT — MASVINGO DIGITAL INSURERS (ON-DEMAND GIG INSURANCE)\nTest Conclusion: 31 December 2026\nDate: 10 January 2027\n\nSUMMARY\nMasvingo Digital Insurers concluded 6 months of on-demand per-shift gig insurance testing. The test was successful. USSD policy issuance within 30 seconds was achieved for 98.7% of transactions.\n\nFINAL RESULTS\nIssuance within 30 seconds: 98.7% (target 100%). Partial — USSD timeout issues addressed and resolved.\nClaim notification within 2 hours: 96% (target 100%). Partial.\nComplaint rate: 0.4% (target below 1%). Met.\n\nCUSTOMER SUMMARY\nRegistered gig workers at exit: 994. Shifts insured during test: 28,440. Total GWP: USD 142,200.\n\nCOMPLIANCE\nKYC at registration. AML monitoring. No violations. Treating Customers Fairly compliance confirmed. Regulatory relief (per-shift policy periods) maintained without revocation throughout.\n\nEXIT PLAN\nOrderly exit: all shift-based cover expired at test conclusion (by design — no ongoing policies). Masvingo Digital applies for amendment of the Insurance Act to formally permit per-shift policy periods. Exit report submitted 10 January 2027.\n\nPOST-EXIT\nMasvingo Digital continues to offer policies in the standard minimum period (1 month) pending formal regulatory amendment. Transition deployment of per-shift product expected Q3 2027 subject to Commission approval.",
+          "source": "synthetic_annexure3",
+          "sections_present": [
+            "summary",
+            "kpi_outcomes",
+            "compliance",
+            "exit_plan",
+            "post_exit"
+          ]
+        },
+        {
+          "text": "REGULATORY SANDBOX EXIT REPORT — ZIMTECH INSURANCE SOLUTIONS\nTest Period: April 2026 to December 2026\nDate: 8 January 2027\n\nTEST OUTCOME SUMMARY\nZimTech's digital insurance marketplace completed 9 months of regulatory sandbox testing. The test was successful. All four primary KPIs were met at exit.\n\nFINAL KPI OUTCOMES\nCustomer acquisition cost at exit: USD 16.20 (target below USD 25). Met.\nPolicy issuance time: 83 seconds (target under 2 minutes). Met.\nClaims notification within 24 hours: 97% (target 100%). Partial.\nNPS at exit: 76 (target above 70). Met.\n\nCUSTOMER STATISTICS AT EXIT\nRegistered SMEs: 943. Policies issued during test: 2,187. GWP during test: USD 1.53 million.\n\nCOMPLIANCE\nAll KYC and AML requirements maintained. Treating Customers Fairly audited quarterly. No regulatory breaches. The Commission communicated approval of the intermediary waiver at test commencement; no revocation issued.\n\nEXIT PLAN\nOrderly exit: all bound policies remain with the respective insurer partners. ZimTech's sandbox binding authority terminates at exit. Exit report submitted 8 January 2027.\n\nGRADUATION PHASE\nZimTech applies for a composite digital intermediary licence covering price comparison and binding authority. Transition deployment under the new licence targeted Q2 2027.\n\nPOST-EXIT TRANSITION\nZimTech continues as a price comparison platform only (no binding) pending licence approval.",
+          "source": "synthetic_annexure3",
+          "sections_present": [
+            "summary",
+            "kpi_outcomes",
+            "compliance",
+            "exit_plan",
+            "graduation"
+          ]
+        },
+        {
+          "text": "EXIT REPORT — HARARE PENSION TECH LTD (AI DRAWDOWN CALCULATOR)\nTest Conclusion: 30 September 2026\nDate: 12 October 2026\n\nEXECUTIVE SUMMARY\nHarare Pension Tech Ltd completed its 9-month sandbox test. The test was successful. The AI drawdown calculator demonstrated consistent accuracy throughout.\n\nFINAL KPI RESULTS\nDrawdown adequacy score at exit: 85% (target above 80%). Met.\nAll three milestones completed on schedule. Met.\nIPEC reporting: 100% on-time. Met.\n\nPENSION FUND STATISTICS AT EXIT\nFunds participating: 50. Members: 500. Recommendations generated: 37,500.\n\nCOMPLIANCE SUMMARY\nAll pension funds remained IPEC-compliant throughout. Regulatory waiver (deviation from fixed drawdown tables) maintained without revocation. KYC maintained for all fund administrators. No AML incidents.\n\nEXIT PLAN\nAt the graduation phase, HPT submitted the AI model for actuarial certification by the Society of Actuaries. Orderly exit: all funds revert to standard drawdown tables pending model certification. Exit report submitted 12 October 2026.\n\nCOMMISSION RESPONSE\nHPT awaits the Commission's written communication confirming test successful and graduation phase commencement. Commission will communicate within 30 days per Sandbox Guidelines.\n\nPOST-EXIT\nHPT will offer the calculator as a decision-support tool (non-binding recommendations) pending formal certification and Commission approval.",
+          "source": "synthetic_annexure3",
+          "sections_present": [
+            "summary",
+            "kpi_outcomes",
+            "compliance",
+            "exit_plan",
+            "graduation"
+          ]
+        },
+        {
+          "text": "IPEC SANDBOX EXIT REPORT — SOUTHERN CROSS MEDICAL AID SOCIETY\nCapitation Model Test\nTest Period: Q1 2026 to Q3 2026\nDate: 10 October 2026\n\nTEST OUTCOME\nSouthern Cross Medical Aid completed 9 months of capitation model testing. The test was successful. Hospital admission reduction and member satisfaction targets were met.\n\nFINAL KPI RESULTS\nHospital admission reduction: 14% (target 15%). Partial — trajectory shows 15%+ achievable in Q4.\nMember satisfaction at exit: 83% (target above 80%). Met.\nCapitation budget variance: 3.6% (target below 5%). Met.\n\nCOMPLIANCE\nAll 1,000 members maintained. No governance changes. KYC and AML procedures followed. Treating Customers Fairly compliance confirmed by clinical governance audit. The Commission had approved the capitation waiver at test commencement and maintained approval throughout.\n\nEXIT PLAN\nOrderly exit: capitation payment model continues under an interim exemption while formal regulatory amendment is processed. All contracted clinics informed 60 days before exit. Exit report submitted 10 October 2026.\n\nGRADUATION\nSouthern Cross applies for formal amendment of the Medical Aid Societies Act to recognise capitation arrangements. The Commission will communicate its decision within 30 days.\n\nPOST-EXIT TRANSITION\nCapitation model continues under interim exemption pending formal amendment. Transition deployment expected upon Act amendment, estimated Q2 2027.",
+          "source": "synthetic_annexure3",
+          "sections_present": [
+            "summary",
+            "kpi_outcomes",
+            "compliance",
+            "exit_plan",
+            "graduation"
+          ]
+        },
+        {
+          "text": "REGULATORY SANDBOX EXIT REPORT — AFRIGROW INSURANCE TECHNOLOGY\nProduct: Automated SADC Trade Credit Insurance\nTest Period: July 2026 to March 2027\nDate: 10 April 2027\n\nSUMMARY\nAfriGrow completed 9 months of trade credit insurance sandbox testing. The test was successful. Claims accuracy and underwriting speed targets were maintained throughout.\n\nFINAL KPI RESULTS\nClaims accuracy at exit: 94% (target above 90%). Met.\nUnderwriting decision time: 7.1 minutes (target under 10 minutes). Met.\nComplaint rate at exit: 1.0% (target below 3%). Met.\n\nCUSTOMER STATISTICS AT EXIT\nSMEs covered: 98 (of 100 maximum). Shipments insured: 1,247. Total GWP: USD 234,600.\n\nCOMPLIANCE\nKYC and AML for all 98 SMEs maintained. Sanctions list monitoring daily. No compliance incidents. Commission approval maintained throughout. Treating Customers Fairly audited at Month 6 and Month 9.\n\nEXIT PLAN\nOrderly exit: all active trade credit policies transferred to AfriGrow's standard non-life licence on exit. Exit report submitted 10 April 2027.\n\nGRADUATION PHASE\nAfriGrow applies for a formal SADC trade credit insurance endorsement on its non-life licence. Algorithmic underwriting certification submitted to IPEC actuarial unit. Commission will communicate in writing within 30 days.\n\nPOST-EXIT\nAfriGrow continues to write trade credit insurance under its existing licence (without algorithmic underwriting) pending certification approval.",
+          "source": "synthetic_annexure3",
+          "sections_present": [
+            "summary",
+            "kpi_outcomes",
+            "compliance",
+            "exit_plan",
+            "graduation"
+          ]
+        },
+        {
+          "text": "SANDBOX EXIT REPORT — BULAWAYO AGRI-INSURANCE CO. (LIVESTOCK INDEX)\nTest Conclusion: 31 August 2026\nDate: 10 September 2026\n\nTEST OUTCOME\nBulawayo Agri-Insurance completed 6 months of livestock mortality index testing. The test was successful. Two trigger events occurred and were processed within target parameters.\n\nFINAL KPI RESULTS\nBasis risk at exit: 13% (target below 20%). Met.\nPayout processing time: 3.6 days (target within 5 days). Met.\nFarmer satisfaction at exit: 79% (target above 70%). Met.\n\nCOMPLIANCE\nKYC for all 400 farmers. No AML incidents. Treating Customers Fairly audit passed. Regulatory waiver (area-level trigger assessment) maintained without revocation throughout.\n\nEXIT PLAN\nAt the graduation phase, Bulawayo Agri applies for formal product approval for the livestock index model. Orderly exit: all policies expired by nature (6-month season product). No ongoing policies at exit. Exit report submitted 10 September 2026. Commission will communicate its decision within 30 days per the Sandbox Guidelines.\n\nPOST-EXIT TRANSITION\nBulawayo Agri will continue offering standard livestock insurance under its existing licence. The index product is suspended pending formal product approval. Transition deployment of index product targeted Q1 2027.",
+          "source": "synthetic_annexure3",
+          "sections_present": [
+            "summary",
+            "kpi_outcomes",
+            "compliance",
+            "exit_plan",
+            "post_exit"
+          ]
+        },
+        {
+          "text": "REGULATORY SANDBOX EXIT REPORT — ZIMCREDIT LIFE ASSURANCE\nProduct: Lender-Placed Credit Life (Automatic Placement)\nTest Period: May to October 2026\nDate: 5 November 2026\n\nSUMMARY\nZimCredit completed 6 months of sandbox testing of automatic lender-placed credit life insurance. The test was successful. Policy placement rate exceeded 97% throughout.\n\nFINAL KPI OUTCOMES\nPolicy placement rate at exit: 97.4% (target above 95%). Met.\nClaim settlement within 5 days: 99% (target 100%). Partial.\nRegulatory complaints: zero (target zero). Met.\n\nCOMPLIANCE\nKYC at loan origination for all 4,381 policies. AML screening maintained. No sanctions violations. Treating Customers Fairly compliance confirmed. Digital consent recorded at disbursement for each policy. The Commission approved the digital consent mechanism at test commencement; no revocation issued.\n\nEXIT PLAN\nOrderly exit: all active policies maintained under ZimCredit's standard life licence. Automatic placement mechanism suspended pending formal regulatory approval. Exit report submitted 5 November 2026.\n\nGRADUATION\nZimCredit applies for formal amendment of the Insurance Act to permit automatic lender-placed cover with digital consent. Commission will communicate its formal decision within 30 days.\n\nPOST-EXIT\nZimCredit reverts to standard proposal form process for new credit life policies pending Act amendment. Existing policies unaffected.",
+          "source": "synthetic_annexure3",
+          "sections_present": [
+            "summary",
+            "kpi_outcomes",
+            "compliance",
+            "exit_plan",
+            "graduation"
+          ]
+        },
+        {
+          "text": "EXIT REPORT — MASVINGO FUNERAL ASSURERS CO-OPERATIVE\nTest Period: July to December 2026\nDate: 8 January 2027\n\nTEST OUTCOME\nMasvingo Funeral Assurers concluded 6 months of testing. The test was successful. All three KPIs were met or exceeded at exit.\n\nFINAL KPI RESULTS\nMembership retention at exit: 86% (target above 80%). Met.\nClaim settlement within 48 hours: 94% (target above 90% aspirational). Met.\nPremium collection rate: 96% (target above 90%). Met.\n\nCOMPLIANCE\nKYC for all 1,000 members. AML monitoring throughout. No violations. Treating Customers Fairly compliance confirmed by church council audit. Regulatory waiver (church network distribution) maintained without revocation.\n\nEXIT PLAN AND ORDERLY EXIT\nOrderly exit: all 924 active members transitioned to a formal funeral assurance policy under a licensed assurer (ZimAssure Ltd). Church network distribution agreements formally novated to ZimAssure. Exit report submitted 8 January 2027.\n\nGRADUATION PHASE\nMasvingo Funeral Assurers applies for recognition as an approved insurance distribution agent. The Commission will communicate its written decision within 30 days of receiving this exit report.\n\nPOST-EXIT TRANSITION\nThe co-operative will operate as a distribution agent (not risk carrier) under ZimAssure's licence pending formal distribution agent approval. Transition deployment of the formal product expected Q2 2027.",
+          "source": "synthetic_annexure3",
+          "sections_present": [
+            "summary",
+            "kpi_outcomes",
+            "compliance",
+            "exit_plan",
+            "graduation"
+          ]
+        },
+        {
+          "text": "REGULATORY SANDBOX EXIT REPORT — HARARE MUTUAL INSURANCE CYBER DIVISION\nProduct: Real-time Cyber Risk Scoring and Dynamic Cyber Insurance\nTest Period: January to December 2026\nDate: 8 January 2027\n\nEXECUTIVE SUMMARY\nHarare Mutual Cyber Division completed its 12-month sandbox test. The test was successful. All three primary KPIs exceeded their targets at the December 2026 exit point.\n\nFINAL KPI RESULTS\nClaim frequency reduction: 17% (target 15%). Met.\nCustomer renewal rate: 84% (target above 80%). Met.\nVulnerability score improvement: 12% average (target 10%). Met.\n\nCUSTOMER STATISTICS AT EXIT\nSME policyholders at exit: 148 (of 150 maximum). Total GWP during test: USD 2.97 million. Claims paid: 7. Total claims value: USD 340,000.\n\nCOMPLIANCE AND SAFEGUARDS\nKYC for all 148 SME clients. AML monitoring on all premium transactions. No compliance incidents. Treating Customers Fairly compliance confirmed by external audit. Regulatory relief (dynamic premium certification waiver) maintained throughout without revocation. The Commission had approved the test model at commencement and confirmed ongoing approval at the Month 6 milestone review.\n\nEXIT PLAN AND ORDERLY EXIT\nOrderly exit: all 148 policies converted to fixed-premium cyber insurance under Harare Mutual's existing non-life licence pending formal actuarial certification of the dynamic model. Policyholders notified 30 days before exit. Exit report submitted 8 January 2027. The Commission will communicate in writing the formal test outcome within 30 days of receipt.\n\nGRADUATION PHASE\nHarare Mutual applies for formal actuarial certification of the vulnerability-linked premium model under IPEC's product innovation framework. Post-exit transition to full dynamic pricing deployment expected Q3 2027 subject to certification. Commission will communicate the pathway for formal approval in the graduation phase response.",
+          "source": "synthetic_annexure3",
+          "sections_present": [
+            "summary",
+            "kpi_outcomes",
+            "compliance",
+            "exit_plan",
+            "graduation"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -14,7 +14,7 @@ class CSPScoreRead(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
     id: str
-    insurer_id: str
+    insurer_id: int
     financials_id: str
 
     solvency_score: float

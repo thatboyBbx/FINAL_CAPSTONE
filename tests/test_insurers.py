@@ -2,7 +2,6 @@
 Tests for the insurers API endpoints.
 """
 import io
-import pytest
 from fastapi.testclient import TestClient
 
 

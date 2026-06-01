@@ -3,7 +3,7 @@ SQLAlchemy 2.0 IntelArticle — GDELT-sourced Zimbabwe insurance news articles.
 """
 from __future__ import annotations
 
-from sqlalchemy import Float, Index, Integer, String, Text, DateTime
+from sqlalchemy import Float, Index, String, Text
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.core.db import Base
@@ -31,4 +31,5 @@ class IntelArticle(Base):
 
     __table_args__ = (
         Index("ix_intel_pub", "published_at"),
+        Index("ix_intel_articles_insurer_date", "insurer_name", "published_at"),
     )

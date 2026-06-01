@@ -31,6 +31,7 @@ from fastapi import APIRouter, Depends
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
+from app.ai.nlp.text_utils import extract_keywords, search_text
 from app.core.db import get_db
 from app.modules.auth.dependencies import get_current_user
 
@@ -399,15 +400,6 @@ _COMPILED_KB: list[dict[str, Any]] = [
     for entry in _KB
 ]
 
-# Stop words for document keyword search
-_STOP_WORDS: frozenset[str] = frozenset({
-    "what", "is", "are", "the", "a", "an", "in", "of", "to", "for",
-    "and", "or", "how", "does", "do", "this", "that", "it", "its",
-    "with", "on", "at", "by", "from", "was", "be", "been", "has",
-    "have", "had", "will", "would", "could", "should", "may", "might",
-    "which", "who", "when", "where", "why", "about", "clause", "me",
-    "tell", "explain", "show", "find", "give", "please",
-})
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -432,42 +424,11 @@ def _match_intent(message: str) -> str | None:
 
 
 def _extract_keywords(text: str) -> list[str]:
-    """Extract meaningful keywords from a query string."""
-    tokens = re.findall(r'\b[a-zA-Z]{3,}\b', text.lower())
-    return [t for t in tokens if t not in _STOP_WORDS]
+    return extract_keywords(text)
 
 
 def _search_document_text(text: str, question: str, max_sentences: int = 3) -> str | None:
-    """
-    Keyword search over extracted document text.
-    Returns the most relevant sentences joined, or None if nothing found.
-    """
-    if not text or not question:
-        return None
-
-    keywords = _extract_keywords(question)
-    if not keywords:
-        return None
-
-    sentences = re.split(r'(?<=[.!?])\s+', text)
-    scored: list[tuple[float, str]] = []
-
-    for sentence in sentences:
-        stripped = sentence.strip()
-        if len(stripped) < 15:
-            continue
-        sentence_lower = stripped.lower()
-        score = sum(1.0 for kw in keywords if kw in sentence_lower)
-        if score > 0:
-            # Slight length bonus to prefer more informative sentences
-            score += len(stripped) / 2000.0
-            scored.append((score, stripped))
-
-    if not scored:
-        return None
-
-    scored.sort(key=lambda x: x[0], reverse=True)
-    return " ".join(s for _, s in scored[:max_sentences])
+    return search_text(text, question, max_sentences=max_sentences)
 
 
 def _get_document_text(db: Session, document_id: int) -> tuple[str, str]:

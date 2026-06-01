@@ -1,0 +1,378 @@
+{% extends "base.html" %}
+{# reports/sandbox_quarterly_report.html
+   IPEC Regulatory Sandbox Quarterly Progress Report — Annexure 3 compliant
+   Template variables: see sandbox_report_service.py for full context dict spec #}
+
+{% block title %}Sandbox Quarterly Report — InsureIntel Zimbabwe{% endblock %}
+
+{% block content %}
+<div class="px-8 py-7" style="max-width:960px">
+
+  {# ── Breadcrumb ─────────────────────────────────────────────────────────── #}
+  <nav style="display:flex;align-items:center;gap:0.5rem;font-size:0.75rem;
+              color:var(--cosv);margin-bottom:1.5rem">
+    <a href="/home" style="color:var(--cosv);text-decoration:none">Home</a>
+    <span>/</span>
+    <a href="/reports" style="color:var(--cosv);text-decoration:none">Reports</a>
+    <span>/</span>
+    <span style="color:var(--cp);font-weight:600">Sandbox Quarterly Report</span>
+  </nav>
+
+  {# ── Action buttons ─────────────────────────────────────────────────────── #}
+  <div style="display:flex;gap:0.75rem;margin-bottom:1.5rem" class="no-print">
+    <a href="/reports" class="btn-glass"
+       style="display:inline-flex;align-items:center;gap:0.4rem;font-size:0.8rem">
+      <span class="material-symbols-outlined" style="font-size:17px">arrow_back</span>
+      Back
+    </a>
+    <button onclick="window.print()" class="btn-glass"
+            style="display:inline-flex;align-items:center;gap:0.4rem;font-size:0.8rem">
+      <span class="material-symbols-outlined" style="font-size:17px">print</span>
+      Print / Save PDF
+    </button>
+  </div>
+
+  {# ══════════════════════════════════════════════════════════════════════════
+     REPORT HEADER
+  ══════════════════════════════════════════════════════════════════════════ #}
+  <div class="glass-card" style="padding:2rem;margin-bottom:1.5rem;
+       border-left:4px solid var(--cp)">
+
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;
+                flex-wrap:wrap;gap:1rem">
+      <div>
+        <p style="font-size:0.7rem;font-weight:700;letter-spacing:0.12em;
+                  text-transform:uppercase;color:var(--cp);margin:0 0 0.35rem">
+          IPEC Regulatory Sandbox — Quarterly Progress Report
+        </p>
+        <h1 class="font-headline"
+            style="font-size:1.6rem;font-weight:800;color:var(--cos);margin:0 0 0.4rem">
+          {{ participant_name | e }}
+        </h1>
+        <p style="color:var(--cosv);font-size:0.85rem;margin:0">
+          Quarter: <strong style="color:var(--cos)">{{ report_quarter | e }}</strong>
+          &nbsp;·&nbsp;
+          Report Date: <strong style="color:var(--cos)">{{ report_date | e }}</strong>
+        </p>
+      </div>
+      <div style="text-align:right">
+        <p style="font-size:0.75rem;color:var(--cosv);margin:0">Submitted to:</p>
+        <p style="font-size:0.9rem;font-weight:700;color:var(--cos);margin:0.25rem 0 0">
+          Insurance and Pensions Commission (IPEC)
+        </p>
+        <p style="font-size:0.7rem;color:var(--cosv);margin:0.25rem 0 0">
+          Annexure 3 — IPEC Regulatory Sandbox Guidelines (2025)
+        </p>
+      </div>
+    </div>
+
+  </div>
+
+  {# ══════════════════════════════════════════════════════════════════════════
+     SECTION A — KPI PROGRESS
+  ══════════════════════════════════════════════════════════════════════════ #}
+  <div class="glass-card" style="padding:1.75rem;margin-bottom:1.25rem">
+    <h2 class="font-headline"
+        style="font-size:1rem;font-weight:700;color:var(--cos);
+               border-left:3px solid var(--cp);padding-left:0.75rem;margin:0 0 1.25rem">
+      Section A — KPI Progress
+    </h2>
+
+    {% if kpis %}
+    <div style="overflow-x:auto">
+      <table class="data-table" style="width:100%;border-collapse:collapse">
+        <thead>
+          <tr>
+            <th style="width:35%">KPI Name</th>
+            <th>Target</th>
+            <th>Actual</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for kpi in kpis %}
+          <tr>
+            <td style="font-weight:600;color:var(--cos)">{{ kpi.name | e }}</td>
+            <td style="color:var(--cosv)">{{ kpi.target | e }}</td>
+            <td style="color:var(--cos)">{{ kpi.actual | e }}</td>
+            <td>
+              {% if kpi.status == "met" %}
+                <span style="display:inline-block;padding:0.2rem 0.65rem;
+                      border-radius:9999px;font-size:0.7rem;font-weight:700;
+                      background:rgba(61,186,120,0.18);color:#3dba78;
+                      border:1px solid rgba(61,186,120,0.4)">MET</span>
+              {% elif kpi.status == "partial" %}
+                <span style="display:inline-block;padding:0.2rem 0.65rem;
+                      border-radius:9999px;font-size:0.7rem;font-weight:700;
+                      background:rgba(212,175,55,0.18);color:var(--cp);
+                      border:1px solid rgba(212,175,55,0.4)">PARTIAL</span>
+              {% else %}
+                <span style="display:inline-block;padding:0.2rem 0.65rem;
+                      border-radius:9999px;font-size:0.7rem;font-weight:700;
+                      background:rgba(220,60,60,0.18);color:#e05555;
+                      border:1px solid rgba(220,60,60,0.4)">MISSED</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <p style="color:var(--cosv);font-size:0.85rem">No KPI data available for this quarter.</p>
+    {% endif %}
+  </div>
+
+  {# ══════════════════════════════════════════════════════════════════════════
+     SECTION B — CUSTOMER STATISTICS
+  ══════════════════════════════════════════════════════════════════════════ #}
+  <div class="glass-card" style="padding:1.75rem;margin-bottom:1.25rem">
+    <h2 class="font-headline"
+        style="font-size:1rem;font-weight:700;color:var(--cos);
+               border-left:3px solid var(--cp);padding-left:0.75rem;margin:0 0 1.25rem">
+      Section B — Customer Statistics
+    </h2>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+                gap:1rem">
+
+      {# Stat card — customer count #}
+      <div style="background:var(--glass-bg);border:1px solid var(--glass-bdr);
+                  border-radius:0.75rem;padding:1.25rem;text-align:center">
+        <span class="material-symbols-outlined"
+              style="font-size:28px;color:var(--cp);
+                     font-variation-settings:'FILL' 1">group</span>
+        <p style="font-size:1.75rem;font-weight:800;color:var(--cos);margin:0.35rem 0 0">
+          {{ customer_count | default(0) | int }}
+        </p>
+        <p style="font-size:0.75rem;color:var(--cosv);margin:0.25rem 0 0;font-weight:600">
+          Customers Enrolled
+        </p>
+      </div>
+
+      {# Stat card — transaction volume #}
+      <div style="background:var(--glass-bg);border:1px solid var(--glass-bdr);
+                  border-radius:0.75rem;padding:1.25rem;text-align:center">
+        <span class="material-symbols-outlined"
+              style="font-size:28px;color:var(--cp);
+                     font-variation-settings:'FILL' 1">swap_horiz</span>
+        <p style="font-size:1.75rem;font-weight:800;color:var(--cos);margin:0.35rem 0 0">
+          {{ transaction_volume | default(0) | int }}
+        </p>
+        <p style="font-size:0.75rem;color:var(--cosv);margin:0.25rem 0 0;font-weight:600">
+          Transactions
+        </p>
+      </div>
+
+      {# Stat card — transaction value #}
+      <div style="background:var(--glass-bg);border:1px solid var(--glass-bdr);
+                  border-radius:0.75rem;padding:1.25rem;text-align:center">
+        <span class="material-symbols-outlined"
+              style="font-size:28px;color:var(--cp);
+                     font-variation-settings:'FILL' 1">paid</span>
+        <p style="font-size:1.75rem;font-weight:800;color:var(--cos);margin:0.35rem 0 0">
+          {{ transaction_value | default("USD 0") | e }}
+        </p>
+        <p style="font-size:0.75rem;color:var(--cosv);margin:0.25rem 0 0;font-weight:600">
+          Total Value
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+  {# ══════════════════════════════════════════════════════════════════════════
+     SECTION C — RISK REGISTER
+  ══════════════════════════════════════════════════════════════════════════ #}
+  <div class="glass-card" style="padding:1.75rem;margin-bottom:1.25rem">
+    <h2 class="font-headline"
+        style="font-size:1rem;font-weight:700;color:var(--cos);
+               border-left:3px solid var(--cp);padding-left:0.75rem;margin:0 0 1.25rem">
+      Section C — Risk Register
+    </h2>
+
+    {% if risk_register %}
+    <div style="overflow-x:auto">
+      <table class="data-table" style="width:100%;border-collapse:collapse">
+        <thead>
+          <tr>
+            <th style="width:25%">Risk</th>
+            <th style="width:25%">Trigger Event</th>
+            <th style="width:30%">Treatment</th>
+            <th>Likelihood</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for risk in risk_register %}
+          <tr>
+            <td style="color:var(--cos);font-weight:600">{{ risk.risk | e }}</td>
+            <td style="color:var(--cosv)">{{ risk.trigger | e }}</td>
+            <td style="color:var(--cosv)">{{ risk.treatment | e }}</td>
+            <td>
+              {% set lh = risk.likelihood | lower %}
+              {% if lh in ["low", "very low"] %}
+                <span style="color:#3dba78;font-weight:600">{{ risk.likelihood | e }}</span>
+              {% elif lh == "medium" %}
+                <span style="color:var(--cp);font-weight:600">{{ risk.likelihood | e }}</span>
+              {% else %}
+                <span style="color:#e05555;font-weight:600">{{ risk.likelihood | e }}</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <p style="color:var(--cosv);font-size:0.85rem">
+      No risks recorded in the register for this quarter.
+    </p>
+    {% endif %}
+  </div>
+
+  {# ══════════════════════════════════════════════════════════════════════════
+     SECTION E — OPERATIONAL CHALLENGES
+  ══════════════════════════════════════════════════════════════════════════ #}
+  <div class="glass-card" style="padding:1.75rem;margin-bottom:1.25rem">
+    <h2 class="font-headline"
+        style="font-size:1rem;font-weight:700;color:var(--cos);
+               border-left:3px solid var(--cp);padding-left:0.75rem;margin:0 0 1.25rem">
+      Section E — Operational Challenges
+    </h2>
+
+    {% if operational_challenges %}
+    <ul style="margin:0;padding-left:1.25rem;color:var(--cosv);font-size:0.875rem;
+               line-height:1.75">
+      {% for challenge in operational_challenges %}
+      <li>{{ challenge | e }}</li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p style="color:var(--cosv);font-size:0.85rem">None reported this quarter.</p>
+    {% endif %}
+  </div>
+
+  {# ══════════════════════════════════════════════════════════════════════════
+     SECTION F — AUDIT DETAILS
+  ══════════════════════════════════════════════════════════════════════════ #}
+  <div class="glass-card" style="padding:1.75rem;margin-bottom:1.25rem">
+    <h2 class="font-headline"
+        style="font-size:1rem;font-weight:700;color:var(--cos);
+               border-left:3px solid var(--cp);padding-left:0.75rem;margin:0 0 1.25rem">
+      Section F — Audit Details
+    </h2>
+    <p style="color:var(--cosv);font-size:0.875rem;line-height:1.75;margin:0">
+      {{ audit_details | default("No audit details provided for this quarter.") | e }}
+    </p>
+  </div>
+
+  {# ══════════════════════════════════════════════════════════════════════════
+     SECTION G — CUSTOMER COMPLAINTS
+  ══════════════════════════════════════════════════════════════════════════ #}
+  <div class="glass-card" style="padding:1.75rem;margin-bottom:1.5rem">
+    <h2 class="font-headline"
+        style="font-size:1rem;font-weight:700;color:var(--cos);
+               border-left:3px solid var(--cp);padding-left:0.75rem;margin:0 0 1.25rem">
+      Section G — Customer Complaints
+    </h2>
+
+    {% if customer_complaints %}
+    <div style="overflow-x:auto">
+      <table class="data-table" style="width:100%;border-collapse:collapse">
+        <thead>
+          <tr>
+            <th style="width:40%">Complaint</th>
+            <th style="width:40%">Resolution</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for complaint in customer_complaints %}
+          <tr>
+            <td style="color:var(--cos)">{{ complaint.complaint | e }}</td>
+            <td style="color:var(--cosv)">{{ complaint.resolution | e }}</td>
+            <td>
+              {% set st = complaint.status | lower %}
+              {% if st == "closed" %}
+                <span style="color:#3dba78;font-weight:600">Closed</span>
+              {% elif st == "open" %}
+                <span style="color:#e05555;font-weight:600">Open</span>
+              {% else %}
+                <span style="color:var(--cp);font-weight:600">
+                  {{ complaint.status | e }}
+                </span>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <p style="color:var(--cosv);font-size:0.85rem">
+      No customer complaints recorded this quarter.
+    </p>
+    {% endif %}
+  </div>
+
+  {# ══════════════════════════════════════════════════════════════════════════
+     FOOTER
+  ══════════════════════════════════════════════════════════════════════════ #}
+  <div style="text-align:center;padding:1rem 0 0.5rem;
+              border-top:1px solid var(--glass-bdr);margin-top:0.5rem">
+    <p style="font-size:0.7rem;color:var(--cosv);margin:0;line-height:1.8">
+      Generated by <strong style="color:var(--cos)">InsureIntel Zimbabwe Platform</strong>
+      &nbsp;·&nbsp;
+      IPEC Regulatory Sandbox Guidelines (2025) Annexure 3 compliant
+      &nbsp;·&nbsp;
+      {{ report_date | e }}
+    </p>
+    {% if document_ids_analysed %}
+    <p style="font-size:0.65rem;color:var(--cosv);margin:0.25rem 0 0">
+      Document IDs analysed: {{ document_ids_analysed | join(", ") }}
+    </p>
+    {% endif %}
+  </div>
+
+</div>
+{% endblock %}
+
+{# ── Print styles ─────────────────────────────────────────────────────────── #}
+{% block extra_head %}
+<style>
+@media print {
+  /* Hide navigation, sidebar, action buttons, and any interactive chrome */
+  nav.sidebar,
+  .sidebar,
+  header,
+  footer.nav-footer,
+  .no-print,
+  button {
+    display: none !important;
+  }
+
+  /* Remove glassmorphism blur — not supported in print */
+  .glass-card {
+    background: #fff !important;
+    border: 1px solid #ddd !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+  }
+
+  body {
+    background: #fff !important;
+    color: #111 !important;
+  }
+
+  /* Ensure tables don't break mid-row across pages */
+  table { page-break-inside: avoid; }
+  tr    { page-break-inside: avoid; }
+
+  /* Use full page width in print */
+  .px-8 { padding-left: 0 !important; padding-right: 0 !important; }
+
+  /* Force max-width to 100% in print context */
+  div[style*="max-width"] { max-width: 100% !important; }
+}
+</style>
+{% endblock %}

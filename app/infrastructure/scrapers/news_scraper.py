@@ -7,16 +7,12 @@ from __future__ import annotations
 import logging
 import re
 from datetime import datetime, date, timedelta
-from typing import Optional
 from urllib.parse import urljoin, urlparse
 
 from sqlalchemy.orm import Session
 
 from app.infrastructure.scrapers.base_scraper import BaseScraper, ScraperResult
-from app.infrastructure.scrapers.scraper_utils import (
-    extract_text_from_html,
-    find_insurer_mentions,
-)
+from app.infrastructure.scrapers.scraper_utils import find_insurer_mentions
 
 logger = logging.getLogger(__name__)
 

@@ -1,4 +1,7 @@
-from app.modules.documents.ingestion.pdf_extractor import extract_text_from_pdf
+from app.modules.documents.ingestion.pdf_extractor import (
+    extract_text_from_pdf,
+    extract_text_from_pdf_bytes,
+)
 
 
 def extract_text(file_path: str) -> str:
@@ -6,4 +9,4 @@ def extract_text(file_path: str) -> str:
     return extract_text_from_pdf(file_path)
 
 
-__all__ = ["extract_text", "extract_text_from_pdf"]
+__all__ = ["extract_text", "extract_text_from_pdf", "extract_text_from_pdf_bytes"]

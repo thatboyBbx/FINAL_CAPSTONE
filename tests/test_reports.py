@@ -1,7 +1,6 @@
 """
 Tests for the reports generation endpoint.
 """
-import pytest
 from fastapi.testclient import TestClient
 
 

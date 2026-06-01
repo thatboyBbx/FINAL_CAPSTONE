@@ -4,16 +4,16 @@ Batch/Portfolio Router — /api/batch and /api/portfolio endpoints.
 from __future__ import annotations
 
 import logging
-import os
-import tempfile
+from pathlib import Path
 from typing import Any, Dict, List
 
-from fastapi import APIRouter, BackgroundTasks, Depends, File, Form, HTTPException, UploadFile, status
+from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile, status
 from sqlalchemy.orm import Session
 
 from app.batch.batch_processor import BatchProcessor
 from app.core.db import get_db
 from app.modules.auth.dependencies import get_current_user
+from app.modules.documents.file_store import sanitize_filename
 
 logger = logging.getLogger(__name__)
 router = APIRouter(
@@ -30,7 +30,6 @@ _processor = BatchProcessor()
 
 @router.post("/api/batch/upload")
 async def batch_upload(
-    background_tasks: BackgroundTasks,
     portfolio_id: str = Form(...),
     uploaded_by: str = Form(default="unknown"),
     files: List[UploadFile] = File(...),
@@ -38,7 +37,10 @@ async def batch_upload(
 ) -> Dict[str, Any]:
     """
     Accept multiple file uploads, create batch + document records,
-    and enqueue background processing for each file.
+    and enqueue persistent background processing for each file.
+
+    Jobs are written to queued_jobs and survive server restarts.
+    Run: python -m app.workers.sqlite_worker --queue ingestion_queue
     """
     if not files:
         raise HTTPException(
@@ -46,20 +48,20 @@ async def batch_upload(
             detail="No files uploaded.",
         )
 
-    # Save files to a temp directory so we have persistent paths
+    # Stage files to persistent storage before any processing begins
     saved_paths = []
-    upload_dir = os.path.join("storage", "uploads", portfolio_id)
-    os.makedirs(upload_dir, exist_ok=True)
+    upload_dir = Path("storage") / "uploads" / portfolio_id
+    upload_dir.mkdir(parents=True, exist_ok=True)
 
     for upload in files:
-        dest = os.path.join(upload_dir, upload.filename or "document")
+        safe_name = sanitize_filename(upload.filename or "document")
+        dest = upload_dir / safe_name
         try:
             content = await upload.read()
-            with open(dest, "wb") as f:
-                f.write(content)
-            saved_paths.append(dest)
+            dest.write_bytes(content)
+            saved_paths.append(str(dest))
         except Exception as exc:
-            logger.error("Failed to save upload %s: %s", upload.filename, exc)
+            logger.error("Failed to stage upload %s: %s", upload.filename, exc)
 
     if not saved_paths:
         raise HTTPException(
@@ -67,15 +69,31 @@ async def batch_upload(
             detail="All file saves failed.",
         )
 
-    # Create batch record
+    # Create batch + document DB records
     batch_info = _processor.create_batch(db, saved_paths, portfolio_id, uploaded_by)
 
-    # Enqueue processing for each document
-    from app.batch.tasks import process_single_document
+    # Enqueue each document into the persistent job queue
+    from app.queue.factory import get_job_queue
+    from app.core.config import settings
+    job_queue = get_job_queue()
+    job_ids: list[int] = []
     for doc_id in batch_info["document_ids"]:
-        background_tasks.add_task(process_single_document, doc_id)
+        jid = job_queue.enqueue(
+            "ingestion_queue",
+            "process_document",
+            document_id=doc_id,
+            step_name="full_pipeline",
+            batch_id=batch_info["batch_id"],
+            max_attempts=settings.job_max_attempts,
+        )
+        job_ids.append(jid)
 
-    return batch_info
+    logger.info(
+        "Batch %d: enqueued %d jobs for portfolio=%s",
+        batch_info["batch_id"], len(job_ids), portfolio_id,
+    )
+
+    return {**batch_info, "job_ids": job_ids}
 
 
 @router.get("/api/batch/{batch_id}/status")

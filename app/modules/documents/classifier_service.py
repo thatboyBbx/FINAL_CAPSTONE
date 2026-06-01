@@ -27,11 +27,15 @@ CLASSIFIER_PATH = MODEL_DIR / "document_classifier_model.joblib"
 METADATA_PATH = MODEL_DIR / "document_classifier_metadata.json"
 
 # Type hint for document categories
+# Sandbox types appended (SANDBOX_EXP_v1) — additive only, existing types unchanged
 DocumentCategory = Literal[
     "policy_wording",
     "reinsurance_treaty",
     "claims_documentation",
     "broker_agreement",
+    "sandbox_application",
+    "sandbox_quarterly_report",
+    "sandbox_exit_report",
     "unknown",
 ]
 
@@ -106,9 +110,11 @@ class DocumentClassifierService:
             return {
                 "category": "unknown",
                 "confidence": 0.0,
-                "probabilities": {k: 0.25 for k in (
+                "probabilities": {k: round(1 / 7, 4) for k in (
                     "policy_wording", "reinsurance_treaty",
-                    "claims_documentation", "broker_agreement"
+                    "claims_documentation", "broker_agreement",
+                    "sandbox_application", "sandbox_quarterly_report",
+                    "sandbox_exit_report",
                 )},
                 "method": "fallback",
             }
@@ -171,11 +177,38 @@ class DocumentClassifierService:
             "premium remittance", "broker responsibilities", "binding",
         ]
 
+        # Sandbox keywords — drawn from IPEC Regulatory Sandbox Guidelines (2025)
+        sandbox_application_keywords = [
+            "regulatory sandbox", "sandbox application", "testing period",
+            "boundary condition", "regulatory waiver", "exemption sought",
+            "consent to participate", "graduation phase", "exit plan",
+        ]
+        sandbox_quarterly_keywords = [
+            "quarterly progress report", "kpi performance", "risk register",
+            "operational challenges", "audit details", "customer complaints",
+            "sandbox quarterly", "reporting period",
+        ]
+        sandbox_exit_keywords = [
+            "exit report", "orderly exit", "post-exit", "graduation phase",
+            "test was successful", "test outcome", "transition deployment",
+            "commission will communicate",
+        ]
+
         scores: dict[str, float] = {
             "policy_wording": sum(1.0 for kw in policy_keywords if kw in text_lower),
             "reinsurance_treaty": sum(1.0 for kw in treaty_keywords if kw in text_lower),
             "claims_documentation": sum(1.0 for kw in claims_keywords if kw in text_lower),
             "broker_agreement": sum(1.0 for kw in broker_keywords if kw in text_lower),
+            # Sandbox document types (SANDBOX_EXP_v1)
+            "sandbox_application": sum(
+                1.0 for kw in sandbox_application_keywords if kw in text_lower
+            ),
+            "sandbox_quarterly_report": sum(
+                1.0 for kw in sandbox_quarterly_keywords if kw in text_lower
+            ),
+            "sandbox_exit_report": sum(
+                1.0 for kw in sandbox_exit_keywords if kw in text_lower
+            ),
         }
 
         total = sum(scores.values())

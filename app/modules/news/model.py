@@ -8,7 +8,7 @@ from __future__ import annotations
 from datetime import date, datetime, timezone
 
 from sqlalchemy import (
-    Boolean, Date, DateTime, Enum, Float, ForeignKey,
+    Date, DateTime, Enum, Float, ForeignKey,
     Index, Integer, JSON, String, Text,
 )
 from sqlalchemy.orm import Mapped, mapped_column, relationship

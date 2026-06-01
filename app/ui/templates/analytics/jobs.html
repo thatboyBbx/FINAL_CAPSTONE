@@ -1,0 +1,263 @@
+{% extends "base.html" %}
+{#
+  analytics/jobs.html — Job queue monitor + dead-letter management
+  Route: GET /analytics/jobs
+  Context: queue_stats{queues, dead_letter_total, dead_letter_pending_redrive},
+           dead_letters[], active_steps[], all_counts{}, is_admin
+#}
+{% block title %}Job Queue Monitor — InsureIntel Zimbabwe{% endblock %}
+
+{% block content %}
+<div class="px-6 py-7 lg:px-8">
+
+  <!-- Breadcrumb -->
+  <nav style="display:flex;align-items:center;gap:.375rem;font-size:.75rem;color:var(--cosv);margin-bottom:1.5rem">
+    <a href="/home" style="color:var(--cosv);text-decoration:none">Home</a>
+    <span class="material-symbols-outlined" style="font-size:14px">chevron_right</span>
+    <a href="/system" style="color:var(--cosv);text-decoration:none">System</a>
+    <span class="material-symbols-outlined" style="font-size:14px">chevron_right</span>
+    <span style="color:var(--cp);font-weight:600">Job Queue Monitor</span>
+  </nav>
+
+  <!-- Header -->
+  <div style="margin-bottom:2rem;display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:1rem">
+    <div>
+      <h1 class="font-headline" style="font-size:1.75rem;font-weight:800;color:var(--cos);margin:0 0 .375rem">
+        Job Queue Monitor
+      </h1>
+      <p style="color:var(--cosv);font-size:.9rem;margin:0">
+        Real-time OCR ingestion and embedding queue status, plus dead-letter job management.
+      </p>
+    </div>
+    <button onclick="location.reload()" class="btn btn-secondary btn-sm">
+      <span class="material-symbols-outlined" style="font-size:16px">refresh</span>
+      Refresh
+    </button>
+  </div>
+
+  <!-- Summary stat cards -->
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:1.25rem;margin-bottom:2rem">
+
+    {% set total_jobs = all_counts.values()|sum %}
+    <div class="glass-card stat-card">
+      <p style="color:var(--cosv);font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin:0 0 .5rem">Total Jobs</p>
+      <p class="font-headline" style="font-size:1.875rem;font-weight:800;color:var(--cos);margin:0">{{ total_jobs }}</p>
+      <p style="color:var(--cosv);font-size:.72rem;margin:.25rem 0 0">all queues</p>
+    </div>
+
+    <div class="glass-card stat-card">
+      <p style="color:var(--cosv);font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin:0 0 .5rem">Active</p>
+      <p class="font-headline" style="font-size:1.875rem;font-weight:800;color:#fbbf24;margin:0">
+        {{ (all_counts.get('queued', 0) or 0) + (all_counts.get('claimed', 0) or 0) + (all_counts.get('processing', 0) or 0) }}
+      </p>
+      <p style="color:var(--cosv);font-size:.72rem;margin:.25rem 0 0">queued / running</p>
+    </div>
+
+    <div class="glass-card stat-card">
+      <p style="color:var(--cosv);font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin:0 0 .5rem">Complete</p>
+      <p class="font-headline" style="font-size:1.875rem;font-weight:800;color:#4ade80;margin:0">{{ all_counts.get('complete', 0) or 0 }}</p>
+      <p style="color:var(--cosv);font-size:.72rem;margin:.25rem 0 0">successful</p>
+    </div>
+
+    <div class="glass-card stat-card">
+      <p style="color:var(--cosv);font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin:0 0 .5rem">Failed</p>
+      <p class="font-headline" style="font-size:1.875rem;font-weight:800;color:{% if (all_counts.get('failed', 0) or 0) > 0 %}#f87171{% else %}#4ade80{% endif %};margin:0">
+        {{ all_counts.get('failed', 0) or 0 }}
+      </p>
+      <p style="color:var(--cosv);font-size:.72rem;margin:.25rem 0 0">errored out</p>
+    </div>
+
+    <div class="glass-card stat-card">
+      <p style="color:var(--cosv);font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin:0 0 .5rem">Dead Letter</p>
+      <p class="font-headline" style="font-size:1.875rem;font-weight:800;color:{% if (queue_stats.dead_letter_pending_redrive or 0) > 0 %}#f87171{% else %}var(--cosv){% endif %};margin:0">
+        {{ queue_stats.dead_letter_pending_redrive or 0 }}
+      </p>
+      <p style="color:var(--cosv);font-size:.72rem;margin:.25rem 0 0">pending redrive ({{ queue_stats.dead_letter_total or 0 }} total)</p>
+    </div>
+
+  </div>
+
+  <!-- Per-queue breakdown -->
+  {% if queue_stats.queues %}
+  <div class="glass-card" style="padding:1.5rem;margin-bottom:1.75rem;border-radius:.75rem">
+    <h2 style="font-size:.9375rem;font-weight:700;color:var(--cos);margin:0 0 1.25rem;display:flex;align-items:center;gap:.5rem">
+      <span class="material-symbols-outlined" style="font-size:18px;color:var(--cp)">queue</span>
+      Per-Queue Breakdown
+    </h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem">
+      {% for queue_name, statuses in queue_stats.queues.items()|sort %}
+      {% set q_total = statuses.values()|sum %}
+      <div style="background:rgba(255,255,255,.03);border:1px solid var(--glass-bdr);border-radius:.5rem;padding:1rem">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.875rem">
+          <span style="font-size:.8125rem;font-weight:700;color:var(--cos);display:flex;align-items:center;gap:.375rem">
+            <span class="material-symbols-outlined" style="font-size:16px;color:var(--cp)">conveyor_belt</span>
+            {{ queue_name | replace('_', ' ') | title }}
+          </span>
+          <span style="font-size:.72rem;font-weight:600;color:var(--cosv)">{{ q_total }} total</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:.375rem">
+          {% set s_colors = {'queued': '#60a5fa', 'claimed': '#a78bfa', 'processing': '#fbbf24', 'complete': '#4ade80', 'failed': '#f87171', 'dead_letter': '#ef4444'} %}
+          {% for status, cnt in statuses.items()|sort %}
+          {% set color = s_colors.get(status, '#a1a1a1') %}
+          <div style="display:flex;align-items:center;gap:.5rem">
+            <span style="width:8px;height:8px;border-radius:50%;background:{{ color }};flex-shrink:0"></span>
+            <span style="font-size:.75rem;color:var(--cosv);flex:1;text-transform:capitalize">{{ status }}</span>
+            <span style="font-size:.75rem;font-weight:700;color:{{ color }}">{{ cnt }}</span>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Active / recent steps -->
+  {% if active_steps %}
+  <div class="glass-card" style="border-radius:.75rem;overflow:hidden;margin-bottom:1.75rem">
+    <div style="padding:1.25rem 1.5rem;border-bottom:1px solid var(--glass-bdr)">
+      <h2 style="font-size:.9375rem;font-weight:700;color:var(--cos);margin:0;display:flex;align-items:center;gap:.5rem">
+        <span class="material-symbols-outlined" style="font-size:18px;color:#fbbf24">pending_actions</span>
+        Active / In-Flight Steps
+      </h2>
+    </div>
+    <div style="overflow-x:auto">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Doc ID</th>
+            <th>Step</th>
+            <th>Queue</th>
+            <th>Status</th>
+            <th>Attempt</th>
+            <th>Queued At</th>
+            <th>Error</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for s in active_steps %}
+          {% set sc = {'queued': 'badge-blue', 'claimed': 'badge-blue', 'processing': 'badge-amber', 'failed': 'badge-red', 'complete': 'badge-green', 'dead_letter': 'badge-red'}.get(s.status, '') %}
+          <tr>
+            <td>
+              <a href="/documents-ui/{{ s.document_id }}"
+                 style="color:var(--cp);font-weight:600;text-decoration:none;font-size:.8rem">
+                #{{ s.document_id }}
+              </a>
+            </td>
+            <td style="font-size:.78rem;color:var(--cos)">{{ s.step_name or '—' }}</td>
+            <td style="font-size:.75rem;color:var(--cosv)">{{ s.queue }}</td>
+            <td><span class="badge {{ sc }}" style="font-size:.65rem;text-transform:capitalize">{{ s.status }}</span></td>
+            <td style="font-size:.78rem;color:var(--cosv);text-align:center">{{ s.attempt }}/{{ s.max_attempts }}</td>
+            <td style="font-size:.72rem;color:var(--cosv)">{{ s.queued_at[:16] if s.queued_at else '—' }}</td>
+            <td style="font-size:.72rem;color:#f87171;max-width:200px">
+              {% if s.error_msg %}<span title="{{ s.error_msg }}">{{ s.error_msg[:60] }}{% if s.error_msg|length > 60 %}…{% endif %}</span>{% else %}—{% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Dead-letter jobs -->
+  <div class="glass-card" style="border-radius:.75rem;overflow:hidden">
+    <div style="padding:1.25rem 1.5rem;border-bottom:1px solid var(--glass-bdr);display:flex;align-items:center;justify-content:space-between">
+      <h2 style="font-size:.9375rem;font-weight:700;color:var(--cos);margin:0;display:flex;align-items:center;gap:.5rem">
+        <span class="material-symbols-outlined" style="font-size:18px;color:#f87171">cancel</span>
+        Dead-Letter Jobs
+      </h2>
+      {% if is_admin %}
+      <span style="font-size:.72rem;color:var(--cosv)">Use <code style="font-size:.7rem;background:rgba(255,255,255,.08);padding:1px 5px;border-radius:3px">POST /api/admin/jobs/dead-letter/{id}/redrive</code> to re-enqueue</span>
+      {% endif %}
+    </div>
+    {% if dead_letters %}
+    <div style="overflow-x:auto">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Queue</th>
+            <th>Function</th>
+            <th>Doc ID</th>
+            <th>Attempts</th>
+            <th>Failed At</th>
+            <th>Redriven</th>
+            <th>Error</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for dl in dead_letters %}
+          <tr>
+            <td style="font-weight:700;color:var(--cosv);font-size:.8rem">{{ dl.id }}</td>
+            <td><span class="badge badge-red" style="font-size:.65rem">{{ dl.queue }}</span></td>
+            <td style="font-size:.75rem;color:var(--cos)">{{ dl.fn_name }}</td>
+            <td>
+              {% if dl.document_id %}
+              <a href="/documents-ui/{{ dl.document_id }}"
+                 style="color:var(--cp);font-weight:600;text-decoration:none;font-size:.8rem">#{{ dl.document_id }}</a>
+              {% else %}—{% endif %}
+            </td>
+            <td style="font-size:.78rem;text-align:center;color:var(--cosv)">{{ dl.attempt_count }}</td>
+            <td style="font-size:.72rem;color:var(--cosv)">{{ dl.failed_at[:16] if dl.failed_at else '—' }}</td>
+            <td>
+              {% if dl.redriven %}
+              <span class="badge badge-green" style="font-size:.65rem">Redriven</span>
+              {% elif is_admin %}
+              <button
+                onclick="redriveJob({{ dl.id }}, this)"
+                class="btn btn-sm"
+                style="background:rgba(212,175,55,.12);color:var(--cp);border:1px solid rgba(212,175,55,.3);padding:.25rem .625rem;font-size:.72rem;min-height:unset">
+                Redrive
+              </button>
+              {% else %}
+              <span style="color:var(--col);font-size:.75rem">—</span>
+              {% endif %}
+            </td>
+            <td style="font-size:.7rem;color:#f87171;max-width:220px">
+              <span title="{{ dl.error_msg }}">{{ (dl.error_msg or '')[:60] }}{% if (dl.error_msg or '')|length > 60 %}…{% endif %}</span>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <div style="padding:3rem 2rem;text-align:center;color:var(--cosv)">
+      <span class="material-symbols-outlined" style="font-size:36px;display:block;margin-bottom:.5rem;color:#4ade80;opacity:.6">check_circle</span>
+      No dead-letter jobs.
+    </div>
+    {% endif %}
+  </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% if is_admin %}
+<script>
+async function redriveJob(id, btn) {
+  if (!confirm('Re-enqueue dead-letter job #' + id + '?')) return;
+  btn.disabled = true;
+  btn.textContent = '…';
+  try {
+    const r = await fetch('/api/admin/jobs/dead-letter/' + id + '/redrive', { method: 'POST' });
+    if (r.ok) {
+      btn.textContent = 'Done';
+      btn.style.color = '#4ade80';
+      showToast('Job #' + id + ' re-enqueued.', 'success', 3000);
+    } else {
+      const j = await r.json().catch(() => ({}));
+      showToast(j.detail || 'Redrive failed.', 'error', 5000);
+      btn.disabled = false;
+      btn.textContent = 'Redrive';
+    }
+  } catch (e) {
+    showToast('Network error: ' + e.message, 'error', 5000);
+    btn.disabled = false;
+    btn.textContent = 'Redrive';
+  }
+}
+</script>
+{% endif %}
+{% endblock %}

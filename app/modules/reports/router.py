@@ -4,6 +4,10 @@ Reports router — POST /api/reports/generate
 Generates executive, detailed, or compliance PDF reports for a document.
 Uses WeasyPrint to render HTML → PDF. Returns application/pdf binary.
 
+Also provides:
+    GET /api/reports/sandbox-quarterly/{broker_id}
+        Renders a Sandbox Quarterly Progress Report (Annexure 3).
+
 WeasyPrint must be installed: pip install weasyprint
 """
 from __future__ import annotations
@@ -11,8 +15,10 @@ from __future__ import annotations
 import logging
 from io import BytesIO
 
-from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.responses import StreamingResponse
+from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
+from fastapi.responses import HTMLResponse, StreamingResponse
+from fastapi.templating import Jinja2Templates
+from pathlib import Path
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
@@ -239,3 +245,104 @@ async def generate_report(
         media_type="application/pdf",
         headers={"Content-Disposition": f'attachment; filename="{filename}"'},
     )
+
+
+# ─── Sandbox Quarterly Report ─────────────────────────────────────────────────
+
+# Locate the templates directory relative to this file so the Jinja env is
+# independent of the working directory when the app starts.
+_TEMPLATES_DIR = Path(__file__).resolve().parent.parent.parent / "ui" / "templates"
+
+# Use Starlette's Jinja2Templates — automatically injects `request` into context
+_templates = Jinja2Templates(directory=str(_TEMPLATES_DIR))
+
+
+@router.get("/sandbox-quarterly/{broker_id}", response_model=None)
+async def get_sandbox_quarterly_report(
+    request: Request,
+    broker_id: int,
+    quarter: str = Query(default="Q2-2026", description="Quarter e.g. Q2-2026"),
+    format: str = Query(default="html", description="html or pdf"),
+    db: Session = Depends(get_db),
+):
+    """
+    Generate a Sandbox Quarterly Progress Report for a broker.
+
+    Query parameters:
+        quarter : str — quarter in Q2-2026 format (default Q2-2026)
+        format  : str — "html" returns rendered HTML; "pdf" returns PDF bytes
+
+    The report follows IPEC Regulatory Sandbox Guidelines (2025) Annexure 3
+    and is rendered from sandbox_quarterly_report.html using Jinja2.
+
+    Dissertation Methodology Note (Chapter 3):
+    WeasyPrint is used for PDF generation because it natively supports CSS
+    variables and the glassmorphism design tokens used across the InsureIntel
+    template system, producing print-quality output without additional tooling.
+
+    References:
+        IPEC (2025). Regulatory Sandbox Guidelines for the Insurance and
+        Pensions Industry. Insurance and Pensions Commission of Zimbabwe.
+        Effective Q4 2025. Retrieved from ipec.co.zw.
+    """
+    from app.modules.reports.sandbox_report_service import (  # noqa: PLC0415
+        generate_sandbox_quarterly_report_context,
+    )
+
+    # ── Build template context from DB aggregation ────────────────────────────
+    try:
+        context = generate_sandbox_quarterly_report_context(
+            broker_id=broker_id,
+            quarter=quarter,
+            db=db,
+        )
+    except Exception as exc:
+        logger.exception("Failed to build sandbox quarterly report context: %s", exc)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Report generation failed: {exc}",
+        )
+
+    # ── Render HTML from Jinja2 template ─────────────────────────────────────
+    # base.html uses `request.url.path` for nav active state — must be in context.
+    # Starlette >=0.29 requires request as first positional arg.
+    context["request"] = request
+
+    try:
+        html_content = _templates.get_template(
+            "reports/sandbox_quarterly_report.html"
+        ).render(**context)
+    except Exception as exc:
+        logger.exception("Jinja2 rendering failed: %s", exc)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Template rendering failed: {exc}",
+        )
+
+    # ── Return HTML or PDF ────────────────────────────────────────────────────
+    if format.lower() == "pdf":
+        # Convert rendered HTML → PDF using the same WeasyPrint pattern as /generate
+        try:
+            from weasyprint import HTML  # noqa: PLC0415
+            pdf_bytes = HTML(string=html_content).write_pdf()
+        except ImportError:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="WeasyPrint is not installed. Run: pip install weasyprint",
+            )
+        except Exception as exc:
+            logger.exception("PDF generation failed: %s", exc)
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=f"PDF generation failed: {exc}",
+            )
+
+        filename = f"sandbox_quarterly_{broker_id}_{quarter}.pdf"
+        return StreamingResponse(
+            content=BytesIO(pdf_bytes),
+            media_type="application/pdf",
+            headers={"Content-Disposition": f'attachment; filename="{filename}"'},
+        )
+
+    # Default: return rendered HTML
+    return HTMLResponse(content=html_content, status_code=200)

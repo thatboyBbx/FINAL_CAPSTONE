@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html prefix="og: http://ogp.me/ns#" class="no-js lt-ie9 lt-ie8 lt-ie7"  lang="en-gb"> <![endif]-->
+<!--[if IE 7]>         <html prefix="og: http://ogp.me/ns#" class="no-js lt-ie9 lt-ie8"  lang="en-gb"> <![endif]-->
+<!--[if IE 8]>         <html prefix="og: http://ogp.me/ns#" class="no-js lt-ie9"  lang="en-gb"> <![endif]-->
+<!--[if gt IE 8]><!--> <html prefix="og: http://ogp.me/ns#" class="no-js" lang="en-gb"> <!--<![endif]-->
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+          <base href="http://ipec.co.zw/index.php/media-centre/ipec-reports" />
+  <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  <meta name="author" content="Super User" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="generator" content="Joomla! - Open Source Content Management" />
+  <title>IPEC Reports</title>
+  <link href="/templates/shaper_awetive/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon" />
+  <link href="http://ipec.co.zw/index.php/component/search/?Itemid=283&amp;format=opensearch" rel="search" title="Search ipec.co.zw" type="application/opensearchdescription+xml" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.min.css" type="text/css" />
+  <link rel="stylesheet" href="/templates/shaper_awetive/css/k2.css?v=2.8.0" type="text/css" />
+  <link rel="stylesheet" href="/templates/shaper_awetive/css/bootstrap.min.css" type="text/css" />
+  <link rel="stylesheet" href="/templates/shaper_awetive/css/bootstrap-responsive.min.css" type="text/css" />
+  <link rel="stylesheet" href="/plugins/system/helix/css/font-awesome.css" type="text/css" />
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,400,700" type="text/css" />
+  <link rel="stylesheet" href="/templates/shaper_awetive/css/mobile-menu.css" type="text/css" />
+  <link rel="stylesheet" href="/templates/shaper_awetive/css/template.css" type="text/css" />
+  <link rel="stylesheet" href="/templates/shaper_awetive/css/presets/preset3.css" type="text/css" />
+  <link rel="stylesheet" href="/modules/mod_sp_simple_gallery/scripts/slimbox.css" type="text/css" />
+  <style type="text/css">
+.container{max-width:1170px}body, p{font-family:'Lato';}h1, h2, h3, h4{font-family:'Lato';}
+#sp-main-body-wrapper{background: rgba(246, 180, 74, 0) !important; }
+
+#sp-main-body-wrapper{background: rgba(246, 180, 74, 0) !important; }
+img.sp_simple_gallery {margin:0 20px 20px 0;
+border-radius:2px;}
+  </style>
+  <script src="/media/jui/js/jquery.min.js" type="text/javascript"></script>
+  <script src="/media/jui/js/jquery-noconflict.js" type="text/javascript"></script>
+  <script src="/media/jui/js/jquery-migrate.min.js" type="text/javascript"></script>
+  <script src="/media/k2/assets/js/k2.frontend.js?v=2.8.0&amp;sitepath=/" type="text/javascript"></script>
+  <script src="/plugins/system/helix/js/jquery-noconflict.js" type="text/javascript"></script>
+  <script src="/media/jui/js/bootstrap.min.js" type="text/javascript"></script>
+  <script src="/plugins/system/helix/js/modernizr-2.6.2.min.js" type="text/javascript"></script>
+  <script src="/plugins/system/helix/js/helix.core.js" type="text/javascript"></script>
+  <script src="/plugins/system/helix/js/menu.js" type="text/javascript"></script>
+  <script src="/templates/shaper_awetive/js/jquery.inview.min.js" type="text/javascript"></script>
+  <script src="/templates/shaper_awetive/js/main.js" type="text/javascript"></script>
+  <script src="/modules/mod_sp_simple_gallery/scripts/slimbox_jquery.js" type="text/javascript"></script>
+  <script type="text/javascript">
+spnoConflict(function($){
+
+					function mainmenu() {
+						$('.sp-menu').spmenu({
+							startLevel: 0,
+							direction: 'ltr',
+							initOffset: {
+								x: 0,
+								y: 19
+							},
+							subOffset: {
+								x: 0,
+								y: 0
+							},
+							center: 0
+						});
+			}
+
+			mainmenu();
+
+			$(window).on('resize',function(){
+				mainmenu();
+			});
+
+
+			});
+  </script>
+
+            <script type="text/javascript" src="//maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=true"></script>
+
+</head>
+    <body  class="article subpage  ltr preset3 menu-ipec-reports responsive bg hfeed clearfix">
+		<div class="body-innerwrapper">
+        <!--[if lt IE 8]>
+        <div class="chromeframe alert alert-danger" style="text-align:center">You are using an <strong>outdated</strong> browser. Please <a target="_blank" href="http://browsehappy.com/">upgrade your browser</a> or <a target="_blank" href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</div>
+        <![endif]-->
+        <header id="sp-header-wrapper" 
+                class=" "><div class="container"><div class="row-fluid" id="header">
+<div id="sp-logo" class="span4"><div class="logo-wrapper"><a href="/"><img alt="" class="image-logo" src="/images/logo.gif" /></a></div></div>
+
+<div id="sp-search" class="span3 offset3"><div class="module ">	
+	<div class="mod-wrapper clearfix">		
+				<div class="mod-content clearfix">	
+			<div class="mod-inner clearfix">
+				
+<div class="search">
+    <form action="/index.php/media-centre/ipec-reports" method="post">
+		<input name="searchword" class="input-block-level" id="mod-search-searchword" type="text" placeholder="Search ..." />
+		<input type="hidden" name="task" value="search" />
+    	<input type="hidden" name="option" value="com_search" />
+    	<input type="hidden" name="Itemid" value="0" />
+    	<i class="icon-search"></i>
+    </form>
+</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="gap"></div>
+</div>
+
+<div id="sp-top-info" class="span2"><ul class="social-icons"><li><a target="_blank" href="https://www.facebook.com/Insurance-and-Pensions-Commission-1478511928853617/?pnref=story"><i class="icon-facebook"></i></a></li><li><a target="_blank" href="https://twitter.com/IPECZW"><i class="icon-twitter"></i></a></li></ul></div>
+</div></div></header><section id="sp-menu-wrapper" 
+                class=" "><div class="container"><div class="row-fluid" id="menu">
+<div id="sp-menu" class="span12">	
+
+
+			<div id="sp-main-menu" class="visible-desktop">
+				<ul class="sp-menu level-0"><li class="menu-item first"><a href="http://ipec.co.zw/" class="menu-item first" ><span class="menu"><span class="menu-title">Home</span></span></a></li><li class="menu-item parent "><a href="#" class="menu-item parent " ><span class="menu"><span class="menu-title">About us</span></span></a><div class="sp-submenu"><div class="sp-submenu-wrap"><div class="sp-submenu-inner clearfix" style="width: 200px;"><div class="megacol col1 first" style="width: 200px;"><ul class="sp-menu level-1"><li class="menu-item first"><a href="/index.php/pages/vision-mission-core-values" class="menu-item first" ><span class="menu"><span class="menu-title">Vision, Mission &amp; Values</span></span></a></li><li class="menu-item"><a href="/index.php/pages/ipec-act-2" class="menu-item" ><span class="menu"><span class="menu-title">Insurance &amp; Pensions Commision Act</span></span></a></li><li class="menu-item last"><a href="/index.php/pages/core-functions" class="menu-item last" ><span class="menu"><span class="menu-title">Core Functions</span></span></a></li></ul></div></div></div></div></li><li class="menu-item parent "><a href="#" class="menu-item parent " ><span class="menu"><span class="menu-title">Insurance</span></span></a><div class="sp-submenu"><div class="sp-submenu-wrap"><div class="sp-submenu-inner clearfix" style="width: 200px;"><div class="megacol col1 first" style="width: 200px;"><ul class="sp-menu level-1"><li class="menu-item first parent "><a href="/index.php/insurance/insurance-act" class="menu-item first parent " ><span class="menu"><span class="menu-title">Insurance Act</span></span></a><div class="sp-submenu"><div class="sp-submenu-wrap"><div class="sp-submenu-inner clearfix" style="width: 200px;"><div class="megacol col1 first" style="width: 200px;"><ul class="sp-menu level-2"><li class="menu-item first"><a href="/index.php/insurance/insurance-act/acts-regulations" class="menu-item first" ><span class="menu"><span class="menu-title">Acts &amp; Regulations</span></span></a></li><li class="menu-item last"><a href="/index.php/insurance/insurance-act/circulars" class="menu-item last" ><span class="menu"><span class="menu-title">Circulars</span></span></a></li></ul></div></div></div></div></li><li class="menu-item"><a href="/index.php/insurance/licensing-requirements" class="menu-item" ><span class="menu"><span class="menu-title">Licensing Requirements</span></span></a></li><li class="menu-item"><a href="https://hana3.ipec.co.zw:44304/sap/bc/bsp/sap/zportal_apps/logon.htm" class="menu-item" ><span class="menu"><span class="menu-title">Online Registration</span></span></a></li><li class="menu-item"><a href="/index.php/insurance/download-application-form" class="menu-item" ><span class="menu"><span class="menu-title">Download Application Form</span></span></a></li><li class="menu-item last"><a href="/index.php/insurance/registered-entities" class="menu-item last" ><span class="menu"><span class="menu-title">Registered Entities</span></span></a></li></ul></div></div></div></div></li><li class="menu-item parent "><a href="#" class="menu-item parent " ><span class="menu"><span class="menu-title">Pensions</span></span></a><div class="sp-submenu"><div class="sp-submenu-wrap"><div class="sp-submenu-inner clearfix" style="width: 200px;"><div class="megacol col1 first" style="width: 200px;"><ul class="sp-menu level-1"><li class="menu-item first parent "><a href="/index.php/pensions/pensions-provident-funds-act" class="menu-item first parent " ><span class="menu"><span class="menu-title">Pensions &amp; Provident Funds Act</span></span></a><div class="sp-submenu"><div class="sp-submenu-wrap"><div class="sp-submenu-inner clearfix" style="width: 200px;"><div class="megacol col1 first" style="width: 200px;"><ul class="sp-menu level-2"><li class="menu-item first"><a href="/index.php/pensions/pensions-provident-funds-act/acts-regulations" class="menu-item first" ><span class="menu"><span class="menu-title">Acts &amp; Regulations</span></span></a></li><li class="menu-item last"><a href="/index.php/pensions/pensions-provident-funds-act/circulars" class="menu-item last" ><span class="menu"><span class="menu-title">Circulars</span></span></a></li></ul></div></div></div></div></li><li class="menu-item"><a href="/index.php/pensions/licensing-requirements" class="menu-item" ><span class="menu"><span class="menu-title">Licensing Requirements</span></span></a></li><li class="menu-item"><a href="https://hana3.ipec.co.zw:44304/sap/bc/bsp/sap/zportal_apps/logon.htm" class="menu-item" ><span class="menu"><span class="menu-title">Online Registration</span></span></a></li><li class="menu-item"><a href="/index.php/pensions/download-application-form" class="menu-item" ><span class="menu"><span class="menu-title">Download Application Form</span></span></a></li><li class="menu-item last"><a href="#" class="menu-item last" ><span class="menu"><span class="menu-title">Registered Entities</span></span></a></li></ul></div></div></div></div></li><li class="menu-item active parent "><a href="#" class="menu-item active parent " ><span class="menu"><span class="menu-title">Media Centre</span></span></a><div class="sp-submenu"><div class="sp-submenu-wrap"><div class="sp-submenu-inner clearfix" style="width: 400px;"><div class="megacol col1 first" style="width: 200px;"><ul class="sp-menu level-1"><li class="menu-item first"><a href="#" class="menu-item first" ><span class="menu"><span class="menu-title">News &amp; Events</span></span></a></li><li class="menu-item"><a href="#" class="menu-item" ><span class="menu"><span class="menu-title">Publication</span></span></a></li><li class="menu-item active"><a href="/index.php/media-centre/ipec-reports" class="menu-item active" ><span class="menu"><span class="menu-title">IPEC Reports</span></span></a></li></ul></div><div class="megacol col2 last" style="width: 200px;"><ul class="sp-menu level-1"><li class="menu-item first"><a href="/index.php/media-centre/career" class="menu-item first" ><span class="menu"><span class="menu-title">Vacancies</span></span></a></li><li class="menu-item"><a href="/index.php/media-centre/tender" class="menu-item" ><span class="menu"><span class="menu-title">Tenders</span></span></a></li></ul></div></div></div></div></li><li class="menu-item parent "><a href="http://online.ipec.co.zw:443/sap/bc/bsp/sap/zportal_apps/logon.htm" class="menu-item parent " ><span class="menu"><span class="menu-title">Online Services</span></span></a><div class="sp-submenu"><div class="sp-submenu-wrap"><div class="sp-submenu-inner clearfix" style="width: 200px;"><div class="megacol col1 first" style="width: 200px;"><ul class="sp-menu level-1"><li class="menu-item first"><a href="https://hana3.ipec.co.zw:44304/sap(bD1lbiZjPTQwMA==)/bc/bsp/sap/zipc_zcom_app/page01.htm" class="menu-item first" ><span class="menu"><span class="menu-title">Consumer Complaints</span></span></a></li><li class="menu-item"><a href="http://online.ipec.co.zw:443/sap/bc/bsp/sap/zportal_apps/logon.htm" class="menu-item" ><span class="menu"><span class="menu-title">Online Application &amp; Returns submission</span></span></a></li><li class="menu-item last"><a href="https://hana3.ipec.co.zw:44304/sap/bc/bsp/sap/crm_ui_start/default.htm?sap-client=400&amp;sap-sessioncmd=open" class="menu-item last" ><span class="menu"><span class="menu-title">IPEC Staff Login</span></span></a></li></ul></div></div></div></div></li><li class="menu-item last parent "><a href="/index.php/contact-us" class="menu-item last parent " ><span class="menu"><span class="menu-title">Contact Us</span></span></a><div class="sp-submenu"><div class="sp-submenu-wrap"><div class="sp-submenu-inner clearfix" style="width: 200px;"><div class="megacol col1 first" style="width: 200px;"><ul class="sp-menu level-1"><li class="menu-item first"><a href="/index.php/contact-us/contact" class="menu-item first" ><span class="menu"><span class="menu-title">Contact</span></span></a></li><li class="menu-item"><a href="/index.php/contact-us/faq" class="menu-item" ><span class="menu"><span class="menu-title">Faq</span></span></a></li><li class="menu-item"><a href="/index.php/contact-us/login" class="menu-item" ><span class="menu"><span class="menu-title">Login</span></span></a></li><li class="menu-item last"><a href="https://docs.google.com/forms/d/e/1FAIpQLSeDR053lGCTIMnHIa8j7So-2WddZKbWpTWzrT-7hGxc7kGawg/viewform" class="menu-item last" ><span class="menu"><span class="menu-title">IPEC Online Survey</span></span></a></li></ul></div></div></div></div></li></ul>        
+			</div>  				
+			</div>
+</div></div></section><section id="sp-subheader-wrapper" 
+                class=" "><div class="container"><div class="row-fluid" id="subheader">
+<div id="sp-breadcrumb" class="span12"><div class="module ">	
+	<div class="mod-wrapper clearfix">		
+				<div class="mod-content clearfix">	
+			<div class="mod-inner clearfix">
+				
+<ul class="breadcrumb ">
+<li class="active"><span class="divider"><i class="icon-map-marker hasTooltip" title="You are here: "></i></span></li><li><a href="/index.php" class="pathway">Home</a><span class="divider">/</span></li><li><a href="#" class="pathway">Media Centre</a></li><li><span class="divider">/</span><span>IPEC Reports</span></li></ul>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="gap"></div>
+</div>
+</div></div></section><section id="sp-main-body-wrapper" 
+                class=" "><div class="container"><div class="row-fluid" id="main-body">
+<div id="sp-component-area" class="span12"><section id="sp-component-wrapper"><div id="sp-component"><div id="system-message-container">
+	</div>
+
+<article class="item-page post-3 post hentry status-publish category-short-code ">
+ 
+	 
+	 
+			
+	
+		
+	<section class="entry-content"> 
+																					<p><div class="row-fluid " ><div class=" span8"></p>
+<p><div class="tab"><div class="tabbale"><ul class="nav nav-tabs" id="tab2"><li class="active"><a href="#tab2-life--long-term-" data-toggle="tab">LIFE (Long Term)</a></li><li class=""><a href="#tab2-non-life--short-term-" data-toggle="tab">NON-LIFE (Short Term)</a></li><li class=""><a href="#tab2-funeral" data-toggle="tab">FUNERAL</a></li><li class=""><a href="#tab2-pensions" data-toggle="tab">PENSIONS</a></li></ul><div class="tab-content"><div class="tab-pane fade active in" id="tab2-life--long-term-"></p>
+<p><div class="accordion" id="sc-accordion"><div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle " data-toggle="collapse" data-parent="#sc-accordion" href="#sc-accordion-accordion-0"><span class="number">1</span>2017<i class="icon-plus pull-right"></i></a></div><div id="sc-accordion-accordion-0" class="accordion-body collapse in"><div class="accordion-inner"></p>
+<table style="height: 47px; width: 609px; border-color: #0a87f5;" border="1">
+<tbody>
+<tr style="height: 15px;">
+<td style="width: 18px; border-color: #0a87f5; text-align: center; height: 15px;"> </td>
+<td style="width: 575px; border-color: #0a87f5; height: 15px;">First Quarter Report</td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 18px; border-color: #0a87f5; height: 15px; text-align: right;"><img src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 575px; border-color: #0a87f5; height: 15px;"><a href="/images/Docs/IPEC Reports/Life/2017/1st Quarter 2017 Life report.pdf" download="First quarter 2017 Life report.pdf">Life Report-31 March 2017</a></td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 18px; border-color: #0a87f5; height: 15px; text-align: right;"> </td>
+<td style="width: 575px; border-color: #0a87f5; height: 15px;">Second Quarter Report</td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 18px; border-color: #0a87f5; height: 15px; text-align: right;"><img src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 575px; border-color: #0a87f5; height: 15px;"><a href="/images/Docs/IPEC Reports/Life/2017/Second Quarter 2017 Life Report.pdf" download="Second Quarter 2017 Life report.pdf">Life Report-30 June 2017</a></td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 18px; border-color: #0a87f5; height: 15px; text-align: right;"> </td>
+<td style="width: 575px; border-color: #0a87f5; height: 15px;">Third Quarter Report</td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 18px; border-color: #0a87f5; height: 15px; text-align: right;"><img src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 575px; border-color: #0a87f5; height: 15px;"><a href="/images/Docs/IPEC Reports/Life/2017/Life Report for 2017 -  Third Quarter.pdf" download="Third Quarter 2017 Life report.pdf">Life Report-30 September 2017</a> </td>
+</tr>
+</tbody>
+</table>
+<p></div></div></div><div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#sc-accordion" href="#sc-accordion-accordion-1"><span class="number">2</span>2016<i class="icon-plus pull-right"></i></a></div><div id="sc-accordion-accordion-1" class="accordion-body collapse"><div class="accordion-inner"></p>
+<table style="height: 144px; width: 608px; border-color: #0a87f5;" border="1">
+<tbody>
+<tr style="height: 15px;">
+<td style="width: 17.9333px; border-color: #0a87f5; text-align: center; height: 15px;"> </td>
+<td style="width: 574.067px; border-color: #0a87f5; height: 15px;">First Quarter Report</td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 17.9333px; border-color: #0a87f5; height: 15px; text-align: right;"><img src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 574.067px; border-color: #0a87f5; height: 15px;"><a href="/images/Docs/IPEC Reports/Life/2016/Life Report-31 March 2016.pdf" download="First quarter 2016 life report.pdf">Life Report-31 March 2016</a></td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 17.9333px; border-color: #0a87f5; height: 15px; text-align: right;"> </td>
+<td style="width: 574.067px; border-color: #0a87f5; height: 15px;">Second Quarter Report</td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 17.9333px; border-color: #0a87f5; height: 15px; text-align: right;"><img src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 574.067px; border-color: #0a87f5; height: 15px;"><a href="/images/Docs/IPEC Reports/Life/2016/Life Report- 30 June 2016.pdf" download="Second quarter 2016 life report.pdf">Life Report- 30 June 2016</a></td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 17.9333px; border-color: #0a87f5; height: 15px; text-align: right;"> </td>
+<td style="width: 574.067px; border-color: #0a87f5; height: 15px;">Third Quarter Report</td>
+</tr>
+<tr style="height: 15.3833px;">
+<td style="width: 17.9333px; border-color: #0a87f5; height: 15.3833px; text-align: right;"><img src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 574.067px; border-color: #0a87f5; height: 15.3833px;"><a href="/images/Docs/IPEC Reports/Life/2016/Life Report - 30 September 2016.pdf" download="Third quarter 2016 life report.pdf">Life Report - 30 September 2016</a></td>
+</tr>
+<tr style="height: 15.3833px;">
+<td style="width: 17.9333px; border-color: #0a87f5; height: 15.3833px; text-align: right;"> </td>
+<td style="width: 574.067px; border-color: #0a87f5; height: 15.3833px;">Fourth Quarter Report</td>
+</tr>
+<tr style="height: 15.3833px;">
+<td style="width: 17.9333px; border-color: #0a87f5; height: 15.3833px; text-align: right;"><img src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 574.067px; border-color: #0a87f5; height: 15.3833px;"><a href="/images/Docs/IPEC Reports/Life/2016/Life Report - For the Year Ended 31 December 2016.pdf" download="Fourth quarter 2016 life report.pdf">Life Report - 31 December 2016</a> </td>
+</tr>
+</tbody>
+</table>
+<p></div></div></div><div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#sc-accordion" href="#sc-accordion-accordion-2"><span class="number">3</span>2015<i class="icon-plus pull-right"></i></a></div><div id="sc-accordion-accordion-2" class="accordion-body collapse"><div class="accordion-inner"></p>
+<table style="height: 177px; width: 609px; border-color: #0a87f5;" border="1">
+<tbody>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"> </td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;">First Quarter Report</td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;"><a href="/images/Docs/IPEC Reports/Life/2015/Life report-31 march 2015.pdf" download="First quarter 2015 life report.pdf">Life report-31 march 2015</a></td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"> </td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;">Second Quarter Report</td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;"><a href="/images/Docs/IPEC Reports/Life/2015/Life Report-30 June 2015.pdf" download="Second quarter 2015 life report.pdf">Life Report-30 June 2015</a></td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"> </td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;">Third Quarter Report</td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;"><a href="/images/Docs/IPEC Reports/Life/2015/life report-30 september 2015.pdf" download="Third quarter 2015 life report.pdf">life report-30 september 2015</a></td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"> </td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;">Fourth Quarter Report</td>
+</tr>
+<tr style="height: 15.7167px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15.7167px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15.7167px;"><a href="/images/Docs/IPEC Reports/Life/2015/Life report-31 december 2015.pdf" download="Third quarter 2015 life report.pdf">Life report-31 december 2015</a></td>
+</tr>
+</tbody>
+</table>
+<p></div></div></div><div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#sc-accordion" href="#sc-accordion-accordion-3"><span class="number">4</span>2014<i class="icon-plus pull-right"></i></a></div><div id="sc-accordion-accordion-3" class="accordion-body collapse"><div class="accordion-inner"></p>
+<table style="height: 177px; width: 609px; border-color: #0a87f5;" border="1">
+<tbody>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"> </td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;">First Quarter Report</td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;"><a href="/images/Docs/IPEC Reports/Life/2014/Life Report- 31 march 2014.pdf" download="Life Report- 31 march 2014.pdf">Life Report- 31 march 2014</a></td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"> </td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;">Second Quarter Report</td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;"><a href="/images/Docs/IPEC Reports/Life/2014/Life Report-30 june 2014.pdf" download="Life Report-30 june 2014.pdf">Life Report-30 june 2014</a></td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"> </td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;">Third Quarter Report</td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;"><a href="/images/Docs/IPEC Reports/Life/2014/Life Report-30 September 2014.pdf" download="Life Report-30 September 2014.pdf">Life Report-30 September 2014</a></td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"> </td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;">Fourth Quarter Report</td>
+</tr>
+<tr style="height: 15.7167px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15.7167px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15.7167px;"><a href="/images/Docs/IPEC Reports/Life/2014/Life Report-31 December 2014.pdf" download="Life Report-31 December 2014.pdf">Life Report-31 December 2014</a></td>
+</tr>
+</tbody>
+</table>
+<p></div></div></div><div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#sc-accordion" href="#sc-accordion-accordion-4"><span class="number">5</span>2013<i class="icon-plus pull-right"></i></a></div><div id="sc-accordion-accordion-4" class="accordion-body collapse"><div class="accordion-inner"></p>
+<table style="height: 177px; width: 609px; border-color: #0a87f5;" border="1">
+<tbody>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"> </td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;">First Quarter Report</td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;"><a href="/images/Docs/IPEC Reports/Life/2013/Life Report- 31 March 2013.pdf" download="Life Report- 31 March 2013.pdf">Life Report- 31 March 2013</a></td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"> </td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;">Second Quarter Report</td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;"><a href="/images/Docs/IPEC Reports/Life/2013/Life Report- 30 June 2013.pdf" download="Life Report- 30 June 2013.pdf">Life Report- 30 June 2013</a></td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"> </td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;">Third Quarter Report</td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;"><a href="/images/Docs/IPEC Reports/Life/2013/Life Report- 30 September 2013.pdf" download="Life Report- 30 September 2013.pdf">Life Report- 30 September 2013</a></td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"> </td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;">Fourth Quarter Report</td>
+</tr>
+<tr style="height: 15.7167px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15.7167px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15.7167px;"><a href="/images/Docs/IPEC Reports/Life/2013/Life Report- 31 December 2013.pdf" download="Life Report- 31 December 2013.pdf">Life Report- 31 December 2013</a></td>
+</tr>
+</tbody>
+</table>
+<p></div></div></div><div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#sc-accordion" href="#sc-accordion-accordion-5"><span class="number">6</span>2012<i class="icon-plus pull-right"></i></a></div><div id="sc-accordion-accordion-5" class="accordion-body collapse"><div class="accordion-inner"></p>
+<table style="height: 177px; width: 609px; border-color: #0a87f5;" border="1">
+<tbody>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"> </td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;">First Quarter Report</td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;"><a href="/images/Docs/IPEC Reports/Life/2012/Life Report- 31 march 2012.pdf" download="Life Report- 31 march 2012.pdf">Life Report- 31 march 2012</a></td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"> </td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;">Second Quarter Report</td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;"><a href="/images/Docs/IPEC Reports/Life/2012/Life Report- 30 june 2012.pdf" download="Life Report- 30 june 2012.pdf">Life Report- 30 june 2012</a></td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"> </td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;">Third Quarter Report</td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;"><a href="/images/Docs/IPEC Reports/Life/2012/Life Report- 30 september 2012.pdf" download="Life Report- 30 september 2012.pdf">Life Report- 30 september 2012</a></td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"> </td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;">Fourth Quarter Report</td>
+</tr>
+<tr style="height: 15.7167px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15.7167px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15.7167px;"><a href="/images/Docs/IPEC Reports/Life/2012/Life report-31 December 2012.pdf" download="Life report-31 December 2012.pdf">Life report-31 December 2012</a></td>
+</tr>
+</tbody>
+</table>
+<p></div></div></div><div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#sc-accordion" href="#sc-accordion-accordion-6"><span class="number">7</span>2011<i class="icon-plus pull-right"></i></a></div><div id="sc-accordion-accordion-6" class="accordion-body collapse"><div class="accordion-inner"></p>
+<table style="height: 177px; width: 609px; border-color: #0a87f5;" border="1">
+<tbody>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"> </td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;">First Quarter Report</td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;"><a href="#">Life Report- 31 march 2012</a></td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"> </td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;">Second Quarter Report</td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;"><a href="/images/Docs/IPEC Reports/Life/2011/Life Report- 30 june 2011.pdf" download="Life Report- 30 june 2011.pdf">Life Report- 30 june 2011</a></td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"> </td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;">Third Quarter Report</td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;"><a href="/images/Docs/IPEC Reports/Life/2011/Life Report- 30 september 2011.pdf" download="Life Report- 30 september 2011.pdf">Life Report- 30 september 2011</a></td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"> </td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;">Fourth Quarter Report</td>
+</tr>
+<tr style="height: 15.7167px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15.7167px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15.7167px;"><a href="/images/Docs/IPEC Reports/Life/2011/Life Report - 31 December 2011.pdf" download="Life Report - 31 December 2011.pdf">Life Report - 31 December 2011</a></td>
+</tr>
+</tbody>
+</table>
+<p></div></div></div><div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#sc-accordion" href="#sc-accordion-accordion-7"><span class="number">8</span>2010<i class="icon-plus pull-right"></i></a></div><div id="sc-accordion-accordion-7" class="accordion-body collapse"><div class="accordion-inner"></p>
+<table style="height: 9px; width: 609px; border-color: #0a87f5;" border="1">
+<tbody>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"> </td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;">Fourth Quarter Report</td>
+</tr>
+<tr style="height: 15.7167px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15.7167px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15.7167px;"><a href="/images/Docs/IPEC Reports/Life/2010/Life Report-31 December 2010.pdf" download="Life Report-31 December 2010.pdf">Life Report-31 December 2010</a></td>
+</tr>
+</tbody>
+</table>
+<p></div></div></div><div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#sc-accordion" href="#sc-accordion-accordion-8"><span class="number">9</span>2009<i class="icon-plus pull-right"></i></a></div><div id="sc-accordion-accordion-8" class="accordion-body collapse"><div class="accordion-inner"></p>
+<table style="height: 11px; width: 611px; border-color: #0a87f5;" border="1">
+<tbody>
+<tr style="height: 15px;">
+<td style="width: 19.8333px; border-color: #0a87f5; text-align: center; height: 15px;"> </td>
+<td style="width: 575.167px; border-color: #0a87f5; height: 15px;">Fourth Quarter Report</td>
+</tr>
+<tr style="height: 15.7167px;">
+<td style="width: 19.8333px; border-color: #0a87f5; text-align: center; height: 15.7167px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 575.167px; border-color: #0a87f5; height: 15.7167px;"><a href="/images/Docs/IPEC Reports/Life/2009/Life Report-31 December 2009.pdf" download="Life Report-31 December 2009.pdf">Life Report-31 December 2009</a></td>
+</tr>
+</tbody>
+</table>
+<p></div></div></div></div><script type='text/javascript'>
+			
+				jQuery('#sc-accordion>div:first-child .pull-right').removeClass('icon-plus').addClass('icon-minus');
+
+				var item = jQuery('#sc-accordion .accordion-heading');
+
+				jQuery(item).on('click',function(){
+					jQuery('#sc-accordion .accordion-heading .pull-right').removeClass('icon-minus').addClass('icon-plus');
+					jQuery(this).find('.pull-right').removeClass('icon-plus').addClass('icon-minus');
+
+				});
+			
+		</script></p>
+<p></div><div class="tab-pane fade" id="tab2-non-life--short-term-"></p>
+<p><div class="accordion" id="accordion1"><div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle " data-toggle="collapse" data-parent="#accordion1" href="#accordion1-accordion-0"><span class="number">1</span>2017<i class="icon-plus pull-right"></i></a></div><div id="accordion1-accordion-0" class="accordion-body collapse in"><div class="accordion-inner"></p>
+<table style="height: 47px; width: 609px; border-color: #0a87f5;" border="1">
+<tbody>
+<tr style="height: 15px;">
+<td style="width: 18px; border-color: #0a87f5; text-align: center; height: 15px;"> </td>
+<td style="width: 575px; border-color: #0a87f5; height: 15px;">First Quarter Report</td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 18px; border-color: #0a87f5; height: 15px; text-align: right;"><img src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 575px; border-color: #0a87f5; height: 15px;"><a href="/images/Docs/IPEC Reports/Non Life/2017/2017 First Quarter Non-Life Report.pdf" download="2017 First Quarter Non-Life Report.pdf">Non-Life Report-31 March 2017</a></td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 18px; border-color: #0a87f5; height: 15px; text-align: right;"> </td>
+<td style="width: 575px; border-color: #0a87f5; height: 15px;">Second Quarter Report</td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 18px; border-color: #0a87f5; height: 15px; text-align: right;"><img src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 575px; border-color: #0a87f5; height: 15px;"><a href="/images/Docs/IPEC Reports/Non Life/2017/2017 Second Quarter Non-life Report.pdf" download="2017 Second Quarter Non-life Report.pdf">Non-Life Report-30 June 2017</a></td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 18px; border-color: #0a87f5; height: 15px; text-align: right;"> </td>
+<td style="width: 575px; border-color: #0a87f5; height: 15px;">Third Quarter Report</td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 18px; border-color: #0a87f5; height: 15px; text-align: right;"><img src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 575px; border-color: #0a87f5; height: 15px;"> <a href="/images/Docs/IPEC Reports/Non Life/2017/2017 Third Quarter Non-life Report.pdf" download="2017 Third Quarter Non-Life Report.pdf">Non-Life Report-30 September 2017</a></td>
+</tr>
+</tbody>
+</table>
+<p></div></div></div><div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion1" href="#accordion1-accordion-1"><span class="number">2</span>2016<i class="icon-plus pull-right"></i></a></div><div id="accordion1-accordion-1" class="accordion-body collapse"><div class="accordion-inner"></p>
+<table style="height: 144px; width: 608px; border-color: #0a87f5;" border="1">
+<tbody>
+<tr style="height: 15px;">
+<td style="width: 17.9333px; border-color: #0a87f5; text-align: center; height: 15px;"> </td>
+<td style="width: 574.067px; border-color: #0a87f5; height: 15px;">First Quarter Report</td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 17.9333px; border-color: #0a87f5; height: 15px; text-align: right;"><img src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 574.067px; border-color: #0a87f5; height: 15px;"><a href="/images/Docs/IPEC Reports/Non Life/2016/Non-Life Report-31 March 2016.pdf" download="First quarter 2016 Non-Life report.pdf">Non-Life Report-31 March 2016</a></td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 17.9333px; border-color: #0a87f5; height: 15px; text-align: right;"> </td>
+<td style="width: 574.067px; border-color: #0a87f5; height: 15px;">Second Quarter Report</td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 17.9333px; border-color: #0a87f5; height: 15px; text-align: right;"><img src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 574.067px; border-color: #0a87f5; height: 15px;"><a href="/images/Docs/IPEC Reports/Non Life/2016/Non-life Report-30 June 2016.pdf" download="Second quarter 2016 Non-Life report.pdf">Non-life Report-30 June 2016</a></td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 17.9333px; border-color: #0a87f5; height: 15px; text-align: right;"> </td>
+<td style="width: 574.067px; border-color: #0a87f5; height: 15px;">Third Quarter Report</td>
+</tr>
+<tr style="height: 15.3833px;">
+<td style="width: 17.9333px; border-color: #0a87f5; height: 15.3833px; text-align: right;"><img src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 574.067px; border-color: #0a87f5; height: 15.3833px;"><a href="/images/Docs/IPEC Reports/Non Life/2016/2016 Third Quarter Non-life Report.pdf" download="2016 Third Quarter Non-life Report.pdf">2016 Third Quarter Non-life Report</a></td>
+</tr>
+<tr style="height: 15.3833px;">
+<td style="width: 17.9333px; border-color: #0a87f5; height: 15.3833px; text-align: right;"> </td>
+<td style="width: 574.067px; border-color: #0a87f5; height: 15.3833px;">Fourth Quarter Report</td>
+</tr>
+<tr style="height: 15.3833px;">
+<td style="width: 17.9333px; border-color: #0a87f5; height: 15.3833px; text-align: right;"><img src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 574.067px; border-color: #0a87f5; height: 15.3833px;"><a href="/images/Docs/IPEC Reports/Non Life/2016/2016 Fourth Quarter Non-life Report.pdf" download="2016 Fourth Quarter Non-life Report.pdf">2016 Fourth Quarter Non-life Report</a></td>
+</tr>
+</tbody>
+</table>
+<p></div></div></div><div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion1" href="#accordion1-accordion-2"><span class="number">3</span>2015<i class="icon-plus pull-right"></i></a></div><div id="accordion1-accordion-2" class="accordion-body collapse"><div class="accordion-inner"></p>
+<table style="height: 177px; width: 609px; border-color: #0a87f5;" border="1">
+<tbody>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"> </td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;">First Quarter Report</td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;"><a href="/images/Docs/IPEC Reports/Non Life/2015/2015 First Quarter Non-life Report.pdf" download="2015 First Quarter Non-life Report.pdf">2015 First Quarter Non-life Report</a></td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"> </td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;">Second Quarter Report</td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;"><a href="/images/Docs/IPEC Reports/Non Life/2015/2015 Second Quarter Non-life Report.pdf" download="2015 Second Quarter Non-life Report.pdf">2015 Second Quarter Non-life Report</a></td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"> </td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;">Third Quarter Report</td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;"><a href="/images/Docs/IPEC Reports/Non Life/2015/2015 Third Quarter Non-life Report.pdf" download="2015 Third Quarter Non-life Report.pdf">2015 Third Quarter Non-life Report</a></td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"> </td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;">Fourth Quarter Report</td>
+</tr>
+<tr style="height: 15.7167px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15.7167px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15.7167px;"><a href="/images/Docs/IPEC Reports/Non Life/2015/2015 Fourth Quarter Non-life Report.pdf" download="2015 Fourth Quarter Non-life Report.pdf">2015 Fourth Quarter Non-life Report</a></td>
+</tr>
+</tbody>
+</table>
+<p></div></div></div><div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion1" href="#accordion1-accordion-3"><span class="number">4</span>2014<i class="icon-plus pull-right"></i></a></div><div id="accordion1-accordion-3" class="accordion-body collapse"><div class="accordion-inner"></p>
+<table style="height: 177px; width: 609px; border-color: #0a87f5;" border="1">
+<tbody>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"> </td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;">First Quarter Report</td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;"><a href="/images/Docs/IPEC Reports/Non Life/2014/2014 First Quarter Non-life Report.pdf" download="2014 First Quarter Non-life Report.pdf">2014 First Quarter Non-life Report</a></td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"> </td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;">Second Quarter Report</td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;"><a href="/images/Docs/IPEC Reports/Non Life/2014/2014 Second Quarter Non-life Report.pdf" download="2014 Second Quarter Non-life Report.pdf">2014 Second Quarter Non-life Report</a></td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"> </td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;">Third Quarter Report</td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;"><a href="/images/Docs/IPEC Reports/Non Life/2014/2014 Third Quarter Non-Life Report.pdf" download="2014 Third Quarter Non-Life Report.pdf">2014 Third Quarter Non-Life Report</a></td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"> </td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;">Fourth Quarter Report</td>
+</tr>
+<tr style="height: 15.7167px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15.7167px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15.7167px;"><a href="/images/Docs/IPEC Reports/Non Life/2014/2014 Fourth Quarter Non-Life Report.pdf" download="2014 Fourth Quarter Non-Life Report.pdf">2014 Fourth Quarter Non-Life Report</a></td>
+</tr>
+</tbody>
+</table>
+<p></div></div></div><div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion1" href="#accordion1-accordion-4"><span class="number">5</span>2013<i class="icon-plus pull-right"></i></a></div><div id="accordion1-accordion-4" class="accordion-body collapse"><div class="accordion-inner"></p>
+<table style="height: 177px; width: 609px; border-color: #0a87f5;" border="1">
+<tbody>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"> </td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;">First Quarter Report</td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;"><a href="/images/Docs/IPEC Reports/Non Life/2013/2013 First Quarter - Non-life Report.pdf" download="2013 First Quarter - Non-life Report.pdf">2013 First Quarter - Non-life Report</a></td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"> </td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;">Second Quarter Report</td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;"><a href="/images/Docs/IPEC Reports/Non Life/2013/2013 Second Quarter - Non-life Report.pdf" download="2013 Second Quarter - Non-life Report.pdf">2013 Second Quarter - Non-life Report</a></td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"> </td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;">Third Quarter Report</td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;"><a href="/images/Docs/IPEC Reports/Non Life/2013/2013 Third Quarter Non-Life Report.pdf" download="2013 Third Quarter Non-Life Report.pdf">2013 Third Quarter Non-Life Report</a></td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"> </td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;">Fourth Quarter Report</td>
+</tr>
+<tr style="height: 15.7167px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15.7167px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15.7167px;"><a href="/images/Docs/IPEC Reports/Non Life/2013/2013 Fourth Quarter Non-life Report.pdf" download="2013 Fourth Quarter Non-life Report.pdf">2013 Fourth Quarter Non-life Report</a></td>
+</tr>
+</tbody>
+</table>
+<p></div></div></div><div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion1" href="#accordion1-accordion-5"><span class="number">6</span>2012<i class="icon-plus pull-right"></i></a></div><div id="accordion1-accordion-5" class="accordion-body collapse"><div class="accordion-inner"></p>
+<table style="height: 177px; width: 609px; border-color: #0a87f5;" border="1">
+<tbody>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"> </td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;">First Quarter Report</td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;"><a href="/images/Docs/IPEC Reports/Non Life/2012/2012 First Quarter Non-Life Report.pdf" download="2012 First Quarter Non-Life Report.pdf">2012 First Quarter Non-Life Report</a></td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"> </td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;">Second Quarter Report</td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;"><a href="/images/Docs/IPEC Reports/Non Life/2012/2012 Second Quarter Non-Life Report.pdf" download="2012 Second Quarter Non-Life Report.pdf">2012 Second Quarter Non-Life Report</a></td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"> </td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;">Third Quarter Report</td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;"><a href="/images/Docs/IPEC Reports/Non Life/2012/2012 Third Quarter Non-Life Report.pdf" download="2012 Third Quarter Non-Life Report.pdf">2012 Third Quarter Non-Life Report</a></td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"> </td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;">Fourth Quarter Report</td>
+</tr>
+<tr style="height: 15.7167px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15.7167px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15.7167px;"><a href="/images/Docs/IPEC Reports/Non Life/2012/2012 Fourth Quarter - Non-Life Report.pdf" download="2012 Fourth Quarter - Non-Life Report.pdf">2012 Fourth Quarter - Non-Life Report</a></td>
+</tr>
+</tbody>
+</table>
+<p></div></div></div><div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion1" href="#accordion1-accordion-6"><span class="number">7</span>2011<i class="icon-plus pull-right"></i></a></div><div id="accordion1-accordion-6" class="accordion-body collapse"><div class="accordion-inner"></p>
+<table style="height: 177px; width: 609px; border-color: #0a87f5;" border="1">
+<tbody>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"> </td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;">First Quarter Report</td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;"><a href="/images/Docs/IPEC Reports/Non Life/2011/2011 First Quarter- Short Term Report.pdf" download="2011 First Quarter Non-Life Report.pdf">2011 First Quarter Non-Life Report</a></td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"> </td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;">Second Quarter Report</td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;"><a href="/images/Docs/IPEC Reports/Non Life/2011/2011 Second Quarter  -Short Term Insurance Report.pdf" download="2011 Second Quarter Non-Life Report.pdf">2011 Second Quarter Non-Life Report</a></td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"> </td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;">Third Quarter Report</td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;"><a href="/images/Docs/IPEC Reports/Non Life/2011/2011 Third Quarter - Short Term Insurance Report.pdf" download="2011 Third Quarter Non-Life Report.pdf">2011 Third Quarter Non-Life Report</a></td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"> </td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;">Fourth Quarter Report</td>
+</tr>
+<tr style="height: 15.7167px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15.7167px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15.7167px;"><a href="/images/Docs/IPEC Reports/Non Life/2011/2011 Fourth Quarter- Short Term Insurance Report.pdf" download="2011 Fourth Quarter - Non-Life Report.pdf">2011 Fourth Quarter - Non-Life Report</a></td>
+</tr>
+</tbody>
+</table>
+<p></div></div></div><div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion1" href="#accordion1-accordion-7"><span class="number">8</span>2010<i class="icon-plus pull-right"></i></a></div><div id="accordion1-accordion-7" class="accordion-body collapse"><div class="accordion-inner"></p>
+<table style="height: 177px; width: 609px; border-color: #0a87f5;" border="1">
+<tbody>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"> </td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;">First Quarter Report</td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;"><a href="/images/Docs/IPEC Reports/Non Life/2010/2010 FIRST QUARTER ANNUAL RETURNS 2010 (2).pdf" download="2010 First Quarter Non-Life Report.pdf">2010 First Quarter Non-Life Report</a></td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"> </td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;">Second Quarter Report</td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;"><a href="/images/Docs/IPEC Reports/Non Life/2010/2010 SECOND QUARTER ANNUAL RETURNS.pdf" download="2010 Second Quarter Non-Life Report.pdf">2010 Second Quarter Non-Life Report</a></td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"> </td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;">Third Quarter Report</td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;"><a href="/images/Docs/IPEC Reports/Non Life/2010/2010 Third Quarter  -Short Term Insurance Report.pdf" download="2010 Third Quarter Non-Life Report.pdf">2010 Third Quarter Non-Life Report</a></td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15px;"> </td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15px;">Fourth Quarter Report</td>
+</tr>
+<tr style="height: 15.7167px;">
+<td style="width: 19.75px; border-color: #0a87f5; text-align: center; height: 15.7167px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 573.25px; border-color: #0a87f5; height: 15.7167px;"><a href="/images/Docs/IPEC Reports/Non Life/2010/2010 Fourth Quarter Report.pdf" download="2010 Fourth Quarter - Non-Life Report.pdf">2010 Fourth Quarter - Non-Life Report</a></td>
+</tr>
+</tbody>
+</table>
+<p></div></div></div></div><script type='text/javascript'>
+			
+				jQuery('#sc-accordion>div:first-child .pull-right').removeClass('icon-plus').addClass('icon-minus');
+
+				var item = jQuery('#sc-accordion .accordion-heading');
+
+				jQuery(item).on('click',function(){
+					jQuery('#sc-accordion .accordion-heading .pull-right').removeClass('icon-minus').addClass('icon-plus');
+					jQuery(this).find('.pull-right').removeClass('icon-plus').addClass('icon-minus');
+
+				});
+			
+		</script></p>
+<p></div><div class="tab-pane fade" id="tab2-funeral"></p>
+<p><div class="accordion" id="sc-accordion-3"><div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle " data-toggle="collapse" data-parent="#sc-accordion-3" href="#sc-accordion-3-accordion-0"><span class="number">1</span>2017<i class="icon-plus pull-right"></i></a></div><div id="sc-accordion-3-accordion-0" class="accordion-body collapse in"><div class="accordion-inner"></p>
+<table style="height: 47px; width: 609px; border-color: #0a87f5;" border="1">
+<tbody>
+<tr style="height: 15px;">
+<td style="width: 18px; border-color: #0a87f5; text-align: center; height: 15px;"> </td>
+<td style="width: 575px; border-color: #0a87f5; height: 15px;">First Quarter Report</td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 18px; border-color: #0a87f5; height: 15px; text-align: right;"><img src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 575px; border-color: #0a87f5; height: 15px;"><a href="/images/Docs/IPEC Reports/Funeral/2017/2017 FIRST QUATER FUNERAL ASSURANCE REPORT.pdf" download="First quarter 2017 Funeral Assurance report.pdf">Funeral Assurance Report-31 March 2017</a></td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 18px; border-color: #0a87f5; height: 15px; text-align: right;"> </td>
+<td style="width: 575px; border-color: #0a87f5; height: 15px;">Second Quarter Report</td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 18px; border-color: #0a87f5; height: 15px; text-align: right;"><img src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 575px; border-color: #0a87f5; height: 15px;"><a href="/images/Docs/IPEC Reports/Funeral/2017/2017 SECOND QUARTER FUNERAL ASSURANCE REPORT.pdf" download="Second quarter 2017 Funeral Assurance report.pdf">Funeral Assurance Report-30 June 2017</a></td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 18px; border-color: #0a87f5; height: 15px; text-align: right;"> </td>
+<td style="width: 575px; border-color: #0a87f5; height: 15px;">Third Quarter Report</td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 18px; border-color: #0a87f5; height: 15px; text-align: right;"><img src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 575px; border-color: #0a87f5; height: 15px;"><a href="/images/Docs/IPEC Reports/Funeral/2017/FUNERAL ASSURANCE INDUSTRY THIRD QUARTER  REPORT.pdf" download="Third quarter 2017 Funeral Assurance report.pdf">Funeral Assurance Report-30 September 2017</a></td>
+</tr>
+</tbody>
+</table>
+<p></div></div></div><div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#sc-accordion-3" href="#sc-accordion-3-accordion-1"><span class="number">2</span>2016<i class="icon-plus pull-right"></i></a></div><div id="sc-accordion-3-accordion-1" class="accordion-body collapse"><div class="accordion-inner"></p>
+<table style="border-color: #0a87f5; height: 156px; width: 615px;" border="1">
+<tbody>
+<tr style="height: 15px;">
+<td style="width: 21px; height: 15px; border-color: #0a87f5;"> </td>
+<td style="width: 578px; height: 15px; border-color: #0a87f5;">First Quarter Report</td>
+</tr>
+<tr style="height: 9.36667px;">
+<td style="width: 21px; height: 9.36667px; border-color: #0a87f5;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 578px; height: 9.36667px; border-color: #0a87f5;"><a href="/images/Docs/IPEC Reports/Funeral/2016/Funeral Report - 31 March 2016.pdf" download="Funeral Report - 31 March 2016.pdf">Funeral Report - 31 March 2016</a></td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 21px; height: 15px; border-color: #0a87f5;"> </td>
+<td style="width: 578px; height: 15px; border-color: #0a87f5;">Second Quarter Report</td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 21px; height: 15px; border-color: #0a87f5;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 578px; height: 15px; border-color: #0a87f5;"><a href="/images/Docs/IPEC Reports/Funeral/2016/Funeral  Report -  30 June 2016.pdf" download="Funeral  Report -  30 June 2016.pdf">Funeral Report - 30 June 2016</a></td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 21px; height: 15px; border-color: #0a87f5;"> </td>
+<td style="width: 578px; height: 15px; border-color: #0a87f5;">Third Quarter Report</td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 21px; height: 15px; border-color: #0a87f5;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 578px; height: 15px; border-color: #0a87f5;"><a href="/images/Docs/IPEC Reports/Funeral/2016/Funeral  Report - 30 September 2016.pdf" download="Funeral  Report - 30 September 2016.pdf">Funeral Report - 30 September 2016</a></td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 21px; height: 15px; border-color: #0a87f5;"> </td>
+<td style="width: 578px; height: 15px; border-color: #0a87f5;">Fourth Quarter Report</td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 21px; height: 15px; border-color: #0a87f5;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 578px; height: 15px; border-color: #0a87f5;"><a href="/images/Docs/IPEC Reports/Funeral/2016/funeral Report - 31 December 2016.pdf" download="funeral Report - 31 December 2016.pdf">funeral Report - 31 December 2016</a></td>
+</tr>
+</tbody>
+</table>
+<p></div></div></div><div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#sc-accordion-3" href="#sc-accordion-3-accordion-2"><span class="number">3</span>2015<i class="icon-plus pull-right"></i></a></div><div id="sc-accordion-3-accordion-2" class="accordion-body collapse"><div class="accordion-inner"></p>
+<table style="border-color: #0a87f5; width: 621.183px; height: 170px;" border="1">
+<tbody>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"> </td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;">First Quarter Report</td>
+</tr>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;"><a href="/images/Docs/IPEC Reports/Funeral/2015/Funeral  Report -  31 march 2015.pdf" download="Funeral  Report -  31 march 2015.pdf">Funeral Report - 31 march 2015</a></td>
+</tr>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"> </td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;">Second Quarter Report</td>
+</tr>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;"><a href="/images/Docs/IPEC Reports/Funeral/2015/Funeral  Report -  30 june 2015.pdf" download="Funeral  Report -  30 june 2015.pdf">Funeral Report - 30 june 2015</a></td>
+</tr>
+<tr style="height: 6.08331px;">
+<td style="height: 6.08331px; border-color: #0a87f5; width: 16px;"> </td>
+<td style="height: 6.08331px; border-color: #0a87f5; width: 588.183px;">Third Quarter Report</td>
+</tr>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;"><a href="/images/Docs/IPEC Reports/Funeral/2015/Funeral  Report -  30 September 2015.pdf" download="Funeral  Report -  30 September 2015.pdf">Funeral Report - 30 September 2015</a></td>
+</tr>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"> </td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;">Fourth Quarter Report</td>
+</tr>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;"><a href="/images/Docs/IPEC Reports/Funeral/2015/Funeral  Report -  31 December 2015.pdf" download="Funeral  Report -  31 December 2015.pdf">Funeral Report - 31 December 2015</a></td>
+</tr>
+</tbody>
+</table>
+<p></div></div></div><div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#sc-accordion-3" href="#sc-accordion-3-accordion-3"><span class="number">4</span>2014<i class="icon-plus pull-right"></i></a></div><div id="sc-accordion-3-accordion-3" class="accordion-body collapse"><div class="accordion-inner"></p>
+<table style="border-color: #0a87f5; width: 621.183px; height: 170px;" border="1">
+<tbody>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"> </td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;">First Quarter Report</td>
+</tr>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;"><a href="/images/Docs/IPEC Reports/Funeral/2014/Funeral Report- 31 march 2014.pdf" download="Funeral Report- 31 march 2014.pdf">Funeral Report- 31 march 2014</a></td>
+</tr>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"> </td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;">Second Quarter Report</td>
+</tr>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;"><a href="/images/Docs/IPEC Reports/Funeral/2014/Funeral Report- 30 june 2014.pdf" download="Funeral Report- 30 june 2014.pdf">Funeral Report- 30 june 2014</a></td>
+</tr>
+<tr style="height: 6.08331px;">
+<td style="height: 6.08331px; border-color: #0a87f5; width: 16px;"> </td>
+<td style="height: 6.08331px; border-color: #0a87f5; width: 588.183px;">Third Quarter Report</td>
+</tr>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;"><a href="/images/Docs/IPEC Reports/Funeral/2014/Funeral Report- 30 september 2014.pdf" download="Funeral Report- 30 september 2014.pdf">Funeral Report- 30 september 2014</a></td>
+</tr>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"> </td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;">Fourth Quarter Report</td>
+</tr>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;"><a href="/images/Docs/IPEC Reports/Funeral/2014/Funeral Report- 31 December 2014.pdf" download="Funeral Report- 31 December 2014.pdf">Funeral Report- 31 December 2014</a></td>
+</tr>
+</tbody>
+</table>
+<p></div></div></div><div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#sc-accordion-3" href="#sc-accordion-3-accordion-4"><span class="number">5</span>2013<i class="icon-plus pull-right"></i></a></div><div id="sc-accordion-3-accordion-4" class="accordion-body collapse"><div class="accordion-inner"></p>
+<table style="border-color: #0a87f5; width: 621.183px; height: 170px;" border="1">
+<tbody>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"> </td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;">First Quarter Report</td>
+</tr>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;"><a href="/images/Docs/IPEC Reports/Funeral/2013/Funeral Report- 31 march 2013.pdf" download="Funeral Report- 31 march 2013.pdf">Funeral Report- 31 march 2013</a></td>
+</tr>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"> </td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;">Second Quarter Report</td>
+</tr>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;"><a href="/images/Docs/IPEC Reports/Funeral/2013/Funeral Report- 30 June 2013.pdf" download="Funeral Report- 30 June 2013.pdf">Funeral Report- 30 June 2013</a></td>
+</tr>
+<tr style="height: 6.08331px;">
+<td style="height: 6.08331px; border-color: #0a87f5; width: 16px;"> </td>
+<td style="height: 6.08331px; border-color: #0a87f5; width: 588.183px;">Third Quarter Report</td>
+</tr>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;"><a href="/images/Docs/IPEC Reports/Funeral/2013/Funeral Report- 30 september 2013.pdf" download="Funeral Report- 30 september 2013.pdf">Funeral Report- 30 september 2013</a></td>
+</tr>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"> </td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;">Fourth Quarter Report</td>
+</tr>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;"><a href="/images/Docs/IPEC Reports/Funeral/2013/Funeral Report- 31 December 2013.pdf" download="Funeral Report- 31 December 2013.pdf">Funeral Report- 31 December 2013</a></td>
+</tr>
+</tbody>
+</table>
+<p></div></div></div><div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#sc-accordion-3" href="#sc-accordion-3-accordion-5"><span class="number">6</span>2012<i class="icon-plus pull-right"></i></a></div><div id="sc-accordion-3-accordion-5" class="accordion-body collapse"><div class="accordion-inner"></p>
+<table style="border-color: #0a87f5; width: 621.183px; height: 170px;" border="1">
+<tbody>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"> </td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;">First Quarter Report</td>
+</tr>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;"><a href="/images/Docs/IPEC Reports/Funeral/2012/Funeral Report-31 march 2012.pdf" download="Funeral Report-31 march 2012.pdf">Funeral Report-31 march 2012</a></td>
+</tr>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"> </td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;">Second Quarter Report</td>
+</tr>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;"><a href="/images/Docs/IPEC Reports/Funeral/2012/Funeral Report-30 june 2012.pdf" download="Funeral Report-30 june 2012.pdf">Funeral Report-30 june 2012</a></td>
+</tr>
+<tr style="height: 6.08331px;">
+<td style="height: 6.08331px; border-color: #0a87f5; width: 16px;"> </td>
+<td style="height: 6.08331px; border-color: #0a87f5; width: 588.183px;">Third Quarter Report</td>
+</tr>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;"><a href="/images/Docs/IPEC Reports/Funeral/2012/Funeral Report-30 september 2012.pdf" download="Funeral Report-30 september 2012.pdf">Funeral Report-30 september 2012</a></td>
+</tr>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"> </td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;">Fourth Quarter Report</td>
+</tr>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;"><a href="/images/Docs/IPEC Reports/Funeral/2012/Funeral Report-31 December 2012.pdf" download="Funeral Report-31 December 2012.pdf">Funeral Report-31 December 2012</a></td>
+</tr>
+</tbody>
+</table>
+<p></div></div></div><div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#sc-accordion-3" href="#sc-accordion-3-accordion-6"><span class="number">7</span>2011<i class="icon-plus pull-right"></i></a></div><div id="sc-accordion-3-accordion-6" class="accordion-body collapse"><div class="accordion-inner"></p>
+<table style="border-color: #0a87f5; width: 621.183px; height: 170px;" border="1">
+<tbody>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"> </td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;">First Quarter Report</td>
+</tr>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;"><a href="#" download="Funeral Report-31 march 2011.pdf">Funeral Report-31 march 2011</a></td>
+</tr>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"> </td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;">Second Quarter Report</td>
+</tr>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;"><a href="#" download="Funeral Report-30 june 2011.pdf">Funeral Report-30 june 2011</a></td>
+</tr>
+<tr style="height: 6.08331px;">
+<td style="height: 6.08331px; border-color: #0a87f5; width: 16px;"> </td>
+<td style="height: 6.08331px; border-color: #0a87f5; width: 588.183px;">Third Quarter Report</td>
+</tr>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;"><a href="/images/Docs/IPEC Reports/Funeral/2011/30 september 2011.pdf" download="Funeral Report-30 september 2011.pdf">Funeral Report -30 september 2011</a></td>
+</tr>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"> </td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;">Fourth Quarter Report</td>
+</tr>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;"><a href="/images/Docs/IPEC Reports/Funeral/2011/Funeral Report-31 December 2011.pdf" download="Funeral Report-31 December 2011.pdf">Funeral Report-31 December 2011</a></td>
+</tr>
+</tbody>
+</table>
+<p></div></div></div></div><script type='text/javascript'>
+			
+				jQuery('#sc-accordion>div:first-child .pull-right').removeClass('icon-plus').addClass('icon-minus');
+
+				var item = jQuery('#sc-accordion .accordion-heading');
+
+				jQuery(item).on('click',function(){
+					jQuery('#sc-accordion .accordion-heading .pull-right').removeClass('icon-minus').addClass('icon-plus');
+					jQuery(this).find('.pull-right').removeClass('icon-plus').addClass('icon-minus');
+
+				});
+			
+		</script></p>
+<p></div><div class="tab-pane fade" id="tab2-pensions"></p>
+<p><div class="accordion" id="sc-accordion-4"><div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle " data-toggle="collapse" data-parent="#sc-accordion-4" href="#sc-accordion-4-accordion-0"><span class="number">1</span>2017<i class="icon-plus pull-right"></i></a></div><div id="sc-accordion-4-accordion-0" class="accordion-body collapse in"><div class="accordion-inner"></p>
+<table style="height: 47px; width: 609px; border-color: #0a87f5;" border="1">
+<tbody>
+<tr style="height: 15px;">
+<td style="width: 18px; border-color: #0a87f5; text-align: center; height: 15px;"> </td>
+<td style="width: 575px; border-color: #0a87f5; height: 15px;">First Quarter Report</td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 18px; border-color: #0a87f5; height: 15px; text-align: right;"><img src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 575px; border-color: #0a87f5; height: 15px;"><a href="/images/Docs/IPEC Reports/Pensions/2017/Consolidated Pensions Report as at 31 March 2017.pdf" download="Consolidated Pensions Report 31 March 2017.pdf">Consolidated Pensions Report 31 March 2017</a></td>
+</tr>
+</tbody>
+</table>
+<p></div></div></div><div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#sc-accordion-4" href="#sc-accordion-4-accordion-1"><span class="number">2</span>2016<i class="icon-plus pull-right"></i></a></div><div id="sc-accordion-4-accordion-1" class="accordion-body collapse"><div class="accordion-inner"></p>
+<table style="border-color: #0a87f5; height: 156px; width: 615px;" border="1">
+<tbody>
+<tr style="height: 15px;">
+<td style="width: 21px; height: 15px; border-color: #0a87f5;"> </td>
+<td style="width: 578px; height: 15px; border-color: #0a87f5;">First Quarter Report</td>
+</tr>
+<tr style="height: 9px;">
+<td style="width: 21px; height: 9px; border-color: #0a87f5;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 578px; height: 9px; border-color: #0a87f5;"><a href="/images/Docs/IPEC Reports/Pensions/2016/Self Administered Pensions Report-31 March 2016.pdf" download="Self Administered Pensions Report-31 March 2016.pdf">Self Administered Pensions Report-31 March 2016</a></td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 21px; height: 15px; border-color: #0a87f5;"> </td>
+<td style="width: 578px; height: 15px; border-color: #0a87f5;">Second Quarter Report</td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 21px; height: 15px; border-color: #0a87f5;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 578px; height: 15px; border-color: #0a87f5;"><a href="/images/Docs/IPEC Reports/Pensions/2016/Self Administered Funds-30 June 2016.pdf" download="Self Administered Funds-30 June 2016.pdf">Self Administered Funds-30 June 2016</a></td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 21px; height: 15px; border-color: #0a87f5;"> </td>
+<td style="width: 578px; height: 15px; border-color: #0a87f5;">Third Quarter Report</td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 21px; height: 15px; border-color: #0a87f5;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 578px; height: 15px; border-color: #0a87f5;"><a href="/images/Docs/IPEC Reports/Pensions/2016/Self Administered Pension Funds -30 September 2016.pdf" download="Self Administered Pension Funds -30 September 2016.pdf">Self Administered Pension Funds -30 September 2016</a></td>
+</tr>
+<tr style="height: 15.0833px;">
+<td style="width: 21px; height: 15.0833px; border-color: #0a87f5;"> </td>
+<td style="width: 578px; height: 15.0833px; border-color: #0a87f5;">Fourth Quarter Report</td>
+</tr>
+<tr style="height: 15px;">
+<td style="width: 21px; height: 15px; border-color: #0a87f5;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="width: 578px; height: 15px; border-color: #0a87f5;"><a href="/images/Docs/IPEC Reports/Pensions/2016/Self Administered Funds Report-Ended 31 December 2016 IPEC.pdf" download="Self Administered Pension Funds -31 December 2016.pdf">Self Administered Pension Funds -31 December 2016</a> </td>
+</tr>
+</tbody>
+</table>
+<p></div></div></div><div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#sc-accordion-4" href="#sc-accordion-4-accordion-2"><span class="number">3</span>2015<i class="icon-plus pull-right"></i></a></div><div id="sc-accordion-4-accordion-2" class="accordion-body collapse"><div class="accordion-inner"></p>
+<table style="border-color: #0a87f5; width: 621.183px; height: 170px;" border="1">
+<tbody>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"> </td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;">First Quarter Report</td>
+</tr>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;"><a href="/images/Docs/IPEC Reports/Pensions/2015/2015 1st Self Administered Report.pdf" download="2015 1st Self Administered Report.pdf">2015 1st Self Administered Report</a></td>
+</tr>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"> </td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;">Second Quarter Report</td>
+</tr>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;"><a href="/images/Docs/IPEC Reports/Pensions/2015/2015 2nd Quarter Self Administered Funds.pdf" download="2015 2nd Quarter Self Administered Funds.pdf">2015 2nd Quarter Self Administered Funds</a></td>
+</tr>
+<tr style="height: 6.08331px;">
+<td style="height: 6.08331px; border-color: #0a87f5; width: 16px;"> </td>
+<td style="height: 6.08331px; border-color: #0a87f5; width: 588.183px;">Third Quarter Report</td>
+</tr>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;"><a href="/images/Docs/IPEC Reports/Pensions/2015/Self Administered Report- 3rd Quarter 2015.pdf" download="Self Administered Report- 3rd Quarter 2015.pdf">Self Administered Report- 3rd Quarter 2015</a></td>
+</tr>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"> </td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;">Fourth Quarter Report</td>
+</tr>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;"><a href="/images/Docs/IPEC Reports/Pensions/2015/2015 Fourth Quarter Self Administered Report.pdf" download="2015 Fourth Quarter Self Administered Report.pdf">2015 Fourth Quarter Self Administered Report</a></td>
+</tr>
+</tbody>
+</table>
+<p></div></div></div><div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#sc-accordion-4" href="#sc-accordion-4-accordion-3"><span class="number">4</span>2014<i class="icon-plus pull-right"></i></a></div><div id="sc-accordion-4-accordion-3" class="accordion-body collapse"><div class="accordion-inner"></p>
+<table style="border-color: #0a87f5; width: 621.183px; height: 170px;" border="1">
+<tbody>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"> </td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;">First Quarter Report</td>
+</tr>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;"><a href="/images/Docs/IPEC Reports/Pensions/2014/2014 1st Quarter Self Administered Funds.pdf" download="2014 1st Quarter Self Administered Funds.pdf">2014 1st Quarter Self Administered Funds</a></td>
+</tr>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"> </td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;">Second Quarter Report</td>
+</tr>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;"><a href="/images/Docs/IPEC Reports/Pensions/2014/2014 2nd Quarter Self Administered Funds.pdf" download="2014 2nd Quarter Self Administered Funds.pdf">2014 2nd Quarter Self Administered Funds</a></td>
+</tr>
+<tr style="height: 6.08331px;">
+<td style="height: 6.08331px; border-color: #0a87f5; width: 16px;"> </td>
+<td style="height: 6.08331px; border-color: #0a87f5; width: 588.183px;">Third Quarter Report</td>
+</tr>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;"><a href="/images/Docs/IPEC Reports/Pensions/2014/2014 3rd Quarter Self Administered Funds.pdf" download="2014 3rd Quarter Self Administered Funds.pdf">2014 3rd Quarter Self Administered Funds</a></td>
+</tr>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"> </td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;">Fourth Quarter Report</td>
+</tr>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;"><a href="/images/Docs/IPEC Reports/Pensions/2014/2014 4th Quarter SELF ADMINISTERED FUNDS.pdf" download="2014 4th Quarter SELF ADMINISTERED FUNDS.pdf">2014 4th Quarter Self Administered Funds</a></td>
+</tr>
+</tbody>
+</table>
+<p></div></div></div><div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#sc-accordion-4" href="#sc-accordion-4-accordion-4"><span class="number">5</span>2013<i class="icon-plus pull-right"></i></a></div><div id="sc-accordion-4-accordion-4" class="accordion-body collapse"><div class="accordion-inner"></p>
+<table style="border-color: #0a87f5; width: 621.183px; height: 170px;" border="1">
+<tbody>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"> </td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;">First Quarter Report</td>
+</tr>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;"><a href="/images/Docs/IPEC Reports/Pensions/2013/2013 1st Quarter Self Administered Funds.pdf" download="2013 1st Quarter Self Administered Funds.pdf">2013 1st Quarter Self Administered Funds</a></td>
+</tr>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"> </td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;">Second Quarter Report</td>
+</tr>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;"><a href="/images/Docs/IPEC Reports/Pensions/2013/2013 2nd Quarter Self Administered Funds.pdf" download="2013 2nd Quarter Self Administered Funds.pdf">2013 2nd Quarter Self Administered Funds</a></td>
+</tr>
+<tr style="height: 6.08331px;">
+<td style="height: 6.08331px; border-color: #0a87f5; width: 16px;"> </td>
+<td style="height: 6.08331px; border-color: #0a87f5; width: 588.183px;">Third Quarter Report</td>
+</tr>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;"><a href="/images/Docs/IPEC Reports/Pensions/2013/2013 3rd Quarter Self Administered Funds.pdf" download="2013 3rd Quarter Self Administered Funds.pdf">2013 3rd Quarter Self Administered Funds</a></td>
+</tr>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"> </td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;">Fourth Quarter Report</td>
+</tr>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;"><a href="/images/Docs/IPEC Reports/Pensions/2013/2013 4th Quarter Self Administered Funds.pdf" download="2013 4th Quarter Self Administered Funds.pdf">2013 4th Quarter Self Administered Funds</a></td>
+</tr>
+</tbody>
+</table>
+<p></div></div></div><div class="accordion-group"><div class="accordion-heading"><a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#sc-accordion-4" href="#sc-accordion-4-accordion-5"><span class="number">6</span>2012<i class="icon-plus pull-right"></i></a></div><div id="sc-accordion-4-accordion-5" class="accordion-body collapse"><div class="accordion-inner"></p>
+<table style="border-color: #0a87f5; width: 621.183px; height: 170px;" border="1">
+<tbody>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"> </td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;">First Quarter Report</td>
+</tr>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;"><a href="#" download="2014 1st Quarter Self Administered Funds.pdf">2012 1st Quarter Self Administered Funds</a></td>
+</tr>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"> </td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;">Second Quarter Report</td>
+</tr>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;"><a href="/images/Docs/IPEC Reports/Pensions/2012/2012 2nd Quarter Self Administered Pension Fund.pdf" download="2012 2nd Quarter Self Administered Pension Fund.pdf">2012 2nd Quarter Self Administered Pension Fund</a></td>
+</tr>
+<tr style="height: 6.08331px;">
+<td style="height: 6.08331px; border-color: #0a87f5; width: 16px;"> </td>
+<td style="height: 6.08331px; border-color: #0a87f5; width: 588.183px;">Third Quarter Report</td>
+</tr>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;"><a href="/images/Docs/IPEC Reports/Pensions/2012/2012 3rd Quarter Self Administered Pension Funds.pdf" download="2012 3rd Quarter Self Administered Pension Funds.pdf">2012 3rd Quarter Self Administered Pension Funds</a></td>
+</tr>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"> </td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;">Fourth Quarter Report</td>
+</tr>
+<tr style="height: 9px;">
+<td style="height: 9px; border-color: #0a87f5; width: 16px;"><img style="float: right;" src="/images/sampledata/application-pdf.png" alt="" /></td>
+<td style="height: 9px; border-color: #0a87f5; width: 588.183px;"><a href="/images/Docs/IPEC Reports/Pensions/2012/2012 4th Quarter Self Administered Pension Funds.pdf" download="2012 4th Quarter Self Administered Pension Funds.pdf">2012 4th Quarter Self Administered Pension Funds</a></td>
+</tr>
+</tbody>
+</table>
+<p></div></div></div></div><script type='text/javascript'>
+			
+				jQuery('#sc-accordion>div:first-child .pull-right').removeClass('icon-plus').addClass('icon-minus');
+
+				var item = jQuery('#sc-accordion .accordion-heading');
+
+				jQuery(item).on('click',function(){
+					jQuery('#sc-accordion .accordion-heading .pull-right').removeClass('icon-minus').addClass('icon-plus');
+					jQuery(this).find('.pull-right').removeClass('icon-plus').addClass('icon-minus');
+
+				});
+			
+		</script></p>
+<p></div></div></div></div></p>
+<p></div></div></p>
+<p> </p>
+<p> </p>								
+					
+				
+				
+								
+		
+															
+		
+    </footer>
+</article></div></section></div>
+</div></div></section><section id="sp-bottom-wrapper" 
+                class=" "><div class="container"><div class="row-fluid" id="bottom">
+<div id="sp-bottom1" class="span2"><div class="module ">	
+	<div class="mod-wrapper-flat clearfix">		
+					<h2 class="module-title">			
+				Company			</h2>
+								
+
+<div class="custom"  >
+	<ul>
+<li><a href="#">About us</a></li>
+<li><a href="#">We are hiring</a></li>
+<li><a href="#">Meet the team</a></li>
+<li><a href="#">Copyright</a></li>
+<li><a href="#">Terms of use</a></li>
+<li><a href="#">Privacy policy</a></li>
+<li><a href="#">contact us</a></li>
+</ul></div>
+	</div>
+</div>
+<div class="gap"></div>
+</div>
+
+<div id="sp-bottom4" class="span4"><div class="module ">	
+	<div class="mod-wrapper-flat clearfix">		
+					<h2 class="module-title">			
+				Gallery			</h2>
+								<div id="sp-sig137" class="sp-sig ">
+			<a href="/images/demo/gallery/011.jpg" rel="lightbox-atomium" title="011">
+			<img class="sp_simple_gallery" src="/images/demo/gallery/thumbs/011.jpg" alt="011" />
+		</a>
+			<a href="/images/demo/gallery/012.jpg" rel="lightbox-atomium" title="012">
+			<img class="sp_simple_gallery" src="/images/demo/gallery/thumbs/012.jpg" alt="012" />
+		</a>
+			<a href="/images/demo/gallery/013.jpg" rel="lightbox-atomium" title="013">
+			<img class="sp_simple_gallery" src="/images/demo/gallery/thumbs/013.jpg" alt="013" />
+		</a>
+			<a href="/images/demo/gallery/014.jpg" rel="lightbox-atomium" title="014">
+			<img class="sp_simple_gallery" src="/images/demo/gallery/thumbs/014.jpg" alt="014" />
+		</a>
+			<a href="/images/demo/gallery/015.jpg" rel="lightbox-atomium" title="015">
+			<img class="sp_simple_gallery" src="/images/demo/gallery/thumbs/015.jpg" alt="015" />
+		</a>
+			<a href="/images/demo/gallery/016.jpg" rel="lightbox-atomium" title="016">
+			<img class="sp_simple_gallery" src="/images/demo/gallery/thumbs/016.jpg" alt="016" />
+		</a>
+	</div>	</div>
+</div>
+<div class="gap"></div>
+</div>
+
+<div id="sp-bottom5" class="span6"><div class="module ">	
+	<div class="mod-wrapper clearfix">		
+					<h2 class="module-title">			
+				Contact us			</h2>
+								<div class="mod-content clearfix">	
+			<div class="mod-inner clearfix">
+				
+
+<div class="custom"  >
+	<div class="bottom-map">				
+			<script type="text/javascript">
+			  var myLatlng  = new google.maps.LatLng(-17.80830486,31.11889243);
+			  function initialize() {
+				var mapOptions = {
+				  zoom: 4,
+				  center: myLatlng,
+					mapTypeId: google.maps.MapTypeId.ROADMAP				};
+				var map = new google.maps.Map(document.getElementById('sp_simple_map_canvas'), mapOptions);
+				var marker = new google.maps.Marker({position:myLatlng, map:map});	
+			  }
+			  google.maps.event.addDomListener(window, 'load', initialize);
+			</script>
+			
+			<div style="height:60px" id="sp_simple_map_canvas"></div>
+				
+			</div>
+<div class="contact-info"><span class="contact-street">160 Rhodesville Avenue, Greendale<br /> Tel. 443358/443361/443422<br /> Cell: 0772 154 281, 0772 154 282,<br /> 0772 154 283, 0772 154 284 <br /> <br /> Fax. 443304<br /> <br /> E-MAIL: <span id="cloak48871"><span id="cloak79521">This email address is being protected from spambots. You need JavaScript enabled to view it.</span><script type='text/javascript'>
+ //<!--
+ document.getElementById('cloak79521').innerHTML = '';
+ var prefix = '&#109;a' + 'i&#108;' + '&#116;o';
+ var path = 'hr' + 'ef' + '=';
+ var addy79521 = '&#105;nf&#111;' + '&#64;';
+ addy79521 = addy79521 + '&#105;p&#101;c' + '&#46;' + 'c&#111;' + '&#46;' + 'zw';
+ var addy_text79521 = '&#105;nf&#111;' + '&#64;' + '&#105;p&#101;c' + '&#46;' + 'c&#111;' + '&#46;' + 'zw';
+ document.getElementById('cloak79521').innerHTML += '<a ' + path + '\'' + prefix + ':' + addy79521 + '\'>'+addy_text79521+'<\/a>';
+ //-->
+ </script> or <span id="cloak78700">This email address is being protected from spambots. You need JavaScript enabled to view it.</span><script type='text/javascript'>
+ //<!--
+ document.getElementById('cloak78700').innerHTML = '';
+ var prefix = '&#109;a' + 'i&#108;' + '&#116;o';
+ var path = 'hr' + 'ef' + '=';
+ var addy78700 = '&#101;nq&#117;&#105;ry' + '&#64;';
+ addy78700 = addy78700 + '&#105;p&#101;c' + '&#46;' + 'c&#111;' + '&#46;' + 'zw';
+ var addy_text78700 = '&#101;nq&#117;&#105;ry@&#105;p&#101;c.c&#111;.zw ';
+ document.getElementById('cloak78700').innerHTML += '<a ' + path + '\'' + prefix + ':' + addy78700 + '\'>'+addy_text78700+'<\/a>';
+ //-->
+ </script></span></span></div>
+<div class="contact-map"> </div>
+<p> </p></div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="gap"></div>
+</div>
+</div></div></section><footer id="sp-footer-wrapper" 
+                class=" "><div class="container"><div class="row-fluid" id="footer">
+<div id="sp-footer1" class="span11"><span class="copyright">Copyright ©  2018 Insurance and Pensions Commission. All Rights Reserved.</span><span class="powered-by">Powered by <a target="_blank" title="Joomla" href="http://www.joomla.org/">Joomla!</a></span> <a href="http://www.joomshaper.com" title="joomshaper.com"></a></div>
+
+<div id="sp-footer2" class="span1"><a class="sp-totop" href="javascript:;" title="Goto Top" rel="nofollow"><small>Goto Top </small><i class="icon-angle-up"></i></a></div>
+</div></div></footer>	
+
+		<a class="hidden-desktop btn btn-inverse sp-main-menu-toggler" href="#" data-toggle="collapse" data-target=".nav-collapse">
+			<i class="icon-align-justify"></i>
+		</a>
+
+		<div class="hidden-desktop sp-mobile-menu nav-collapse collapse">
+			<ul class=""><li class="menu-item first"><a href="http://ipec.co.zw/" class="menu-item first" ><span class="menu"><span class="menu-title">Home</span></span></a></li><li class="menu-item parent"><a href="#" class="menu-item parent" ><span class="menu"><span class="menu-title">About us</span></span></a><span class="sp-menu-toggler collapsed" data-toggle="collapse" data-target=".collapse-162"><i class="icon-angle-right"></i><i class="icon-angle-down"></i></span><ul class="collapse collapse-162"><li class="menu-item first"><a href="/index.php/pages/vision-mission-core-values" class="menu-item first" ><span class="menu"><span class="menu-title">Vision, Mission &amp; Values</span></span></a></li><li class="menu-item"><a href="/index.php/pages/ipec-act-2" class="menu-item" ><span class="menu"><span class="menu-title">Insurance &amp; Pensions Commision Act</span></span></a></li><li class="menu-item last"><a href="/index.php/pages/core-functions" class="menu-item last" ><span class="menu"><span class="menu-title">Core Functions</span></span></a></li></ul></li><li class="menu-item parent"><a href="#" class="menu-item parent" ><span class="menu"><span class="menu-title">Insurance</span></span></a><span class="sp-menu-toggler collapsed" data-toggle="collapse" data-target=".collapse-107"><i class="icon-angle-right"></i><i class="icon-angle-down"></i></span><ul class="collapse collapse-107"><li class="menu-item first parent"><a href="/index.php/insurance/insurance-act" class="menu-item first parent" ><span class="menu"><span class="menu-title">Insurance Act</span></span></a><span class="sp-menu-toggler collapsed" data-toggle="collapse" data-target=".collapse-274"><i class="icon-angle-right"></i><i class="icon-angle-down"></i></span><ul class="collapse collapse-274"><li class="menu-item first"><a href="/index.php/insurance/insurance-act/acts-regulations" class="menu-item first" ><span class="menu"><span class="menu-title">Acts &amp; Regulations</span></span></a></li><li class="menu-item last"><a href="/index.php/insurance/insurance-act/circulars" class="menu-item last" ><span class="menu"><span class="menu-title">Circulars</span></span></a></li></ul></li><li class="menu-item"><a href="/index.php/insurance/licensing-requirements" class="menu-item" ><span class="menu"><span class="menu-title">Licensing Requirements</span></span></a></li><li class="menu-item"><a href="https://hana3.ipec.co.zw:44304/sap/bc/bsp/sap/zportal_apps/logon.htm" class="menu-item" ><span class="menu"><span class="menu-title">Online Registration</span></span></a></li><li class="menu-item"><a href="/index.php/insurance/download-application-form" class="menu-item" ><span class="menu"><span class="menu-title">Download Application Form</span></span></a></li><li class="menu-item last"><a href="/index.php/insurance/registered-entities" class="menu-item last" ><span class="menu"><span class="menu-title">Registered Entities</span></span></a></li></ul></li><li class="menu-item parent"><a href="#" class="menu-item parent" ><span class="menu"><span class="menu-title">Pensions</span></span></a><span class="sp-menu-toggler collapsed" data-toggle="collapse" data-target=".collapse-117"><i class="icon-angle-right"></i><i class="icon-angle-down"></i></span><ul class="collapse collapse-117"><li class="menu-item first parent"><a href="/index.php/pensions/pensions-provident-funds-act" class="menu-item first parent" ><span class="menu"><span class="menu-title">Pensions &amp; Provident Funds Act</span></span></a><span class="sp-menu-toggler collapsed" data-toggle="collapse" data-target=".collapse-276"><i class="icon-angle-right"></i><i class="icon-angle-down"></i></span><ul class="collapse collapse-276"><li class="menu-item first"><a href="/index.php/pensions/pensions-provident-funds-act/acts-regulations" class="menu-item first" ><span class="menu"><span class="menu-title">Acts &amp; Regulations</span></span></a></li><li class="menu-item last"><a href="/index.php/pensions/pensions-provident-funds-act/circulars" class="menu-item last" ><span class="menu"><span class="menu-title">Circulars</span></span></a></li></ul></li><li class="menu-item"><a href="/index.php/pensions/licensing-requirements" class="menu-item" ><span class="menu"><span class="menu-title">Licensing Requirements</span></span></a></li><li class="menu-item"><a href="https://hana3.ipec.co.zw:44304/sap/bc/bsp/sap/zportal_apps/logon.htm" class="menu-item" ><span class="menu"><span class="menu-title">Online Registration</span></span></a></li><li class="menu-item"><a href="/index.php/pensions/download-application-form" class="menu-item" ><span class="menu"><span class="menu-title">Download Application Form</span></span></a></li><li class="menu-item last"><a href="#" class="menu-item last" ><span class="menu"><span class="menu-title">Registered Entities</span></span></a></li></ul></li><li class="menu-item active parent"><a href="#" class="menu-item active parent" ><span class="menu"><span class="menu-title">Media Centre</span></span></a><span class="sp-menu-toggler collapsed" data-toggle="collapse" data-target=".collapse-102"><i class="icon-angle-right"></i><i class="icon-angle-down"></i></span><ul class="collapse collapse-102"><li class="menu-item first"><a href="#" class="menu-item first" ><span class="menu"><span class="menu-title">News &amp; Events</span></span></a></li><li class="menu-item"><a href="#" class="menu-item" ><span class="menu"><span class="menu-title">Publication</span></span></a></li><li class="menu-item active"><a href="/index.php/media-centre/ipec-reports" class="menu-item active" ><span class="menu"><span class="menu-title">IPEC Reports</span></span></a></li><li class="menu-item"><a href="/index.php/media-centre/career" class="menu-item" ><span class="menu"><span class="menu-title">Vacancies</span></span></a></li><li class="menu-item last"><a href="/index.php/media-centre/tender" class="menu-item last" ><span class="menu"><span class="menu-title">Tenders</span></span></a></li></ul></li><li class="menu-item parent"><a href="http://online.ipec.co.zw:443/sap/bc/bsp/sap/zportal_apps/logon.htm" class="menu-item parent" ><span class="menu"><span class="menu-title">Online Services</span></span></a><span class="sp-menu-toggler collapsed" data-toggle="collapse" data-target=".collapse-176"><i class="icon-angle-right"></i><i class="icon-angle-down"></i></span><ul class="collapse collapse-176"><li class="menu-item first"><a href="https://hana3.ipec.co.zw:44304/sap(bD1lbiZjPTQwMA==)/bc/bsp/sap/zipc_zcom_app/page01.htm" class="menu-item first" ><span class="menu"><span class="menu-title">Consumer Complaints</span></span></a></li><li class="menu-item"><a href="http://online.ipec.co.zw:443/sap/bc/bsp/sap/zportal_apps/logon.htm" class="menu-item" ><span class="menu"><span class="menu-title">Online Application &amp; Returns submission</span></span></a></li><li class="menu-item last"><a href="https://hana3.ipec.co.zw:44304/sap/bc/bsp/sap/crm_ui_start/default.htm?sap-client=400&amp;sap-sessioncmd=open" class="menu-item last" ><span class="menu"><span class="menu-title">IPEC Staff Login</span></span></a></li></ul></li><li class="menu-item last parent"><a href="/index.php/contact-us" class="menu-item last parent" ><span class="menu"><span class="menu-title">Contact Us</span></span></a><span class="sp-menu-toggler collapsed" data-toggle="collapse" data-target=".collapse-123"><i class="icon-angle-right"></i><i class="icon-angle-down"></i></span><ul class="collapse collapse-123"><li class="menu-item first"><a href="/index.php/contact-us/contact" class="menu-item first" ><span class="menu"><span class="menu-title">Contact</span></span></a></li><li class="menu-item"><a href="/index.php/contact-us/faq" class="menu-item" ><span class="menu"><span class="menu-title">Faq</span></span></a></li><li class="menu-item"><a href="/index.php/contact-us/login" class="menu-item" ><span class="menu"><span class="menu-title">Login</span></span></a></li><li class="menu-item last"><a href="https://docs.google.com/forms/d/e/1FAIpQLSeDR053lGCTIMnHIa8j7So-2WddZKbWpTWzrT-7hGxc7kGawg/viewform" class="menu-item last" ><span class="menu"><span class="menu-title">IPEC Online Survey</span></span></a></li></ul></li></ul>   
+		</div>
+		        
+		</div>
+    </body>
+</html>
