@@ -45,6 +45,10 @@ import app.modules.intel.model             # noqa: F401
 import app.modules.csp.model               # noqa: F401
 import app.modules.clients.model           # noqa: F401
 import app.modules.compliance.model        # noqa: F401
+import app.modules.embeddings.model        # noqa: F401  — DocumentChunk / document_chunks
+import app.modules.jobs.model              # noqa: F401  — QueuedJob, DocumentJobStep, DeadLetterJob
+import app.modules.auth.token_store        # noqa: F401  — RefreshToken, AccessTokenBlacklist, UserRevocationFence
+import app.modules.rag_governance.model    # noqa: F401  — RetrievalAuditLog
 
 target_metadata = Base.metadata
 

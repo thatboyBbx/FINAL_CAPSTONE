@@ -81,6 +81,11 @@ class Settings(BaseModel):
     # ── Async job queue ───────────────────────────────────────────────────────
     # queue_backend: "sqlite" (default, no Redis required) | "arq" (Redis-backed)
     queue_backend: str = os.getenv("QUEUE_BACKEND", "sqlite")
+    # Set AUTO_START_WORKERS=false to disable the in-process ingestion worker
+    # (useful when running dedicated worker processes instead)
+    auto_start_workers: bool = os.getenv("AUTO_START_WORKERS", "true").lower() not in ("false", "0", "no")
+    # Seconds to sleep between queue polls when the queue is empty
+    worker_poll_interval: float = float(os.getenv("WORKER_POLL_INTERVAL", "3.0"))
     redis_url: str = os.getenv("REDIS_URL", "redis://localhost:6379/0")
 
     # Worker concurrency targets (used in deployment docs and future supervisor config)

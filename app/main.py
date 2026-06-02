@@ -8,6 +8,7 @@ Removed from live registration (kept on disk for training pipelines):
   - zse module        (ZSE scraping is fragile; not needed for thesis demo)
 """
 import logging
+import threading
 from contextlib import asynccontextmanager
 from typing import AsyncGenerator
 
@@ -95,9 +96,39 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     except Exception as exc:
         logger.warning("Scraper scheduler could not start: %s", exc)
 
+    # ── In-process ingestion worker ───────────────────────────────────────
+    _worker_stop: threading.Event = threading.Event()
+    _worker_thread: threading.Thread | None = None
+    if settings.auto_start_workers and settings.queue_backend == "sqlite":
+        try:
+            from app.workers.sqlite_worker import run_worker_thread
+            _worker_thread = threading.Thread(
+                target=run_worker_thread,
+                kwargs={
+                    "queue": "ingestion_queue",
+                    "stop_event": _worker_stop,
+                    "poll_interval": settings.worker_poll_interval,
+                },
+                name="ingestion-worker",
+                daemon=True,
+            )
+            _worker_thread.start()
+            logger.info("In-process ingestion worker started (AUTO_START_WORKERS=true).")
+        except Exception as exc:
+            logger.warning("In-process worker could not start: %s", exc)
+
     logger.info("InsureIntel Zimbabwe started — env=%s", settings.env)
     yield
+
     # ── Shutdown ─────────────────────────────────────────────────────────
+    if _worker_thread is not None and _worker_thread.is_alive():
+        logger.info("Stopping in-process ingestion worker...")
+        _worker_stop.set()
+        _worker_thread.join(timeout=30)
+        if _worker_thread.is_alive():
+            logger.warning("Ingestion worker thread did not stop within 30 s.")
+        else:
+            logger.info("Ingestion worker stopped cleanly.")
     logger.info("InsureIntel Zimbabwe shutting down.")
 
 

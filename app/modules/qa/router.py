@@ -57,8 +57,59 @@ def ask_question(payload: AskRequest, db: Session = Depends(get_db)) -> Dict[str
             detail=f"Document id={payload.document_id} not found.",
         )
 
-    # Fetch document text from DB
-    doc_text = getattr(doc, "extracted_text", "") or getattr(doc, "raw_text", "") or ""
+    # Fetch document text — three-tier lookup in descending preference:
+    #   1. CircularAnalysis.extracted_text (batch-processed documents)
+    #   2. DocumentChunk.chunk_text concatenated in order (available after RC-2 sync indexing)
+    #   3. Direct PDF extraction from disk (fallback for un-indexed documents)
+    doc_text = ""
+    text_source = "none"
+
+    try:
+        from app.modules.circulars.model import CircularAnalysis  # noqa: PLC0415
+        analysis = (
+            db.query(CircularAnalysis)
+            .filter(CircularAnalysis.document_id == payload.document_id)
+            .first()
+        )
+        if analysis and analysis.extracted_text:
+            doc_text = analysis.extracted_text
+            text_source = "circular_analysis"
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("QA: CircularAnalysis lookup failed for doc %d: %s", payload.document_id, exc)
+
+    if not doc_text:
+        try:
+            from app.modules.embeddings.model import DocumentChunk  # noqa: PLC0415
+            chunks = (
+                db.query(DocumentChunk)
+                .filter(
+                    DocumentChunk.document_id == payload.document_id,
+                    DocumentChunk.chunk_text.isnot(None),
+                )
+                .order_by(DocumentChunk.chunk_index)
+                .all()
+            )
+            if chunks:
+                doc_text = " ".join(c.chunk_text for c in chunks if c.chunk_text)
+                text_source = f"document_chunks({len(chunks)})"
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("QA: DocumentChunk lookup failed for doc %d: %s", payload.document_id, exc)
+
+    if not doc_text:
+        try:
+            from app.modules.documents.ingestion.pdf_extractor import extract_text_from_pdf  # noqa: PLC0415
+            if doc.file_path:
+                doc_text = extract_text_from_pdf(doc.file_path) or ""
+                if doc_text:
+                    text_source = "pdf_extraction"
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("QA: PDF extraction fallback failed for doc %d: %s", payload.document_id, exc)
+
+    logger.info(
+        "QA: doc_id=%d text_source=%s text_length=%d question=%r",
+        payload.document_id, text_source, len(doc_text), payload.question[:80],
+    )
+
     doc_title = getattr(doc, "title", None) or getattr(doc, "filename", "") or f"Document #{payload.document_id}"
 
     # Call offline engine
@@ -90,7 +141,12 @@ def ask_question(payload: AskRequest, db: Session = Depends(get_db)) -> Dict[str
         logger.error("Failed to save QA session: %s", exc)
         db.rollback()
 
-    return {**result, "session_id": session_id}
+    return {
+        **result,
+        "session_id": session_id,
+        "text_source": text_source,
+        "text_length": len(doc_text),
+    }
 
 
 @router.post("/index/{document_id}", response_model=IndexResponse)

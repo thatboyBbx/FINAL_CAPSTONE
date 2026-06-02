@@ -16,18 +16,48 @@ import sqlalchemy as sa
 from alembic import op
 
 revision: str = 'a3f8c2e91b04'
-down_revision: Union[str, Sequence[str], None] = '9e599c7786d4'
+down_revision: Union[str, Sequence[str], None] = '942e478fe635'
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
-    # -- document_chunks new columns (nullable so existing rows are unaffected) --
-    with op.batch_alter_table("document_chunks") as batch_op:
-        batch_op.add_column(sa.Column("chunk_text", sa.Text(), nullable=True))
-        batch_op.add_column(sa.Column("page_estimate", sa.Integer(), nullable=True))
-        batch_op.add_column(sa.Column("section_label", sa.String(100), nullable=True))
-        batch_op.add_column(sa.Column("word_count", sa.Integer(), nullable=True))
+    bind = op.get_bind()
+    existing = sa.inspect(bind).get_table_names()
+
+    if "document_chunks" not in existing:
+        # Table was never created by the baseline migration (models were not imported
+        # in env.py at that time).  Create it now with all columns in one shot.
+        op.create_table(
+            "document_chunks",
+            sa.Column("id", sa.Integer(), primary_key=True, index=True),
+            sa.Column("document_id", sa.Integer(), nullable=False, index=True),
+            sa.Column("chunk_id", sa.String(200), nullable=False, unique=True),
+            sa.Column("chunk_index", sa.Integer(), nullable=False),
+            sa.Column("char_start", sa.Integer(), nullable=False),
+            sa.Column("char_end", sa.Integer(), nullable=False),
+            sa.Column("text_hash", sa.String(64), nullable=False),
+            sa.Column("embedding_model", sa.String(200), nullable=False),
+            sa.Column("embedding_version", sa.String(50), nullable=False),
+            sa.Column("embedded_at", sa.DateTime(), nullable=False),
+            sa.Column("chunk_text", sa.Text(), nullable=True),
+            sa.Column("page_estimate", sa.Integer(), nullable=True),
+            sa.Column("section_label", sa.String(100), nullable=True),
+            sa.Column("word_count", sa.Integer(), nullable=True),
+        )
+        op.create_index("ix_doc_chunks_doc_id", "document_chunks", ["document_id"])
+    else:
+        # Table exists — add only the governance columns (may already exist on some DBs).
+        cols = {c["name"] for c in sa.inspect(bind).get_columns("document_chunks")}
+        with op.batch_alter_table("document_chunks") as batch_op:
+            if "chunk_text" not in cols:
+                batch_op.add_column(sa.Column("chunk_text", sa.Text(), nullable=True))
+            if "page_estimate" not in cols:
+                batch_op.add_column(sa.Column("page_estimate", sa.Integer(), nullable=True))
+            if "section_label" not in cols:
+                batch_op.add_column(sa.Column("section_label", sa.String(100), nullable=True))
+            if "word_count" not in cols:
+                batch_op.add_column(sa.Column("word_count", sa.Integer(), nullable=True))
 
     # -- retrieval_audit_log (create if absent) --
     op.create_table(

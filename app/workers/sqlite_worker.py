@@ -22,6 +22,7 @@ import gc
 import logging
 import signal
 import sys
+import threading
 import time
 
 logger = logging.getLogger(__name__)
@@ -224,6 +225,86 @@ def run_worker(
             time.sleep(poll_interval)
 
     logger.info("[%s] stopped (jobs_processed=%d)", worker.worker_id, jobs_processed)
+
+
+# ── In-process thread variant ─────────────────────────────────────────────────
+
+def run_worker_thread(
+    queue: str,
+    stop_event: threading.Event,
+    poll_interval: float = 3.0,
+    max_rss_mb: int = 0,
+    job_timeout_seconds: int = 0,
+) -> None:
+    """
+    Thread-safe worker loop.  Identical to run_worker() but uses a
+    threading.Event for stop signalling instead of OS signal handlers
+    (signal.signal() is only permitted on the main thread).
+
+    Intended for use from app/main.py:lifespan() to start an in-process
+    ingestion worker alongside the FastAPI server.
+
+    Args:
+        queue:               Queue name to consume.
+        stop_event:          Set this event to request a graceful stop.
+        poll_interval:       Seconds to wait when the queue is empty.
+        max_rss_mb:          RSS memory limit in MB.  0 = disabled.
+        job_timeout_seconds: Per-job wall-clock timeout in seconds.  0 = disabled.
+    """
+    from app.workers.base_worker import BaseWorker
+    from app.queue.sqlite_queue import SQLiteJobQueue
+    from app.core.config import settings
+
+    registry = QUEUE_REGISTRIES.get(queue)
+    if registry is None:
+        logger.error("[thread-worker] No registry for queue=%r — known: %s", queue, list(QUEUE_REGISTRIES))
+        return
+
+    retry_base = getattr(settings, "job_retry_backoff_base_seconds", 60)
+    retry_max = getattr(settings, "job_retry_backoff_max_seconds", 1800)
+    timeout = job_timeout_seconds or getattr(settings, "job_timeout_seconds", 0)
+    queue_impl = SQLiteJobQueue(
+        retry_base_seconds=retry_base,
+        retry_max_seconds=retry_max,
+    )
+
+    reclaim_interval = getattr(settings, "stuck_job_reclaim_interval_seconds", 60)
+    reclaim_multiplier = getattr(settings, "stuck_job_timeout_multiplier", 2)
+    effective_timeout = timeout or 1800
+    stale_after = max(reclaim_multiplier * effective_timeout, 120)
+    last_reclaim = time.monotonic()
+
+    worker = BaseWorker(
+        queue=queue,
+        registry=registry,
+        queue_impl=queue_impl,
+        max_rss_mb=max_rss_mb,
+        job_timeout_seconds=timeout,
+    )
+
+    jobs_processed = 0
+    logger.info(
+        "[thread-worker] started — queue=%s poll_interval=%.1fs max_rss_mb=%d timeout=%ds",
+        queue, poll_interval, max_rss_mb, timeout,
+    )
+
+    while not stop_event.is_set() and not worker._should_stop:
+        if reclaim_interval and (time.monotonic() - last_reclaim) >= reclaim_interval:
+            try:
+                queue_impl.reclaim_stuck_jobs(stale_after_seconds=stale_after)
+            except Exception:
+                logger.exception("[thread-worker] stuck-job reclaim failed")
+            last_reclaim = time.monotonic()
+
+        did_work = worker.poll_and_execute()
+        if did_work:
+            jobs_processed += 1
+            gc.collect()
+        else:
+            # Interruptible sleep — stop_event.wait() wakes immediately when set
+            stop_event.wait(timeout=poll_interval)
+
+    logger.info("[thread-worker] stopped — queue=%s jobs_processed=%d", queue, jobs_processed)
 
 
 # ── Entry point ───────────────────────────────────────────────────────────────

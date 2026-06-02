@@ -358,6 +358,29 @@ def process_document_full(
         extraction_result["processing_time_ms"],
     )
 
+    # ── RAG indexing ────────────────────────────────────────────────────────
+    rag_result: dict = {"chunks_created": 0, "status": "skipped"}
+    try:
+        from app.ai.rag.indexing_pipeline import index_document  # noqa: PLC0415
+        rag_result = index_document(document_id=document_id, db=db)
+        logger.info(
+            "process_document_full: RAG indexing complete — "
+            "document_id=%d chunk_count=%d embedding_count=%d "
+            "chroma_collection=document_chunks indexing_status=%s",
+            document_id,
+            rag_result["chunks_created"],
+            rag_result["chunks_created"],
+            rag_result["status"],
+        )
+    except Exception as exc:  # noqa: BLE001
+        rag_result = {"chunks_created": 0, "status": "failed"}
+        logger.warning(
+            "process_document_full: RAG indexing failed — "
+            "document_id=%d chunk_count=0 embedding_count=0 "
+            "chroma_collection=document_chunks indexing_status=failed error=%s",
+            document_id, exc,
+        )
+
     return {
         "document_id":               document_id,
         "text_length":               len(text),
@@ -369,6 +392,10 @@ def process_document_full(
         "processing_time_ms":        extraction_result["processing_time_ms"],
         "compliance_score":          compliance_result["compliance_score"] if compliance_result else None,
         "compliance_status":         compliance_result["status"] if compliance_result else None,
+        "rag_chunk_count":           rag_result["chunks_created"],
+        "rag_embedding_count":       rag_result["chunks_created"],
+        "rag_chroma_collection":     "document_chunks",
+        "rag_indexing_status":       rag_result["status"],
     }
 
 
