@@ -74,7 +74,8 @@
                 flex-wrap:wrap;gap:1rem;margin-bottom:1.5rem">
       <h1 class="font-headline"
           style="font-size:1.5rem;font-weight:800;color:var(--cos);margin:0">
-        📁 Document Vault
+        <span class="material-symbols-outlined" style="font-size:1.5rem;color:var(--cp);vertical-align:-0.2rem">folder_open</span>
+        Document Vault
       </h1>
       <div style="display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap">
         <!-- Sort -->
@@ -97,7 +98,7 @@
                  class="form-input" style="padding-left:1.875rem;width:220px;font-size:0.8rem"
                  oninput="renderTable()">
         </div>
-        <a href="/documents/upload" class="btn-glass btn-glass-gold" style="font-size:0.8125rem">
+        <a id="upload-link" href="/documents/upload" class="btn-glass btn-glass-gold" style="font-size:0.8125rem">
           <span class="material-symbols-outlined icon-sm" aria-hidden="true">upload_file</span>
           Upload
         </a>
@@ -147,7 +148,9 @@
                 padding:1rem 1.25rem;border-bottom:1px solid rgba(255,255,255,0.06)">
       <span id="preview-modal-title" style="color:var(--cos);font-weight:700;font-size:0.9375rem"></span>
       <button onclick="closePreview()" aria-label="Close preview"
-              class="alert-dismiss-btn" style="font-size:1.5rem">×</button>
+              class="alert-dismiss-btn">
+        <span class="material-symbols-outlined" style="font-size:18px">close</span>
+      </button>
     </div>
     <iframe id="preview-frame" style="flex:1;border:none;background:#fff"
             title="Document preview"></iframe>
@@ -244,13 +247,15 @@ function sortBy(col) {
 /* ── Initialise ─────────────────────────────────────────────────────────── */
 document.addEventListener("DOMContentLoaded", async () => {
   try {
-    const url = clientContextId ? `/api/documents?client_id=${encodeURIComponent(clientContextId)}` : "/api/documents";
+    const url = "/api/documents";
     allDocs = await apiGet(url);
     buildFolderTree();
     renderTable();
     if (clientContextId) {
       const heading = document.querySelector("h1.font-headline");
       if (heading) heading.textContent = "Client Policy Documents";
+      const uploadLink = document.getElementById("upload-link");
+      if (uploadLink) uploadLink.href = `/documents/upload?client_id=${encodeURIComponent(clientContextId)}`;
     }
   } catch (err) {
     showToast("Failed to load documents: " + err.message, "error");
@@ -350,7 +355,7 @@ function renderTable() {
         </p>
         ${isFiltered
           ? `<button onclick="document.getElementById('search-input').value='';renderTable()" class="btn-glass btn-glass-gold">Clear search</button>`
-          : `<a href="/documents/upload" class="btn-glass btn-glass-gold">Upload Document</a>`
+          : `<a href="${clientContextId ? `/documents/upload?client_id=${encodeURIComponent(clientContextId)}` : '/documents/upload'}" class="btn-glass btn-glass-gold">Upload Document</a>`
         }
       </div>
     </td></tr>`;
@@ -398,6 +403,7 @@ function renderTable() {
                   class="btn btn-sm btn-ghost" title="Move to folder">
             <span class="material-symbols-outlined" style="font-size:16px">drive_file_move</span>
           </button>
+          ${clientContextId ? renderClientLinkAction(d) : ""}
           <button onclick="deleteDoc(${d.id})"
                   class="btn btn-sm btn-danger" title="Delete">
             <span class="material-symbols-outlined" style="font-size:16px">delete</span>
@@ -406,6 +412,25 @@ function renderTable() {
       </td>
     </tr>`;
   }).join("");
+}
+
+function renderClientLinkAction(d) {
+  const linkedToThisClient = String(d.client_id || "") === String(clientContextId);
+  if (linkedToThisClient) {
+    return `<button onclick="assignClient(${d.id}, null)"
+                    class="btn btn-sm btn-ghost" title="Unlink from this client">
+              <span class="material-symbols-outlined" style="font-size:16px">link_off</span>
+            </button>`;
+  }
+  if (d.client_id) {
+    return `<button class="btn btn-sm btn-ghost" title="Assigned to another client" disabled style="opacity:0.45;cursor:not-allowed">
+              <span class="material-symbols-outlined" style="font-size:16px">lock</span>
+            </button>`;
+  }
+  return `<button onclick="assignClient(${d.id}, ${Number(clientContextId)})"
+                  class="btn btn-sm btn-ghost" title="Link to this client">
+            <span class="material-symbols-outlined" style="font-size:16px">add_link</span>
+          </button>`;
 }
 
 /* ── Actions ────────────────────────────────────────────────────────────── */
@@ -472,6 +497,18 @@ async function submitMove() {
     showToast(`Moved to "${newFolder}".`, "success");
   } catch (err) {
     showToast("Move failed: " + err.message, "error");
+  }
+}
+
+async function assignClient(documentId, clientId) {
+  try {
+    await apiPatch(`/api/documents/${documentId}/assign-client`, { client_id: clientId });
+    const doc = allDocs.find(d => d.id === Number(documentId));
+    if (doc) doc.client_id = clientId;
+    renderTable();
+    showToast(clientId ? "Document linked to client policies." : "Document unlinked from client.", "success");
+  } catch (err) {
+    showToast("Client link failed: " + err.message, "error");
   }
 }
 

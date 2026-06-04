@@ -16,7 +16,8 @@
   <div style="display:flex;align-items:center;justify-content:space-between;
               flex-wrap:wrap;gap:1rem;margin-bottom:1.75rem">
     <h1 class="font-headline" style="font-size:1.5rem;font-weight:800;color:var(--cos);margin:0">
-      🏢 Insurer Intelligence Registry
+      <span class="material-symbols-outlined" style="font-size:1.5rem;color:var(--cp);vertical-align:-0.2rem">business</span>
+      Insurer Intelligence Registry
     </h1>
     <div style="display:flex;gap:0.75rem">
       <button onclick="openImportModal()" class="btn-glass">
@@ -195,7 +196,8 @@ function closeImportModal() {
 }
 function setCsvFile(f) {
   csvFile = f;
-  document.getElementById("csv-filename").textContent = "📎 " + f.name;
+  document.getElementById("csv-filename").innerHTML =
+    `<span class="material-symbols-outlined" style="font-size:16px;vertical-align:-0.2rem">attach_file</span> ${_esc(f.name)}`;
   document.getElementById("csv-filename").style.display = "block";
   document.getElementById("import-btn").disabled = false;
 }
@@ -220,8 +222,8 @@ async function runImport() {
   const res = document.getElementById("import-result");
   if (resp.ok) {
     res.className = "alert alert-success";
-    res.textContent = `✓ Imported ${data.imported}, updated ${data.updated}.
-      ${data.errors?.length ? `Errors: ${data.errors.length}` : ""}`;
+    res.innerHTML = `<span class="material-symbols-outlined" style="font-size:16px;vertical-align:-0.2rem;color:#4ade80">check_circle</span>
+      Imported ${data.imported}, updated ${data.updated}. ${data.errors?.length ? `Errors: ${data.errors.length}` : ""}`;
     res.style.display = "block";
     showToast("CSV import complete.", "success");
     // Refresh table

@@ -14,7 +14,7 @@ from app.core.db import get_db
 from app.modules.intel import repo as intel_repo
 from app.modules.intel import classifier as intel_clf
 from app.modules.intel import gdelt as intel_gdelt
-from app.modules.auth.dependencies import get_current_user
+from app.modules.auth.dependencies import get_current_user, require_role
 
 logger = logging.getLogger(__name__)
 router = APIRouter(
@@ -31,6 +31,7 @@ def ingest_news(
     hours_back:  int = Query(72,  ge=1, le=168),
     max_records: int = Query(100, ge=1, le=250),
     db: Session = Depends(get_db),
+    _admin=Depends(require_role("admin")),
 ):
     """Fetch Zimbabwe insurance news from GDELT and store in DB."""
     try:
@@ -95,7 +96,10 @@ def get_stats(db: Session = Depends(get_db)):
 # ── Train ─────────────────────────────────────────────────────────────────────
 
 @router.post("/train")
-def train_classifier(db: Session = Depends(get_db)):
+def train_classifier(
+    db: Session = Depends(get_db),
+    _admin=Depends(require_role("admin")),
+):
     """Train TF-IDF + LR classifier on stored intel articles."""
     try:
         articles = intel_repo.get_all_articles(db)

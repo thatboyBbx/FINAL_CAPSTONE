@@ -67,10 +67,11 @@
     .alert-error{
       display:flex;align-items:flex-start;gap:0.5rem;
       padding:8px 12px;border-radius:4px;font-size:0.875rem;
-      background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.28);
-      color:#f87171;
+      line-height:1.45;font-weight:600;
+      background:rgba(127,29,29,0.34);border:1px solid rgba(248,113,113,0.55);
+      color:#fecaca;
     }
-    html:not(.dark) .alert-error{color:#ff4d4f;background:#fff1f0;border:1px solid #ffccc7;}
+    html:not(.dark) .alert-error{color:#7f1d1d;background:#fff1f0;border:1px solid #fca5a5;}
     html:not(.dark) .icon-dark-mode{display:none;}
     html.dark .icon-light-mode{display:none;}
   </style>
@@ -112,7 +113,6 @@
         <!-- Error -->
         {% if error %}
         <div class="alert-error mb-6" role="alert" aria-live="assertive" aria-atomic="true">
-          <span class="material-symbols-outlined text-lg flex-shrink-0" aria-hidden="true">error</span>
           <span>{{ error }}</span>
         </div>
         {% endif %}
@@ -148,6 +148,7 @@
           <div class="flex items-center gap-3">
             <input type="checkbox" id="remember" name="remember" class="w-4 h-4 rounded cursor-pointer" style="accent-color:rgb(var(--p))">
             <label for="remember" class="text-sm cursor-pointer select-none" style="color:rgb(var(--osv))">Remember this device for 30 days</label>
+            <a href="/forgot-password" class="text-sm font-bold ml-auto hover:underline underline-offset-2" style="color:rgb(var(--p))">Forgot password?</a>
           </div>
 
           <button type="submit" id="login-submit-btn" class="btn-primary mt-1">

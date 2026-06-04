@@ -185,17 +185,22 @@ def settlement_power_all(db: Session = Depends(get_db)) -> dict:
     Returns:
         {"scores": [...], "count": N}
     """
-    from app.modules.insurers.model import Insurer  # noqa: PLC0415
-    from app.modules.csp.model import CSPScore            # noqa: PLC0415
+    from app.modules.csp.model import CSPScore  # noqa: PLC0415
+    from app.modules.financials.model import InsurerFinancials  # noqa: PLC0415
 
     insurer_ids_with_scores: set[int] = {
         row[0]
         for row in db.query(CSPScore.insurer_id).distinct().all()
         if row[0] is not None
     }
+    insurer_ids_with_financials: set[int] = {
+        row[0]
+        for row in db.query(InsurerFinancials.insurer_id).distinct().all()
+        if row[0] is not None
+    }
 
     results = []
-    for iid in insurer_ids_with_scores:
+    for iid in insurer_ids_with_scores | insurer_ids_with_financials:
         try:
             results.append(_score_insurer(iid, db))
         except HTTPException:

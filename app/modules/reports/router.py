@@ -13,7 +13,11 @@ WeasyPrint must be installed: pip install weasyprint
 from __future__ import annotations
 
 import logging
-from io import BytesIO
+import re
+from contextlib import redirect_stderr, redirect_stdout
+from html.parser import HTMLParser
+from io import BytesIO, StringIO
+from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 from fastapi.responses import HTMLResponse, StreamingResponse
@@ -21,6 +25,10 @@ from fastapi.templating import Jinja2Templates
 from pathlib import Path
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
+
+WeasyPrintHTML: Any | None = None
+_WEASYPRINT_IMPORT_ERROR: Exception | None = None
+_WEASYPRINT_IMPORT_ATTEMPTED = False
 
 from app.core.db import get_db
 from app.modules.documents import service as doc_service
@@ -36,6 +44,103 @@ router = APIRouter(
 
 
 # ─── Request / Response schemas ──────────────────────────────────────────────
+
+class _ReportTextParser(HTMLParser):
+    """Extract readable text blocks from simple report HTML."""
+
+    _BLOCK_TAGS = {"br", "div", "h1", "h2", "h3", "li", "p", "section", "table", "tr"}
+
+    def __init__(self) -> None:
+        super().__init__()
+        self._parts: list[str] = []
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        if tag in self._BLOCK_TAGS:
+            self._parts.append("\n")
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag in self._BLOCK_TAGS:
+            self._parts.append("\n")
+
+    def handle_data(self, data: str) -> None:
+        text = data.strip()
+        if text:
+            self._parts.append(text)
+
+    def text(self) -> str:
+        raw = " ".join(self._parts)
+        raw = re.sub(r"[ \t\r\f\v]+", " ", raw)
+        raw = re.sub(r"\n\s+", "\n", raw)
+        raw = re.sub(r"\n{3,}", "\n\n", raw)
+        return raw.strip()
+
+
+def _extract_report_text(html_content: str) -> str:
+    parser = _ReportTextParser()
+    parser.feed(html_content)
+    return parser.text() or "No report content was available."
+
+
+def _html_to_pdf_with_reportlab(html_content: str) -> bytes:
+    from reportlab.lib.pagesizes import A4  # noqa: PLC0415
+    from reportlab.lib.styles import getSampleStyleSheet  # noqa: PLC0415
+    from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer  # noqa: PLC0415
+
+    buffer = BytesIO()
+    doc = SimpleDocTemplate(buffer, pagesize=A4, leftMargin=48, rightMargin=48)
+    styles = getSampleStyleSheet()
+    story = []
+
+    for index, block in enumerate(_extract_report_text(html_content).splitlines()):
+        block = block.strip()
+        if not block:
+            story.append(Spacer(1, 8))
+            continue
+        style = styles["Title"] if index == 0 else styles["BodyText"]
+        story.append(Paragraph(_esc(block), style))
+        story.append(Spacer(1, 6))
+
+    doc.build(story)
+    return buffer.getvalue()
+
+
+def _get_weasyprint_html() -> Any | None:
+    global WeasyPrintHTML, _WEASYPRINT_IMPORT_ATTEMPTED, _WEASYPRINT_IMPORT_ERROR
+
+    if _WEASYPRINT_IMPORT_ATTEMPTED:
+        return WeasyPrintHTML
+
+    _WEASYPRINT_IMPORT_ATTEMPTED = True
+    try:
+        quiet_output = StringIO()
+        with redirect_stdout(quiet_output), redirect_stderr(quiet_output):
+            from weasyprint import HTML  # noqa: PLC0415
+        WeasyPrintHTML = HTML
+        _WEASYPRINT_IMPORT_ERROR = None
+    except (ImportError, OSError) as exc:  # pragma: no cover - environment-dependent
+        WeasyPrintHTML = None
+        _WEASYPRINT_IMPORT_ERROR = exc
+    return WeasyPrintHTML
+
+
+def _html_to_pdf(html_content: str) -> bytes:
+    """Render report HTML to PDF with WeasyPrint, falling back on ReportLab."""
+    try:
+        renderer = _get_weasyprint_html()
+        if renderer is not None:
+            return renderer(string=html_content).write_pdf()
+        logger.warning(
+            "Using ReportLab PDF fallback because WeasyPrint is unavailable: %s",
+            _WEASYPRINT_IMPORT_ERROR,
+        )
+        return _html_to_pdf_with_reportlab(html_content)
+    except Exception as exc:
+        logger.exception("PDF generation failed: %s", exc)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"PDF generation failed: {exc}",
+        ) from exc
+
 
 class ReportRequest(BaseModel):
     """Request body for POST /api/reports/generate."""
@@ -224,20 +329,7 @@ async def generate_report(
     )
 
     # ── Convert to PDF ────────────────────────────────────────────────────────
-    try:
-        from weasyprint import HTML  # noqa: PLC0415
-        pdf_bytes = HTML(string=html_content).write_pdf()
-    except ImportError:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="WeasyPrint is not installed. Run: pip install weasyprint",
-        )
-    except Exception as exc:
-        logger.exception("PDF generation failed for doc %s: %s", payload.document_id, exc)
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"PDF generation failed: {exc}",
-        )
+    pdf_bytes = _html_to_pdf(html_content)
 
     filename = f"insure_intel_{payload.report_type}_{payload.document_id}.pdf"
     return StreamingResponse(
@@ -322,20 +414,7 @@ async def get_sandbox_quarterly_report(
     # ── Return HTML or PDF ────────────────────────────────────────────────────
     if format.lower() == "pdf":
         # Convert rendered HTML → PDF using the same WeasyPrint pattern as /generate
-        try:
-            from weasyprint import HTML  # noqa: PLC0415
-            pdf_bytes = HTML(string=html_content).write_pdf()
-        except ImportError:
-            raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="WeasyPrint is not installed. Run: pip install weasyprint",
-            )
-        except Exception as exc:
-            logger.exception("PDF generation failed: %s", exc)
-            raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail=f"PDF generation failed: {exc}",
-            )
+        pdf_bytes = _html_to_pdf(html_content)
 
         filename = f"sandbox_quarterly_{broker_id}_{quarter}.pdf"
         return StreamingResponse(

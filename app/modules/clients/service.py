@@ -13,6 +13,7 @@ from sqlalchemy.orm import Session
 from app.core.pagination import normalize_pagination
 from app.modules.clients import repo
 from app.modules.clients.model import Client, ClientInteraction, ClientNote, ClientPolicy
+from app.modules.documents.model import Document
 
 
 def create_client(db: Session, data: dict) -> Client:
@@ -73,7 +74,16 @@ def add_policy(db: Session, client_id: int, data: dict) -> ClientPolicy:
 
 
 def list_policies(db: Session, client_id: int) -> list[ClientPolicy]:
+    repo.sync_document_policies_for_client(db, client_id)
     return repo.get_policies(db, client_id)
+
+
+def ensure_policy_for_document(db: Session, document: Document) -> ClientPolicy | None:
+    return repo.ensure_policy_for_document(db, document)
+
+
+def unlink_policy_for_document(db: Session, document_id: int) -> None:
+    repo.unlink_policy_for_document(db, document_id)
 
 
 def list_client_documents(

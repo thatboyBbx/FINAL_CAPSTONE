@@ -14,7 +14,8 @@
   </nav>
 
   <h1 class="font-headline" style="font-size:1.5rem;font-weight:800;color:var(--cos);margin:0 0 1.75rem">
-    ⚠️ Risk Analysis
+    <span class="material-symbols-outlined" style="font-size:1.5rem;color:var(--cp);vertical-align:-0.2rem">warning</span>
+    Risk Analysis
   </h1>
 
   <!-- Config -->
@@ -116,8 +117,8 @@ function renderRisk(data) {
           : factors.map(f => `
           <div style="display:flex;align-items:flex-start;gap:0.75rem;
                       padding:0.625rem 0;border-bottom:1px solid rgba(255,255,255,0.05)">
-            <span style="color:${f.severity === 'high' ? '#f87171' : f.severity === 'medium' ? '#fbbf24' : '#4ade80'};
-                           flex-shrink:0;font-size:1rem;margin-top:1px">⬤</span>
+            <span class="material-symbols-outlined" style="color:${f.severity === 'high' ? '#f87171' : f.severity === 'medium' ? '#fbbf24' : '#4ade80'};
+                           flex-shrink:0;font-size:1rem;margin-top:1px">circle</span>
             <div>
               <p style="color:var(--cos);font-size:0.8125rem;font-weight:600;margin:0">
                 ${_esc(f.name || f.factor || '')}</p>

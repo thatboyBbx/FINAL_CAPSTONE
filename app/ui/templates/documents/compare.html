@@ -21,7 +21,8 @@
 
   <h1 class="font-headline"
       style="font-size:1.5rem;font-weight:800;color:var(--cos);margin:0 0 1.75rem">
-    🔀 Compare Documents
+    <span class="material-symbols-outlined" style="font-size:1.5rem;color:var(--cp);vertical-align:-0.2rem">compare_arrows</span>
+    Compare Documents
   </h1>
 
   <!-- Two Selection Panels -->
@@ -220,10 +221,10 @@ async function handleDrop(side, file) {
     if (!resp.ok) throw new Error(data.detail || "Upload failed");
     if (side === "a") uploadedAId = data.id;
     else              uploadedBId = data.id;
-    nameEl.textContent = `✓ ${file.name}`;
+    nameEl.innerHTML = `<span class="material-symbols-outlined" style="font-size:16px;vertical-align:-0.2rem;color:#4ade80">check_circle</span> ${_esc(file.name)}`;
     checkReady();
   } catch (err) {
-    nameEl.textContent = `✗ ${err.message}`;
+    nameEl.innerHTML = `<span class="material-symbols-outlined" style="font-size:16px;vertical-align:-0.2rem;color:var(--cerr)">cancel</span> ${_esc(err.message)}`;
     showToast("Upload failed: " + err.message, "error");
   }
 }
@@ -267,14 +268,15 @@ async function runComparison() {
 
 function renderResults(data) {
   document.getElementById("results-area").style.display = "block";
+  const summary = data.summary || {};
 
   // Stats
   const stats = document.getElementById("compare-stats");
   const items = [
-    { label: "Added",    val: data.added_count    || 0, color: "#4ade80" },
-    { label: "Removed",  val: data.removed_count  || 0, color: "#f87171" },
-    { label: "Changed",  val: data.changed_count  || 0, color: "#fbbf24" },
-    { label: "Unchanged",val: data.unchanged_count|| 0, color: "#a1a1a1" },
+    { label: "Added",    val: data.added_count ?? summary.added ?? 0, color: "#4ade80" },
+    { label: "Removed",  val: data.removed_count ?? summary.removed ?? 0, color: "#f87171" },
+    { label: "Changed",  val: data.changed_count ?? summary.modified ?? 0, color: "#fbbf24" },
+    { label: "Unchanged",val: data.unchanged_count ?? summary.identical ?? 0, color: "#a1a1a1" },
   ];
   stats.innerHTML = items.map(i => `
     <div style="text-align:center;padding:1rem;background:rgba(255,255,255,0.03);
@@ -285,23 +287,100 @@ function renderResults(data) {
 
   // Diff view
   const diffEl = document.getElementById("diff-view");
-  if (data.diff_lines && data.diff_lines.length > 0) {
-    diffEl.innerHTML = data.diff_lines.map(line => {
-      if (line.startsWith("+"))
-        return `<div class="diff-added">${_esc(line)}</div>`;
-      if (line.startsWith("-"))
-        return `<div class="diff-removed">${_esc(line)}</div>`;
-      if (line.startsWith("?"))
-        return `<div class="diff-changed">${_esc(line)}</div>`;
-      return `<div style="color:var(--cosv)">${_esc(line)}</div>`;
-    }).join("");
-  } else if (data.summary) {
-    diffEl.innerHTML = `<p style="color:var(--cosv)">${_esc(data.summary)}</p>`;
-  } else {
-    diffEl.innerHTML = `<p style="color:var(--cosv)">Comparison complete. No diff data returned.</p>`;
-  }
+  diffEl.innerHTML = renderComparisonNarrative(data);
 
   document.getElementById("results-area").scrollIntoView({ behavior: "smooth" });
+}
+
+function renderComparisonNarrative(data) {
+  const summary = data.summary || {};
+  const totalA = Number(summary.total_clauses_a || 0);
+  const totalB = Number(summary.total_clauses_b || 0);
+  const similarity = summary.similarity_score_overall !== undefined
+    ? `${Math.round(Number(summary.similarity_score_overall || 0) * 100)}%`
+    : "n/a";
+  const narrative = data.summary_text || buildSummaryText(data);
+  const highRisk = Array.isArray(data.high_risk_changes) ? data.high_risk_changes : [];
+  const coverage = Array.isArray(data.coverage_changes) ? data.coverage_changes : [];
+  const exclusions = Array.isArray(data.exclusion_changes) ? data.exclusion_changes : [];
+
+  return `
+    <section style="display:grid;gap:1rem">
+      <div style="padding:1rem;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06)">
+        <p style="margin:0 0 0.75rem;color:var(--cos);font-size:0.9rem;line-height:1.6">${_esc(narrative)}</p>
+        <div style="display:flex;flex-wrap:wrap;gap:0.45rem">
+          ${renderMiniBadge("Base clauses", totalA)}
+          ${renderMiniBadge("Comparison clauses", totalB)}
+          ${renderMiniBadge("Overall similarity", similarity)}
+          ${renderMiniBadge("High risk", highRisk.length)}
+        </div>
+      </div>
+      ${renderChangeSection("High-Risk Changes", highRisk, "warning")}
+      ${renderChangeSection("Coverage Changes", coverage, "policy")}
+      ${renderChangeSection("Exclusion Changes", exclusions, "block")}
+      ${renderDiffLines(data.diff_lines || [])}
+    </section>
+  `;
+}
+
+function buildSummaryText(data) {
+  const s = data.summary || {};
+  return `Compared ${s.total_clauses_a || 0} base clauses with ${s.total_clauses_b || 0} comparison clauses: ${s.identical || 0} unchanged, ${s.modified || 0} changed, ${s.added || 0} added, and ${s.removed || 0} removed.`;
+}
+
+function renderMiniBadge(label, value) {
+  return `<span class="badge badge-blue">${_esc(label)}: ${_esc(value)}</span>`;
+}
+
+function renderChangeSection(title, items, icon) {
+  if (!items.length) {
+    return `
+      <div style="padding:0.85rem 1rem;border-radius:10px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.05)">
+        <p style="margin:0;color:var(--cosv);font-size:0.8rem">${_esc(title)}: none detected.</p>
+      </div>
+    `;
+  }
+  return `
+    <div style="padding:1rem;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06)">
+      <h3 style="display:flex;align-items:center;gap:0.45rem;margin:0 0 0.75rem;color:var(--cos);font-size:0.9rem;font-weight:800">
+        <span class="material-symbols-outlined" style="font-size:18px;color:var(--cp)">${icon}</span>
+        ${_esc(title)} (${items.length})
+      </h3>
+      <div style="display:grid;gap:0.65rem">
+        ${items.slice(0, 8).map(renderChangeItem).join("")}
+      </div>
+    </div>
+  `;
+}
+
+function renderChangeItem(item) {
+  const reason = item.risk_reason || item.change_summary || "Change detected.";
+  const text = ((item.clause_b || {}).text || (item.clause_a || {}).text || "").slice(0, 300);
+  const score = item.similarity_score !== undefined ? `Similarity ${Math.round(Number(item.similarity_score || 0) * 100)}%` : "";
+  return `
+    <div style="padding:0.75rem;border-radius:8px;background:rgba(255,255,255,0.03)">
+      <p style="margin:0 0 0.35rem;color:var(--cos);font-size:0.78rem;font-weight:700">${_esc(reason)}</p>
+      ${score ? `<p style="margin:0 0 0.35rem;color:var(--cosv);font-size:0.72rem">${_esc(score)}</p>` : ""}
+      ${text ? `<p style="margin:0;color:var(--cosv);font-size:0.72rem;line-height:1.45">${_esc(text)}${text.length === 300 ? "..." : ""}</p>` : ""}
+    </div>
+  `;
+}
+
+function renderDiffLines(lines) {
+  if (!lines.length) return "";
+  return `
+    <details style="padding:1rem;border-radius:10px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.05)">
+      <summary style="cursor:pointer;color:var(--cos);font-size:0.8rem;font-weight:700">Detailed line view</summary>
+      <div style="margin-top:0.75rem">
+        ${lines.map(line => {
+          if (line.startsWith("+")) return `<div class="diff-added">${_esc(line)}</div>`;
+          if (line.startsWith("-")) return `<div class="diff-removed">${_esc(line)}</div>`;
+          if (line.startsWith("?")) return `<div class="diff-changed">${_esc(line)}</div>`;
+          return `<div style="color:var(--cosv)">${_esc(line)}</div>`;
+        }).join("")}
+      </div>
+    </details>
+  `;
 }
 
 function _esc(s) {

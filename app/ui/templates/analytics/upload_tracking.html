@@ -216,7 +216,9 @@
             <td>
               <div style="display:flex;gap:.5rem;align-items:center">
                 {% if doc.rag_indexed %}
-                <span class="badge badge-green" style="font-size:.6rem">RAG ✓</span>
+                <span class="badge badge-green" style="font-size:.6rem">
+                  RAG <span class="material-symbols-outlined" style="font-size:12px">check_circle</span>
+                </span>
                 {% else %}
                 <span class="badge" style="font-size:.6rem;background:rgba(255,255,255,.05);color:var(--col)">RAG —</span>
                 {% endif %}

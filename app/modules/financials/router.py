@@ -8,7 +8,7 @@ from app.modules.financials.repo import FinancialRepo
 from app.modules.financials.service import FinancialService
 from app.modules.financials.features import FinancialFeatureEngineer
 from app.modules.financials.dev_seed import seed_financials_for_all_insurers, SeedConfig
-from app.modules.auth.dependencies import get_current_user
+from app.modules.auth.dependencies import get_current_user, require_role
 
 
 router = APIRouter(
@@ -25,6 +25,7 @@ async def upload_financials_csv(
     file: UploadFile = File(...),
     create_missing_insurers: bool = Query(True),
     db: Session = Depends(get_db),
+    _admin=Depends(require_role("admin")),
 ):
     if not file.filename.lower().endswith(".csv"):
         raise HTTPException(status_code=400, detail="Please upload a .csv file.")
@@ -79,7 +80,11 @@ def compute_financial_features(
     }
 
 @router.post("/dev/seed")
-def dev_seed_financials(months: int = 6, db: Session = Depends(get_db)):
+def dev_seed_financials(
+    months: int = 6,
+    db: Session = Depends(get_db),
+    _admin=Depends(require_role("admin")),
+):
     """
     DEV ONLY: seeds synthetic financial snapshots for all insurers
     so the ML demo model has enough training rows.

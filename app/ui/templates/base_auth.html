@@ -26,10 +26,27 @@
       min-height:100vh; -webkit-font-smoothing:antialiased;
     }
     h1,h2,h3 { font-family:'Manrope',sans-serif; }
-    .material-symbols-outlined {
-      font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;
-      vertical-align:middle;
+    .brand-mark {
+      position:relative; width:1.6rem; height:1.6rem;
+      display:block; border-radius:0.45rem;
+      border:2px solid currentColor;
     }
+    .brand-mark::after {
+      content:''; position:absolute; left:50%; top:0.28rem;
+      width:0.58rem; height:0.48rem; transform:translateX(-50%);
+      border:2px solid currentColor; border-bottom:none; border-radius:0.45rem 0.45rem 0 0;
+    }
+    .brand-mark::before {
+      content:''; position:absolute; left:50%; top:0.82rem;
+      width:0.22rem; height:0.38rem; transform:translateX(-50%);
+      background:currentColor; border-radius:999px;
+    }
+    .field-input.no-icon { padding-left:0.875rem; }
+    .theme-glyph {
+      width:1rem; height:1rem; border-radius:999px; display:block;
+      border:2px solid currentColor;
+    }
+    .theme-glyph-dark { background:currentColor; }
     /* Form fields */
     .field-wrap { position:relative; }
     .field-icon  {
@@ -67,15 +84,16 @@
       display:flex; align-items:flex-start; gap:0.5rem;
       padding:0.625rem 0.875rem; border-radius:0.5rem;
       font-size:0.875rem; margin-bottom:1.25rem;
+      line-height:1.45; font-weight:600;
     }
     .auth-alert-error {
-      background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.28); color:#f87171;
+      background:rgba(127,29,29,0.34); border:1px solid rgba(248,113,113,0.55); color:#fecaca;
     }
-    html:not(.dark) .auth-alert-error { color:#ff4d4f; background:#fff1f0; border-color:#ffccc7; }
+    html:not(.dark) .auth-alert-error { color:#7f1d1d; background:#fff1f0; border-color:#fca5a5; }
     .auth-alert-success {
-      background:rgba(74,222,128,0.1); border:1px solid rgba(74,222,128,0.28); color:#4ade80;
+      background:rgba(20,83,45,0.34); border:1px solid rgba(74,222,128,0.55); color:#bbf7d0;
     }
-    html:not(.dark) .auth-alert-success { color:#006438; background:rgba(0,100,60,0.06); border-color:rgba(0,100,60,0.2); }
+    html:not(.dark) .auth-alert-success { color:#14532d; background:#ecfdf5; border-color:#86efac; }
     /* Theme icon toggle */
     html.dark       .icon-dark-mode  { display:none; }
     html:not(.dark) .icon-light-mode { display:none; }
@@ -92,8 +110,8 @@
   <button onclick="toggleTheme()" title="Toggle theme"
           class="fixed top-4 right-4 z-50 w-9 h-9 flex items-center justify-center rounded-full"
           style="background:rgba(128,128,128,0.15);border:1px solid rgba(128,128,128,0.25)">
-    <span class="material-symbols-outlined text-lg icon-light-mode" style="color:#d4af37">light_mode</span>
-    <span class="material-symbols-outlined text-lg icon-dark-mode"  style="color:rgb(var(--osv))">dark_mode</span>
+    <span class="theme-glyph icon-light-mode" style="color:#d4af37" aria-hidden="true"></span>
+    <span class="theme-glyph theme-glyph-dark icon-dark-mode" style="color:rgb(var(--osv))" aria-hidden="true"></span>
   </button>
 
   <!-- Layout: left form + optional right panel -->
@@ -107,8 +125,7 @@
         <div class="mb-10 flex items-center gap-3">
           <div class="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
                style="background:rgb(var(--p));box-shadow:0 0 18px rgb(var(--p)/0.4)">
-            <span class="material-symbols-outlined text-2xl"
-                  style="color:rgb(var(--op));font-variation-settings:'FILL' 1">security</span>
+            <span class="brand-mark" style="color:rgb(var(--op))" aria-hidden="true"></span>
           </div>
           <div>
             <p class="text-base font-bold font-headline leading-none" style="color:rgb(var(--p))">InsureIntel</p>
@@ -122,13 +139,11 @@
         <!-- Flash messages -->
         {% if error %}
         <div class="auth-alert auth-alert-error">
-          <span class="material-symbols-outlined text-lg flex-shrink-0">error</span>
           <span>{{ error }}</span>
         </div>
         {% endif %}
         {% if success %}
         <div class="auth-alert auth-alert-success">
-          <span class="material-symbols-outlined text-lg flex-shrink-0">check_circle</span>
           <span>{{ success }}</span>
         </div>
         {% endif %}
@@ -161,8 +176,7 @@
       </div>
       <div class="relative z-10 flex flex-col items-center px-14 text-center" style="color:rgb(var(--op))">
         {% block auth_panel_content %}
-        <span class="material-symbols-outlined text-7xl mb-6 opacity-80"
-              style="font-variation-settings:'FILL' 1">shield</span>
+        <span class="brand-mark mb-6 opacity-80" style="color:rgb(var(--op));width:4.5rem;height:4.5rem" aria-hidden="true"></span>
         <h3 class="text-3xl font-extrabold font-headline leading-tight mb-4 tracking-tight">
           Intelligent Insurance Analysis<br>for Zimbabwe
         </h3>

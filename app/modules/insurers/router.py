@@ -5,13 +5,14 @@ import io
 import logging
 
 from fastapi import APIRouter, BackgroundTasks, Depends, File, HTTPException, Query, UploadFile
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 
 from app.core.db import get_db
 from app.modules.insurers.schemas import InsurerCreate, InsurerRead
 from app.modules.insurers.service import InsurerService
 from app.modules.insurers.dev_seed import seed_insurers
-from app.modules.auth.dependencies import get_current_user
+from app.modules.auth.dependencies import get_current_user, require_role
 
 logger = logging.getLogger(__name__)
 
@@ -36,7 +37,11 @@ def _get_analytics():
 # ── Existing CRUD ─────────────────────────────────────────────────────────────
 
 @router.post("", response_model=InsurerRead)
-def create_insurer(payload: InsurerCreate, db: Session = Depends(get_db)):
+def create_insurer(
+    payload: InsurerCreate,
+    db: Session = Depends(get_db),
+    _admin=Depends(require_role("admin")),
+):
     try:
         insurer = service.create_insurer(db, payload)
         return insurer
@@ -45,7 +50,10 @@ def create_insurer(payload: InsurerCreate, db: Session = Depends(get_db)):
 
 
 @router.post("/dev/seed")
-def dev_seed_insurers(db: Session = Depends(get_db)):
+def dev_seed_insurers(
+    db: Session = Depends(get_db),
+    _admin=Depends(require_role("admin")),
+):
     """Seed all 70+ IPEC-licensed insurers."""
     return seed_insurers(db)
 
@@ -121,6 +129,7 @@ def list_scrape_runs(
 async def import_insurers_csv(
     file: UploadFile = File(...),
     db: Session = Depends(get_db),
+    _admin=Depends(require_role("admin")),
 ) -> dict:
     """
     Import or upsert insurers from a CSV file.
@@ -243,6 +252,7 @@ def trigger_scrape(
     payload: dict,
     background_tasks: BackgroundTasks,
     db: Session = Depends(get_db),
+    _admin=Depends(require_role("admin")),
 ):
     """
     Trigger a named scraper in the background.
@@ -278,6 +288,9 @@ def list_insurers(
 ):
     """List insurers with optional category/ZSE/fuzzy-name filters."""
     from app.modules.insurers.model import Insurer
+    from app.modules.financials.model import FinancialSnapshot, InsurerFinancials
+    from app.modules.csp.model import CSPScore
+
     q = db.query(Insurer)
     if category:
         q = q.filter(Insurer.category == category)
@@ -295,7 +308,93 @@ def list_insurers(
         except ImportError:
             insurers = [i for i in insurers if search.lower() in i.name.lower()]
 
-    return [_insurer_summary(i) for i in insurers]
+    insurer_ids = [i.id for i in insurers]
+
+    latest_financials = {}
+    latest_snapshots = {}
+    if insurer_ids:
+        latest_financial_keys = (
+            db.query(
+                InsurerFinancials.insurer_id.label("insurer_id"),
+                func.max(
+                    InsurerFinancials.period_year * 10
+                    + func.coalesce(InsurerFinancials.period_quarter, 0)
+                ).label("period_key"),
+            )
+            .filter(InsurerFinancials.insurer_id.in_(insurer_ids))
+            .group_by(InsurerFinancials.insurer_id)
+            .subquery()
+        )
+        latest_financials = {
+            row.insurer_id: row
+            for row in (
+                db.query(InsurerFinancials)
+                .join(
+                    latest_financial_keys,
+                    (InsurerFinancials.insurer_id == latest_financial_keys.c.insurer_id)
+                    & (
+                        (InsurerFinancials.period_year * 10 + func.coalesce(InsurerFinancials.period_quarter, 0))
+                        == latest_financial_keys.c.period_key
+                    ),
+                )
+                .all()
+            )
+        }
+        latest_snapshot_keys = (
+            db.query(
+                FinancialSnapshot.insurer_id.label("insurer_id"),
+                func.max(FinancialSnapshot.reporting_date).label("reporting_date"),
+            )
+            .filter(FinancialSnapshot.insurer_id.in_(insurer_ids))
+            .group_by(FinancialSnapshot.insurer_id)
+            .subquery()
+        )
+        latest_snapshots = {
+            row.insurer_id: row
+            for row in (
+                db.query(FinancialSnapshot)
+                .join(
+                    latest_snapshot_keys,
+                    (FinancialSnapshot.insurer_id == latest_snapshot_keys.c.insurer_id)
+                    & (FinancialSnapshot.reporting_date == latest_snapshot_keys.c.reporting_date),
+                )
+                .all()
+            )
+        }
+
+    latest_scores = {}
+    if insurer_ids:
+        latest_score_keys = (
+            db.query(
+                CSPScore.insurer_id.label("insurer_id"),
+                func.max(CSPScore.scored_at).label("scored_at"),
+            )
+            .filter(CSPScore.insurer_id.in_(insurer_ids))
+            .group_by(CSPScore.insurer_id)
+            .subquery()
+        )
+        latest_scores = {
+            row.insurer_id: row
+            for row in (
+                db.query(CSPScore)
+                .join(
+                    latest_score_keys,
+                    (CSPScore.insurer_id == latest_score_keys.c.insurer_id)
+                    & (CSPScore.scored_at == latest_score_keys.c.scored_at),
+                )
+                .all()
+            )
+        }
+
+    return [
+        _insurer_summary(
+            i,
+            latest_financials.get(i.id),
+            latest_snapshots.get(i.id),
+            latest_scores.get(i.id),
+        )
+        for i in insurers
+    ]
 
 
 @router.get("/{insurer_id}")
@@ -327,7 +426,43 @@ def predict_insurer(insurer_id: int, db: Session = Depends(get_db)):
 
 # ── Helper ────────────────────────────────────────────────────────────────────
 
-def _insurer_summary(ins) -> dict:
+def _to_float(value) -> float | None:
+    return float(value) if value is not None else None
+
+
+def _snapshot_solvency_pct(snapshot) -> float | None:
+    if not snapshot or snapshot.capital_adequacy_ratio is None:
+        return None
+    value = float(snapshot.capital_adequacy_ratio)
+    return value * 100 if value <= 10 else value
+
+
+def _insurer_summary(ins, financials=None, snapshot=None, csp_score=None) -> dict:
+    solvency_ratio = (
+        _to_float(financials.solvency_ratio_pct)
+        if financials
+        else _snapshot_solvency_pct(snapshot)
+    )
+    liquidity_ratio = (
+        _to_float(financials.liquidity_ratio)
+        if financials
+        else _to_float(snapshot.liquidity_ratio) if snapshot else None
+    )
+    gross_claims_paid = (
+        _to_float(financials.gross_claims_paid_usd)
+        if financials
+        else _to_float(snapshot.claims_paid) if snapshot else None
+    )
+    total_claims_reserves = (
+        _to_float(financials.total_claims_reserves_usd)
+        if financials
+        else _to_float(snapshot.claims_reserves) if snapshot else None
+    )
+    gross_written_premium = (
+        _to_float(financials.gross_premiums_written_usd)
+        if financials
+        else _to_float(snapshot.premiums_written) if snapshot else None
+    )
     return {
         "id":                       ins.id,
         "name":                     ins.name,
@@ -339,4 +474,18 @@ def _insurer_summary(ins) -> dict:
         "head_office_city":         ins.head_office_city,
         "icm_member":               ins.icm_member,
         "website":                  ins.website,
+        "email":                    ins.email,
+        "phone":                    ins.phone,
+        "solvency_ratio":           solvency_ratio,
+        "liquidity_ratio":          liquidity_ratio,
+        "gross_claims_paid_usd":    gross_claims_paid,
+        "total_claims_reserves_usd": total_claims_reserves,
+        "gross_written_premium":    gross_written_premium,
+        "latest_period_year":       financials.period_year if financials else None,
+        "latest_period_quarter":    financials.period_quarter if financials else None,
+        "latest_reporting_date":    snapshot.reporting_date.isoformat() if snapshot and snapshot.reporting_date else None,
+        "financial_data_source":    financials.data_source if financials else snapshot.data_source if snapshot else None,
+        "wcs_score":                _to_float(csp_score.wcs_score) if csp_score else None,
+        "wcs_band":                 csp_score.wcs_band if csp_score else None,
+        "wcs_scored_at":            csp_score.scored_at.isoformat() if csp_score and csp_score.scored_at else None,
     }

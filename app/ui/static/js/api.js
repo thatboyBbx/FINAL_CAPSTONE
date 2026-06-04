@@ -225,10 +225,10 @@ function showToast(msg, type = "success", durationMs = 4000) {
 
   // Colour map matching the design token palette
   const colours = {
-    success: { bg: "rgba(74,222,128,0.12)", border: "#4ade80", icon: "✓", text: "#4ade80" },
-    error:   { bg: "rgba(248,113,113,0.12)", border: "#f87171", icon: "✕", text: "#f87171" },
-    warning: { bg: "rgba(212,175,55,0.12)",  border: "#d4af37", icon: "⚠", text: "#d4af37" },
-    info:    { bg: "rgba(96,165,250,0.12)",  border: "#60a5fa", icon: "ℹ", text: "#60a5fa" },
+    success: { bg: "#052e16", border: "#4ade80", label: "Success", accent: "#bbf7d0" },
+    error:   { bg: "#450a0a", border: "#f87171", label: "Error",   accent: "#fecaca" },
+    warning: { bg: "#451a03", border: "#fbbf24", label: "Warning", accent: "#fde68a" },
+    info:    { bg: "#172554", border: "#60a5fa", label: "Info",    accent: "#bfdbfe" },
   };
   const c = colours[type] || colours.info;
 
@@ -237,18 +237,19 @@ function showToast(msg, type = "success", durationMs = 4000) {
     display:flex;align-items:flex-start;gap:0.625rem;
     padding:0.75rem 1rem;border-radius:0.625rem;
     background:${c.bg};border:1px solid ${c.border};
-    backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
     min-width:260px;max-width:380px;pointer-events:all;
-    box-shadow:0 4px 24px rgba(0,0,0,0.2);
+    box-shadow:0 12px 32px rgba(0,0,0,0.32);
     animation:toastIn 0.25s ease forwards;
     font-family:'Inter',sans-serif;font-size:0.875rem;
   `;
   toast.innerHTML = `
-    <span style="color:${c.text};font-size:1rem;flex-shrink:0;margin-top:1px">${c.icon}</span>
-    <span style="color:#f5f5f5;flex:1;line-height:1.4">${msg}</span>
+    <span style="color:${c.accent};font-size:0.68rem;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;flex-shrink:0;margin-top:0.15rem">${c.label}</span>
+    <span style="color:#ffffff;flex:1;line-height:1.45;font-weight:600">${msg}</span>
     <button onclick="this.closest('[data-toast]').remove()"
-            style="background:none;border:none;color:#a1a1a1;cursor:pointer;font-size:1.1rem;
-                   padding:0;line-height:1;flex-shrink:0;margin-top:1px" aria-label="dismiss">×</button>
+            style="background:none;border:none;color:#ffffff;cursor:pointer;font-size:1.1rem;opacity:0.78;
+                   padding:0;line-height:1;flex-shrink:0;margin-top:1px" aria-label="dismiss">
+      <span aria-hidden="true">&times;</span>
+    </button>
   `;
   toast.setAttribute("data-toast", "true");
   container.appendChild(toast);

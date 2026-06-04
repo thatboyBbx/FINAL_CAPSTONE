@@ -1,10 +1,12 @@
 import asyncio
+from pathlib import Path
+
 import httpx
-from fastapi import APIRouter, Depends, File, Form, Query, Request, UploadFile
-from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse
+from fastapi import APIRouter, Depends, File, Form, HTTPException, Query, Request, UploadFile, status
+from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
-from app.modules.auth.ui_dependencies import require_ui_login
+from app.modules.auth.ui_dependencies import require_ui_login, require_ui_role
 from app.core.config import settings
 from app.core.db import get_db
 
@@ -12,6 +14,60 @@ templates = Jinja2Templates(directory="app/ui/templates")
 router = APIRouter(tags=["extra_ui"])
 
 _BASE_URL = "http://127.0.0.1:8000"
+_SOURCE_ROOT = (Path(__file__).resolve().parents[2] / "sources" / "downloads" / "SOURCES").resolve()
+_POLICY_SOURCE_ROOT = (Path(__file__).resolve().parents[2] / "sources" / "insurancepolicydocuments (1)").resolve()
+
+_KB_SOURCE_REFERENCES = [
+    {
+        "key": "insurance-act",
+        "title": "Insurance Act [Chapter 24:07]",
+        "category": "IPEC Directives",
+        "description": "Primary Zimbabwe insurance statute used for policy compliance, licensing, solvency, and market conduct references.",
+        "source_file": "Insurance Act.pdf",
+    },
+    {
+        "key": "ipec-act",
+        "title": "Insurance and Pensions Commission Act",
+        "category": "IPEC Directives",
+        "description": "Foundational Act establishing the Insurance and Pensions Commission and its supervisory mandate.",
+        "source_file": "Insurance and Pensions Commission Act.pdf",
+    },
+    {
+        "key": "sandbox-guidelines",
+        "title": "Regulatory Sandbox Guidelines",
+        "category": "Regulatory Guides",
+        "description": "IPEC sandbox participation rules, reporting expectations, safeguards, and regulatory testing framework.",
+        "source_file": "REGULATORY-SANDBOX-GUIDELINES-FOR-THE-INSURANCE-AND-PENSIONS-INDUSTRY-.pdf",
+    },
+    {
+        "key": "zicarp-frameworks",
+        "title": "ZICARP Frameworks - Circular 32 of 2023",
+        "category": "Regulatory Guides",
+        "description": "Circular 32 of 2023 setting out Zimbabwe's risk-based capital framework package.",
+        "source_file": "Circular 32 of 2023 - ZICARP Final Frameworks - 29 Nov 2023.pdf",
+    },
+    {
+        "key": "risk-based-capital",
+        "title": "Overall Risk Based Capital Framework (TS 1)",
+        "category": "Regulatory Guides",
+        "description": "Technical standard for risk-based capital supervision and capital adequacy interpretation.",
+        "source_file": "TS 1 -  Overall Risk Based Capital Framework.pdf",
+    },
+    {
+        "key": "minimum-capital",
+        "title": "Minimum Capital Requirement (TS 5)",
+        "category": "Regulatory Guides",
+        "description": "Technical standard for determining minimum capital requirements for insurers.",
+        "source_file": "TS 5 - Determination of Minimum Capital Requirement.pdf",
+    },
+    {
+        "key": "supervisory-intervention",
+        "title": "Ladder of Supervisory Intervention (GRS 11)",
+        "category": "IPEC Directives",
+        "description": "General regulatory standard for supervisory response and intervention levels.",
+        "source_file": "GRS 11 Ladder of Supervisory Intervention.pdf",
+    },
+]
 
 
 def _check_auth(request: Request):
@@ -24,6 +80,50 @@ def _auth_headers_from_cookie(request: Request) -> dict:
 
 
 # ─── Shared data-loading helpers ─────────────────────────────────────────────
+
+def _source_reference_items() -> list[dict]:
+    items = []
+    workspace_root = Path(__file__).resolve().parents[2]
+    for item in _KB_SOURCE_REFERENCES:
+        path = (_SOURCE_ROOT / item["source_file"]).resolve()
+        if not path.exists() or _SOURCE_ROOT not in path.parents:
+            continue
+        items.append(
+            {
+                **item,
+                "href": f"/knowledge-base/source/{item['key']}",
+                "source_name": path.name,
+                "source_path": str(path.relative_to(workspace_root)),
+                "file_size_kb": max(1, round(path.stat().st_size / 1024)),
+            }
+        )
+    return items
+
+
+def _knowledge_base_category_stats() -> list[dict]:
+    source_files = list(_SOURCE_ROOT.glob("*.pdf")) if _SOURCE_ROOT.exists() else []
+    policy_files = list(_POLICY_SOURCE_ROOT.glob("*.pdf")) if _POLICY_SOURCE_ROOT.exists() else []
+    regulatory_guides = [
+        path for path in source_files
+        if path.name.startswith(("TS ", "GRS ", "DS ", "REGULATORY-SANDBOX"))
+    ]
+    return [
+        {"icon": "policy", "label": "IPEC Source PDFs", "count": len(source_files), "color": "rgba(212,175,55,0.12)"},
+        {"icon": "article", "label": "Regulatory Guides", "count": len(regulatory_guides), "color": "rgba(96,165,250,0.12)"},
+        {"icon": "auto_stories", "label": "Policy Wordings", "count": len(policy_files), "color": "rgba(74,222,128,0.12)"},
+        {"icon": "folder_open", "label": "Source Directory", "count": 1 if _SOURCE_ROOT.exists() else 0, "color": "rgba(251,191,36,0.12)"},
+    ]
+
+
+def _resolve_knowledge_source(source_key: str) -> tuple[Path, dict]:
+    source = next((item for item in _KB_SOURCE_REFERENCES if item["key"] == source_key), None)
+    if source is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Knowledge source not found.")
+    path = (_SOURCE_ROOT / source["source_file"]).resolve()
+    if not path.exists() or _SOURCE_ROOT not in path.parents:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Knowledge source file not found.")
+    return path, source
+
 
 _AUDIT_PAGE_SIZE = 25
 _AUDIT_ERROR_TYPES = {"LOGIN_FAILED", "PERMISSION_DENIED"}
@@ -186,7 +286,7 @@ async def clients_landing(request: Request, current_user=Depends(require_ui_logi
 
 
 @router.get("/system", response_class=HTMLResponse)
-async def system_landing(request: Request, current_user=Depends(require_ui_login)):
+async def system_landing(request: Request, current_user=Depends(require_ui_role("admin"))):
     """System category landing — tile dashboard."""
     if isinstance(current_user, RedirectResponse):
         return current_user
@@ -480,7 +580,7 @@ async def client_profile(request: Request, client_id: int, current_user=Depends(
 # ────────────────────────────────────────────────────────────────────────────
 
 @router.get("/system/settings", response_class=HTMLResponse)
-async def system_settings(request: Request, current_user=Depends(require_ui_login)):
+async def system_settings(request: Request, current_user=Depends(require_ui_role("admin"))):
     """System settings page."""
     if isinstance(current_user, RedirectResponse):
         return current_user
@@ -493,7 +593,7 @@ async def system_settings(request: Request, current_user=Depends(require_ui_logi
 @router.get("/system/audit", response_class=HTMLResponse)
 async def system_audit(
     request: Request,
-    current_user=Depends(require_ui_login),
+    current_user=Depends(require_ui_role("admin")),
     action: str | None = Query(None),
     user: str | None = Query(None),
     date_from: str | None = Query(None),
@@ -536,7 +636,7 @@ async def system_audit(
 @router.get("/system/active-learning", response_class=HTMLResponse)
 async def system_active_learning(
     request: Request,
-    current_user=Depends(require_ui_login),
+    current_user=Depends(require_ui_role("admin")),
     db: Session = Depends(get_db),
 ):
     """Active learning / feedback panel — real data from EntityFeedback table."""
@@ -560,7 +660,7 @@ async def system_active_learning(
 # ────────────────────────────────────────────────────────────────────────────
 
 @router.get("/audit-trail", response_class=HTMLResponse)
-async def audit_trail_page(request: Request, current_user=Depends(require_ui_login)):
+async def audit_trail_page(request: Request, current_user=Depends(require_ui_role("admin"))):
     if isinstance(current_user, RedirectResponse):
         return current_user
     qs = f"?{request.url.query}" if request.url.query else ""
@@ -688,7 +788,7 @@ async def document_comparison_page(request: Request, current_user=Depends(requir
 @router.get("/feedback-panel", response_class=HTMLResponse)
 async def feedback_panel_page(
     request: Request,
-    current_user=Depends(require_ui_login),
+    current_user=Depends(require_ui_role("admin")),
     db: Session = Depends(get_db),
 ):
     if isinstance(current_user, RedirectResponse):
@@ -713,6 +813,7 @@ async def feedback_panel_page(
 async def knowledge_base_page(request: Request, current_user=Depends(require_ui_login)):
     if isinstance(current_user, RedirectResponse):
         return current_user
+    references = _source_reference_items()
     return templates.TemplateResponse(
         request,
         "reports/knowledge_base.html",
@@ -720,7 +821,22 @@ async def knowledge_base_page(request: Request, current_user=Depends(require_ui_
             "request": request,
             "active_page": "knowledge-base",
             "user": current_user,
+            "category_stats": _knowledge_base_category_stats(),
+            "featured_articles": references[:5],
+            "quick_references": references,
         },
+    )
+
+@router.get("/knowledge-base/source/{source_key}")
+async def knowledge_base_source(source_key: str, current_user=Depends(require_ui_login)):
+    if isinstance(current_user, RedirectResponse):
+        return current_user
+    path, source = _resolve_knowledge_source(source_key)
+    return FileResponse(
+        path=path,
+        filename=path.name,
+        media_type="application/pdf",
+        headers={"Content-Disposition": f'inline; filename="{path.name}"'},
     )
 
 @router.get("/multilingual-analysis", response_class=HTMLResponse)
@@ -799,13 +915,13 @@ async def policy_tracker_page(
     )
 
 @router.get("/scraper-status", response_class=HTMLResponse)
-async def scraper_status_page(request: Request, current_user=Depends(require_ui_login)):
+async def scraper_status_page(request: Request, current_user=Depends(require_ui_role("admin"))):
     if isinstance(current_user, RedirectResponse):
         return current_user
     return RedirectResponse(url="/system", status_code=301)
 
 @router.get("/settings", response_class=HTMLResponse)
-async def settings_page(request: Request, current_user=Depends(require_ui_login)):
+async def settings_page(request: Request, current_user=Depends(require_ui_role("admin"))):
     if isinstance(current_user, RedirectResponse):
         return current_user
     return templates.TemplateResponse(

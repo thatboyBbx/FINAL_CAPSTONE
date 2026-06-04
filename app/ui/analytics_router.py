@@ -25,7 +25,7 @@ from sqlalchemy import func
 from sqlalchemy.orm import Session
 
 from app.core.db import get_db
-from app.modules.auth.ui_dependencies import require_ui_login
+from app.modules.auth.ui_dependencies import require_ui_login, require_ui_role
 
 logger = logging.getLogger(__name__)
 templates = Jinja2Templates(directory="app/ui/templates")
@@ -100,7 +100,57 @@ async def analytics_claims(
             for r in rows
         ]
 
+    def _load_csp_claims():
+        from app.modules.csp.model import CSPScore
+        from app.modules.financials.model import InsurerFinancials
+
+        latest_scores = (
+            db.query(
+                CSPScore.insurer_id.label("insurer_id"),
+                func.max(CSPScore.scored_at).label("max_scored_at"),
+            )
+            .group_by(CSPScore.insurer_id)
+            .subquery()
+        )
+        rows = (
+            db.query(CSPScore, InsurerFinancials, Insurer)
+            .join(
+                latest_scores,
+                (CSPScore.insurer_id == latest_scores.c.insurer_id)
+                & (CSPScore.scored_at == latest_scores.c.max_scored_at),
+            )
+            .join(InsurerFinancials, InsurerFinancials.id == CSPScore.financials_id)
+            .join(Insurer, Insurer.id == CSPScore.insurer_id)
+            .order_by(CSPScore.wcs_score.desc())
+            .all()
+        )
+
+        def _period_label(financials: InsurerFinancials) -> str:
+            if financials.period_quarter:
+                return f"{financials.period_year}Q{financials.period_quarter}"
+            return str(financials.period_year or "—")
+
+        return [
+            {
+                "insurer_id":               insurer.id,
+                "insurer_name":             insurer.name or "—",
+                "short_name":               insurer.short_name or insurer.name or "—",
+                "category":                 insurer.category or "—",
+                "period_label":             _period_label(financials),
+                "settlement_power_score":   round(score.wcs_score or 0, 2),
+                "liquidity_score":          round(score.liquidity_score or 0, 2),
+                "current_ratio":            round(float(financials.liquidity_ratio or 0), 3),
+                "complaints_count":         0,
+                "complaints_resolution_rate": 0,
+                "total_policies_count":     0,
+                "working_capital_negative": float(financials.solvency_margin_usd or 0) < 0,
+            }
+            for score, financials, insurer in rows
+        ]
+
     claims = _safe(_load_claims, [])
+    if not claims:
+        claims = _safe(_load_csp_claims, [])
 
     # Summary stats
     scores = [c["settlement_power_score"] for c in claims if c["settlement_power_score"]]
@@ -308,7 +358,7 @@ async def analytics_upload_tracking(
 @router.get("/analytics/jobs", response_class=HTMLResponse)
 async def analytics_jobs(
     request: Request,
-    current_user=Depends(require_ui_login),
+    current_user=Depends(require_ui_role("admin")),
     db: Session = Depends(get_db),
 ):
     if isinstance(current_user, RedirectResponse):
@@ -376,7 +426,7 @@ async def analytics_jobs(
 @router.get("/analytics/rag-audit", response_class=HTMLResponse)
 async def analytics_rag_audit(
     request: Request,
-    current_user=Depends(require_ui_login),
+    current_user=Depends(require_ui_role("admin")),
     db: Session = Depends(get_db),
 ):
     if isinstance(current_user, RedirectResponse):
@@ -460,24 +510,11 @@ async def analytics_rag_audit(
 @router.get("/admin/metrics", response_class=HTMLResponse)
 async def admin_metrics(
     request: Request,
-    current_user=Depends(require_ui_login),
+    current_user=Depends(require_ui_role("admin")),
     db: Session = Depends(get_db),
 ):
     if isinstance(current_user, RedirectResponse):
         return current_user
-
-    # RBAC: non-admins see a 403 page
-    if getattr(current_user, "role", "") != "admin":
-        return templates.TemplateResponse(
-            request,
-            "errors/403.html",
-            {
-                "request": request,
-                "detail": "Admin metrics requires the admin role.",
-                "required_role": "admin",
-            },
-            status_code=403,
-        )
 
     from app.modules.jobs import repo as jobs_repo
     from app.modules.documents.model import Document

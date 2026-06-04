@@ -11,12 +11,21 @@
         <span class="material-symbols-outlined text-[20px]"
               style="color:var(--cop);font-variation-settings:'FILL' 1">security</span>
       </div>
-      <div>
-        <p class="text-base font-extrabold font-headline leading-tight" style="color:var(--cos)">InsureIntel</p>
-        <p class="text-[9px] font-bold uppercase tracking-[0.2em]" style="color:var(--cp)">Zimbabwe Sovereign</p>
+      <div id="sidebar-logo-text">
+        <p class="text-base font-extrabold font-headline leading-tight" style="color:rgba(255,255,255,0.94)">InsureIntel</p>
+        <p class="text-[9px] font-bold uppercase tracking-[0.2em]" style="color:#60a5fa">Zimbabwe Sovereign</p>
       </div>
     </a>
   </div>
+
+  <button id="sidebar-dock-toggle"
+          type="button"
+          onclick="toggleSidebar()"
+          aria-label="Dock or collapse sidebar"
+          aria-expanded="true"
+          title="Dock sidebar">
+    <span class="material-symbols-outlined">keyboard_double_arrow_left</span>
+  </button>
 
   <!-- Navigation -->
   <nav class="flex-1 overflow-y-auto px-2 space-y-0.5 pb-2" id="sidebar-nav">
@@ -104,6 +113,7 @@
     </ul>
 
     <!-- System -->
+    {% if user and user.role == 'admin' %}
     <button class="nav-link w-full text-left"
             data-accordion-trigger="s-system"
             data-section-paths="/system,/audit-trail,/feedback-panel,/settings,/analytics/jobs,/analytics/rag-audit,/admin/metrics">
@@ -118,10 +128,9 @@
       <li><a href="/analytics/rag-audit"      class="nav-link {% if request.url.path == '/analytics/rag-audit'      %}active{% endif %}"><span class="material-symbols-outlined text-[18px]">manage_search</span><span class="sidebar-label">RAG Audit</span></a></li>
       <li><a href="/feedback-panel"           class="nav-link {% if request.url.path == '/feedback-panel'           %}active{% endif %}"><span class="material-symbols-outlined text-[18px]">rate_review</span><span class="sidebar-label">Feedback</span></a></li>
       <li><a href="/settings"                 class="nav-link {% if request.url.path == '/settings'                 %}active{% endif %}"><span class="material-symbols-outlined text-[18px]">tune</span><span class="sidebar-label">Settings</span></a></li>
-      {% if user and user.role == 'admin' %}
       <li><a href="/admin/metrics"            class="nav-link {% if request.url.path == '/admin/metrics'            %}active{% endif %}" style="color:#fbbf24"><span class="material-symbols-outlined text-[18px]">admin_panel_settings</span><span class="sidebar-label">Admin Metrics</span></a></li>
-      {% endif %}
     </ul>
+    {% endif %}
 
   </nav>
 
@@ -134,11 +143,11 @@
                   color:var(--cp);border:1px solid color-mix(in srgb,var(--cp) 30%,transparent)">
         {% if user %}{{ (user.full_name or user.staff_id or 'U')[0] | upper }}{% else %}?{% endif %}
       </div>
-      <div class="min-w-0 flex-1">
-        <p class="text-sm font-semibold truncate" style="color:var(--cos)">
+      <div class="min-w-0 flex-1 sidebar-label">
+        <p class="text-sm font-semibold truncate" style="color:rgba(255,255,255,0.94)">
           {% if user %}{{ user.full_name or user.staff_id }}{% else %}Guest{% endif %}
         </p>
-        <p class="text-[9px] font-bold uppercase tracking-widest" style="color:var(--cp)">
+        <p class="text-[9px] font-bold uppercase tracking-widest" style="color:#60a5fa">
           {% if user %}{{ user.role }}{% else %}—{% endif %}
         </p>
       </div>
@@ -149,7 +158,7 @@
        onmouseover="this.style.background='rgba(239,68,68,0.08)'"
        onmouseout="this.style.background=''">
       <span class="material-symbols-outlined text-[20px]">logout</span>
-      <span>Sign Out</span>
+      <span class="sidebar-label">Sign Out</span>
     </a>
   </div>
 

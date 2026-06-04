@@ -9,7 +9,10 @@
       <p class="text-sm mt-0.5" style="color:var(--cosv)">IPEC regulatory compliance monitoring and alerts.</p>
     </div>
     <div class="flex gap-2">
-      <button class="btn btn-secondary btn-sm" disabled style="opacity:0.5;cursor:not-allowed" title="Coming soon"><span class="material-symbols-outlined text-[16px]">schedule</span>Coming Soon</button>
+      <button id="quick-check-btn" class="btn btn-secondary btn-sm" onclick="runQuickComplianceCheck()">
+        <span class="material-symbols-outlined text-[16px]">bolt</span>
+        Quick Check
+      </button>
     </div>
   </div>
 
@@ -132,4 +135,60 @@
     </div>
   </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+"use strict";
+
+async function runQuickComplianceCheck() {
+  const btn = document.getElementById("quick-check-btn");
+  const original = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = `<span class="material-symbols-outlined text-[16px]" style="animation:spin 1s linear infinite;display:inline-block">progress_activity</span>Checking`;
+  showProgress(20, "Finding document for quick compliance check");
+
+  try {
+    const docs = await apiGet("/api/documents");
+    if (!Array.isArray(docs) || docs.length === 0) {
+      showToast("No documents available to check.", "warning");
+      return;
+    }
+
+    const sortedDocs = docs
+      .slice()
+      .sort((a, b) => String(b.created_at || "").localeCompare(String(a.created_at || "")));
+    const target = await findUncheckedDocument(sortedDocs) || sortedDocs[0];
+    const title = target.title || target.original_filename || `Document #${target.id}`;
+
+    showProgress(55, `Checking ${title}`);
+    const result = await apiPost("/api/compliance/check", { document_id: Number(target.id) });
+    const score = Number(result && result.compliance_score !== undefined ? result.compliance_score : 0).toFixed(1);
+
+    showProgress(100, "Compliance check complete");
+    showToast(`Quick check complete: ${score}% compliance.`, "success");
+    setTimeout(() => window.location.reload(), 700);
+  } catch (err) {
+    showToast(`Quick check failed: ${err.message || err}`, "error", 6000);
+  } finally {
+    showProgress(0);
+    btn.disabled = false;
+    btn.innerHTML = original;
+  }
+}
+
+async function findUncheckedDocument(docs) {
+  for (const doc of docs) {
+    try {
+      await apiGet(`/api/documents/${doc.id}/compliance`);
+    } catch (err) {
+      if (err && err.status === 404) return doc;
+    }
+  }
+  return null;
+}
+</script>
+<style>
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+</style>
 {% endblock %}

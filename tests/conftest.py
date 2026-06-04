@@ -77,7 +77,7 @@ def test_user(db):
         role="admin",
     )
     password_hash = auth_service.hash_password(user_create.password)
-    user = users_service.create_user(db, user_create, password_hash=password_hash)
+    user = users_service.create_user(db, user_create, password_hash=password_hash, role="admin")
     return user
 
 
@@ -117,7 +117,7 @@ def authenticated_client(db):
         role="admin",
     )
     password_hash = auth_service.hash_password(user_create.password)
-    user = users_service.create_user(db, user_create, password_hash=password_hash)
+    user = users_service.create_user(db, user_create, password_hash=password_hash, role="admin")
 
     # Generate JWT token
     token = auth_service.create_access_token(user)

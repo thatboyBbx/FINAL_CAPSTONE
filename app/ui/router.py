@@ -5,6 +5,8 @@ import httpx
 
 from collections import Counter
 
+from sqlalchemy import or_
+
 from app.core.config import settings
 from app.core.db import SessionLocal
 from app.modules.insurers.repo import InsurerRepo
@@ -13,7 +15,14 @@ from app.modules.ml.visualization_service import get_default_dashboard_visualiza
 from app.modules.ml.circular_classifier import get_classifier_status
 from app.modules.intel.advisory_service import generate_advisory
 from app.modules.auth import service as auth_service
+from app.modules.auth.token_store import (
+    create_password_reset_token,
+    mark_password_reset_token_used,
+    set_revocation_fence,
+    verify_password_reset_token,
+)
 from app.modules.auth.ui_dependencies import require_ui_login
+from app.modules.users import service as users_service
 
 from app.modules.tracker.service import PolicyTrackerService
 from app.modules.feedback.feedback_store import FeedbackStore
@@ -60,6 +69,136 @@ def _format_api_error(detail) -> str:
         return ".  ".join(parts) if parts else "Please check your input and try again."
 
     return "An unexpected error occurred. Please try again."
+
+
+@router.get("/api/global-search", response_class=JSONResponse)
+def global_search(
+    request: Request,
+    q: str = Query(..., min_length=1, max_length=120),
+    limit: int = Query(8, ge=1, le=20),
+    current_user=Depends(require_ui_login),
+):
+    if isinstance(current_user, RedirectResponse):
+        return JSONResponse({"detail": "Not authenticated"}, status_code=401)
+
+    query = q.strip()
+    if not query:
+        return JSONResponse({"query": q, "results": []})
+
+    like = f"%{query}%"
+    results: list[dict] = []
+
+    db = SessionLocal()
+    try:
+        from app.modules.clients.model import Client
+        from app.modules.documents.model import Document
+        from app.modules.insurers.model import Insurer
+
+        documents = (
+            db.query(Document)
+            .filter(
+                or_(
+                    Document.title.ilike(like),
+                    Document.original_filename.ilike(like),
+                    Document.document_category.ilike(like),
+                    Document.folder.ilike(like),
+                )
+            )
+            .order_by(Document.created_at.desc())
+            .limit(limit)
+            .all()
+        )
+        for doc in documents:
+            results.append(
+                {
+                    "type": "document",
+                    "label": doc.title,
+                    "meta": doc.original_filename or doc.document_category or "Document",
+                    "href": f"/documents/{doc.id}",
+                    "icon": "description",
+                }
+            )
+
+        insurers = (
+            db.query(Insurer)
+            .filter(
+                or_(
+                    Insurer.name.ilike(like),
+                    Insurer.short_name.ilike(like),
+                    Insurer.category.ilike(like),
+                    Insurer.email.ilike(like),
+                    Insurer.head_office_city.ilike(like),
+                )
+            )
+            .order_by(Insurer.name.asc())
+            .limit(limit)
+            .all()
+        )
+        for insurer in insurers:
+            results.append(
+                {
+                    "type": "insurer",
+                    "label": insurer.name,
+                    "meta": (insurer.category or "Insurer").replace("_", " ").title(),
+                    "href": f"/intelligence/insurers/{insurer.id}",
+                    "icon": "domain",
+                }
+            )
+
+        clients = (
+            db.query(Client)
+            .filter(
+                or_(
+                    Client.name.ilike(like),
+                    Client.company.ilike(like),
+                    Client.email.ilike(like),
+                    Client.phone.ilike(like),
+                    Client.segment.ilike(like),
+                )
+            )
+            .order_by(Client.name.asc())
+            .limit(limit)
+            .all()
+        )
+        for client in clients:
+            results.append(
+                {
+                    "type": "client",
+                    "label": client.name,
+                    "meta": client.company or client.email or "Client",
+                    "href": f"/clients/{client.id}",
+                    "icon": "person",
+                }
+            )
+    finally:
+        db.close()
+
+    page_catalog = [
+        ("Dashboard", "Home dashboard and recent documents", "/home", "dashboard"),
+        ("Document Vault", "Browse uploaded documents", "/documents/vault", "folder_open"),
+        ("Upload Document", "Add a policy, claim, or report", "/documents/upload", "upload_file"),
+        ("Compliance Check", "Run IPEC compliance analysis", "/reports/compliance", "verified_user"),
+        ("Settlement Power", "Claims settlement WCS dashboard", "/intelligence/settlement-power", "shield_with_heart"),
+        ("Insurer Intel", "Insurer registry and profiles", "/intelligence/insurers", "domain"),
+        ("Clients", "Client list and policies", "/clients", "groups"),
+        ("Knowledge Base", "Ask policy and regulatory questions", "/knowledge-base", "school"),
+        ("Reports", "Generate and export reports", "/reports", "summarize"),
+        ("Jobs", "Background job monitoring", "/analytics/jobs", "work_history"),
+    ]
+    query_lower = query.lower()
+    for label, meta, href, icon in page_catalog:
+        if query_lower in label.lower() or query_lower in meta.lower():
+            results.append(
+                {
+                    "type": "page",
+                    "label": label,
+                    "meta": meta,
+                    "href": href,
+                    "icon": icon,
+                }
+            )
+
+    return JSONResponse({"query": query, "results": results[:limit]})
 
 
 @router.get("/", response_class=HTMLResponse)
@@ -147,6 +286,123 @@ def login_submit(
         path="/auth/refresh",
     )
     return response
+
+
+@router.get("/forgot-password", response_class=HTMLResponse)
+def forgot_password_page(request: Request):
+    return templates.TemplateResponse(
+        request,
+        "forgot_password.html",
+        {"request": request, "message": None, "error": None, "reset_token": None},
+    )
+
+
+@router.post("/forgot-password", response_class=HTMLResponse)
+def forgot_password_submit(
+    request: Request,
+    staff_id: str = Form(default=""),
+    email: str = Form(default=""),
+):
+    detail = (
+        "If the account exists, password reset instructions are available. "
+        "Please check your email or contact an administrator."
+    )
+    reset_token = None
+    db = SessionLocal()
+    try:
+        user = users_service.get_user_by_staff_id(db, staff_id) if staff_id.strip() else None
+        if user is None and email.strip():
+            user = users_service.get_user_by_email(db, email)
+        if user and user.is_active:
+            reset_token = create_password_reset_token(db, user.id)
+    finally:
+        db.close()
+
+    return templates.TemplateResponse(
+        request,
+        "forgot_password.html",
+        {
+            "request": request,
+            "message": detail,
+            "error": None,
+            "reset_token": reset_token if settings.env != "production" else None,
+        },
+    )
+
+
+@router.get("/reset-password", response_class=HTMLResponse)
+def reset_password_page(request: Request, token: str = ""):
+    return templates.TemplateResponse(
+        request,
+        "reset_password.html",
+        {"request": request, "token": token, "message": None, "error": None},
+    )
+
+
+@router.post("/reset-password", response_class=HTMLResponse)
+def reset_password_submit(
+    request: Request,
+    token: str = Form(...),
+    new_password: str = Form(...),
+    confirm_password: str = Form(...),
+):
+    if new_password != confirm_password:
+        return templates.TemplateResponse(
+            request,
+            "reset_password.html",
+            {
+                "request": request,
+                "token": token,
+                "message": None,
+                "error": "Passwords do not match.",
+            },
+            status_code=400,
+        )
+
+    db = SessionLocal()
+    try:
+        record = verify_password_reset_token(db, token)
+        if not record:
+            return templates.TemplateResponse(
+                request,
+                "reset_password.html",
+                {
+                    "request": request,
+                    "token": token,
+                    "message": None,
+                    "error": "Password reset link is invalid or has expired.",
+                },
+                status_code=400,
+            )
+        user = users_service.get_user_by_id(db, record.user_id)
+        if not user or not user.is_active:
+            return templates.TemplateResponse(
+                request,
+                "reset_password.html",
+                {
+                    "request": request,
+                    "token": token,
+                    "message": None,
+                    "error": "Password reset link is invalid or has expired.",
+                },
+                status_code=400,
+            )
+        users_service.update_password_hash(db, user, auth_service.hash_password(new_password))
+        mark_password_reset_token_used(db, record)
+        set_revocation_fence(db, user.id)
+    finally:
+        db.close()
+
+    return templates.TemplateResponse(
+        request,
+        "reset_password.html",
+        {
+            "request": request,
+            "token": "",
+            "message": "Password has been reset. Please log in with your new password.",
+            "error": None,
+        },
+    )
 
 
 @router.get("/register", response_class=HTMLResponse)
@@ -655,20 +911,6 @@ async def financial_position_page(request: Request, current_user=Depends(require
         except Exception:
             insurers = []
 
-        for ins in insurers[:15]:
-            try:
-                fr_resp = await client.get(
-                    f"{settings.api_base}/ml/fused-risk/{ins['id']}?profile=demo",
-                    headers=_auth_headers_from_cookie(request),
-                )
-                if fr_resp.status_code == 200:
-                    fr = fr_resp.json()
-                    fr["name"] = ins["name"]
-                    fr["insurer_id"] = ins["id"]
-                    risk_scores.append(fr)
-            except Exception:
-                pass
-
     db = SessionLocal()
     try:
         circular_analyses = circular_service.list_analyses(db, skip=0, limit=50)
@@ -676,6 +918,29 @@ async def financial_position_page(request: Request, current_user=Depends(require
         circular_analyses = []
     finally:
         db.close()
+
+    premiums = [
+        float(ins.get("gross_written_premium"))
+        for ins in insurers
+        if isinstance(ins, dict) and ins.get("gross_written_premium") is not None
+    ]
+    solvencies = [
+        float(ins.get("solvency_ratio"))
+        for ins in insurers
+        if isinstance(ins, dict) and ins.get("solvency_ratio") is not None
+    ]
+    risk_values = [
+        float(ins.get("wcs_score"))
+        for ins in insurers
+        if isinstance(ins, dict) and ins.get("wcs_score") is not None
+    ]
+    financial_kpis = {
+        "total_market_gwp": sum(premiums) if premiums else None,
+        "avg_solvency_ratio": (sum(solvencies) / len(solvencies)) if solvencies else None,
+        "avg_risk_score": (sum(risk_values) / len(risk_values)) if risk_values else None,
+        "insurers_monitored": len(insurers),
+        "has_financial_data": bool(premiums or solvencies or risk_values),
+    }
 
     return templates.TemplateResponse(
         request,
@@ -687,6 +952,7 @@ async def financial_position_page(request: Request, current_user=Depends(require
             "role":             current_user.role,
             "insurers":         insurers,
             "risk_scores":      risk_scores,
+            "financial_kpis":    financial_kpis,
             "circular_analyses": circular_analyses,
         },
     )
@@ -757,19 +1023,17 @@ async def report_page(request: Request, current_user=Depends(require_ui_login)):
         except Exception:
             insurers = []
 
-        for ins in insurers[:15]:
-            try:
-                fr_resp = await client.get(
-                    f"{settings.api_base}/ml/fused-risk/{ins['id']}?profile=demo",
-                    headers=_auth_headers_from_cookie(request),
-                )
-                if fr_resp.status_code == 200:
-                    fr = fr_resp.json()
-                    fr["name"] = ins["name"]
-                    fr["insurer_id"] = ins["id"]
-                    risk_scores.append(fr)
-            except Exception:
-                pass
+        risk_scores = [
+            {
+                "insurer_id": ins.get("id"),
+                "name": ins.get("name"),
+                "fused_score": ins.get("wcs_score"),
+                "fused_label": ins.get("wcs_band"),
+                "source": "wcs",
+            }
+            for ins in insurers
+            if isinstance(ins, dict) and ins.get("wcs_score") is not None
+        ]
 
     db = SessionLocal()
     try:

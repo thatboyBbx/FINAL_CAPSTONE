@@ -14,7 +14,7 @@ from sqlalchemy.orm import Session
 
 from app.core.db import get_db
 from app.modules.audit.audit_logger import AuditLogger, get_audit_logger
-from app.modules.auth.dependencies import get_current_user, require_role
+from app.modules.auth.dependencies import require_role
 from app.modules.jobs import repo
 from app.modules.users.model import User
 
@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 router = APIRouter(
     prefix="/api/admin/jobs",
     tags=["jobs-admin"],
-    dependencies=[Depends(get_current_user)],
+    dependencies=[Depends(require_role("admin"))],
 )
 
 

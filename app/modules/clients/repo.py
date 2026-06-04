@@ -95,7 +95,64 @@ def get_document_counts(db: Session, client_ids: list[int]) -> dict[int, int]:
 
 
 def get_policies(db: Session, client_id: int) -> list[ClientPolicy]:
-    return db.query(ClientPolicy).filter(ClientPolicy.client_id == client_id).all()
+    return (
+        db.query(ClientPolicy)
+        .filter(ClientPolicy.client_id == client_id)
+        .order_by(ClientPolicy.end_date.is_(None), ClientPolicy.end_date, ClientPolicy.id.desc())
+        .all()
+    )
+
+
+def get_policy_by_document(db: Session, document_id: int) -> ClientPolicy | None:
+    return db.query(ClientPolicy).filter(ClientPolicy.document_id == document_id).first()
+
+
+def ensure_policy_for_document(db: Session, document: Document) -> ClientPolicy | None:
+    if document.client_id is None:
+        return None
+
+    policy = get_policy_by_document(db, document.id)
+    if policy:
+        policy.client_id = document.client_id
+        if not policy.policy_type:
+            policy.policy_type = (document.document_category or "policy_document").replace("_", " ")
+        if not policy.policy_number:
+            policy.policy_number = document.title or document.original_filename or f"Document #{document.id}"
+        db.commit()
+        db.refresh(policy)
+        return policy
+
+    policy = ClientPolicy(
+        client_id=document.client_id,
+        document_id=document.id,
+        policy_number=document.title or document.original_filename or f"Document #{document.id}",
+        policy_type=(document.document_category or "policy_document").replace("_", " "),
+        insurer_name=None,
+        status="active" if document.status != "archived" else "archived",
+        auto_renew=False,
+    )
+    db.add(policy)
+    db.commit()
+    db.refresh(policy)
+    return policy
+
+
+def sync_document_policies_for_client(db: Session, client_id: int) -> None:
+    documents = (
+        db.query(Document)
+        .filter(Document.client_id == client_id)
+        .order_by(Document.created_at.desc())
+        .all()
+    )
+    for document in documents:
+        ensure_policy_for_document(db, document)
+
+
+def unlink_policy_for_document(db: Session, document_id: int) -> None:
+    policy = get_policy_by_document(db, document_id)
+    if policy:
+        db.delete(policy)
+        db.commit()
 
 
 def add_policy(db: Session, client_id: int, data: dict) -> ClientPolicy:

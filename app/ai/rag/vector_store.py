@@ -25,7 +25,10 @@ def _get_st_model():
             from sentence_transformers import SentenceTransformer
             from app.core.config import settings
             model_name = settings.embedding_model_name
-            _st_model = SentenceTransformer(model_name)
+            try:
+                _st_model = SentenceTransformer(model_name, local_files_only=True)
+            except TypeError:
+                _st_model = SentenceTransformer(model_name)
             logger.info("SentenceTransformer %s loaded.", model_name)
         except ImportError:
             raise ImportError(

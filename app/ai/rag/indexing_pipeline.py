@@ -101,12 +101,23 @@ def index_document(
         overlap=settings.rag_chunk_overlap,
     )
     chunks = _enrich_chunk_metadata(chunks)
-    count = vs.embed_and_store(
-        chunks,
-        batch_size=settings.embedding_batch_size,
-        embedding_model=settings.embedding_model_name,
-        embedding_version=settings.embedding_version,
-    )
+    indexing_status = "indexed"
+    try:
+        count = vs.embed_and_store(
+            chunks,
+            batch_size=settings.embedding_batch_size,
+            embedding_model=settings.embedding_model_name,
+            embedding_version=settings.embedding_version,
+        )
+    except Exception as exc:
+        logger.warning(
+            "Embedding/vector indexing failed for document %d; persisting text chunks "
+            "for offline keyword RAG instead: %s",
+            document_id,
+            exc,
+        )
+        count = len(chunks)
+        indexing_status = "chunked"
 
     _persist_chunk_records(document_id, chunks, db, settings)
 
@@ -120,7 +131,7 @@ def index_document(
         db.rollback()
 
     logger.info("Indexed document %d — %d chunks stored.", document_id, count)
-    return {"document_id": document_id, "chunks_created": count, "status": "indexed"}
+    return {"document_id": document_id, "chunks_created": count, "status": indexing_status}
 
 
 def reindex_document(
@@ -216,8 +227,21 @@ def _get_document_text(document_id: int, doc: Any, db: Session) -> str:
         logger.warning("Could not fetch CircularAnalysis for doc %d: %s", document_id, exc)
 
     try:
-        from app.modules.circulars.extractor import extract_text, clean_text
-        text = extract_text(doc.file_path)
+        from app.modules.circulars.extractor import clean_text
+        from app.modules.documents import file_store
+        from app.modules.documents.ingestion.pdf_extractor import extract_text_from_pdf
+
+        file_path = file_store.resolve_existing_document_path(
+            doc.file_path,
+            stored_filename=getattr(doc, "stored_filename", None),
+            original_filename=getattr(doc, "original_filename", None),
+            file_size=getattr(doc, "file_size", None),
+        )
+        if str(file_path).replace("\\", "/") != doc.file_path and file_path.exists():
+            doc.file_path = str(file_path).replace("\\", "/")
+            db.commit()
+
+        text = extract_text_from_pdf(file_path)
         return clean_text(text)
     except Exception as exc:
         logger.warning("File extraction fallback failed for doc %d: %s", document_id, exc)

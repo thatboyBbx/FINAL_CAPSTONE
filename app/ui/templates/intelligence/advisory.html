@@ -14,7 +14,8 @@
   </nav>
 
   <h1 class="font-headline" style="font-size:1.5rem;font-weight:800;color:var(--cos);margin:0 0 1.75rem">
-    💡 Advisory Engine
+    <span class="material-symbols-outlined" style="font-size:1.5rem;color:var(--cp);vertical-align:-0.2rem">tips_and_updates</span>
+    Advisory Engine
   </h1>
 
   <!-- Config card -->
@@ -91,9 +92,14 @@ async function uploadAndSet(file) {
     method:"POST", headers: match ? {Authorization:`Bearer ${decodeURIComponent(match[1])}`} : {}, body:fd
   });
   const data = await resp.json();
-  if (!resp.ok) { showErrorModal(data.detail || "Upload failed"); st.textContent = `✗ Upload failed`; return; }
+  if (!resp.ok) {
+    showErrorModal(data.detail || "Upload failed");
+    st.innerHTML = `<span class="material-symbols-outlined" style="font-size:16px;vertical-align:-0.2rem;color:var(--cerr)">cancel</span> Upload failed`;
+    return;
+  }
   uploadedDocId = data.id;
-  st.textContent = `✓ ${file.name}`; checkReady();
+  st.innerHTML = `<span class="material-symbols-outlined" style="font-size:16px;vertical-align:-0.2rem;color:#4ade80">check_circle</span> ${_esc(file.name)}`;
+  checkReady();
 }
 
 async function runAdvisory() {

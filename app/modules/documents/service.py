@@ -131,7 +131,12 @@ def get_document_file_path(db, document_id: int) -> tuple[Document, Path]:
     if not document:
         raise ValueError("Document not found.")
 
-    file_path = Path(document.file_path)
+    file_path = file_store.resolve_existing_document_path(
+        document.file_path,
+        stored_filename=document.stored_filename,
+        original_filename=document.original_filename,
+        file_size=document.file_size,
+    )
     if not file_path.exists():
         raise ValueError("Stored file not found on disk.")
 
@@ -270,7 +275,17 @@ def process_document_full(
 
     # ── Extract text ────────────────────────────────────────────────────────
     logger.info("process_document_full: extracting text from document %d", document_id)
-    text = extract_text_from_pdf(document.file_path)
+    file_path = file_store.resolve_existing_document_path(
+        document.file_path,
+        stored_filename=document.stored_filename,
+        original_filename=document.original_filename,
+        file_size=document.file_size,
+    )
+    if str(file_path).replace("\\", "/") != document.file_path and file_path.exists():
+        document.file_path = str(file_path).replace("\\", "/")
+        db.commit()
+
+    text = extract_text_from_pdf(file_path)
 
     if not text or len(text.strip()) < 50:
         # Mark as failed so the user knows something went wrong
@@ -411,7 +426,13 @@ def extract_document_text(db: Session, document_id: int) -> str:
         return ""
 
     try:
-        return extract_text_from_pdf(document.file_path)
+        file_path = file_store.resolve_existing_document_path(
+            document.file_path,
+            stored_filename=document.stored_filename,
+            original_filename=document.original_filename,
+            file_size=document.file_size,
+        )
+        return extract_text_from_pdf(file_path)
     except Exception as exc:
         logger.error(
             "extract_document_text: failed to extract text from document %d — %s",

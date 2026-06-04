@@ -9,7 +9,7 @@ from app.modules.ml.predictor import MLPredictor
 from app.modules.ml.explain import MLExplainer
 from app.modules.ml.forecaster import get_forecaster
 from app.modules.scoring.fusion import compute_fused_risk
-from app.modules.auth.dependencies import get_current_user
+from app.modules.auth.dependencies import get_current_user, require_role
 
 router    = APIRouter(
     prefix="/ml",
@@ -32,6 +32,7 @@ def train_model(
     test_size: float = 0.3,
     labels_csv_path: str | None = None,
     db: Session = Depends(get_db),
+    _admin=Depends(require_role("admin")),
 ):
     try:
         result = trainer.train(
@@ -127,7 +128,10 @@ def fused_risk(
 # ---------------------------------------------------------------------------
 
 @router.post("/train-forecaster")
-def train_forecaster(db: Session = Depends(get_db)):
+def train_forecaster(
+    db: Session = Depends(get_db),
+    _admin=Depends(require_role("admin")),
+):
     """
     Train the deep learning (MLP neural network) financial time-series forecaster.
     Requires at least 5 financial snapshots per insurer.
@@ -171,7 +175,10 @@ def _run_training_sync(sources=None):
 
 
 @router.post("/ingest-and-train")
-def ingest_and_train(background_tasks: BackgroundTasks):
+def ingest_and_train(
+    background_tasks: BackgroundTasks,
+    _admin=Depends(require_role("admin")),
+):
     """
     Ingest all PDFs from the configured circular + KB directories,
     build a labelled corpus, and train the circular classifier.

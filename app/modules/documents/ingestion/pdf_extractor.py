@@ -3,8 +3,9 @@ PDF text extraction.
 
 Priority order:
   1. pdfplumber  — best quality, handles tables, encoded fonts
-  2. FlateDecode stream decompression  — works on most modern PDFs
-  3. Raw BT/ET byte scanning  — last resort for uncompressed PDFs
+  2. pdfminer.six  — useful for protected or oddly encoded text layers
+  3. FlateDecode stream decompression  — works on most modern PDFs
+  4. Raw BT/ET byte scanning  — last resort for uncompressed PDFs
 """
 import re
 import zlib
@@ -115,6 +116,20 @@ def extract_text_from_pdf_bytes(pdf_bytes: bytes) -> str:
         return ""
 
 
+def _extract_via_pdfminer(pdf_path: Path, max_pages: int | None = None) -> str:
+    """Extract text with pdfminer.six when pdfplumber returns little or no text."""
+    try:
+        from pdfminer.high_level import extract_text
+
+        text = extract_text(str(pdf_path), maxpages=max_pages or 0) or ""
+        return text.strip()
+    except ImportError:
+        return ""
+    except Exception as exc:
+        logger.debug("pdfminer failed for %s: %s", pdf_path.name, exc)
+        return ""
+
+
 def extract_text_from_pdf(pdf_path: str | Path, max_pages: int | None = None) -> str:
     """
     Extract visible text from a PDF.
@@ -143,7 +158,12 @@ def extract_text_from_pdf(pdf_path: str | Path, max_pages: int | None = None) ->
     except Exception as e:
         logger.debug("pdfplumber failed for %s: %s", pdf_path.name, e)
 
-    # 2 — FlateDecode decompression
+    # 2 — pdfminer.six fallback
+    text = _extract_via_pdfminer(pdf_path, max_pages=max_pages)
+    if len(text.strip()) >= 50:
+        return text
+
+    # 3 — FlateDecode decompression
     try:
         raw = pdf_path.read_bytes()
         text = _extract_via_deflate(raw)
@@ -152,7 +172,7 @@ def extract_text_from_pdf(pdf_path: str | Path, max_pages: int | None = None) ->
     except Exception as e:
         logger.debug("FlateDecode extraction failed for %s: %s", pdf_path.name, e)
 
-    # 3 — raw BT/ET scan
+    # 4 — raw BT/ET scan
     try:
         raw = pdf_path.read_bytes()
         return _extract_raw_bt_et(raw)

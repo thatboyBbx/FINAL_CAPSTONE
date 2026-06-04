@@ -207,7 +207,8 @@
             <td style="font-size:.72rem;max-width:120px">
               {% if log.hallucination_flags %}
               <span style="color:#f87171;font-weight:600" title="{{ log.hallucination_flags }}">
-                ⚠ {{ (log.hallucination_flags|string)[:40] }}
+                <span class="material-symbols-outlined" style="font-size:14px;vertical-align:-0.2rem">warning</span>
+                {{ (log.hallucination_flags|string)[:40] }}
               </span>
               {% else %}
               <span style="color:var(--col)">—</span>

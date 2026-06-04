@@ -195,6 +195,57 @@ def deterministic_path(sha256: str, extension: str) -> Path:
     return DOCUMENTS_ROOT / sha256[:2] / f"{sha256}{extension}"
 
 
+def resolve_existing_document_path(
+    file_path: str | Path,
+    *,
+    stored_filename: str | None = None,
+    original_filename: str | None = None,
+    file_size: int | None = None,
+) -> Path:
+    """
+    Return an existing path for a stored document.
+
+    Older development uploads were saved directly under ``storage/documents``
+    with a title-based filename. Newer rows point at deterministic hash bucket
+    paths. This resolver lets legacy rows recover when the DB path is stale but
+    the uploaded file is still present in the storage root.
+    """
+    path = Path(file_path)
+    if path.exists():
+        return path
+
+    candidates: list[Path] = []
+    if stored_filename:
+        candidates.append(DOCUMENTS_ROOT / stored_filename)
+        candidates.extend(DOCUMENTS_ROOT.glob(f"*/{stored_filename}"))
+
+    if original_filename:
+        stem = sanitize_filename(Path(original_filename).stem)
+        ext = Path(original_filename).suffix.lower()
+        if ext:
+            candidates.extend(DOCUMENTS_ROOT.glob(f"{stem}_*{ext}"))
+            candidates.extend(DOCUMENTS_ROOT.glob(f"*/{stem}_*{ext}"))
+
+    if file_size:
+        candidates.extend(p for p in DOCUMENTS_ROOT.glob("**/*") if p.is_file() and p.stat().st_size == file_size)
+
+    seen: set[Path] = set()
+    for candidate in candidates:
+        try:
+            resolved = candidate.resolve()
+        except OSError:
+            continue
+        if resolved in seen:
+            continue
+        seen.add(resolved)
+        if candidate.exists() and candidate.is_file():
+            if file_size is not None and candidate.stat().st_size != file_size:
+                continue
+            return candidate
+
+    return path
+
+
 def validate_mime(content: bytes, declared_mime: str) -> str:
     """
     Confirm that *content* is consistent with *declared_mime* and that the

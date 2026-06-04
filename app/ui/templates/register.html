@@ -1,52 +1,250 @@
 <!DOCTYPE html>
 <html lang="en" id="html-root">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Register — InsureIntel Zimbabwe</title>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap"
+    rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    rel="stylesheet">
   <script id="tailwind-config">
     tailwind.config = {
-      darkMode:"class",
-      theme:{extend:{colors:{"primary":"rgb(var(--p)/<alpha-value>)","on-primary":"rgb(var(--op)/<alpha-value>)","background":"rgb(var(--bg)/<alpha-value>)","surface":"rgb(var(--sf)/<alpha-value>)","on-surface":"rgb(var(--os)/<alpha-value>)","on-surface-variant":"rgb(var(--osv)/<alpha-value>)"},fontFamily:{"headline":["Manrope","sans-serif"],"body":["Inter","sans-serif"]}}},
+      darkMode: "class",
+      theme: { extend: { colors: { "primary": "rgb(var(--p)/<alpha-value>)", "on-primary": "rgb(var(--op)/<alpha-value>)", "background": "rgb(var(--bg)/<alpha-value>)", "surface": "rgb(var(--sf)/<alpha-value>)", "on-surface": "rgb(var(--os)/<alpha-value>)", "on-surface-variant": "rgb(var(--osv)/<alpha-value>)" }, fontFamily: { "headline": ["Manrope", "sans-serif"], "body": ["Inter", "sans-serif"] } } },
     }
   </script>
   <style>
-    :root{--p:0 74 198;--op:255 255 255;--bg:248 249 251;--sf:255 255 255;--os:25 28 30;--osv:67 70 85;}
-    .dark{--p:212 175 55;--op:0 0 0;--bg:10 10 10;--sf:18 18 18;--os:245 245 245;--osv:160 160 160;}
-    *,*::before,*::after{box-sizing:border-box}
-    body{font-family:'Inter',sans-serif;background:rgb(var(--bg));color:rgb(var(--os));min-height:100vh;display:flex;align-items:center;justify-content:center;padding:2rem 1rem;}
-    .dark body{background:#0a0a0a;background-image:radial-gradient(circle at 50% -20%,rgba(212,175,55,0.06) 0%,#0a0a0a 70%);}
-    h1,h2,h3{font-family:'Manrope',sans-serif;}
-    .material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;vertical-align:middle;}
-    .glass-card{background:rgba(18,18,18,0.9);backdrop-filter:blur(20px);border:1px solid rgba(212,175,55,0.18);box-shadow:0 25px 60px rgba(0,0,0,0.45);border-radius:1.25rem;}
-    html:not(.dark) .glass-card{background:rgba(255,255,255,0.96);border:1px solid rgba(0,74,198,0.1);box-shadow:0 16px 48px rgba(0,0,0,0.08);}
-    .field-wrap{position:relative;}
-    .field-icon{position:absolute;left:0.875rem;top:50%;transform:translateY(-50%);color:rgb(var(--p)/0.5);pointer-events:none;}
-    .field-input{width:100%;padding:0.75rem 0.875rem 0.75rem 2.75rem;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:0.75rem;font-size:0.875rem;color:#f5f5f5;outline:none;transition:border-color .2s,box-shadow .2s;-webkit-appearance:none;appearance:none;}
-    html:not(.dark) .field-input{background:rgb(237 238 240);border-color:rgb(195 198 215);color:rgb(var(--os));}
-    .field-input:focus{border-color:rgb(var(--p));box-shadow:0 0 0 3px rgb(var(--p)/0.15);}
-    .field-input::placeholder{color:rgba(255,255,255,0.22);}
-    html:not(.dark) .field-input::placeholder{color:rgba(67,70,85,0.5);}
-    .btn-submit{width:100%;padding:0.9rem;border:none;border-radius:0.75rem;font-weight:800;font-size:0.95rem;font-family:'Manrope',sans-serif;letter-spacing:0.06em;text-transform:uppercase;cursor:pointer;transition:all .2s;}
-    .dark .btn-submit{background:linear-gradient(135deg,#d4af37,#aa8c2c);color:#000;box-shadow:0 10px 28px rgba(212,175,55,0.22);}
-    html:not(.dark) .btn-submit{background:linear-gradient(135deg,rgb(var(--p)),rgb(0 55 160));color:#fff;box-shadow:0 10px 28px rgb(var(--p)/0.28);}
-    .btn-submit:hover{filter:brightness(1.08);transform:translateY(-1px);}
-    .btn-submit:active{transform:scale(0.97);}
-    .alert-error{display:flex;align-items:flex-start;gap:.5rem;padding:8px 12px;border-radius:4px;font-size:.875rem;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.28);color:#f87171;margin-bottom:1rem;}
-    html:not(.dark) .alert-error{color:#ff4d4f;background:#fff1f0;border:1px solid #ffccc7;}
-    .alert-success{display:flex;align-items:flex-start;gap:.5rem;padding:.75rem 1rem;border-radius:.5rem;font-size:.875rem;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.28);color:#4ade80;margin-bottom:1rem;}
-    html:not(.dark) .alert-success{color:#16a34a;}
-    html:not(.dark) .icon-dark-mode{display:none;}
-    html.dark .icon-light-mode{display:none;}
+    :root {
+      --p: 0 74 198;
+      --op: 255 255 255;
+      --bg: 248 249 251;
+      --sf: 255 255 255;
+      --os: 25 28 30;
+      --osv: 67 70 85;
+    }
+
+    .dark {
+      --p: 212 175 55;
+      --op: 0 0 0;
+      --bg: 10 10 10;
+      --sf: 18 18 18;
+      --os: 245 245 245;
+      --osv: 160 160 160;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: rgb(var(--bg));
+      color: rgb(var(--os));
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+
+    .dark body {
+      background: #0a0a0a;
+      background-image: radial-gradient(circle at 50% -20%, rgba(212, 175, 55, 0.06) 0%, #0a0a0a 70%);
+    }
+
+    h1,
+    h2,
+    h3 {
+      font-family: 'Manrope', sans-serif;
+    }
+
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      vertical-align: middle;
+    }
+
+    .glass-card {
+      background: rgba(18, 18, 18, 0.9);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(212, 175, 55, 0.18);
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45);
+      border-radius: 1.25rem;
+    }
+
+    html:not(.dark) .glass-card {
+      background: rgba(255, 255, 255, 0.96);
+      border: 1px solid rgba(0, 74, 198, 0.1);
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.08);
+    }
+
+    .field-wrap {
+      position: relative;
+    }
+
+    .field-icon {
+      position: absolute;
+      left: 0.875rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgb(var(--p)/0.5);
+      pointer-events: none;
+    }
+
+    .field-input {
+      width: 100%;
+      padding: 0.75rem 0.875rem 0.75rem 2.75rem;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 0.75rem;
+      font-size: 0.875rem;
+      color: #000;
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    html:not(.dark) .field-input {
+      background: rgb(237 238 240);
+      border-color: rgb(195 198 215);
+      color: #000;
+    }
+
+    .field-input:focus {
+      border-color: rgb(var(--p));
+      box-shadow: 0 0 0 3px rgb(var(--p)/0.15);
+    }
+
+    .field-input::placeholder {
+      color: rgba(255, 255, 255, 0.22);
+    }
+
+    html:not(.dark) .field-input::placeholder {
+      color: rgba(67, 70, 85, 0.5);
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 0.9rem;
+      border: none;
+      border-radius: 0.75rem;
+      font-weight: 800;
+      font-size: 0.95rem;
+      font-family: 'Manrope', sans-serif;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all .2s;
+    }
+
+    .dark .btn-submit {
+      background: linear-gradient(135deg, #d4af37, #aa8c2c);
+      color: #000;
+      box-shadow: 0 10px 28px rgba(212, 175, 55, 0.22);
+    }
+
+    html:not(.dark) .btn-submit {
+      background: linear-gradient(135deg, rgb(var(--p)), rgb(0 55 160));
+      color: #fff;
+      box-shadow: 0 10px 28px rgb(var(--p)/0.28);
+    }
+
+    .btn-submit:hover {
+      filter: brightness(1.08);
+      transform: translateY(-1px);
+    }
+
+    .btn-submit:active {
+      transform: scale(0.97);
+    }
+
+    .alert-error {
+      display: flex;
+      align-items: flex-start;
+      gap: .5rem;
+      padding: 8px 12px;
+      border-radius: 4px;
+      font-size: .875rem;
+      line-height: 1.45;
+      font-weight: 600;
+      background: rgba(127, 29, 29, 0.34);
+      border: 1px solid rgba(248, 113, 113, 0.55);
+      color: #fecaca;
+      margin-bottom: 1rem;
+    }
+
+    html:not(.dark) .alert-error {
+      color: #7f1d1d;
+      background: #fff1f0;
+      border: 1px solid #fca5a5;
+    }
+
+    .alert-success {
+      display: flex;
+      align-items: flex-start;
+      gap: .5rem;
+      padding: .75rem 1rem;
+      border-radius: .5rem;
+      font-size: .875rem;
+      line-height: 1.45;
+      font-weight: 600;
+      background: rgba(20, 83, 45, 0.34);
+      border: 1px solid rgba(74, 222, 128, 0.55);
+      color: #bbf7d0;
+      margin-bottom: 1rem;
+    }
+
+    html:not(.dark) .alert-success {
+      color: #14532d;
+      background: #ecfdf5;
+      border-color: #86efac;
+    }
+
+    html:not(.dark) .icon-dark-mode {
+      display: none;
+    }
+
+    html.dark .icon-light-mode {
+      display: none;
+    }
+
     /* bg decoration */
-    .bg-decor-1{position:fixed;top:-20%;right:-10%;width:60%;height:60%;background:rgb(var(--p)/0.05);border-radius:50%;filter:blur(120px);pointer-events:none;z-index:0;}
-    .bg-decor-2{position:fixed;bottom:-20%;left:-10%;width:60%;height:60%;background:rgb(var(--p)/0.04);border-radius:50%;filter:blur(120px);pointer-events:none;z-index:0;}
+    .bg-decor-1 {
+      position: fixed;
+      top: -20%;
+      right: -10%;
+      width: 60%;
+      height: 60%;
+      background: rgb(var(--p)/0.05);
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .bg-decor-2 {
+      position: fixed;
+      bottom: -20%;
+      left: -10%;
+      width: 60%;
+      height: 60%;
+      background: rgb(var(--p)/0.04);
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+      z-index: 0;
+    }
   </style>
-  <script>(function(){var t=localStorage.getItem('insureIntelTheme')||'dark';if(t==='dark')document.documentElement.classList.add('dark');})();</script>
+  <script>(function () { var t = localStorage.getItem('insureIntelTheme') || 'dark'; if (t === 'dark') document.documentElement.classList.add('dark'); })();</script>
 </head>
+
 <body>
 
   <div class="bg-decor-1"></div>
@@ -65,27 +263,28 @@
     <!-- Brand header -->
     <div class="text-center mb-8">
       <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-4"
-           style="background:linear-gradient(135deg,rgb(var(--p)),rgb(var(--p)/0.7));box-shadow:0 0 28px rgb(var(--p)/0.35)">
-        <span class="material-symbols-outlined text-3xl" style="color:rgb(var(--op));font-variation-settings:'FILL' 1">shield_with_heart</span>
+        style="background:linear-gradient(135deg,rgb(var(--p)),rgb(var(--p)/0.7));box-shadow:0 0 28px rgb(var(--p)/0.35)">
+        <span class="material-symbols-outlined text-3xl"
+          style="color:rgb(var(--op));font-variation-settings:'FILL' 1">shield_with_heart</span>
       </div>
       <h1 class="text-3xl font-extrabold tracking-tight" style="color:rgb(var(--os))">InsureIntel Zimbabwe</h1>
-      <p class="text-xs font-bold uppercase tracking-widest mt-1.5" style="color:rgb(var(--p)/0.65)">The Professional Standard for Insurance Intelligence</p>
+      <p class="text-xs font-bold uppercase tracking-widest mt-1.5" style="color:rgb(var(--p)/0.65)">The Professional
+        Standard for Insurance Intelligence</p>
     </div>
 
     <!-- Card -->
     <div class="glass-card p-8">
       <h2 class="text-xl font-bold font-headline mb-0.5" style="color:rgb(var(--p))">Create Account</h2>
-      <p class="text-sm mb-6" style="color:rgb(var(--osv)/0.8)">Join the platform for professional document analysis.</p>
+      <p class="text-sm mb-6" style="color:rgb(var(--osv)/0.8)">Join the platform for professional document analysis.
+      </p>
 
       {% if error %}
       <div class="alert-error" role="alert" aria-live="assertive" aria-atomic="true">
-        <span class="material-symbols-outlined text-lg flex-shrink-0" aria-hidden="true">error</span>
         <span>{{ error }}</span>
       </div>
       {% endif %}
       {% if success %}
       <div class="alert-success" role="status" aria-live="polite" aria-atomic="true">
-        <span class="material-symbols-outlined text-lg flex-shrink-0" aria-hidden="true">check_circle</span>
         <span>{{ success }} <a href="/" style="font-weight:700;text-decoration:underline">Sign in →</a></span>
       </div>
       {% endif %}
@@ -94,7 +293,8 @@
 
         <!-- Full Name -->
         <div>
-          <label class="block text-[11px] font-bold uppercase tracking-wider mb-1.5" style="color:rgb(var(--p))">Full Name</label>
+          <label class="block text-[11px] font-bold uppercase tracking-wider mb-1.5" style="color:rgb(var(--p))">Full
+            Name</label>
           <div class="field-wrap">
             <span class="material-symbols-outlined field-icon text-xl">person</span>
             <input type="text" name="full_name" required class="field-input" placeholder="John Doe">
@@ -103,7 +303,8 @@
 
         <!-- Staff ID -->
         <div>
-          <label class="block text-[11px] font-bold uppercase tracking-wider mb-1.5" style="color:rgb(var(--p))">Staff ID</label>
+          <label class="block text-[11px] font-bold uppercase tracking-wider mb-1.5" style="color:rgb(var(--p))">Staff
+            ID</label>
           <div class="field-wrap">
             <span class="material-symbols-outlined field-icon text-xl">badge</span>
             <input type="text" name="staff_id" required class="field-input" placeholder="EMP-0042">
@@ -112,7 +313,8 @@
 
         <!-- Email -->
         <div>
-          <label class="block text-[11px] font-bold uppercase tracking-wider mb-1.5" style="color:rgb(var(--p))">Email Address <span style="opacity:0.5;font-weight:400;text-transform:none">(optional)</span></label>
+          <label class="block text-[11px] font-bold uppercase tracking-wider mb-1.5" style="color:rgb(var(--p))">Email
+            Address <span style="opacity:0.5;font-weight:400;text-transform:none">(optional)</span></label>
           <div class="field-wrap">
             <span class="material-symbols-outlined field-icon text-xl">mail</span>
             <input type="email" name="email" class="field-input" placeholder="name@company.co.zw">
@@ -121,7 +323,8 @@
 
         <!-- Role -->
         <div>
-          <label class="block text-[11px] font-bold uppercase tracking-wider mb-1.5" style="color:rgb(var(--p))">Role</label>
+          <label class="block text-[11px] font-bold uppercase tracking-wider mb-1.5"
+            style="color:rgb(var(--p))">Role</label>
           <div class="field-wrap">
             <span class="material-symbols-outlined field-icon text-xl">work</span>
             <select name="role" class="field-input" style="padding-right:2.5rem">
@@ -129,21 +332,25 @@
               <option value="analyst">Analyst</option>
               <option value="admin">Admin</option>
             </select>
-            <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-xl" style="color:rgb(var(--p)/0.5)">expand_more</span>
+            <span
+              class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-xl"
+              style="color:rgb(var(--p)/0.5)">expand_more</span>
           </div>
         </div>
 
         <!-- Password row -->
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block text-[11px] font-bold uppercase tracking-wider mb-1.5" style="color:rgb(var(--p))">Password</label>
+            <label class="block text-[11px] font-bold uppercase tracking-wider mb-1.5"
+              style="color:rgb(var(--p))">Password</label>
             <div class="field-wrap">
               <span class="material-symbols-outlined field-icon text-xl">lock</span>
               <input type="password" name="password" required class="field-input" placeholder="••••••••">
             </div>
           </div>
           <div>
-            <label class="block text-[11px] font-bold uppercase tracking-wider mb-1.5" style="color:rgb(var(--p))">Confirm</label>
+            <label class="block text-[11px] font-bold uppercase tracking-wider mb-1.5"
+              style="color:rgb(var(--p))">Confirm</label>
             <div class="field-wrap">
               <span class="material-symbols-outlined field-icon text-xl">lock_reset</span>
               <input type="password" name="confirm_password" class="field-input" placeholder="••••••••">
@@ -153,9 +360,12 @@
 
         <button type="submit" id="reg-submit-btn" class="btn-submit mt-2">
           <span id="reg-btn-text">Register Account</span>
-          <span id="reg-btn-spinner" style="display:none;width:18px;height:18px;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;animation:btnSpin 0.7s linear infinite;display:none;vertical-align:middle;margin-left:0.5rem" aria-hidden="true"></span>
+          <span id="reg-btn-spinner"
+            style="display:none;width:18px;height:18px;border:2px solid currentColor;border-top-color:transparent;border-radius:50%;animation:btnSpin 0.7s linear infinite;display:none;vertical-align:middle;margin-left:0.5rem"
+            aria-hidden="true"></span>
         </button>
-        <span id="reg-status" role="status" aria-live="polite" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)"></span>
+        <span id="reg-status" role="status" aria-live="polite"
+          style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)"></span>
 
       </form>
 
@@ -176,19 +386,26 @@
       </div>
       <div class="flex items-center gap-1.5">
         <span class="material-symbols-outlined text-sm" style="color:rgb(var(--p))">encrypted</span>
-        <span class="text-[10px] uppercase tracking-widest font-bold" style="color:rgb(var(--p))">256-bit Encryption</span>
+        <span class="text-[10px] uppercase tracking-widest font-bold" style="color:rgb(var(--p))">256-bit
+          Encryption</span>
       </div>
     </div>
 
   </main>
 
-  <style>@keyframes btnSpin{to{transform:rotate(360deg);}}</style>
+  <style>
+    @keyframes btnSpin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
   <script>
-    function toggleTheme(){const h=document.getElementById('html-root');h.classList.toggle('dark');localStorage.setItem('insureIntelTheme',h.classList.contains('dark')?'dark':'light');}
-    document.querySelector('form').addEventListener('submit', function(e) {
-      const btn    = document.getElementById('reg-submit-btn');
-      const text   = document.getElementById('reg-btn-text');
-      const spin   = document.getElementById('reg-btn-spinner');
+    function toggleTheme() { const h = document.getElementById('html-root'); h.classList.toggle('dark'); localStorage.setItem('insureIntelTheme', h.classList.contains('dark') ? 'dark' : 'light'); }
+    document.querySelector('form').addEventListener('submit', function (e) {
+      const btn = document.getElementById('reg-submit-btn');
+      const text = document.getElementById('reg-btn-text');
+      const spin = document.getElementById('reg-btn-spinner');
       const status = document.getElementById('reg-status');
       btn.disabled = true;
       text.textContent = 'Creating account…';
@@ -197,4 +414,5 @@
     });
   </script>
 </body>
+
 </html>

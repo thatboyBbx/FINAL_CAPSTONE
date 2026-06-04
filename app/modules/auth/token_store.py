@@ -83,6 +83,26 @@ class UserRevocationFence(Base):
     tokens_valid_after: Mapped[datetime] = mapped_column(DateTime, nullable=False)
 
 
+class PasswordResetToken(Base):
+    """Single-use password reset token stored as a SHA-256 hash."""
+
+    __tablename__ = "password_reset_tokens"
+
+    id:          Mapped[int]             = mapped_column(Integer, primary_key=True)
+    token_hash:  Mapped[str]             = mapped_column(String(64), unique=True, nullable=False, index=True)
+    user_id:     Mapped[int]             = mapped_column(Integer, nullable=False, index=True)
+    issued_at:   Mapped[datetime]        = mapped_column(
+        DateTime, nullable=False, default=lambda: datetime.now(timezone.utc)
+    )
+    expires_at:  Mapped[datetime]        = mapped_column(DateTime, nullable=False, index=True)
+    used:        Mapped[bool]            = mapped_column(Boolean, nullable=False, default=False)
+    used_at:     Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
+
+    __table_args__ = (
+        Index("ix_password_reset_user_active", "user_id", "used"),
+    )
+
+
 # ---------------------------------------------------------------------------
 # Internal helpers
 # ---------------------------------------------------------------------------
@@ -170,6 +190,57 @@ def revoke_all_refresh_tokens(db: Session, user_id: int) -> int:
         r.revoked_at = now
     db.commit()
     return len(records)
+
+
+# ---------------------------------------------------------------------------
+# Password reset token API
+# ---------------------------------------------------------------------------
+
+def create_password_reset_token(db: Session, user_id: int, expires_minutes: int = 30) -> str:
+    """Issue a single-use password reset token and return its raw value."""
+    now = datetime.now(timezone.utc)
+    raw = secrets.token_urlsafe(48)
+
+    # Invalidate earlier unused tokens for this user so only the latest reset
+    # link remains usable.
+    existing = (
+        db.query(PasswordResetToken)
+        .filter(PasswordResetToken.user_id == user_id, PasswordResetToken.used == False)  # noqa: E712
+        .all()
+    )
+    for token in existing:
+        token.used = True
+        token.used_at = now
+
+    db.add(
+        PasswordResetToken(
+            token_hash=_hash(raw),
+            user_id=user_id,
+            expires_at=now + timedelta(minutes=expires_minutes),
+        )
+    )
+    db.commit()
+    return raw
+
+
+def verify_password_reset_token(db: Session, raw: str) -> PasswordResetToken | None:
+    """Return the reset token record if it exists, is unused, and is unexpired."""
+    return (
+        db.query(PasswordResetToken)
+        .filter(
+            PasswordResetToken.token_hash == _hash(raw),
+            PasswordResetToken.used == False,  # noqa: E712
+            PasswordResetToken.expires_at > datetime.now(timezone.utc),
+        )
+        .first()
+    )
+
+
+def mark_password_reset_token_used(db: Session, record: PasswordResetToken) -> None:
+    """Consume a reset token after a successful password change."""
+    record.used = True
+    record.used_at = datetime.now(timezone.utc)
+    db.commit()
 
 
 # ---------------------------------------------------------------------------

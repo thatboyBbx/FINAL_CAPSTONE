@@ -19,6 +19,7 @@
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
+  min-width: 0;
 }
 
 /* Tile grid — 1→2→3 columns */
@@ -26,6 +27,7 @@
   display: grid;
   gap: 2rem;
   grid-template-columns: repeat(1, 1fr);
+  min-width: 0;
 }
 @media (min-width: 640px) { .tile-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 1024px) { .tile-grid { grid-template-columns: repeat(3, 1fr); } }
@@ -42,6 +44,7 @@
   display: grid;
   gap: 2rem;
   grid-template-columns: 1fr;
+  min-width: 0;
 }
 @media (min-width: 768px) { .col-grid-2 { grid-template-columns: repeat(2, 1fr); } }
 
@@ -50,6 +53,7 @@
   display: grid;
   gap: 2rem;
   grid-template-columns: 1fr;
+  min-width: 0;
 }
 @media (min-width: 768px)  { .col-grid-3 { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 1024px) { .col-grid-3 { grid-template-columns: repeat(3, 1fr); } }

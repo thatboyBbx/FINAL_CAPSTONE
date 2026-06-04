@@ -97,9 +97,19 @@ def ask_question(payload: AskRequest, db: Session = Depends(get_db)) -> Dict[str
 
     if not doc_text:
         try:
+            from app.modules.documents import file_store  # noqa: PLC0415
             from app.modules.documents.ingestion.pdf_extractor import extract_text_from_pdf  # noqa: PLC0415
             if doc.file_path:
-                doc_text = extract_text_from_pdf(doc.file_path) or ""
+                file_path = file_store.resolve_existing_document_path(
+                    doc.file_path,
+                    stored_filename=getattr(doc, "stored_filename", None),
+                    original_filename=getattr(doc, "original_filename", None),
+                    file_size=getattr(doc, "file_size", None),
+                )
+                if str(file_path).replace("\\", "/") != doc.file_path and file_path.exists():
+                    doc.file_path = str(file_path).replace("\\", "/")
+                    db.commit()
+                doc_text = extract_text_from_pdf(file_path) or ""
                 if doc_text:
                     text_source = "pdf_extraction"
         except Exception as exc:  # noqa: BLE001

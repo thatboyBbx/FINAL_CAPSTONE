@@ -26,12 +26,14 @@ Usage in any UI route:
 from __future__ import annotations
 
 import logging
+from typing import Callable
 
-from fastapi import Cookie, Depends, Request
+from fastapi import Cookie, Depends, HTTPException, Request, status
 from fastapi.responses import RedirectResponse
 from sqlalchemy.orm import Session
 
 from app.core.db import get_db
+from app.modules.audit.audit_logger import AuditLogger, get_audit_logger
 from app.modules.auth.service import verify_access_token
 from app.modules.users.model import User
 
@@ -86,3 +88,41 @@ def require_ui_login(
         return response
 
     return user
+
+
+def require_ui_role(*allowed_roles: str) -> Callable[..., User | RedirectResponse]:
+    """
+    HTML-page role guard. Unauthenticated users are redirected to login; logged
+    in users without the required role receive the standard 403 page.
+    """
+    def _check(
+        request: Request,
+        current_user: User | RedirectResponse = Depends(require_ui_login),
+        db: Session = Depends(get_db),
+    ) -> User | RedirectResponse:
+        if isinstance(current_user, RedirectResponse):
+            return current_user
+
+        if current_user.role not in allowed_roles:
+            try:
+                get_audit_logger().log(
+                    db,
+                    event_type=AuditLogger.PERMISSION_DENIED,
+                    actor=current_user.staff_id,
+                    ip_address=request.client.host if request.client else None,
+                    details={
+                        "required_roles": list(allowed_roles),
+                        "user_role": current_user.role,
+                        "path": request.url.path,
+                    },
+                )
+            except Exception:
+                pass
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail=f"Access denied. Required role: {' or '.join(allowed_roles)}.",
+            )
+
+        return current_user
+
+    return _check

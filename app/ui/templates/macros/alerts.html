@@ -3,7 +3,6 @@
 {% macro alert_info(message, dismissible=False, id=None) %}
 <div class="alert alert-info" {% if id %}id="{{ id }}"{% endif %} role="alert" aria-live="polite" aria-atomic="true">
   <div style="display:flex;align-items:flex-start;gap:0.625rem">
-    <span class="material-symbols-outlined icon-md" aria-hidden="true" style="flex-shrink:0;margin-top:0.1rem">info</span>
     <span style="flex:1">{{ message }}</span>
     {% if dismissible %}
     <button type="button" onclick="this.closest('[role=alert]').remove()" class="alert-dismiss-btn" aria-label="Dismiss notification">
@@ -17,7 +16,6 @@
 {% macro alert_success(message, dismissible=False, id=None) %}
 <div class="alert alert-success" {% if id %}id="{{ id }}"{% endif %} role="status" aria-live="polite" aria-atomic="true">
   <div style="display:flex;align-items:flex-start;gap:0.625rem">
-    <span class="material-symbols-outlined icon-md" aria-hidden="true" style="flex-shrink:0;margin-top:0.1rem">check_circle</span>
     <span style="flex:1">{{ message }}</span>
     {% if dismissible %}
     <button type="button" onclick="this.closest('[role=status]').remove()" class="alert-dismiss-btn" aria-label="Dismiss notification">
@@ -31,7 +29,6 @@
 {% macro alert_warning(message, dismissible=False, id=None) %}
 <div class="alert alert-warn" {% if id %}id="{{ id }}"{% endif %} role="alert" aria-live="polite" aria-atomic="true">
   <div style="display:flex;align-items:flex-start;gap:0.625rem">
-    <span class="material-symbols-outlined icon-md" aria-hidden="true" style="flex-shrink:0;margin-top:0.1rem">warning</span>
     <span style="flex:1">{{ message }}</span>
     {% if dismissible %}
     <button type="button" onclick="this.closest('[role=alert]').remove()" class="alert-dismiss-btn" aria-label="Dismiss notification">
@@ -45,7 +42,6 @@
 {% macro alert_error(message, dismissible=False, id=None) %}
 <div class="alert alert-error" {% if id %}id="{{ id }}"{% endif %} role="alert" aria-live="assertive" aria-atomic="true">
   <div style="display:flex;align-items:flex-start;gap:0.625rem">
-    <span class="material-symbols-outlined icon-md" aria-hidden="true" style="flex-shrink:0;margin-top:0.1rem">error</span>
     <span style="flex:1">{{ message }}</span>
     {% if dismissible %}
     <button type="button" onclick="this.closest('[role=alert]').remove()" class="alert-dismiss-btn" aria-label="Dismiss notification">
@@ -66,7 +62,6 @@
 {% set c = config.get(type, config.info) %}
 <div class="alert {{ c.class }}" role="{{ c.role }}" aria-live="{{ c.live }}" aria-atomic="true">
   <div style="display:flex;align-items:center;gap:0.625rem">
-    <span class="material-symbols-outlined icon-md" aria-hidden="true" style="flex-shrink:0">{{ c.icon }}</span>
     {{ message }}
   </div>
 </div>

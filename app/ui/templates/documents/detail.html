@@ -584,9 +584,9 @@
       const barColor = pct >= 85 ? '#22c55e' : pct >= 70 ? '#f59e0b' : '#ef4444';
       const isCorrect = ent.is_correct;
       const feedbackBadge = isCorrect === true
-        ? '<span class="badge badge-green ml-1" title="Verified correct">✓</span>'
+        ? '<span class="badge badge-green ml-1" title="Verified correct"><span class="material-symbols-outlined" style="font-size:12px">check_circle</span></span>'
         : isCorrect === false
-          ? '<span class="badge badge-red ml-1" title="Marked incorrect">✗</span>'
+          ? '<span class="badge badge-red ml-1" title="Marked incorrect"><span class="material-symbols-outlined" style="font-size:12px">cancel</span></span>'
           : '';
 
       return `<div class="rounded-lg p-3 transition-colors"
@@ -718,11 +718,11 @@
       const card = document.getElementById(`entity-card-${_modalEntityId}`);
       if (card) {
         card.style.borderColor = 'rgba(239,68,68,0.4)';
-        // Show small ✗ badge to indicate it was flagged
+        // Show small error badge to indicate it was flagged
         const firstPill = card.querySelector('.entity-pill');
         if (firstPill && !card.querySelector('.badge-red')) {
           firstPill.insertAdjacentHTML('afterend',
-            '<span class="badge badge-red ml-1" title="Marked incorrect">✗</span>');
+            '<span class="badge badge-red ml-1" title="Marked incorrect"><span class="material-symbols-outlined" style="font-size:12px">cancel</span></span>');
         }
       }
       _modalEntityId = null;

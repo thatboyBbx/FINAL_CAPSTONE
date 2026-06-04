@@ -44,3 +44,10 @@ def get_user_by_staff_id(db, staff_id: str) -> User | None:
 def get_user_by_email(db, email: str) -> User | None:
     normalized_email = email.strip().lower()
     return repo.get_user_by_email(db, normalized_email)
+
+
+def update_password_hash(db, user: User, password_hash: str) -> User:
+    user.password_hash = password_hash
+    db.commit()
+    db.refresh(user)
+    return user

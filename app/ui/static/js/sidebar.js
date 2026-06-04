@@ -18,10 +18,11 @@
 
   const STORAGE_KEY  = "sidebar_state";       // localStorage key for accordion state
   const COLLAPSE_KEY = "sidebar_collapsed";   // localStorage key for sidebar width
-  const EXPANDED_W   = "256px";
+  const EXPANDED_W   = "250px";
   const COLLAPSED_W  = "64px";
-  const MAIN_EXPAND  = "256px";
+  const MAIN_EXPAND  = "250px";
   const MAIN_COLLAPSE = "64px";
+  const MOBILE_QUERY = "(max-width: 1023px)";
 
   /* ── State ───────────────────────────────────────────────────────────────── */
 
@@ -55,6 +56,10 @@
     try {
       localStorage.setItem(COLLAPSE_KEY, String(sidebarCollapsed));
     } catch (_) {}
+  }
+
+  function _isMobile() {
+    return window.matchMedia(MOBILE_QUERY).matches;
   }
 
   /**
@@ -153,21 +158,50 @@
    */
   function _applySidebarWidth(collapsed, animate = true) {
     const sidebar = document.getElementById("sidebar");
-    const main    = document.getElementById("main-content");
+    const wrapper = document.getElementById("main-wrapper");
     const labels  = document.querySelectorAll(".sidebar-label");
     const logo    = document.getElementById("sidebar-logo-text");
+    const dockBtn = document.getElementById("sidebar-dock-toggle");
 
     if (!sidebar) return;
 
-    if (animate) {
-      sidebar.style.transition = "width 0.25s ease";
-      if (main) main.style.transition = "margin-left 0.25s ease";
+    if (_isMobile()) {
+      document.body.classList.remove("sidebar-collapsed");
+      sidebar.style.width = EXPANDED_W;
+      if (wrapper) {
+        wrapper.style.marginLeft = "0";
+        wrapper.style.width = "100%";
+        wrapper.style.maxWidth = "100%";
+      }
+      labels.forEach((l) => {
+        l.style.display = "";
+        l.style.opacity = "1";
+      });
+      if (logo) logo.style.display = "";
+      if (dockBtn) {
+        dockBtn.setAttribute("aria-expanded", sidebar.classList.contains("mobile-open") ? "true" : "false");
+        dockBtn.title = "Close sidebar";
+        const icon = dockBtn.querySelector(".material-symbols-outlined");
+        if (icon) icon.textContent = "close";
+      }
+      return;
     }
 
-    sidebar.style.width = collapsed ? COLLAPSED_W : EXPANDED_W;
-    sidebar.style.overflowX = "hidden";
+    if (animate) {
+      sidebar.style.transition = "width 0.25s ease";
+      if (wrapper) wrapper.style.transition = "margin-left 0.25s ease, width 0.25s ease, max-width 0.25s ease";
+    }
 
-    if (main) main.style.marginLeft = collapsed ? MAIN_COLLAPSE : MAIN_EXPAND;
+    document.body.classList.toggle("sidebar-collapsed", collapsed);
+    sidebar.style.width = collapsed ? COLLAPSED_W : EXPANDED_W;
+    sidebar.style.overflowX = "visible";
+
+    if (wrapper) {
+      const sidebarWidth = collapsed ? MAIN_COLLAPSE : MAIN_EXPAND;
+      wrapper.style.marginLeft = sidebarWidth;
+      wrapper.style.width = `calc(100% - ${sidebarWidth})`;
+      wrapper.style.maxWidth = `calc(100% - ${sidebarWidth})`;
+    }
 
     // Show/hide text labels
     labels.forEach((l) => {
@@ -177,9 +211,21 @@
 
     if (logo) logo.style.display = collapsed ? "none" : "";
 
+    document.querySelectorAll("[data-accordion-body]").forEach((el) => {
+      const id = el.getAttribute("data-accordion-body");
+      el.style.display = collapsed ? "none" : (accordionState[id] ? "block" : "none");
+    });
+
     // Update hamburger icon
     const hbIcon = document.getElementById("sidebar-toggle-icon");
     if (hbIcon) hbIcon.textContent = collapsed ? "menu" : "menu_open";
+
+    if (dockBtn) {
+      dockBtn.setAttribute("aria-expanded", collapsed ? "false" : "true");
+      dockBtn.title = collapsed ? "Dock sidebar" : "Collapse sidebar";
+      const icon = dockBtn.querySelector(".material-symbols-outlined");
+      if (icon) icon.textContent = "keyboard_double_arrow_left";
+    }
 
     // Update nav-section labels
     document.querySelectorAll(".nav-section").forEach((el) => {
@@ -194,6 +240,24 @@
    * toggleSidebar — public: called by hamburger button onclick.
    */
   window.toggleSidebar = function () {
+    if (_isMobile()) {
+      const sidebar = document.getElementById("sidebar");
+      if (!sidebar) return;
+      if (sidebar.classList.contains("mobile-open")) {
+        if (typeof window.mobileSidebarClose === "function") {
+          window.mobileSidebarClose();
+        } else {
+          sidebar.classList.remove("mobile-open");
+        }
+      } else if (typeof window.mobileSidebarOpen === "function") {
+        window.mobileSidebarOpen();
+      } else {
+        sidebar.classList.add("mobile-open");
+      }
+      _applySidebarWidth(false, true);
+      return;
+    }
+
     sidebarCollapsed = !sidebarCollapsed;
     _saveCollapseState();
     _applySidebarWidth(sidebarCollapsed, true);
@@ -237,6 +301,10 @@
 
     // Apply sidebar collapsed/expanded state (no animation for initial render)
     _applySidebarWidth(sidebarCollapsed, false);
+
+    window.addEventListener("resize", () => {
+      _applySidebarWidth(sidebarCollapsed, false);
+    });
   }
 
   if (document.readyState === "loading") {

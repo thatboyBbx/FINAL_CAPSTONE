@@ -57,6 +57,7 @@ sentence-transformers>=2.2.0
 
 # Report generation — HTML→PDF
 weasyprint>=60.0
+reportlab>=4.0
 
 # Advancement 2 — Document Comparison (Hungarian algorithm)
 scipy>=1.11.0

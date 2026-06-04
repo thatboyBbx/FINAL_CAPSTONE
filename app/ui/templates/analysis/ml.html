@@ -19,7 +19,8 @@
   </nav>
 
   <h1 class="font-headline" style="font-size:1.5rem;font-weight:800;color:var(--cos);margin:0 0 1.75rem">
-    📊 ML Analytics
+    <span class="material-symbols-outlined" style="font-size:1.5rem;color:var(--cp);vertical-align:-0.2rem">insights</span>
+    ML Analytics
   </h1>
 
   <!-- Config card -->
@@ -139,7 +140,7 @@ async function runAnalysis() {
 
   const btn = document.getElementById("run-btn");
   btn.disabled = true;
-  btn.innerHTML = `<span style="animation:spin 1s linear infinite;display:inline-block">⏳</span> Running…`;
+  btn.innerHTML = `<span class="material-symbols-outlined" style="font-size:18px;animation:spin 1s linear infinite;display:inline-block">progress_activity</span> Running...`;
   showProgress(20, "Running ML analysis…");
   document.getElementById("results-area").innerHTML = "";
 
@@ -160,11 +161,16 @@ async function runAnalysis() {
 
 function renderResults(data, ids) {
   const area = document.getElementById("results-area");
+  const summary = data && data.summary ? data.summary : null;
   area.innerHTML = `<h2 style="color:var(--cos);font-size:1.125rem;font-weight:700;
     margin:0 0 1.25rem;display:flex;align-items:center;gap:0.5rem">
     <span class="material-symbols-outlined" style="font-size:20px;color:var(--cp)">assessment</span>
     Results (${ids.length} document${ids.length !== 1 ? "s" : ""})
   </h2>`;
+
+  if (summary) {
+    area.innerHTML += renderSummaryCards(summary);
+  }
 
   const results = Array.isArray(data) ? data : (data.results || [data]);
   if (results.length === 0) {
@@ -196,6 +202,72 @@ function renderResults(data, ids) {
   });
 }
 
+function renderSummaryCards(summary) {
+  const categories = summary.category_distribution || {};
+  const categoryText = Object.keys(categories).length
+    ? Object.entries(categories).map(([k, v]) => `${_esc(k)}: ${_esc(v)}`).join(" · ")
+    : "n/a";
+
+  const avgCompliance = summary.average_compliance_score !== null && summary.average_compliance_score !== undefined
+    ? `${Number(summary.average_compliance_score).toFixed(1)}%`
+    : "n/a";
+  const avgRisk = summary.average_risk_score !== null && summary.average_risk_score !== undefined
+    ? Number(summary.average_risk_score).toFixed(1)
+    : "n/a";
+  const volumeLabel = Number(summary.clauses_scored || 0) > 0 ? "Clauses" : "Text";
+  const volumeValue = Number(summary.clauses_scored || 0) > 0
+    ? `${summary.clauses_scored || 0}`
+    : Number(summary.text_characters || 0) > 0
+      ? formatCompactNumber(summary.text_characters || 0)
+      : formatFileSize(summary.file_bytes || 0);
+  const volumeMeta = Number(summary.clauses_scored || 0) > 0
+    ? ""
+    : Number(summary.text_characters || 0) > 0 ? "chars" : "file";
+
+  return `
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:0.75rem;margin-bottom:1rem">
+      ${renderMetricCard("Documents", `${summary.documents_analyzed || 0}/${summary.documents_requested || 0}`, "description")}
+      ${renderMetricCard("Compliance", avgCompliance, "verified_user")}
+      ${renderMetricCard("Avg Risk", avgRisk, "monitoring")}
+      ${renderMetricCard(volumeLabel, volumeValue, "rule", volumeMeta)}
+      ${renderMetricCard("Entities", `${summary.entities_found || 0}`, "data_object", `${summary.entity_types_found || 0} types`)}
+    </div>
+    <div class="glass-card" style="padding:0.85rem 1rem;margin-bottom:1rem;color:var(--cosv);font-size:0.78rem">
+      <span style="color:var(--cos);font-weight:700">Categories:</span> ${categoryText}
+      <span style="margin-left:0.75rem;color:var(--cos);font-weight:700">High risk:</span> ${summary.high_risk_documents || 0}
+    </div>
+  `;
+}
+
+function formatCompactNumber(value) {
+  const n = Number(value || 0);
+  if (n >= 1000000) return `${(n / 1000000).toFixed(1)}m`;
+  if (n >= 1000) return `${(n / 1000).toFixed(1)}k`;
+  return `${n}`;
+}
+
+function formatFileSize(bytes) {
+  const n = Number(bytes || 0);
+  if (n >= 1048576) return `${(n / 1048576).toFixed(1)}mb`;
+  if (n >= 1024) return `${Math.round(n / 1024)}kb`;
+  return `${n}b`;
+}
+
+function renderMetricCard(label, value, icon, meta = "") {
+  return `
+    <div class="glass-card" style="padding:1rem">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:0.75rem">
+        <div>
+          <p style="margin:0 0 0.25rem;color:var(--cosv);font-size:0.7rem;text-transform:uppercase;font-weight:700">${label}</p>
+          <p style="margin:0;color:var(--cos);font-size:1.25rem;font-weight:800">${value}</p>
+          ${meta ? `<p style="margin:0.15rem 0 0;color:var(--cosv);font-size:0.68rem">${_esc(meta)}</p>` : ""}
+        </div>
+        <span class="material-symbols-outlined" style="color:var(--cp);font-size:22px">${icon}</span>
+      </div>
+    </div>
+  `;
+}
+
 function renderResultBody(result) {
   const requestTypes = Array.isArray(result.requested_analysis_types) ? result.requested_analysis_types : [];
   const risk = result.risk || null;
@@ -213,10 +285,48 @@ function renderResultBody(result) {
 
       ${risk ? renderRiskSummary(risk) : ""}
       ${classification ? renderClassificationSummary(classification) : ""}
+      ${result.entities_by_type ? renderEntitySummary(result.entities_by_type, result.entities || []) : ""}
       ${clause ? renderClauseSummary(clause) : ""}
+      ${Array.isArray(result.warnings) && result.warnings.length ? renderWarnings(result.warnings) : ""}
       ${hasError ? renderErrorSummary(result.error) : ""}
-      ${renderRawBlock(result)}
+      ${renderTechnicalNarrative(result)}
     </div>
+  `;
+}
+
+function renderEntitySummary(byType, entities) {
+  const entries = Object.entries(byType || {});
+  if (!entries.length) return "";
+  return `
+    <section style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);
+                    border-radius:10px;padding:1rem">
+      <p style="margin:0 0 0.6rem;color:var(--cos);font-size:0.875rem;font-weight:700">NER Extraction</p>
+      <div style="display:flex;flex-wrap:wrap;gap:0.45rem;margin-bottom:0.75rem">
+        ${entries.map(([type, count]) => renderBadge(`${_esc(type)} ${_esc(count)}`, "rgba(96,165,250,0.12)", "#60a5fa")).join("")}
+      </div>
+      ${entities.length ? `
+        <div style="display:grid;gap:0.4rem">
+          ${entities.slice(0, 8).map(ent => `
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:0.75rem;padding:0.55rem 0.65rem;border-radius:8px;background:rgba(255,255,255,0.03)">
+              <span style="color:var(--cos);font-size:0.75rem;font-weight:600">${_esc(ent.text || ent.value || "")}</span>
+              <span style="color:var(--cosv);font-size:0.68rem">${_esc(ent.entity_type || ent.label || "")}</span>
+            </div>
+          `).join("")}
+        </div>
+      ` : ""}
+    </section>
+  `;
+}
+
+function renderWarnings(warnings) {
+  return `
+    <section style="background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.24);
+                    border-radius:10px;padding:1rem">
+      <p style="margin:0 0 0.45rem;color:#fbbf24;font-size:0.82rem;font-weight:700">Warnings</p>
+      <ul style="margin:0;padding-left:1rem;color:var(--cosv);font-size:0.75rem;line-height:1.55">
+        ${warnings.map(w => `<li>${_esc(w)}</li>`).join("")}
+      </ul>
+    </section>
   `;
 }
 
@@ -323,13 +433,57 @@ function renderErrorSummary(error) {
   `;
 }
 
-function renderRawBlock(result) {
+function renderTechnicalNarrative(result) {
+  const lines = [];
+  const classification = result.classification || {};
+  const risk = result.risk || {};
+  const entityTypes = Object.entries(result.entities_by_type || {});
+  const clause = result.clause_analysis || {};
+
+  if (classification.document_category) {
+    const confidence = classification.confidence !== undefined && classification.confidence !== null
+      ? `${Math.round(Number(classification.confidence) * 100)}%`
+      : "unreported confidence";
+    lines.push(`The model classified this document as ${classification.document_category} with ${confidence}, using ${classification.method || "the available classifier"}.`);
+  }
+
+  if (risk.risk_level || risk.risk_score !== undefined) {
+    const complianceText = risk.compliance_score !== undefined && risk.compliance_score !== null
+      ? ` and compliance score of ${Math.round(Number(risk.compliance_score))}%`
+      : "";
+    lines.push(`The compliance risk assessment returned ${risk.risk_level || "an unknown"} risk with a risk score of ${Math.round(Number(risk.risk_score || 0))}${complianceText}.`);
+  }
+
+  if (entityTypes.length) {
+    const readable = entityTypes.map(([type, count]) => `${count} ${type.replace(/_/g, " ").toLowerCase()}`).join(", ");
+    lines.push(`Named entity extraction found ${readable}.`);
+  }
+
+  if (clause.total_clauses || clause.clauses_scored || clause.summary) {
+    const total = clause.total_clauses ?? clause.clauses_scored ?? clause.summary?.total_clauses_a ?? "an unreported number of";
+    lines.push(`Clause analysis reviewed ${total} clause entries and highlighted the available similarity or deviation indicators above.`);
+  }
+
+  if (Array.isArray(result.warnings) && result.warnings.length) {
+    lines.push(`Warnings to review: ${result.warnings.join("; ")}.`);
+  }
+
+  if (result.error) {
+    lines.push(`The analysis could not complete cleanly because: ${result.error}`);
+  }
+
+  if (!lines.length) {
+    lines.push("The analysis completed, but no additional narrative details were returned for this document.");
+  }
+
   return `
-    <details style="background:rgba(255,255,255,0.03);border-radius:8px;padding:0.75rem 0.9rem">
-      <summary style="cursor:pointer;color:var(--cos);font-size:0.78rem;font-weight:600">Raw data</summary>
-      <pre style="margin:0.75rem 0 0;background:rgba(255,255,255,0.04);border-radius:8px;padding:0.9rem;
-                  font-size:0.72rem;color:var(--cosv);overflow-x:auto;white-space:pre-wrap">${_esc(JSON.stringify(result, null, 2))}</pre>
-    </details>
+    <section style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);
+                    border-radius:10px;padding:1rem">
+      <p style="margin:0 0 0.6rem;color:var(--cos);font-size:0.875rem;font-weight:700">Plain-language summary</p>
+      <ul style="margin:0;padding-left:1rem;color:var(--cosv);font-size:0.76rem;line-height:1.65">
+        ${lines.map(line => `<li>${_esc(line)}</li>`).join("")}
+      </ul>
+    </section>
   `;
 }
 

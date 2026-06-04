@@ -99,7 +99,8 @@
   function onDragOver(e){e.preventDefault();const z=document.getElementById('drop-zone');z.style.borderColor='var(--cp)';z.style.background='color-mix(in srgb,var(--cp) 8%,transparent)';}
   function onDragLeave(e){const z=document.getElementById('drop-zone');z.style.borderColor='color-mix(in srgb,var(--cp) 35%,transparent)';z.style.background='color-mix(in srgb,var(--cp) 4%,transparent)';}
   function onDrop(e){e.preventDefault();onDragLeave(e);if(e.dataTransfer.files.length){document.getElementById('file-input').files=e.dataTransfer.files;onFileChange({files:e.dataTransfer.files});}}
-  function onFileChange(inp){const el=document.getElementById('file-name-display');if(inp.files&&inp.files[0]){el.textContent='✓ '+inp.files[0].name+' ('+(inp.files[0].size/1024/1024).toFixed(2)+' MB)';el.classList.remove('hidden');}}
+  function onFileChange(inp){const el=document.getElementById('file-name-display');if(inp.files&&inp.files[0]){const f=inp.files[0];el.innerHTML='<span class="material-symbols-outlined text-[16px]" style="vertical-align:-0.2rem;color:#4ade80">check_circle</span> '+_esc(f.name)+' ('+(f.size/1024/1024).toFixed(2)+' MB)';el.classList.remove('hidden');}}
+  function _esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
   document.getElementById('upload-form').addEventListener('submit',function(){const b=document.getElementById('submit-btn');b.disabled=true;b.innerHTML='<span class="material-symbols-outlined text-[18px]">hourglass_top</span> Uploading…';});
 </script>
 {% endblock %}

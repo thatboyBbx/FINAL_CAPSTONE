@@ -20,14 +20,14 @@
 
       <!-- Document selector -->
       <div class="rounded-xl p-4" style="background:var(--csf);border:1px solid color-mix(in srgb,var(--col) 50%,transparent)">
-        <label class="form-label">Select Document</label>
+        <label class="form-label" for="doc-select">Select Document</label>
         <select id="doc-select" class="form-input mb-3" onchange="onDocChange()">
-          <option value="">— Choose a policy document —</option>
+          <option value="">Loading policy documents...</option>
         </select>
         <div id="doc-meta" class="hidden p-3 rounded-lg" style="background:var(--csfc)">
           <div class="flex items-center justify-between mb-2">
             <span class="text-xs font-semibold" style="color:var(--cos)" id="doc-meta-name">Document</span>
-            <span class="badge badge-green text-[10px]" id="doc-index-badge">Indexed</span>
+            <span class="badge badge-blue text-[10px]" id="doc-index-badge">Available</span>
           </div>
           <p class="text-[10px]" style="color:var(--cosv)" id="doc-meta-info"></p>
           <button id="index-btn" onclick="indexDocument()" class="btn btn-ghost btn-sm w-full justify-center mt-2 hidden">
@@ -143,21 +143,47 @@
 <script>
   var currentDocId = null;
   var currentDocName = '';
+  var documentsById = {};
 
   // ── Fetch available documents ──────────────────────────────────
   async function loadDocuments() {
+    const sel = document.getElementById('doc-select');
     try {
-      const data = await apiFetch('/api/documents/?limit=50');
+      sel.disabled = true;
+      sel.innerHTML = '<option value="">Loading policy documents...</option>';
+      const fetcher = typeof apiGet === 'function' ? apiGet : apiFetch;
+      const data = await fetcher('/api/documents?limit=100');
       const docs = Array.isArray(data) ? data : (data.documents || data.items || []);
-      const sel = document.getElementById('doc-select');
-      docs.forEach(d => {
+      documentsById = {};
+      sel.innerHTML = '<option value="">-- Choose a policy document --</option>';
+
+      if (!docs.length) {
+        sel.innerHTML = '<option value="">No documents found in the vault</option>';
+        return;
+      }
+
+      docs
+        .slice()
+        .sort((a, b) => String(a.title || a.original_filename || '').localeCompare(String(b.title || b.original_filename || '')))
+        .forEach(d => {
+        documentsById[String(d.id)] = d;
         const opt = document.createElement('option');
         opt.value = d.id;
-        opt.textContent = d.title || d.file_name || ('Document #' + d.id);
+        opt.textContent = d.title || d.original_filename || d.file_name || ('Document #' + d.id);
         sel.appendChild(opt);
       });
+      sel.disabled = false;
+
+      const docIdFromUrl = new URLSearchParams(window.location.search).get('doc_id');
+      if (docIdFromUrl && documentsById[docIdFromUrl]) {
+        sel.value = docIdFromUrl;
+        onDocChange();
+      }
     } catch(e) {
       console.warn('Could not load documents:', e);
+      sel.innerHTML = '<option value="">Could not load documents</option>';
+      sel.disabled = true;
+      showErrorModal('Could not load documents for Q&A. Refresh the page or check your session.');
     }
   }
 
@@ -167,9 +193,15 @@
     currentDocName = sel.options[sel.selectedIndex]?.textContent || '';
     const meta = document.getElementById('doc-meta');
     if (!currentDocId) { meta.classList.add('hidden'); return; }
+    const doc = documentsById[String(currentDocId)] || {};
     meta.classList.remove('hidden');
     document.getElementById('doc-meta-name').textContent = currentDocName;
-    document.getElementById('doc-meta-info').textContent = 'ID: ' + currentDocId;
+    const bits = [
+      'ID: ' + currentDocId,
+      doc.document_category ? 'Category: ' + doc.document_category.replace(/_/g, ' ') : '',
+      doc.status ? 'Status: ' + doc.status : '',
+    ].filter(Boolean);
+    document.getElementById('doc-meta-info').textContent = bits.join(' | ');
     loadSessions();
     clearChat();
   }
@@ -215,7 +247,7 @@
     btn.disabled = true; btn.textContent = 'Indexing…';
     try {
       await apiFetch('/api/qa/index/' + currentDocId, {method: 'POST'});
-      document.getElementById('doc-index-badge').textContent = 'Indexed';
+      document.getElementById('doc-index-badge').textContent = 'Available';
       document.getElementById('doc-index-badge').className = 'badge badge-green text-[10px]';
       btn.classList.add('hidden');
     } catch(e) {
@@ -377,7 +409,7 @@
     return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
 
-  // Init
-  loadDocuments();
+  // Init after deferred shared API helpers are available.
+  window.addEventListener('DOMContentLoaded', loadDocuments);
 </script>
 {% endblock %}

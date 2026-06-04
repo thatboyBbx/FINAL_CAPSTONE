@@ -92,16 +92,16 @@ _KB: list[dict[str, Any]] = [
         ],
         "response": (
             "I can assist with the following topics:\n\n"
-            "📋 **Zimbabwe Insurance Law** — Insurance Act [Chapter 24:07], IPEC regulations\n"
-            "🏦 **Solvency & Capital** — Minimum capital requirements, solvency margins\n"
-            "⚖️ **Claims Settlement** — Settlement timelines, ratios, IPEC requirements\n"
-            "📄 **Policy Exclusions** — Standard exclusions, war/civil commotion clauses\n"
-            "🔄 **Reinsurance** — Treaty types, ZimRe requirements, offshore placement\n"
-            "📊 **CSP Module** — Weighted Composite Score, financial strength assessment\n"
-            "🔍 **NER Extraction** — What entities are extracted from documents\n"
-            "✅ **Compliance Center** — How compliance checking works\n"
-            "📁 **Document Upload** — Supported formats, upload process\n"
-            "🌍 **Multilingual** — Shona translation support\n\n"
+            "- **Zimbabwe Insurance Law** — Insurance Act [Chapter 24:07], IPEC regulations\n"
+            "- **Solvency & Capital** — Minimum capital requirements, solvency margins\n"
+            "- **Claims Settlement** — Settlement timelines, ratios, IPEC requirements\n"
+            "- **Policy Exclusions** — Standard exclusions, war/civil commotion clauses\n"
+            "- **Reinsurance** — Treaty types, ZimRe requirements, offshore placement\n"
+            "- **CSP Module** — Weighted Composite Score, financial strength assessment\n"
+            "- **NER Extraction** — What entities are extracted from documents\n"
+            "- **Compliance Center** — How compliance checking works\n"
+            "- **Document Upload** — Supported formats, upload process\n"
+            "- **Multilingual** — Shona translation support\n\n"
             "If you have a document open, ask me a specific question about its content."
         ),
     },

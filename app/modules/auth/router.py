@@ -29,14 +29,21 @@ from app.modules.auth import service as auth_service
 from app.modules.auth.dependencies import get_current_user, require_role
 from app.modules.auth.schemas import (
     CurrentUserResponse,
+    ForgotPasswordRequest,
+    ForgotPasswordResponse,
     LoginRequest,
     RefreshRequest,
+    ResetPasswordRequest,
     TokenResponse,
 )
 from app.modules.auth.token_store import (
     blacklist_jti,
     create_refresh_token,
+    create_password_reset_token,
+    mark_password_reset_token_used,
     revoke_refresh_token,
+    set_revocation_fence,
+    verify_password_reset_token,
     verify_refresh_token,
 )
 from app.modules.users import service as users_service
@@ -112,6 +119,13 @@ def _audit_login_failure(db: Session, attempted_staff_id: str, ip: str, reason: 
     )
 
 
+def _password_reset_detail() -> str:
+    return (
+        "If the account exists, password reset instructions are available. "
+        "Please check your email or contact an administrator."
+    )
+
+
 # ---------------------------------------------------------------------------
 # Self-registration (always creates "user" role)
 # ---------------------------------------------------------------------------
@@ -176,6 +190,97 @@ def login(
     _audit_login_success(db, user.staff_id, ip, user.id)
 
     return _build_token_response(user, access_token)
+
+
+# ---------------------------------------------------------------------------
+# Forgot / reset password
+# ---------------------------------------------------------------------------
+
+@router.post("/forgot-password", response_model=ForgotPasswordResponse)
+@limiter.limit(settings.rate_limit_login)
+def forgot_password(
+    request: Request,
+    payload: ForgotPasswordRequest,
+    db: Session = Depends(get_db),
+) -> ForgotPasswordResponse:
+    """
+    Issue a single-use reset token for a matching active account.
+
+    The public response is generic to prevent account enumeration. In
+    non-production environments, the raw token is included so demos and local
+    development can complete the flow without an email service.
+    """
+    ip = _get_client_ip(request)
+    user: User | None = None
+    if payload.staff_id:
+        user = users_service.get_user_by_staff_id(db, payload.staff_id)
+    if user is None and payload.email:
+        user = users_service.get_user_by_email(db, payload.email)
+
+    reset_token: str | None = None
+    if user and user.is_active:
+        reset_token = create_password_reset_token(db, user.id)
+        get_audit_logger().log(
+            db,
+            event_type="PASSWORD_RESET_REQUESTED",
+            actor=user.staff_id,
+            ip_address=ip,
+            details={"user_id": user.id},
+        )
+        logger.info("Password reset requested for user_id=%s", user.id)
+    else:
+        get_audit_logger().log(
+            db,
+            event_type="PASSWORD_RESET_REQUESTED",
+            actor=(payload.staff_id or str(payload.email) or "unknown"),
+            ip_address=ip,
+            details={"matched_account": False},
+        )
+
+    return ForgotPasswordResponse(
+        detail=_password_reset_detail(),
+        reset_token=reset_token if settings.env != "production" else None,
+    )
+
+
+@router.post("/reset-password")
+@limiter.limit(settings.rate_limit_login)
+def reset_password(
+    request: Request,
+    payload: ResetPasswordRequest,
+    db: Session = Depends(get_db),
+) -> dict:
+    """Consume a reset token, set a new password, and revoke existing sessions."""
+    record = verify_password_reset_token(db, payload.token)
+    if not record:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Password reset link is invalid or has expired.",
+        )
+
+    user = users_service.get_user_by_id(db, record.user_id)
+    if not user or not user.is_active:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Password reset link is invalid or has expired.",
+        )
+
+    users_service.update_password_hash(
+        db,
+        user,
+        auth_service.hash_password(payload.new_password),
+    )
+    mark_password_reset_token_used(db, record)
+    set_revocation_fence(db, user.id)
+
+    get_audit_logger().log(
+        db,
+        event_type="PASSWORD_RESET_COMPLETED",
+        actor=user.staff_id,
+        ip_address=_get_client_ip(request),
+        details={"user_id": user.id},
+    )
+    return {"detail": "Password has been reset. Please log in with your new password."}
 
 
 # ---------------------------------------------------------------------------

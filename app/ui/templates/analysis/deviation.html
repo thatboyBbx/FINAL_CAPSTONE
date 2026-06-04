@@ -1,6 +1,6 @@
 {% extends "base.html" %}
-{# analysis/deviation.html — Clause Deviation analysis #}
-{% block title %}Clause Deviation — InsureIntel Zimbabwe{% endblock %}
+{# analysis/deviation.html - Clause Deviation analysis #}
+{% block title %}Clause Deviation - InsureIntel Zimbabwe{% endblock %}
 
 {% block content %}
 <div class="px-8 py-7" style="max-width:900px">
@@ -14,46 +14,29 @@
   </nav>
 
   <h1 class="font-headline" style="font-size:1.5rem;font-weight:800;color:var(--cos);margin:0 0 1.75rem">
-    📐 Clause Deviation Analysis
+    <span class="material-symbols-outlined" style="font-size:1.5rem;color:var(--cp);vertical-align:-0.2rem">difference</span>
+    Clause Deviation Analysis
   </h1>
 
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1.5rem">
-
-    <!-- Panel A: Template -->
-    <div class="glass-card" style="padding:1.5rem">
-      <h3 style="color:var(--cos);font-weight:700;font-size:0.9375rem;margin:0 0 1rem">
-        Panel A — Master Template
-      </h3>
-      <label class="form-label">Select from vault</label>
-      <select id="template-select" class="form-input" style="margin-bottom:0.75rem" onchange="checkReady()">
-        <option value="">— Select template —</option>
-      </select>
-      <p style="color:var(--cosv);font-size:0.75rem;text-align:center;margin:0.25rem 0">— or upload —</p>
-      <div class="drop-zone" style="margin-top:0.5rem;padding:1.25rem"
-           onclick="document.getElementById('template-file').click()">
-        <span class="material-symbols-outlined" style="font-size:24px;color:var(--cp);opacity:0.6;
-              font-variation-settings:'FILL' 1">upload_file</span>
-        <p style="color:var(--cosv);font-size:0.8rem;margin:0.25rem 0 0">Upload template PDF</p>
-        <input id="template-file" type="file" accept=".pdf" style="display:none"
-               onchange="uploadTemplate(this.files[0])">
+  <div class="glass-card" style="padding:1.5rem;margin-bottom:1.5rem;max-width:640px">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;margin-bottom:1rem">
+      <div>
+        <h3 style="color:var(--cos);font-weight:700;font-size:0.9375rem;margin:0 0 0.35rem">
+          Documents to Check
+        </h3>
+        <p style="color:var(--cosv);font-size:0.8rem;margin:0">
+          Compared against the mandatory clause library.
+        </p>
       </div>
-      <p id="template-status" style="color:var(--cp);font-size:0.8rem;margin:0.5rem 0 0;display:none"></p>
+      <span class="badge badge-blue">Master clauses loaded</span>
     </div>
-
-    <!-- Panel B: Documents to compare -->
-    <div class="glass-card" style="padding:1.5rem">
-      <h3 style="color:var(--cos);font-weight:700;font-size:0.9375rem;margin:0 0 1rem">
-        Panel B — Documents to Check
-      </h3>
-      <p style="color:var(--cosv);font-size:0.8rem;margin:0 0 0.5rem">Hold Ctrl/Cmd to select multiple</p>
-      <select id="docs-select" class="form-input" multiple style="height:160px" onchange="checkReady()">
-        <!-- Populated by JS -->
-      </select>
-    </div>
-
+    <p style="color:var(--cosv);font-size:0.8rem;margin:0 0 0.5rem">Hold Ctrl/Cmd to select multiple</p>
+    <select id="docs-select" class="form-input" multiple style="height:180px" onchange="checkReady()">
+      <!-- Populated by JS -->
+    </select>
   </div>
 
-  <div style="text-align:center;margin-bottom:2rem">
+  <div style="text-align:center;margin-bottom:2rem;max-width:640px">
     <button id="run-btn" onclick="runDeviation()" class="btn-glass-gold"
             style="font-size:0.9375rem;padding:0.625rem 2rem" disabled>
       <span class="material-symbols-outlined" style="font-size:18px">difference</span>
@@ -69,70 +52,44 @@
 {% block scripts %}
 <script>
 "use strict";
-let templateId = null;
+let documentsById = {};
 
 document.addEventListener("DOMContentLoaded", async () => {
   try {
     const docs = await apiGet("/api/documents");
-    ["template-select","docs-select"].forEach(id => {
-      const sel = document.getElementById(id);
-      const isMulti = id === "docs-select";
-      if (!isMulti) sel.innerHTML = '<option value="">— Select template —</option>';
-      docs.forEach(d => {
-        const o = document.createElement("option");
-        o.value = d.id;
-        o.textContent = d.title || d.original_filename || `Doc #${d.id}`;
-        sel.appendChild(o);
-      });
+    documentsById = Object.fromEntries(docs.map(d => [Number(d.id), d]));
+    const sel = document.getElementById("docs-select");
+    docs.forEach(d => {
+      const o = document.createElement("option");
+      o.value = d.id;
+      o.textContent = d.title || d.original_filename || `Doc #${d.id}`;
+      sel.appendChild(o);
     });
-  } catch (err) { showToast("Could not load documents.", "warning"); }
-});
-
-document.getElementById("template-select").addEventListener("change", function() {
-  templateId = this.value ? parseInt(this.value) : null;
-  checkReady();
-});
-
-async function uploadTemplate(file) {
-  if (!file) return;
-  const fd = new FormData();
-  fd.append("file",  file);
-  fd.append("title", file.name.replace(/\.pdf$/i,""));
-  const st = document.getElementById("template-status");
-  st.textContent = "Uploading…"; st.style.display = "block";
-  try {
-    const match = document.cookie.match(/(?:^|;\s*)access_token=([^;]+)/);
-    const resp  = await fetch("/documents/upload", {
-      method: "POST",
-      headers: match ? { Authorization: `Bearer ${decodeURIComponent(match[1])}` } : {},
-      body: fd,
-    });
-    const data = await resp.json();
-    if (!resp.ok) throw new Error(data.detail || "Upload failed");
-    templateId = data.id;
-    st.textContent = `✓ ${file.name}`;
     checkReady();
-  } catch (err) { st.textContent = `✗ ${err.message}`; }
-}
+  } catch (err) {
+    showToast("Could not load documents.", "warning");
+  }
+});
 
 function checkReady() {
-  const tId  = templateId || (document.getElementById("template-select").value ? parseInt(document.getElementById("template-select").value) : null);
   const dIds = [...document.getElementById("docs-select").selectedOptions].map(o => parseInt(o.value));
-  document.getElementById("run-btn").disabled = !(tId && dIds.length > 0);
+  document.getElementById("run-btn").disabled = dIds.length === 0;
 }
 
 async function runDeviation() {
-  const tId  = templateId || parseInt(document.getElementById("template-select").value);
   const dIds = [...document.getElementById("docs-select").selectedOptions].map(o => parseInt(o.value));
-  if (!tId || dIds.length === 0) { showToast("Select template and at least one document.", "warning"); return; }
+  if (dIds.length === 0) {
+    showToast("Select at least one document.", "warning");
+    return;
+  }
 
   const btn = document.getElementById("run-btn");
   btn.disabled = true;
-  showProgress(30, "Analysing deviations…");
+  showProgress(30, "Analysing deviations");
   document.getElementById("results-area").innerHTML = "";
 
   try {
-    const result = await apiPost("/api/analysis/deviation", { template_id: tId, document_ids: dIds });
+    const result = await apiPost("/api/analysis/deviation", { document_ids: dIds });
     showProgress(0);
     renderResults(result);
     showToast("Deviation analysis complete.", "success");
@@ -146,14 +103,138 @@ async function runDeviation() {
 
 function renderResults(data) {
   const area = document.getElementById("results-area");
-  area.innerHTML = `<h2 style="color:var(--cos);font-size:1.125rem;font-weight:700;margin:0 0 1.25rem">
+  const source = data.standard_source || "sources/kb/mandatory_clauses.json";
+  const stats = data.standard_source_stats || {};
+  const results = Array.isArray(data.results) ? data.results : [];
+  const totals = summariseResults(results);
+  area.innerHTML = `<h2 style="color:var(--cos);font-size:1.125rem;font-weight:700;margin:0 0 1rem">
     Deviation Results</h2>
-    <div class="glass-card" style="padding:1.5rem">
-      <pre style="color:var(--cosv);font-size:0.75rem;overflow-x:auto;white-space:pre-wrap">
-${_esc(JSON.stringify(data, null, 2))}</pre>
+    <div class="glass-card" style="padding:0.85rem 1rem;margin-bottom:1rem;color:var(--cosv);font-size:0.78rem">
+      <span style="color:var(--cos);font-weight:700">Master source:</span> ${_esc(source)}
+      ${stats.loaded !== undefined ? `<span style="margin-left:0.75rem;color:var(--cos);font-weight:700">Clauses:</span> ${_esc(stats.loaded)}` : ""}
+    </div>
+    ${renderOverview(totals)}
+    <div style="display:grid;gap:1rem">
+      ${results.map(renderDocumentResult).join("")}
     </div>`;
 }
 
-function _esc(s) { return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+function summariseResults(results) {
+  return results.reduce((acc, item) => {
+    const analysis = item.analysis || {};
+    const summary = analysis.deviation_summary || {};
+    const scored = Number(analysis.total_clauses_scored || 0);
+    const high = Number(summary.material_deviation || 0) + Number(summary.significant_deviation || 0);
+    acc.documents += 1;
+    acc.scored += scored;
+    acc.high += high;
+    acc.empty += scored === 0 ? 1 : 0;
+    return acc;
+  }, { documents: 0, scored: 0, high: 0, empty: 0 });
+}
+
+function renderOverview(totals) {
+  const posture = totals.scored === 0
+    ? "No clause text was available for scoring in the selected document set."
+    : totals.high > 0
+      ? "Material or significant wording deviations were detected and should be reviewed."
+      : "No material wording deviations were detected in the scored clauses.";
+  return `
+    <div class="glass-card" style="padding:1.25rem;margin-bottom:1rem">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:0.75rem;margin-bottom:1rem">
+        ${renderMetric("Documents", totals.documents, "description")}
+        ${renderMetric("Clauses scored", totals.scored, "rule")}
+        ${renderMetric("Review items", totals.high, "warning")}
+        ${renderMetric("No text", totals.empty, "text_snippet")}
+      </div>
+      <p style="margin:0;color:var(--cos);font-size:0.9rem;line-height:1.55">${_esc(posture)}</p>
+    </div>
+  `;
+}
+
+function renderMetric(label, value, icon) {
+  return `
+    <div style="padding:0.85rem;border-radius:8px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06)">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:0.75rem">
+        <div>
+          <p style="margin:0 0 0.25rem;color:var(--cosv);font-size:0.68rem;text-transform:uppercase;font-weight:700">${_esc(label)}</p>
+          <p style="margin:0;color:var(--cos);font-size:1.25rem;font-weight:800">${_esc(value)}</p>
+        </div>
+        <span class="material-symbols-outlined" style="font-size:21px;color:var(--cp)">${icon}</span>
+      </div>
+    </div>
+  `;
+}
+
+function renderDocumentResult(item) {
+  const analysis = item.analysis || {};
+  const doc = documentsById[Number(item.document_id)] || {};
+  const title = doc.title || doc.original_filename || `Document #${item.document_id}`;
+  const scored = Number(analysis.total_clauses_scored || 0);
+  const summary = analysis.deviation_summary || {};
+  const avg = Number(analysis.avg_deviation_score || 0);
+  const highItems = Array.isArray(analysis.high_deviation_clauses) ? analysis.high_deviation_clauses : [];
+  const highCount = Number(summary.material_deviation || 0) + Number(summary.significant_deviation || 0);
+
+  if (scored === 0) {
+    return `
+      <section class="glass-card" style="padding:1.25rem">
+        <h3 style="margin:0 0 0.65rem;color:var(--cos);font-size:0.95rem;font-weight:800">${_esc(title)}</h3>
+        <p style="margin:0;color:var(--cosv);font-size:0.82rem;line-height:1.55">
+          No clauses were scored for this document. The mandatory clause library is available, but the document text could not be extracted into clause-like sections for comparison.
+        </p>
+      </section>
+    `;
+  }
+
+  const severity = highCount > 0 ? "Requires review" : "Low concern";
+  const severityColor = highCount > 0 ? "#fbbf24" : "#4ade80";
+  const lead = highCount > 0
+    ? `${highCount} of ${scored} scored clauses show material or significant deviation from the mandatory clause library.`
+    : `All ${scored} scored clauses are broadly aligned with the mandatory clause library.`;
+
+  return `
+    <section class="glass-card" style="padding:1.25rem">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;margin-bottom:0.9rem">
+        <div>
+          <h3 style="margin:0 0 0.35rem;color:var(--cos);font-size:0.95rem;font-weight:800">${_esc(title)}</h3>
+          <p style="margin:0;color:var(--cosv);font-size:0.78rem">Average deviation score: ${_esc(avg.toFixed(2))}</p>
+        </div>
+        <span class="badge" style="background:${severityColor}22;color:${severityColor};border:1px solid ${severityColor}55">${_esc(severity)}</span>
+      </div>
+      <p style="margin:0 0 1rem;color:var(--cos);font-size:0.88rem;line-height:1.6">${_esc(lead)}</p>
+      <div style="display:flex;flex-wrap:wrap;gap:0.45rem;margin-bottom:${highItems.length ? "1rem" : "0"}">
+        ${Object.entries(summary).map(([label, count]) => renderSummaryBadge(label, count)).join("")}
+      </div>
+      ${highItems.length ? renderHighDeviationList(highItems) : ""}
+    </section>
+  `;
+}
+
+function renderSummaryBadge(label, count) {
+  const text = label.replace(/_/g, " ");
+  return `<span class="badge badge-blue">${_esc(text)}: ${_esc(count)}</span>`;
+}
+
+function renderHighDeviationList(items) {
+  return `
+    <div style="display:grid;gap:0.6rem">
+      <p style="margin:0;color:var(--cos);font-size:0.8rem;font-weight:700">Key clauses to review</p>
+      ${items.slice(0, 4).map(item => `
+        <div style="padding:0.75rem;border-radius:8px;background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.20)">
+          <p style="margin:0 0 0.35rem;color:var(--cos);font-size:0.78rem;font-weight:700">
+            ${_esc((item.deviation_label || "deviation").replace(/_/g, " "))} &middot; score ${_esc(item.deviation_score ?? "n/a")}
+          </p>
+          <p style="margin:0 0 0.4rem;color:var(--cosv);font-size:0.74rem;line-height:1.5">${_esc(item.risk_implication || "Review this wording against the mandatory clause requirement.")}</p>
+          <p style="margin:0;color:var(--cosv);font-size:0.72rem;line-height:1.45">${_esc(item.clause_text || "").slice(0, 260)}${(item.clause_text || "").length > 260 ? "..." : ""}</p>
+        </div>
+      `).join("")}
+    </div>
+  `;
+}
+
+function _esc(s) {
+  return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
 </script>
 {% endblock %}

@@ -57,6 +57,9 @@ async def upload_document(
             status=status_value,
             client_id=client_id,
         )
+        if client_id is not None:
+            from app.modules.clients import service as client_service  # noqa: PLC0415
+            client_service.ensure_policy_for_document(db, document)
         return document
     except DuplicateFileError as exc:
         raise HTTPException(
@@ -225,6 +228,7 @@ def assign_document_client(
     db: Session = Depends(get_db),
 ) -> dict:
     """Link (or unlink) a document to a client. Pass client_id=null to unlink."""
+    from app.modules.clients import service as client_service  # noqa: PLC0415
     from app.modules.documents.model import Document as _Doc  # noqa: PLC0415
     doc = db.query(_Doc).filter(_Doc.id == document_id).first()
     if not doc:
@@ -238,6 +242,10 @@ def assign_document_client(
         )
     db.commit()
     db.refresh(doc)
+    if payload.client_id is None:
+        client_service.unlink_policy_for_document(db, document_id)
+    else:
+        client_service.ensure_policy_for_document(db, doc)
     return {"id": document_id, "client_id": payload.client_id, "message": "Client assignment updated."}
 
 

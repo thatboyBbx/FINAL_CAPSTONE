@@ -8,6 +8,7 @@ re-embedding on every request.
 from __future__ import annotations
 
 import logging
+import re
 from typing import Any, Dict
 
 import numpy as np
@@ -36,12 +37,12 @@ class ClauseDeviationScorer:
         """
         self._standard_clauses: list[dict[str, Any]] = []
         self._embeddings: np.ndarray | None = None
+        self._standard_terms: list[set[str]] = []
         self._load_standards(db)
 
     def _load_standards(self, db) -> None:
         """Fetch standard clauses and embed them into a numpy cache."""
         from app.modules.deviation.model import StandardClause
-        from app.ai.rag.vector_store import get_embedding_model
 
         rows = db.query(StandardClause).all()
         if not rows:
@@ -61,19 +62,11 @@ class ClauseDeviationScorer:
             for r in rows
         ]
 
-        try:
-            model = get_embedding_model()
-            texts = [c["text"] for c in self._standard_clauses]
-            embs  = model.encode(texts, show_progress_bar=False)
-            self._embeddings = embs / (
-                np.linalg.norm(embs, axis=1, keepdims=True) + 1e-10
-            )  # unit-normalised
-            logger.info(
-                "ClauseDeviationScorer loaded %d standard clauses.", len(rows)
-            )
-        except Exception as exc:
-            logger.error("Failed to embed standard clauses: %s", exc)
-            self._embeddings = None
+        self._standard_terms = [_token_set(c["text"]) for c in self._standard_clauses]
+        logger.info(
+            "ClauseDeviationScorer loaded %d standard clauses with lexical scoring.",
+            len(rows),
+        )
 
     # ------------------------------------------------------------------
     # Score a single clause
@@ -87,8 +80,11 @@ class ClauseDeviationScorer:
         Returns deviation_score (0 = identical, 1 = completely different),
         deviation_label, closest standard clause info, and risk_implication.
         """
-        if self._embeddings is None or not self._standard_clauses:
+        if not self._standard_clauses:
             return _empty_score(clause_text, clause_type)
+
+        if self._embeddings is None:
+            return self._score_clause_lexical(clause_text, clause_type)
 
         from app.ai.rag.vector_store import get_embedding_model
         model = get_embedding_model()
@@ -133,6 +129,48 @@ class ClauseDeviationScorer:
             "risk_implication": risk_implication,
         }
 
+    def _score_clause_lexical(
+        self, clause_text: str, clause_type: str
+    ) -> Dict[str, Any]:
+        clause_terms = _token_set(clause_text)
+        if not clause_terms:
+            return _empty_score(clause_text, clause_type)
+
+        type_indices = [
+            i for i, c in enumerate(self._standard_clauses)
+            if c["clause_type"] == clause_type
+        ]
+        if not type_indices:
+            type_indices = list(range(len(self._standard_clauses)))
+
+        best_idx = type_indices[0]
+        best_sim = 0.0
+        for idx in type_indices:
+            standard_terms = self._standard_terms[idx] if idx < len(self._standard_terms) else set()
+            union = clause_terms | standard_terms
+            similarity = (len(clause_terms & standard_terms) / len(union)) if union else 0.0
+            if similarity > best_sim:
+                best_sim = similarity
+                best_idx = idx
+
+        best_meta = self._standard_clauses[best_idx]
+        deviation_score = round(1.0 - best_sim, 4)
+        deviation_label = _label_from_score(deviation_score)
+        risk_implication = _generate_risk_implication(
+            clause_type, deviation_label, deviation_score
+        )
+
+        return {
+            "deviation_score": deviation_score,
+            "deviation_label": deviation_label,
+            "closest_standard_clause_id": best_meta["id"],
+            "closest_standard_clause_text": best_meta["text"],
+            "closest_standard_source": best_meta["source"],
+            "similarity_to_standard": round(best_sim, 4),
+            "risk_implication": risk_implication,
+            "scoring_method": "lexical_similarity",
+        }
+
     # ------------------------------------------------------------------
     # Score all clauses in a document
     # ------------------------------------------------------------------
@@ -148,6 +186,18 @@ class ClauseDeviationScorer:
         from app.modules.circulars.model import CircularAnalysis
         from app.modules.documents.model import Document
         from app.modules.deviation.model import ClauseDeviationScore
+
+        if not self._standard_clauses:
+            return {
+                "document_id": document_id,
+                "total_clauses_scored": 0,
+                "deviation_summary": {},
+                "high_deviation_clauses": [],
+                "avg_deviation_score": 0.0,
+                "scores": [],
+                "status": "standard_clause_library_empty",
+                "message": "Seed the standard clause knowledge base to enable deviation scoring.",
+            }
 
         # Get document text
         analysis = (
@@ -180,6 +230,8 @@ class ClauseDeviationScorer:
         from app.modules.comparison.service import ComparisonService
         svc = ComparisonService()
         clauses = svc._extract_clauses(document_id, db)
+        if not clauses and text:
+            clauses = _chunk_text_as_clauses(text, document_id)
 
         scores_list = []
         label_counts: Dict[str, int] = {
@@ -228,12 +280,18 @@ class ClauseDeviationScorer:
             logger.error("Failed to commit deviation scores: %s", exc)
             db.rollback()
 
+        numeric_scores = [
+            float(s["deviation_score"])
+            for s in scores_list
+            if s.get("deviation_score") is not None
+        ]
         avg_score = (
-            sum(s["deviation_score"] for s in scores_list) / len(scores_list)
-            if scores_list else 0.0
+            sum(numeric_scores) / len(numeric_scores)
+            if numeric_scores else 0.0
         )
         high_deviation = [
-            s for s in scores_list if s.get("deviation_score", 0) > 0.55
+            s for s in scores_list
+            if (s.get("deviation_score") or 0) > 0.55
         ]
 
         return {
@@ -255,6 +313,35 @@ def _label_from_score(score: float) -> str:
         if score <= threshold:
             return label
     return "significant_deviation"
+
+
+def _token_set(text: str) -> set[str]:
+    return {
+        token
+        for token in re.findall(r"[a-zA-Z][a-zA-Z0-9_'-]{2,}", (text or "").lower())
+        if token not in {"the", "and", "for", "this", "that", "with", "shall", "under", "from"}
+    }
+
+
+def _chunk_text_as_clauses(text: str, document_id: int) -> list[dict[str, Any]]:
+    from app.modules.shared.clause_classifier import classify_clause_type
+
+    cleaned = re.sub(r"\s+", " ", text or "").strip()
+    chunks: list[dict[str, Any]] = []
+    chunk_size = 900
+    overlap = 120
+    for idx, start in enumerate(range(0, min(len(cleaned), 9000), chunk_size - overlap)):
+        chunk = cleaned[start:start + chunk_size].strip()
+        if len(chunk) < 120:
+            continue
+        chunks.append(
+            {
+                "clause_id": f"doc{document_id}_ml_chunk_{idx}",
+                "clause_type": classify_clause_type(chunk),
+                "text": chunk,
+            }
+        )
+    return chunks[:10]
 
 
 def _generate_risk_implication(
