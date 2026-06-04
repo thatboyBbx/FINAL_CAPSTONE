@@ -28,11 +28,17 @@ ENV/
 *.db
 *.sqlite
 *.sqlite3
+*.sqlite3-shm
+*.sqlite3-wal
 
 # ── Uploads / storage ────────────────────────────────────────────────────────
 app/storage/uploads/
+storage/documents/
+storage/staging/
 storage/datasets/app/
 storage/models/app/
+storage/training_data/
+chroma_db/
 
 # ── IDE / OS ─────────────────────────────────────────────────────────────────
 .idea/
@@ -58,6 +64,7 @@ htmlcov/
 
 # ── WeasyPrint / report output ───────────────────────────────────────────────
 reports_output/
+screenshots/
 
 # ── Scratch / temp files ────────────────────────────────────────────────────
 zip_*.txt
@@ -65,6 +72,8 @@ zip_*.txt
 
 # ── Stitch design exports (keep only stitch/, not extracted copies) ──────────
 stitch_extracted/
+stitch/
+md files/
 
 # ── App database (SQLite dev only) ──────────────────────────────────────────
 app.db
@@ -72,9 +81,21 @@ app.db
 # ── Seed / generated data files ─────────────────────────────────────────────
 seed_financials.csv
 generate_seed_financials.py
+analysis_report.json
+app_tree.txt
+structure.txt
+build_corpus_resumable.py
+build_training_datasets.py
+run_corpus_loop.py
+run_pipeline_steps_2_5.py
+run_training_pipeline.py
+smoke_queue_test.py
+app/infrastructure/storage/training_data/insurance_synthetic.csv
+app/infrastructure/storage/training_data/generate_synthetic_data.py
 
 # ── Knowledge base PDFs (place files here manually — do NOT commit) ──────────
 knowledge_pdfs/*.pdf
+sources/reports/
 
 # ── UV/pip lock files (optional — add if using uv) ──────────────────────────
 uv.lock
