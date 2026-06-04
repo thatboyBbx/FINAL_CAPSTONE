@@ -23,6 +23,7 @@ class BatchProcessor:
         file_paths: List[str],
         portfolio_id: str,
         uploaded_by: str,
+        uploaded_by_user_id: int,
     ) -> Dict[str, Any]:
         """
         Create Document and ProcessingBatch rows for a list of uploaded files.
@@ -60,7 +61,7 @@ class BatchProcessor:
                     mime_type=guess_mime_from_filename(fname),
                     file_size=_safe_size(fp),
                     status="queued",
-                    uploaded_by_user_id=0,  # set to 0 for batch uploads (no user context)
+                    uploaded_by_user_id=uploaded_by_user_id,
                     portfolio_id=portfolio_id,
                     batch_id=batch.id,
                 )

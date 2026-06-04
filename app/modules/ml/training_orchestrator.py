@@ -24,7 +24,7 @@ DEFAULT_SOURCES = [
         "label": "circulars",
     },
     {
-        "path": r"C:\Users\lenovo\Desktop\Scrapper\kb\raw",
+        "path": str(Path(settings.kb_root) / "raw"),
         "label": "kb_documents",
     },
 ]

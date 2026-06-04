@@ -807,7 +807,6 @@ async def upload_ui(
 
     form_data = {
         "title": title,
-        "uploaded_by_user_id": str(uploaded_by_user_id or current_user.id),
         "document_category": document_category or "",
         "notes": notes or "",
         "status_value": status_value,

@@ -17,9 +17,11 @@ import re
 from pathlib import Path
 from typing import Any
 
+from app.core.config import settings
+
 logger = logging.getLogger(__name__)
 
-_KB_ROOT = Path(r"C:\Users\lenovo\Desktop\Scrapper\kb")
+_KB_ROOT = Path(settings.kb_root)
 
 # ---------------------------------------------------------------------------
 # Deliverable 4 — IPEC Sandbox Eligibility Rules (Annexure 1)

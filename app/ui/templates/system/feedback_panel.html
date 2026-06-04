@@ -8,7 +8,6 @@
       <h2 class="text-2xl font-bold font-headline" style="color:var(--cos)">Model Performance Feedback</h2>
       <p class="text-sm mt-0.5" style="color:var(--cosv)">Active learning loop — correct model outputs to improve accuracy.</p>
     </div>
-    <button class="btn btn-primary" onclick="showErrorModal('Model retraining is scheduled automatically. Manual trigger coming soon.')"><span class="material-symbols-outlined text-[18px]">model_training</span>Trigger Retraining</button>
   </div>
 
   <!-- Performance Metrics -->
@@ -65,10 +64,6 @@
   <div class="rounded-xl overflow-hidden" style="background:var(--csf);border:1px solid color-mix(in srgb,var(--col) 50%,transparent)">
     <div class="px-5 py-4 flex items-center justify-between" style="border-bottom:1px solid color-mix(in srgb,var(--col) 40%,transparent)">
       <h3 class="font-semibold font-headline" style="color:var(--cos)">Recent Feedback Submissions</h3>
-      <div class="flex gap-2">
-        <button class="btn btn-ghost btn-sm" onclick="showErrorModal('Filter coming soon.')">Filter</button>
-        <button class="btn btn-ghost btn-sm" onclick="showErrorModal('Export coming soon.')"><span class="material-symbols-outlined text-[14px]">download</span>Export</button>
-      </div>
     </div>
     <table class="data-table">
       <thead><tr><th>Document</th><th>Entity Type</th><th>Model Output</th><th>Corrected Value</th><th>Reviewer</th><th>Status</th><th>Date</th></tr></thead>

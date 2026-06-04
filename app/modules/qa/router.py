@@ -11,7 +11,9 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from app.core.db import get_db
+from app.modules.auth.access_control import require_document_access
 from app.modules.auth.dependencies import get_current_user
+from app.modules.users.model import User
 
 logger = logging.getLogger(__name__)
 router = APIRouter(
@@ -41,7 +43,11 @@ class IndexResponse(BaseModel):
 # ---------------------------------------------------------------------------
 
 @router.post("/ask")
-def ask_question(payload: AskRequest, db: Session = Depends(get_db)) -> Dict[str, Any]:
+def ask_question(
+    payload: AskRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> Dict[str, Any]:
     """
     Answer a natural language question against a specific document using offline keyword search.
     """
@@ -49,13 +55,7 @@ def ask_question(payload: AskRequest, db: Session = Depends(get_db)) -> Dict[str
     from app.modules.qa.model import QASession
     from app.ai.rag.qa_engine import QAEngine
 
-    # Validate document exists
-    doc = db.get(Document, payload.document_id)
-    if not doc:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Document id={payload.document_id} not found.",
-        )
+    doc = require_document_access(db, current_user, payload.document_id)
 
     # Fetch document text — three-tier lookup in descending preference:
     #   1. CircularAnalysis.extracted_text (batch-processed documents)
@@ -161,18 +161,15 @@ def ask_question(payload: AskRequest, db: Session = Depends(get_db)) -> Dict[str
 
 @router.post("/index/{document_id}", response_model=IndexResponse)
 def index_document_endpoint(
-    document_id: int, db: Session = Depends(get_db)
+    document_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ) -> IndexResponse:
     """Manually trigger RAG indexing for a specific document."""
     from app.modules.documents.model import Document
     from app.ai.rag.indexing_pipeline import index_document
 
-    doc = db.query(Document).filter(Document.id == document_id).first()
-    if not doc:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Document id={document_id} not found.",
-        )
+    require_document_access(db, current_user, document_id)
 
     try:
         result = index_document(document_id, db)
@@ -189,10 +186,15 @@ def index_document_endpoint(
 
 
 @router.get("/sessions/{document_id}")
-def get_sessions(document_id: int, db: Session = Depends(get_db)) -> List[Dict[str, Any]]:
+def get_sessions(
+    document_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> List[Dict[str, Any]]:
     """Return the last 20 Q&A sessions for a document, newest first."""
     from app.modules.qa.model import QASession
 
+    require_document_access(db, current_user, document_id)
     sessions = (
         db.query(QASession)
         .filter(QASession.document_id == document_id)

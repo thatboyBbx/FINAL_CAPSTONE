@@ -32,7 +32,9 @@ _WEASYPRINT_IMPORT_ATTEMPTED = False
 
 from app.core.db import get_db
 from app.modules.documents import service as doc_service
+from app.modules.auth.access_control import is_admin, require_document_access
 from app.modules.auth.dependencies import get_current_user
+from app.modules.users.model import User
 
 logger = logging.getLogger(__name__)
 
@@ -271,6 +273,7 @@ def _esc(s: str) -> str:
 async def generate_report(
     payload: ReportRequest,
     db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ) -> StreamingResponse:
     """
     Generate a PDF report for a given document.
@@ -301,9 +304,7 @@ async def generate_report(
         )
 
     # ── Fetch document ────────────────────────────────────────────────────────
-    doc = doc_service.get_document_by_id(db, payload.document_id)
-    if not doc:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Document not found.")
+    doc = require_document_access(db, current_user, payload.document_id)
 
     doc_meta = {
         "title":              doc.title,
@@ -356,6 +357,7 @@ async def get_sandbox_quarterly_report(
     quarter: str = Query(default="Q2-2026", description="Quarter e.g. Q2-2026"),
     format: str = Query(default="html", description="html or pdf"),
     db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ):
     """
     Generate a Sandbox Quarterly Progress Report for a broker.
@@ -377,6 +379,9 @@ async def get_sandbox_quarterly_report(
         Pensions Industry. Insurance and Pensions Commission of Zimbabwe.
         Effective Q4 2025. Retrieved from ipec.co.zw.
     """
+    if not is_admin(current_user) and broker_id != current_user.id:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Report access denied.")
+
     from app.modules.reports.sandbox_report_service import (  # noqa: PLC0415
         generate_sandbox_quarterly_report_context,
     )

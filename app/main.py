@@ -87,7 +87,10 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     # ── Startup ──────────────────────────────────────────────────────────
     setup_logging()
     validate_db_connection()
-    Base.metadata.create_all(bind=engine)
+    if settings.auto_create_schema:
+        Base.metadata.create_all(bind=engine)
+    else:
+        logger.info("AUTO_CREATE_SCHEMA=false; skipping create_all and requiring Alembic migrations.")
 
     try:
         from app.infrastructure.scrapers.scraper_scheduler import start_scheduler

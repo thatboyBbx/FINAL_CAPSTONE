@@ -23,6 +23,13 @@ _DEV_FALLBACK_KEY = (
 )
 
 
+def _env_bool(name: str, default: bool) -> bool:
+    value = os.getenv(name)
+    if value is None:
+        return default
+    return value.lower() not in ("false", "0", "no", "off")
+
+
 class Settings(BaseModel):
     model_config = ConfigDict(extra="allow")
 
@@ -32,6 +39,12 @@ class Settings(BaseModel):
     log_level: str = os.getenv("LOG_LEVEL", "INFO")
     api_base: str = os.getenv("API_BASE", "http://127.0.0.1:8000")
     model_storage_dir: str = os.getenv("MODEL_STORAGE_DIR", "app/storage/models")
+    kb_root: str = os.getenv("KB_ROOT", str(BASE_DIR / "sources" / "kb"))
+    show_placeholder_controls: bool = _env_bool("SHOW_PLACEHOLDER_CONTROLS", False)
+    auto_create_schema: bool = _env_bool(
+        "AUTO_CREATE_SCHEMA",
+        os.getenv("ENV", "dev") not in ("production", "prod"),
+    )
 
     # Connection pool — ignored for SQLite, applied for PostgreSQL
     db_pool_size: int = int(os.getenv("DB_POOL_SIZE", "5"))
@@ -146,6 +159,15 @@ class Settings(BaseModel):
                     "SQLite is not supported in production. "
                     "Set DATABASE_URL to a PostgreSQL connection string, e.g. "
                     "postgresql://user:password@host:5432/dbname"
+                )
+            if self.auto_create_schema:
+                raise ValueError(
+                    "AUTO_CREATE_SCHEMA must be false in production. "
+                    "Run Alembic migrations before starting the app."
+                )
+            if not Path(self.kb_root).exists():
+                raise ValueError(
+                    "KB_ROOT must point to an existing knowledge-base directory in production."
                 )
 
         # cookie_secure: True in production unless caller explicitly overrides

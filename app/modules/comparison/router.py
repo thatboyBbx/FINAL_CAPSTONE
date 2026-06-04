@@ -11,7 +11,9 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from app.core.db import get_db
+from app.modules.auth.access_control import require_document_access
 from app.modules.auth.dependencies import get_current_user
+from app.modules.users.model import User
 
 logger = logging.getLogger(__name__)
 router = APIRouter(
@@ -43,6 +45,7 @@ def compare_documents(
     payload: CompareRequest,
     background_tasks: BackgroundTasks,
     db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ) -> Dict[str, Any]:
     """
     Trigger a clause-by-clause comparison between two documents.
@@ -54,13 +57,8 @@ def compare_documents(
 
     document_a_id, document_b_id = payload.resolved_ids()
 
-    # Validate both documents exist
     for doc_id in (document_a_id, document_b_id):
-        if not db.query(Document).filter(Document.id == doc_id).first():
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Document id={doc_id} not found.",
-            )
+        require_document_access(db, current_user, doc_id)
 
     # Create a pending comparison row
     comp = DocumentComparison(
@@ -109,7 +107,9 @@ def _run_comparison(comp_id: int, doc_a_id: int, doc_b_id: int) -> None:
 
 @router.get("/{comparison_id}")
 def get_comparison(
-    comparison_id: int, db: Session = Depends(get_db)
+    comparison_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ) -> Dict[str, Any]:
     """Retrieve a stored comparison report by ID."""
     from app.modules.comparison.model import DocumentComparison
@@ -120,6 +120,8 @@ def get_comparison(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"Comparison id={comparison_id} not found.",
         )
+    require_document_access(db, current_user, comp.document_a_id)
+    require_document_access(db, current_user, comp.document_b_id)
     return {
         "comparison_id": comp.id,
         "document_a_id": comp.document_a_id,
@@ -137,11 +139,14 @@ def get_comparison(
 
 @router.get("/document/{document_id}")
 def get_comparisons_for_document(
-    document_id: int, db: Session = Depends(get_db)
+    document_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ) -> List[Dict[str, Any]]:
     """Return all comparisons where document_id is either document A or B."""
     from app.modules.comparison.model import DocumentComparison
 
+    require_document_access(db, current_user, document_id)
     comps = (
         db.query(DocumentComparison)
         .filter(

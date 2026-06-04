@@ -20,7 +20,9 @@ from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
 
 from app.core.db import get_db
+from app.modules.auth.access_control import can_access_document, require_document_access
 from app.modules.auth.dependencies import get_current_user
+from app.modules.users.model import User
 from app.modules.rag_governance.schemas import (
     AuditLogEntry,
     GovernedQueryRequest,
@@ -52,11 +54,7 @@ def governed_query(
     answer.  Every call is recorded in the RetrievalAuditLog.
     """
     from app.ai.rag.governance import get_governance_engine
-    from app.modules.documents.model import Document
-
-    doc = db.query(Document).filter(Document.id == req.document_id).first()
-    if not doc:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Document not found.")
+    doc = require_document_access(db, current_user, req.document_id)
 
     # Resolve document text for keyword fallback
     document_text = (
@@ -88,14 +86,22 @@ def list_audit_log(
     limit: int = Query(default=50, ge=1, le=200),
     offset: int = Query(default=0, ge=0),
     db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ) -> list[AuditLogEntry]:
     """List recent audit log entries, optionally filtered by document_id."""
     from app.modules.rag_governance.model import RetrievalAuditLog
 
+    from app.modules.documents.model import Document
+
     q = db.query(RetrievalAuditLog).order_by(RetrievalAuditLog.queried_at.desc())
     if document_id is not None:
+        require_document_access(db, current_user, document_id)
         q = q.filter(RetrievalAuditLog.document_id == document_id)
     rows = q.offset(offset).limit(limit).all()
+    rows = [
+        row for row in rows
+        if can_access_document(db, current_user, db.get(Document, row.document_id))
+    ]
     return [AuditLogEntry.model_validate(row) for row in rows]
 
 
@@ -104,10 +110,12 @@ def list_audit_for_document(
     doc_id: int,
     limit: int = Query(default=50, ge=1, le=200),
     db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ) -> list[AuditLogEntry]:
     """Return all audit log entries for a specific document, most recent first."""
     from app.modules.rag_governance.model import RetrievalAuditLog
 
+    require_document_access(db, current_user, doc_id)
     rows = (
         db.query(RetrievalAuditLog)
         .filter(RetrievalAuditLog.document_id == doc_id)
@@ -122,6 +130,7 @@ def list_audit_for_document(
 def get_audit_entry(
     log_id: int,
     db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ) -> AuditLogEntry:
     """Return a single audit log entry by ID."""
     from app.modules.rag_governance.model import RetrievalAuditLog
@@ -129,6 +138,7 @@ def get_audit_entry(
     row = db.query(RetrievalAuditLog).filter(RetrievalAuditLog.id == log_id).first()
     if not row:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Audit entry not found.")
+    require_document_access(db, current_user, row.document_id)
     return AuditLogEntry.model_validate(row)
 
 
@@ -136,6 +146,7 @@ def get_audit_entry(
 def reindex_stale_documents(
     limit: int = Query(default=100, ge=1, le=500),
     db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ) -> StaleReindexResponse:
     """
     Enqueue re-embedding jobs for all documents indexed with an outdated
@@ -143,9 +154,13 @@ def reindex_stale_documents(
     """
     from app.ai.rag.indexing_pipeline import get_stale_document_ids
     from app.core.config import settings
+    from app.modules.documents.model import Document
     from app.queue.factory import get_job_queue
 
-    stale_ids = get_stale_document_ids(db, limit=limit)
+    stale_ids = [
+        doc_id for doc_id in get_stale_document_ids(db, limit=limit)
+        if can_access_document(db, current_user, db.get(Document, doc_id))
+    ]
     queued = 0
     failed_ids = []
     jq = get_job_queue()

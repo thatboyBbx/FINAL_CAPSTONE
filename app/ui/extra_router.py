@@ -342,7 +342,6 @@ async def documents_upload_post(
 
     form_data = {
         "title": title,
-        "uploaded_by_user_id": str(uploaded_by_user_id or current_user.id),
         "document_category": document_category or "",
         "notes": notes or "",
         "status_value": "uploaded",

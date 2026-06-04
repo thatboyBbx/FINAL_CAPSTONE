@@ -25,7 +25,7 @@ from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 
 from app.core.db import get_db, session_scope
-from app.modules.auth.dependencies import get_current_user
+from app.modules.auth.dependencies import get_current_user, require_role
 
 logger = logging.getLogger(__name__)
 
@@ -200,6 +200,7 @@ def csp_chart_data(db: Session = Depends(get_db)):
 def force_csp_refresh(
     background_tasks: BackgroundTasks,
     db: Session = Depends(get_db),
+    _admin=Depends(require_role("admin")),
 ):
     """
     Trigger a full IPEC scrape + CSP rescore pipeline as a background task.

@@ -13,7 +13,6 @@
         <p class="text-sm mt-0.5" style="color:var(--cosv)">Process multiple documents and portfolios at scale.</p>
       </div>
     </div>
-    <button onclick="showErrorModal('This feature is coming soon.'); return false;" class="btn btn-primary"><span class="material-symbols-outlined text-[18px]">add</span>New Batch</button>
   </div>
 
   <!-- Create Batch -->
@@ -111,7 +110,7 @@
           </td>
           <td class="text-xs" style="color:var(--cosv)">{{ date }}</td>
           <td>
-            {% if status=='completed' %}<button onclick="showErrorModal('This feature is coming soon.'); return false;" class="btn btn-ghost btn-sm"><span class="material-symbols-outlined text-[14px]">download</span>Report</button>{% endif %}
+            {% if status=='completed' %}<span class="text-xs" style="color:var(--cosv)">Available in generated reports</span>{% endif %}
           </td>
         </tr>
         {% endfor %}

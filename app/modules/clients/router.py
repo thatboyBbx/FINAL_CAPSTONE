@@ -15,7 +15,9 @@ from sqlalchemy.orm import Session
 
 from app.core.db import get_db
 from app.modules.clients import service as svc
+from app.modules.auth.access_control import can_access_client, is_admin, require_client_access
 from app.modules.auth.dependencies import get_current_user
+from app.modules.users.model import User
 
 logger = logging.getLogger(__name__)
 
@@ -111,8 +113,11 @@ def list_clients(
     limit:   int        = Query(100, ge=1, le=500),
     offset:  int        = Query(0,   ge=0),
     db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ) -> list[dict]:
     clients = svc.list_clients_with_counts(db, segment=segment, search=search, limit=limit, offset=offset)
+    if not is_admin(current_user):
+        clients = [row for row in clients if can_access_client(current_user, row["client"])]
     return [
         {
             **_client_to_dict(row["client"]),
@@ -124,9 +129,17 @@ def list_clients(
 
 
 @router.post("", status_code=status.HTTP_201_CREATED, response_model=None)
-def create_client(payload: dict, db: Session = Depends(get_db)) -> dict:
+def create_client(
+    payload: dict,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> dict:
     if not payload.get("name"):
         raise HTTPException(status_code=400, detail="name is required.")
+    if not is_admin(current_user):
+        payload["broker_id"] = current_user.id
+    else:
+        payload.setdefault("broker_id", current_user.id)
     client = svc.create_client(db, payload)
     return _client_to_dict(client)
 
@@ -135,25 +148,54 @@ def create_client(payload: dict, db: Session = Depends(get_db)) -> dict:
 def clients_expiry(
     days: int = Query(30, ge=1, le=365),
     db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ) -> list[dict]:
-    return svc.get_expiring_policies(db, days_ahead=days)
+    rows = svc.get_expiring_policies(db, days_ahead=days)
+    if is_admin(current_user):
+        return rows
+    return [
+        row for row in rows
+        if can_access_client(current_user, svc.get_client(db, row["client_id"]))
+    ]
 
 
 @router.get("/renewals", response_model=None)
-def clients_renewals(db: Session = Depends(get_db)) -> dict:
-    return svc.get_renewal_pipeline(db)
+def clients_renewals(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> dict:
+    pipeline = svc.get_renewal_pipeline(db)
+    if is_admin(current_user):
+        return pipeline
+    return {
+        key: [
+            row for row in rows
+            if can_access_client(current_user, svc.get_client(db, row["client_id"]))
+        ]
+        for key, rows in pipeline.items()
+    }
 
 
 @router.get("/{client_id}", response_model=None)
-def get_client(client_id: int, db: Session = Depends(get_db)) -> dict:
-    c = svc.get_client(db, client_id)
-    if not c:
-        raise HTTPException(status_code=404, detail="Client not found.")
+def get_client(
+    client_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> dict:
+    c = require_client_access(db, current_user, client_id)
     return _client_to_dict(c)
 
 
 @router.put("/{client_id}", response_model=None)
-def update_client(client_id: int, payload: dict, db: Session = Depends(get_db)) -> dict:
+def update_client(
+    client_id: int,
+    payload: dict,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> dict:
+    require_client_access(db, current_user, client_id)
+    if not is_admin(current_user):
+        payload.pop("broker_id", None)
     c = svc.update_client(db, client_id, payload)
     if not c:
         raise HTTPException(status_code=404, detail="Client not found.")
@@ -161,7 +203,12 @@ def update_client(client_id: int, payload: dict, db: Session = Depends(get_db)) 
 
 
 @router.delete("/{client_id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_client(client_id: int, db: Session = Depends(get_db)) -> None:
+def delete_client(
+    client_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> None:
+    require_client_access(db, current_user, client_id)
     ok = svc.delete_client(db, client_id)
     if not ok:
         raise HTTPException(status_code=404, detail="Client not found.")
@@ -172,14 +219,23 @@ def delete_client(client_id: int, db: Session = Depends(get_db)) -> None:
 # ─────────────────────────────────────────────────────────────────────────────
 
 @router.get("/{client_id}/policies", response_model=None)
-def list_client_policies(client_id: int, db: Session = Depends(get_db)) -> list[dict]:
+def list_client_policies(
+    client_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> list[dict]:
+    require_client_access(db, current_user, client_id)
     return [_policy_to_dict(p) for p in svc.list_policies(db, client_id)]
 
 
 @router.post("/{client_id}/policies", status_code=201, response_model=None)
 def add_client_policy(
-    client_id: int, payload: dict, db: Session = Depends(get_db)
+    client_id: int,
+    payload: dict,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ) -> dict:
+    require_client_access(db, current_user, client_id)
     policy = svc.add_policy(db, client_id, payload)
     return _policy_to_dict(policy)
 
@@ -190,7 +246,9 @@ def list_client_documents(
     limit: int = Query(100, ge=1, le=500),
     offset: int = Query(0, ge=0),
     db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ) -> list[dict]:
+    require_client_access(db, current_user, client_id)
     return [
         _document_to_dict(d)
         for d in svc.list_client_documents(db, client_id, offset=offset, limit=limit)
@@ -202,11 +260,13 @@ def list_document_suggestions(
     client_id: int,
     limit: int = Query(10, ge=1, le=50),
     db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ) -> list[dict]:
-    client = svc.get_client(db, client_id)
-    if not client:
-        raise HTTPException(status_code=404, detail="Client not found.")
-    return [_document_to_dict(d) for d in svc.list_recent_unlinked_documents(db, limit=limit)]
+    require_client_access(db, current_user, client_id)
+    docs = svc.list_recent_unlinked_documents(db, limit=limit)
+    if not is_admin(current_user):
+        docs = [d for d in docs if d.uploaded_by_user_id == current_user.id]
+    return [_document_to_dict(d) for d in docs]
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -215,8 +275,12 @@ def list_document_suggestions(
 
 @router.post("/{client_id}/notes", status_code=201, response_model=None)
 def add_client_note(
-    client_id: int, payload: dict, db: Session = Depends(get_db)
+    client_id: int,
+    payload: dict,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ) -> dict:
+    require_client_access(db, current_user, client_id)
     note = svc.add_note(db, client_id, payload)
     return _note_to_dict(note)
 
@@ -227,7 +291,11 @@ def add_client_note(
 
 @router.post("/{client_id}/interactions", status_code=201, response_model=None)
 def add_client_interaction(
-    client_id: int, payload: dict, db: Session = Depends(get_db)
+    client_id: int,
+    payload: dict,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ) -> dict:
+    require_client_access(db, current_user, client_id)
     interaction = svc.add_interaction(db, client_id, payload)
     return _interaction_to_dict(interaction)

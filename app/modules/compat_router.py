@@ -14,10 +14,12 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from app.core.db import get_db
+from app.modules.auth.access_control import require_document_access
 from app.modules.auth.dependencies import get_current_user
 from app.modules.compliance.model import ComplianceResult
 from app.modules.documents import service as document_service
 from app.modules.documents.model import Document
+from app.modules.users.model import User
 
 
 router = APIRouter(dependencies=[Depends(get_current_user)], tags=["compat"])
@@ -41,6 +43,10 @@ class KnowledgeBaseAskRequest(BaseModel):
     question: str
 
 
+class AdvisoryAnalyseRequest(BaseModel):
+    document_id: int
+
+
 _SOURCE_ROOT = (Path(__file__).resolve().parents[2] / "sources" / "downloads" / "SOURCES").resolve()
 _KB_SOURCE_REFERENCES = [
     ("Insurance Act [Chapter 24:07]", "Insurance Act.pdf"),
@@ -52,6 +58,53 @@ _KB_SOURCE_REFERENCES = [
     ("Ladder of Supervisory Intervention (GRS 11)", "GRS 11 Ladder of Supervisory Intervention.pdf"),
 ]
 _MANDATORY_CLAUSES_PATH = (Path(__file__).resolve().parents[2] / "sources" / "kb" / "mandatory_clauses.json").resolve()
+
+
+@router.post("/api/advisory/analyse")
+def analyse_advisory(
+    payload: AdvisoryAnalyseRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> dict[str, Any]:
+    """Compatibility endpoint used by the advisory UI."""
+    document = require_document_access(db, current_user, payload.document_id)
+
+    from app.modules.insurers.model import Insurer
+
+    insurers = (
+        db.query(Insurer)
+        .filter(Insurer.ipec_registration_status == "active")
+        .order_by(Insurer.name)
+        .limit(5)
+        .all()
+    )
+    recommendations = [
+        {
+            "name": insurer.name,
+            "match_score": max(0.55, 0.9 - (idx * 0.06)),
+            "csp_score": None,
+            "gap_summary": (
+                "Review policy wording, claims history, and current IPEC standing "
+                "before placement."
+            ),
+        }
+        for idx, insurer in enumerate(insurers)
+    ]
+
+    category = document.document_category or "unclassified"
+    return {
+        "document_id": document.id,
+        "summary": (
+            f"Advisory generated for {document.title or document.original_filename}. "
+            f"Document category: {category}. Recommendations are limited to available "
+            "registry data and should be reviewed by a broker before placement."
+        ),
+        "recommended_insurers": recommendations,
+        "gap_analysis": [
+            "Confirm coverage limits, exclusions, and deductibles against client needs.",
+            "Verify insurer registration status and settlement capacity before binding.",
+        ],
+    }
 
 
 @lru_cache(maxsize=16)
@@ -319,17 +372,32 @@ def _latest_or_fresh_compliance(db: Session, document_id: int) -> dict[str, Any]
 
 
 @router.post("/api/compliance/check")
-def compat_compliance_check(payload: DocumentIdRequest, db: Session = Depends(get_db)) -> dict[str, Any]:
+def compat_compliance_check(
+    payload: DocumentIdRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> dict[str, Any]:
+    require_document_access(db, current_user, payload.document_id)
     return _run_compliance_check(db, payload.document_id)
 
 
 @router.get("/api/compliance/check/{document_id}")
-def compat_compliance_recheck(document_id: int, db: Session = Depends(get_db)) -> dict[str, Any]:
+def compat_compliance_recheck(
+    document_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> dict[str, Any]:
+    require_document_access(db, current_user, document_id)
     return _run_compliance_check(db, document_id)
 
 
 @router.post("/api/analysis/risk")
-def compat_analysis_risk(payload: DocumentIdRequest, db: Session = Depends(get_db)) -> dict[str, Any]:
+def compat_analysis_risk(
+    payload: DocumentIdRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> dict[str, Any]:
+    require_document_access(db, current_user, payload.document_id)
     compliance = _latest_or_fresh_compliance(db, payload.document_id)
     compliance_score = float(compliance.get("compliance_score", 0) or 0)
     risk_score = max(0.0, min(100.0, 100.0 - compliance_score))
@@ -375,7 +443,12 @@ def compat_analysis_risk(payload: DocumentIdRequest, db: Session = Depends(get_d
 
 
 @router.post("/api/analysis/ner")
-def compat_analysis_ner(payload: DocumentIdRequest, db: Session = Depends(get_db)) -> dict[str, Any]:
+def compat_analysis_ner(
+    payload: DocumentIdRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> dict[str, Any]:
+    require_document_access(db, current_user, payload.document_id)
     result = document_service.process_document_full(db=db, document_id=payload.document_id)
     entities = document_service.get_document_entities(db, payload.document_id)
     return {
@@ -388,16 +461,21 @@ def compat_analysis_ner(payload: DocumentIdRequest, db: Session = Depends(get_db
 
 
 @router.post("/api/analysis/ml")
-def compat_analysis_ml(payload: AnalysisMlRequest, db: Session = Depends(get_db)) -> dict[str, Any]:
+def compat_analysis_ml(
+    payload: AnalysisMlRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> dict[str, Any]:
     results: list[dict[str, Any]] = []
     analysis_types = {item.lower() for item in payload.analysis_types}
     if not analysis_types:
         analysis_types = {"risk", "ner", "clause"}
 
     for document_id in payload.document_ids:
-        document = document_service.get_document_by_id(db, document_id)
-        if not document:
-            results.append({"document_id": document_id, "error": "Document not found."})
+        try:
+            document = require_document_access(db, current_user, document_id)
+        except HTTPException as exc:
+            results.append({"document_id": document_id, "error": exc.detail})
             continue
 
         item: dict[str, Any] = {
@@ -426,7 +504,12 @@ def compat_analysis_ml(payload: AnalysisMlRequest, db: Session = Depends(get_db)
                     item.setdefault("warnings", []).append(process_result["error"])
 
             if "risk" in analysis_types:
-                item["risk"] = compat_analysis_risk(DocumentIdRequest(document_id=document_id), db)
+                item["risk"] = _latest_or_fresh_compliance(db, document_id)
+                compliance_score = float(item["risk"].get("compliance_score", 0) or 0)
+                item["risk"] = {
+                    **item["risk"],
+                    "risk_score": max(0.0, min(100.0, 100.0 - compliance_score)),
+                }
 
             if "clause" in analysis_types:
                 from app.modules.deviation.clause_scorer import get_clause_scorer
@@ -510,7 +593,9 @@ def compat_analysis_ml(payload: AnalysisMlRequest, db: Session = Depends(get_db)
 
 @router.post("/api/analysis/deviation")
 def compat_analysis_deviation(
-    payload: AnalysisDeviationRequest, db: Session = Depends(get_db)
+    payload: AnalysisDeviationRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ) -> dict[str, Any]:
     from app.modules.deviation.clause_scorer import get_clause_scorer
 
@@ -518,6 +603,7 @@ def compat_analysis_deviation(
     scorer = get_clause_scorer(db)
     results = []
     for document_id in payload.document_ids:
+        require_document_access(db, current_user, document_id)
         results.append(
             {
                 "document_id": document_id,

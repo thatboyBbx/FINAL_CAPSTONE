@@ -11,7 +11,9 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from app.core.db import get_db
+from app.modules.auth.access_control import require_document_access
 from app.modules.auth.dependencies import get_current_user
+from app.modules.users.model import User
 
 logger = logging.getLogger(__name__)
 router = APIRouter(
@@ -28,18 +30,15 @@ class ClauseScoreRequest(BaseModel):
 
 @router.post("/score-document/{document_id}")
 def score_document(
-    document_id: int, db: Session = Depends(get_db)
+    document_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ) -> Dict[str, Any]:
     """Score all clauses in a document against the standard clause library."""
     from app.modules.documents.model import Document
     from app.modules.deviation.clause_scorer import get_clause_scorer
 
-    doc = db.query(Document).filter(Document.id == document_id).first()
-    if not doc:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Document id={document_id} not found.",
-        )
+    require_document_access(db, current_user, document_id)
 
     try:
         scorer = get_clause_scorer(db)
@@ -54,11 +53,14 @@ def score_document(
 
 @router.get("/document/{document_id}")
 def get_document_scores(
-    document_id: int, db: Session = Depends(get_db)
+    document_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ) -> List[Dict[str, Any]]:
     """Return stored clause deviation scores for a document."""
     from app.modules.deviation.model import ClauseDeviationScore
 
+    require_document_access(db, current_user, document_id)
     rows = (
         db.query(ClauseDeviationScore)
         .filter(ClauseDeviationScore.document_id == document_id)
