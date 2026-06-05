@@ -762,10 +762,13 @@ def _comparison_diff_lines(report: dict[str, Any], limit: int = 80) -> list[str]
 
 
 @router.get("/documents/compliance/statistics")
-def compat_documents_compliance_statistics(db: Session = Depends(get_db)) -> dict[str, Any]:
+def compat_documents_compliance_statistics(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> dict[str, Any]:
     from app.modules.documents.router import get_compliance_statistics
 
-    return get_compliance_statistics(db)
+    return get_compliance_statistics(db, current_user)
 
 
 @router.get("/documents/{document_id:int}")

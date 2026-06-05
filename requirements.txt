@@ -32,6 +32,9 @@ numpy
 # ML — text extraction from circulars
 pdfplumber
 python-docx
+PyMuPDF
+pytesseract
+pillow
 
 # ML — model explainability (optional, gracefully degrades without)
 shap

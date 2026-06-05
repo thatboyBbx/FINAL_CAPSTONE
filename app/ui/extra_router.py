@@ -331,44 +331,84 @@ async def documents_upload_post(
     notes: str | None = Form(None),
     client_id: int | None = Form(None),
     file: UploadFile = File(...),
+    db: Session = Depends(get_db),
     current_user=Depends(require_ui_login),
 ):
-    """Proxy multipart upload to the API, return JSON for XHR client."""
+    """Handle multipart upload from the UI, return JSON for XHR client."""
     if isinstance(current_user, RedirectResponse):
         return JSONResponse({"detail": "Not authenticated"}, status_code=401)
 
-    token = request.cookies.get("access_token")
-    auth_headers = {"Authorization": f"Bearer {token}"} if token else {}
+    try:
+        from app.modules.auth.access_control import require_client_access
+        from app.modules.documents import service as document_service
+        from app.modules.documents.file_store import DuplicateFileError, MimeValidationError
 
-    form_data = {
-        "title": title,
-        "document_category": document_category or "",
-        "notes": notes or "",
-        "status_value": "uploaded",
-    }
-    if client_id:
-        form_data["client_id"] = str(client_id)
-    file_content = await file.read()
-    files = {"file": (file.filename or "document", file_content, file.content_type or "application/octet-stream")}
+        if client_id is not None:
+            require_client_access(db, current_user, client_id)
 
-    async with httpx.AsyncClient(timeout=120.0) as client:
+        document = await document_service.create_document_from_upload(
+            db=db,
+            file=file,
+            title=title,
+            uploaded_by_user_id=current_user.id,
+            document_category=document_category,
+            notes=notes,
+            status="uploaded",
+            client_id=client_id,
+        )
+
+        if client_id is not None:
+            from app.modules.clients import service as client_service
+            client_service.ensure_policy_for_document(db, document)
+
+        processing_result = None
         try:
-            resp = await client.post(
-                f"{settings.api_base}/api/documents/upload",
-                data=form_data,
-                files=files,
-                headers=auth_headers,
+            processing_result = document_service.process_document_full(
+                db=db,
+                document_id=document.id,
             )
-            if resp.status_code == 201:
-                return JSONResponse(resp.json(), status_code=200)
-            detail = "Upload failed."
-            try:
-                detail = resp.json().get("detail", detail)
-            except Exception:
-                pass
-            return JSONResponse({"detail": detail}, status_code=resp.status_code)
         except Exception as exc:
-            return JSONResponse({"detail": str(exc)}, status_code=500)
+            processing_result = {"error": str(exc)}
+
+        return JSONResponse(
+            {
+                "id": document.id,
+                "title": document.title,
+                "original_filename": document.original_filename,
+                "stored_filename": document.stored_filename,
+                "file_path": document.file_path,
+                "mime_type": document.mime_type,
+                "file_size": document.file_size,
+                "status": document.status,
+                "document_category": document.document_category,
+                "notes": document.notes,
+                "uploaded_by_user_id": document.uploaded_by_user_id,
+                "client_id": document.client_id,
+                "created_at": document.created_at.isoformat() if document.created_at else None,
+                "updated_at": document.updated_at.isoformat() if document.updated_at else None,
+                "processing": processing_result,
+            },
+            status_code=200,
+        )
+    except DuplicateFileError as exc:
+        return JSONResponse(
+            {
+                "detail": {
+                    "error": "duplicate_file",
+                    "message": str(exc),
+                    "existing_document_id": exc.existing_document_id,
+                }
+            },
+            status_code=409,
+        )
+    except MimeValidationError as exc:
+        return JSONResponse({"detail": str(exc)}, status_code=415)
+    except ValueError as exc:
+        return JSONResponse({"detail": str(exc)}, status_code=400)
+    except HTTPException as exc:
+        return JSONResponse({"detail": exc.detail}, status_code=exc.status_code)
+    except Exception as exc:
+        return JSONResponse({"detail": str(exc)}, status_code=500)
 
 
 @router.get("/documents/compare", response_class=HTMLResponse)

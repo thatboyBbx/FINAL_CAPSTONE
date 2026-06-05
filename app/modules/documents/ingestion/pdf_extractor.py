@@ -14,6 +14,10 @@ from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
+MIN_USEFUL_TEXT_CHARS = 50
+MIN_USEFUL_TEXT_WORDS = 20
+OCR_DPI = 200
+
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -130,6 +134,51 @@ def _extract_via_pdfminer(pdf_path: Path, max_pages: int | None = None) -> str:
         return ""
 
 
+def _extract_via_ocr(pdf_path: Path, max_pages: int | None = None) -> str:
+    """OCR image-only PDFs using optional PyMuPDF and pytesseract support."""
+    try:
+        import fitz
+        import pytesseract
+        from PIL import Image
+    except ImportError as exc:
+        logger.info("OCR fallback unavailable for %s: %s", pdf_path.name, exc)
+        return ""
+
+    try:
+        document = fitz.open(pdf_path)
+    except Exception as exc:
+        logger.debug("OCR fallback could not open %s: %s", pdf_path.name, exc)
+        return ""
+
+    parts: list[str] = []
+    try:
+        page_count = min(len(document), max_pages) if max_pages is not None else len(document)
+        matrix = fitz.Matrix(OCR_DPI / 72, OCR_DPI / 72)
+
+        for page_number in range(page_count):
+            page = document.load_page(page_number)
+            pixmap = page.get_pixmap(matrix=matrix, alpha=False)
+            image = Image.frombytes("RGB", (pixmap.width, pixmap.height), pixmap.samples)
+            try:
+                text = pytesseract.image_to_string(image) or ""
+            except Exception as exc:
+                logger.debug(
+                    "OCR failed for %s page %d: %s",
+                    pdf_path.name,
+                    page_number + 1,
+                    exc,
+                )
+                continue
+            if text.strip():
+                parts.append(text.strip())
+    except Exception as exc:
+        logger.debug("OCR fallback failed for %s: %s", pdf_path.name, exc)
+    finally:
+        document.close()
+
+    return "\n".join(parts).strip()
+
+
 def extract_text_from_pdf(pdf_path: str | Path, max_pages: int | None = None) -> str:
     """
     Extract visible text from a PDF.
@@ -160,23 +209,30 @@ def extract_text_from_pdf(pdf_path: str | Path, max_pages: int | None = None) ->
 
     # 2 — pdfminer.six fallback
     text = _extract_via_pdfminer(pdf_path, max_pages=max_pages)
-    if len(text.strip()) >= 50:
+    if len(text.strip()) >= MIN_USEFUL_TEXT_CHARS:
         return text
 
     # 3 — FlateDecode decompression
     try:
         raw = pdf_path.read_bytes()
         text = _extract_via_deflate(raw)
-        if len(text.split()) > 20:
+        if len(text.split()) > MIN_USEFUL_TEXT_WORDS:
             return text
     except Exception as e:
         logger.debug("FlateDecode extraction failed for %s: %s", pdf_path.name, e)
 
     # 4 — raw BT/ET scan
+    raw_text = ""
     try:
         raw = pdf_path.read_bytes()
-        return _extract_raw_bt_et(raw)
+        raw_text = _extract_raw_bt_et(raw)
+        if len(raw_text.strip()) >= MIN_USEFUL_TEXT_CHARS:
+            return raw_text
     except Exception as e:
         logger.debug("BT/ET scan failed for %s: %s", pdf_path.name, e)
 
-    return ""
+    ocr_text = _extract_via_ocr(pdf_path, max_pages=max_pages)
+    if ocr_text:
+        return ocr_text
+
+    return raw_text
